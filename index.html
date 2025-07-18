@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCDD Standartları İnteraktif Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral & Railway Blue -->
+    <!-- Application Structure Plan: Kullanıcının statik bir tablo yerine verileri dinamik olarak keşfetmesini sağlamak için filtre tabanlı bir arayüz tasarlanmıştır. Ana yapı, üstte filtreleme kontrolleri, ortada sonuçların görsel bir özetini sunan dinamik bir grafik ve altta filtrelenmiş standartları gösteren kart tabanlı bir ızgara düzeninden oluşur. Bu yapı, belirli bir proje veya disiplin için ilgili standartları bulma görevini büyük ölçüde basitleştirir ve kullanıcıya anlık geri bildirim sağlar. Kart düzeni, mobil cihazlarda okunabilirliği ve kullanılabilirliği artırır. -->
+    <!-- Visualization & Content Choices: Her standart, anahtar bilgileri (başlık, kapsam) ve etiketlenmiş meta verileri (disiplin, proje) içeren bir "kart" olarak sunulur. Bu, veriyi sindirmeyi kolaylaştırır. Kullanıcı etkileşimi, proje, disiplin ve kritiklik seviyesine göre seçim yapabilen filtreler ve bir serbest metin arama çubuğu ile sağlanır. Filtrelenen verilerin disiplinlere göre dağılımını gösteren dinamik bir Chart.js çubuk grafiği, veriye analitik bir bakış açısı katar. Bu yapı, kullanıcının veriyi pasif olarak tüketmek yerine aktif olarak keşfetmesini teşvik eder. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .card-enter {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">TCDD Standartları İnteraktif Rehberi</h1>
+            <p class="mt-2 text-lg text-gray-600">Demiryolu projeleriniz için gerekli ulusal ve uluslararası standartları keşfedin.</p>
+        </header>
+
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label for="project-filter" class="block text-sm font-medium text-gray-700 mb-1">Projeye Göre Filtrele</label>
+                    <select id="project-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">Tüm Projeler</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="discipline-filter" class="block text-sm font-medium text-gray-700 mb-1">Disipline Göre Filtrele</label>
+                    <select id="discipline-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">Tüm Disiplinler</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="criticality-filter" class="block text-sm font-medium text-gray-700 mb-1">Kritikliğe Göre Filtrele</label>
+                    <select id="criticality-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">Tüm Seviyeler</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="search-input" class="block text-sm font-medium text-gray-700 mb-1">Metin ile Ara</label>
+                    <input type="text" id="search-input" placeholder="Standart kodu veya anahtar kelime..." class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Filtrelenmiş Standartların Disiplinlere Göre Dağılımı</h2>
+             <div class="chart-container">
+                <canvas id="standardsChart"></canvas>
+            </div>
+        </div>
+
+        <div id="results-count" class="mb-4 text-gray-600 font-medium"></div>
+
+        <div id="standards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        </div>
+    </div>
+
+    <script>
+        const standardsData = [
+            { "standart": "EN 50126", "baslik": "Demiryolu Uygulamaları - Güvenilirlik, Kullanılabilirlik, Sürdürülebilirlik ve Emniyet (RAMS)", "kapsam": "Demiryolu sistemlerinin ve bileşenlerinin yaşam döngüsü boyunca emniyet ve güvenilirliğini sağlar. Sistem mühendisliği yaklaşımı sunar.", "disiplinler": "Genel Yönetim, Yazılım, Mekanik, Elektrik/Donanım", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu, Elektronik Gabari Projesi, Test Treni Projesi, Pantograf Denetleme Projesi", "ilgili_diger": "IEC 61508, EN 50128, EN 50129", "notlar": "Tüm demiryolu projeleri için temel RAMS yönetim standardıdır." },
+            { "standart": "EN 50128", "baslik": "Demiryolu Uygulamaları - Sinyalizasyon Yazılımı", "kapsam": "Güvenlikle ilgili yazılımın geliştirilme, test ve doğrulama süreçlerini kapsar. SIL (Safety Integrity Level) seviyelerine göre gereksinimleri belirler.", "disiplinler": "Yazılım, Siber Güvenlik", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Kontrol Yazılımı), Elektronik Gabari Projesi (Veri İşleme Yazılımı), Test Treni Projesi (Ölçüm Yazılımı), Pantograf Denetleme Projesi (Analiz Yazılımı)", "ilgili_diger": "EN 50126, EN 50129", "notlar": "Yazılım tabanlı tüm güvenlik kritik sistemler için esastır." },
+            { "standart": "EN 50129", "baslik": "Demiryolu Uygulamaları - Sinyalizasyon Emniyet Sistemleri", "kapsam": "Güvenlikle ilgili elektronik sistemlerin donanım ve yazılımını kapsar. Emniyet durumlarını ve mimarileri tanımlar.", "disiplinler": "Elektrik/Donanım, Yazılım", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Kontrol Donanımı), Elektronik Gabari Projesi (Sensör Entegrasyonu), Test Treni Projesi (Donanım Arayüzleri), Pantograf Denetleme Projesi (Görüntüleme Donanımı)", "ilgili_diger": "EN 50126, EN 50128", "notlar": "Donanım ve yazılımın emniyet entegrasyonu için kritik." },
+            { "standart": "EN 50155", "baslik": "Demiryolu Uygulamaları - Demiryolu Araçlarında Kullanılan Elektronik Ekipman", "kapsam": "Ekipmanın titreşim, şok, sıcaklık, nem, EMI gibi çevresel koşullara dayanıklılığını ve performansını belirler.", "disiplinler": "Elektrik/Donanım, Mekanik", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Ray Üstü Ekipman), Elektronik Gabari Projesi (Sensörler), Test Treni Projesi (Tüm Elektronik Sistemler), Pantograf Denetleme Projesi (Kamera ve Sensörler)", "ilgili_diger": "EN 50121 serisi", "notlar": "Demiryolu araçları üzerinde veya yakınında çalışan tüm elektronikler için geçerlidir." },
+            { "standart": "EN 50121 serisi", "baslik": "Demiryolu Uygulamaları - Elektromanyetik Uyumluluk (EMC)", "kapsam": "Demiryolu çevresindeki elektromanyetik girişimleri ve ekipmanın bu girişimlere karşı bağışıklığını düzenler. (EN 50121-3-2 araçlar, EN 50121-4 sinyalizasyon ve telekomünikasyon)", "disiplinler": "Elektrik/Donanım, Siber Güvenlik", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu, Elektronik Gabari Projesi, Test Treni Projesi, Pantograf Denetleme Projesi", "ilgili_diger": "IEC 61000 serisi", "notlar": "Elektromanyetik uyumluluk testleri ve sertifikasyonu zorunludur." },
+            { "standart": "IEC 61508", "baslik": "Elektrik, Elektronik ve Programlanabilir Elektronik Güvenlik İlgili Sistemlerin Fonksiyonel Güvenliği", "kapsam": "Demiryolu sistemleri dahil olmak üzere birçok endüstride fonksiyonel güvenliğin temelini oluşturur. EN 50126/128/129'a referans teşkil eder.", "disiplinler": "Genel Yönetim, Yazılım, Elektrik/Donanım", "kritiklik": "Kritik / Tavsiye", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Güvenlik Fonksiyonları), Elektronik Gabari Projesi (Hassas Ölçüm Güvenliği), Test Treni Projesi (Sistem Güvenliği), Pantograf Denetleme Projesi (Veri Bütünlüğü)", "ilgili_diger": "EN 50126, EN 50128, EN 50129", "notlar": "Genel bir fonksiyonel güvenlik standardı olup, demiryolu standartlarına temel oluşturur." },
+            { "standart": "TS EN 50163", "baslik": "Demiryolu Uygulamaları - Besleme Gerilimi ve Akımı", "kapsam": "Elektrifikasyon sistemlerinin besleme gerilimi ve akım parametrelerini belirler.", "disiplinler": "Elektrik/Donanım", "kritiklik": "Kritik", "uygulama_alani": "Test Treni Projesi (Elektrifikasyon Ölçümleri), Pantograf Denetleme Projesi (Havai Hat Gerilimi)", "ilgili_diger": "-", "notlar": "Özellikle elektrikli demiryolu hatları için önemlidir." },
+            { "standart": "TS EN ISO 9001", "baslik": "Kalite Yönetim Sistemi", "kapsam": "Kurumun ve tedarikçilerin kalite süreçlerinin etkinliğini ve uygunluğunu güvence altına alır. Ürün ve hizmet kalitesinin sürekliliğini sağlar.", "disiplinler": "Genel Yönetim", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Tüm Projeler (Proje Yönetimi, Tedarikçi Seçimi, Üretim Süreçleri)", "ilgili_diger": "-", "notlar": "Genel bir kalite yönetim standardıdır, tüm projelerde uygulanır." },
+            { "standart": "TS EN ISO 14001", "baslik": "Çevre Yönetim Sistemi", "kapsam": "Ürün ve cihazların üretim süreçlerinin çevresel etkilerini yönetir ve çevresel performansı iyileştirmeyi hedefler.", "disiplinler": "Genel Yönetim", "kritiklik": "Tavsiye", "uygulama_alani": "Tüm Projeler (Üretim ve Operasyonel Çevre Yönetimi)", "ilgili_diger": "-", "notlar": "Çevresel sürdürülebilirlik için önemlidir." },
+            { "standart": "TS EN ISO 45001", "baslik": "İş Sağlığı ve Güvenliği Yönetim Sistemi", "kapsam": "Üretim ve kullanım süreçlerinde iş sağlığı ve güvenliği risklerini yönetir, güvenli çalışma ortamları sağlar.", "disiplinler": "Genel Yönetim", "kritiklik": "Tavsiye", "uygulama_alani": "Tüm Projeler (Kurulum, Bakım ve Operasyon Güvenliği)", "ilgili_diger": "-", "notlar": "Çalışan sağlığı ve güvenliği için önemlidir." },
+            { "standart": "TS EN 15085 serisi", "baslik": "Demiryolu Uygulamaları - Demiryolu Araçlarının Kaynaklı Parçaları", "kapsam": "Kaynaklı imalat süreçlerinin kalitesini ve uygunluğunu belirler. Kaynakçı yeterlilikleri ve kaynak prosedürleri.", "disiplinler": "Mekanik", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Test Treni Projesi (Araç Şasisi, Ekipman Bağlantıları)", "ilgili_diger": "ISO 3834", "notlar": "Özellikle araç yapısı ve kritik bileşenlerin imalatında zorunludur." },
+            { "standart": "TS EN 17025", "baslik": "Deney ve Kalibrasyon Laboratuvarlarının Yeterliliği İçin Genel Gereklilikler", "kapsam": "Ürün ve cihazların test ve ölçüm sonuçlarının güvenilirliğini ve uluslararası geçerliliğini sağlar. Laboratuvar akreditasyonu.", "disiplinler": "Genel Yönetim", "kritiklik": "Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Kalibrasyon), Elektronik Gabari Projesi (Ölçüm Doğruluğu), Test Treni Projesi (Veri Doğrulama), Pantograf Denetleme Projesi (Sistem Kalibrasyonu)", "ilgili_diger": "ISO 9001", "notlar": "Ölçüm ve test yapan tüm laboratuvarlar için akreditasyon standardıdır." },
+            { "standart": "EN 15273 serisi", "baslik": "Demiryolu Uygulamaları - Gabari", "kapsam": "Demiryolu taşıtlarının ve altyapısının uluslararası standartlara uygun gabari ölçülerini ve hesaplama yöntemlerini belirler.", "disiplinler": "Mekanik, Yazılım", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Elektronik Gabari Projesi", "ilgili_diger": "-", "notlar": "Gabari ölçüm sisteminin referans standardıdır." },
+            { "standart": "EN 14363", "baslik": "Demiryolu Uygulamaları - Dinamik Araç Davranışlarının Testleri", "kapsam": "Demiryolu araçlarının ray üzerinde sergilediği dinamik davranışların (titreşim, hareket, ray-tekerlek etkileşimi vb.) değerlendirilmesi için gerekli test yöntemlerini belirler.", "disiplinler": "Mekanik, Elektrik/Donanım", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Test Treni Projesi", "ilgili_diger": "EN 15313", "notlar": "Test treninin performans ve güvenlik testleri için temeldir." },
+            { "standart": "EN 50238", "baslik": "Demiryolu Uygulamaları - Vites Sistemleri - Genel Gereklilikler", "kapsam": "Demiryolu sistemlerinde kullanılan vites (dişli kutusu) sistemlerinin genel gerekliliklerini ve testlerini kapsar.", "disiplinler": "Mekanik, Elektrik/Donanım", "kritiklik": "Kritik", "uygulama_alani": "Test Treni Projesi (Tahrik Sistemleri)", "ilgili_diger": "-", "notlar": "Özellikle test treninin tahrik ve hareket sistemleri için geçerli olabilir." },
+            { "standart": "EN 50317", "baslik": "Demiryolu Uygulamaları - Pantograf ve Havai Hat Arasındaki Dinamik Etkileşimin Ölçülmesi", "kapsam": "Pantograf ve havai hat (katener) arasındaki dinamik etkileşimin ölçülmesi için yöntemleri ve kabul kriterlerini belirler.", "disiplinler": "Mekanik, Elektrik/Donanım", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Pantograf Denetleme Projesi", "ilgili_diger": "EN 50119", "notlar": "Pantograf denetim sistemlerinin doğruluğu için temel referanstır." },
+            { "standart": "EN 50119", "baslik": "Demiryolu Uygulamaları - Sabit Tesisatlar - Havai Hat", "kapsam": "Havai hat (katener) sistemlerinin tasarımı, inşası ve bakımı için teknik özellikleri ve gereksinimlerini belirler.", "disiplinler": "Elektrik/Donanım, Mekanik", "kritiklik": "Yasal Zorunlu / Kritik", "uygulama_alani": "Pantograf Denetleme Projesi", "ilgili_diger": "EN 50317", "notlar": "Pantografın temas ettiği havai hat sisteminin standardıdır." },
+            { "standart": "IEC 62443 serisi", "baslik": "Endüstriyel İletişim Ağları - Endüstriyel Otomasyon ve Kontrol Sistemleri İçin BT Güvenliği", "kapsam": "Endüstriyel otomasyon ve kontrol sistemlerinin siber güvenliği için gereksinimleri belirler. Ağ güvenliği, sistem güvenliği ve bileşen güvenliği.", "disiplinler": "Siber Güvenlik, Yazılım, Elektrik/Donanım", "kritiklik": "Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu, Elektronik Gabari Projesi, Test Treni Projesi, Pantograf Denetleme Projesi", "ilgili_diger": "ISO 27001", "notlar": "Demiryolu sistemlerinin dijitalleşmesiyle birlikte siber güvenlik risklerini yönetmek için kritik." },
+            { "standart": "TS ISO/IEC 27001", "baslik": "Bilgi Güvenliği Yönetim Sistemleri", "kapsam": "Kurumların bilgi güvenliği risklerini yönetmek için bir çerçeve sunar. Bilgi varlıklarının gizliliği, bütünlüğü ve erişilebilirliği.", "disiplinler": "Genel Yönetim, Siber Güvenlik", "kritiklik": "Tavsiye / Kritik", "uygulama_alani": "Tüm Projeler (Veri Güvenliği, Sistem Erişimi)", "ilgili_diger": "IEC 62443", "notlar": "Toplanan verilerin ve sistem bilgilerinin güvenliği için önemlidir." },
+            { "standart": "IEC 60068 serisi", "baslik": "Çevresel Testler", "kapsam": "Ürünlerin çeşitli çevresel koşullara (sıcaklık, nem, titreşim, şok, tuz sisi vb.) dayanıklılığını test etmek için genel yöntemleri kapsar.", "disiplinler": "Mekanik, Elektrik/Donanım", "kritiklik": "Kritik", "uygulama_alani": "Tüm Projeler (Ekipman Dayanıklılık Testleri)", "ilgili_diger": "EN 50155", "notlar": "EN 50155'i tamamlayıcı nitelikte, daha detaylı test yöntemleri sunar." },
+            { "standart": "EN ISO 3095", "baslik": "Demiryolu Uygulamaları - Akustik - Raylı Araçlardan Yayılan Gürültünün Ölçülmesi", "kapsam": "Raylı araçların (trenler, test trenleri) yaydığı gürültü seviyelerinin ölçüm yöntemlerini ve sınır değerlerini belirler.", "disiplinler": "Mekanik, Çevre", "kritiklik": "Tavsiye", "uygulama_alani": "Test Treni Projesi", "ilgili_diger": "-", "notlar": "Çevresel etki ve gürültü kontrolü için önemlidir." },
+            { "standart": "EN 12299", "baslik": "Demiryolu Uygulamaları - Yolcular İçin Sürüş Konforu - Ölçüm ve Değerlendirme", "kapsam": "Demiryolu araçlarında yolcuların maruz kaldığı titreşim ve şok seviyelerinin ölçüm ve değerlendirme yöntemlerini belirler.", "disiplinler": "Mekanik", "kritiklik": "Tavsiye", "uygulama_alani": "Test Treni Projesi", "ilgili_diger": "-", "notlar": "Özellikle yolcu konforu ölçümleri yapan test trenleri için geçerlidir." },
+            { "standart": "EN 50592", "baslik": "Demiryolu Uygulamaları - Haberleşme, Sinyalizasyon ve İşleme Sistemleri - Tren Algılama Sistemleri İçin Fonksiyonel Gereksinimler", "kapsam": "Tren algılama sistemlerinin (aks sayıcılar, ray devreleri vb.) fonksiyonel gereksinimlerini ve performans kriterlerini belirler.", "disiplinler": "Elektrik/Donanım, Yazılım", "kritiklik": "Kritik", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Tren Algılama)", "ilgili_diger": "EN 50126, EN 50129", "notlar": "Otomatik istasyonların tren varlığını algılama sistemleri için önemlidir." },
+            { "standart": "EN ISO 9241 serisi", "baslik": "İnsan-Sistem Etkileşiminin Ergonomisi", "kapsam": "İnsan merkezli tasarım prensiplerini ve kullanılabilirlik gereksinimlerini kapsar. Kullanıcı arayüzleri, kontrol panelleri vb.", "disiplinler": "Genel Yönetim, Yazılım", "kritiklik": "Tavsiye", "uygulama_alani": "Otomatik Test Muayene İstasyonu (Kontrol Paneli), Test Treni Projesi (Operatör Arayüzleri)", "ilgili_diger": "-", "notlar": "Operatör verimliliği ve hata riskini azaltmak için önemlidir." }
+        ];
+
+        const projectFilter = document.getElementById('project-filter');
+        const disciplineFilter = document.getElementById('discipline-filter');
+        const criticalityFilter = document.getElementById('criticality-filter');
+        const searchInput = document.getElementById('search-input');
+        const standardsGrid = document.getElementById('standards-grid');
+        const resultsCount = document.getElementById('results-count');
+        
+        let chartInstance;
+
+        function getUniqueValues(data, key, separator = ', ') {
+            const allValues = data.flatMap(item => item[key].split(separator).map(v => v.trim()));
+            return [...new Set(allValues)].sort();
+        }
+
+        function populateFilters() {
+            getUniqueValues(standardsData, 'uygulama_alani').forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                projectFilter.appendChild(option);
+            });
+
+            getUniqueValues(standardsData, 'disiplinler').forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                disciplineFilter.appendChild(option);
+            });
+            
+            getUniqueValues(standardsData, 'kritiklik').forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                criticalityFilter.appendChild(option);
+            });
+        }
+
+        function renderStandards(filteredData) {
+            standardsGrid.innerHTML = '';
+            
+            resultsCount.textContent = `${filteredData.length} standart bulundu.`;
+
+            if (filteredData.length === 0) {
+                standardsGrid.innerHTML = `<p class="text-gray-500 col-span-full text-center">Seçilen kriterlere uygun standart bulunamadı.</p>`;
+                return;
+            }
+
+            filteredData.forEach(std => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-gray-200 rounded-lg shadow-sm p-5 flex flex-col justify-between card-enter';
+                
+                const disiplinlerHtml = std.disiplinler.split(', ').map(d => `<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${d}</span>`).join('');
+                const projelerHtml = std.uygulama_alani.split(', ').map(p => `<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${p}</span>`).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                             <h3 class="text-lg font-bold text-gray-900">${std.standart}</h3>
+                             <span class="bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-md">${std.kritiklik}</span>
+                        </div>
+                        <p class="text-md font-semibold text-gray-700 mb-3">${std.baslik}</p>
+                        <p class="text-sm text-gray-600 mb-4">${std.kapsam}</p>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">İlgili Disiplinler:</h4>
+                            <div class="flex flex-wrap">${disiplinlerHtml}</div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Uygulama Alanları:</h4>
+                            <div class="flex flex-wrap">${projelerHtml}</div>
+                        </div>
+                    </div>
+                `;
+                standardsGrid.appendChild(card);
+            });
+        }
+        
+        function updateChart(filteredData) {
+            const disciplineCounts = {};
+            const allDisciplines = getUniqueValues(standardsData, 'disiplinler');
+            allDisciplines.forEach(d => disciplineCounts[d] = 0);
+
+            filteredData.forEach(std => {
+                std.disiplinler.split(', ').forEach(d => {
+                    if (disciplineCounts.hasOwnProperty(d.trim())) {
+                        disciplineCounts[d.trim()]++;
+                    }
+                });
+            });
+
+            const chartLabels = Object.keys(disciplineCounts);
+            const chartData = Object.values(disciplineCounts);
+
+            chartInstance.data.labels = chartLabels;
+            chartInstance.data.datasets[0].data = chartData;
+            chartInstance.update();
+        }
+
+
+        function filterAndRender() {
+            const project = projectFilter.value;
+            const discipline = disciplineFilter.value;
+            const criticality = criticalityFilter.value;
+            const searchTerm = searchInput.value.toLowerCase();
+
+            const filtered = standardsData.filter(std => {
+                const projectMatch = project === 'all' || std.uygulama_alani.includes(project);
+                const disciplineMatch = discipline === 'all' || std.disiplinler.includes(discipline);
+                const criticalityMatch = criticality === 'all' || std.kritiklik.includes(criticality);
+                
+                const searchMatch = !searchTerm || 
+                    std.standart.toLowerCase().includes(searchTerm) ||
+                    std.baslik.toLowerCase().includes(searchTerm) ||
+                    std.kapsam.toLowerCase().includes(searchTerm);
+
+                return projectMatch && disciplineMatch && criticalityMatch && searchMatch;
+            });
+
+            renderStandards(filtered);
+            updateChart(filtered);
+        }
+        
+        function initializeChart() {
+            const ctx = document.getElementById('standardsChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Standart Sayısı',
+                        data: [],
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                           callbacks: {
+                                label: function(context) {
+                                    return ` ${context.raw} standart`;
+                                }
+                           }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        projectFilter.addEventListener('change', filterAndRender);
+        disciplineFilter.addEventListener('change', filterAndRender);
+        criticalityFilter.addEventListener('change', filterAndRender);
+        searchInput.addEventListener('input', filterAndRender);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateFilters();
+            initializeChart();
+            filterAndRender();
+        });
+    </script>
+</body>
+</html>
