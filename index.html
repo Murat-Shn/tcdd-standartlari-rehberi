@@ -459,7 +459,7 @@
             document.getElementById('summary-modal-standart-ilgili').textContent = std.ilgili_diger || 'Yok';
             document.getElementById('summary-modal-standart-notlar').textContent = std.notlar || 'Yok';
             
-            goToDetailPageButton.href = `dokumanlar/${std.id}.html`;
+            goToDetailPageButton.href = `dokumanlar/${std.id}/${std.id}.html`;
             goToDetailPageButton.target = '_blank';
 
             summaryModal.style.display = 'flex';
