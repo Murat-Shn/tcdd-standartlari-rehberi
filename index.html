@@ -8,8 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Neutral & Railway Blue -->
-    <!-- Application Structure Plan: Uygulama, URL hash'leri aracılığıyla yönetilen iki ana görünüme sahiptir: #home (ana filtreleme ve kart listesi) ve #projects (projelere ve genel standartlara göre gruplandırılmış listeler). Her bir standart kartına tıklandığında, standardın detaylı bir özetini gösteren bir modal pencere açılır. Bu modal içinde, kullanıcının o standardın daha kapsamlı bilgilerini içeren ayrı bir HTML sayfasına (dokumanlar/<standart_id>/<standart_id>.html) gitmesini sağlayan bir "Detaylı Sayfaya Git" butonu bulunur. Bu yapı, hızlı özet erişimi ile zenginleştirilmiş detaylı sayfa içeriğini birleştirir. -->
-    <!-- Visualization & Content Choices: Ana görünümde standart kartları ve disiplinlere göre dağılımı gösteren Chart.js çubuk grafiği bulunur. Projeler sayfasında, her proje ve genel standartlar için ayrı başlıklar altında standartların basit listeleri yer alır. Her standart kartı ve liste öğesi, öncelikle bir özet modalı açar. Modalda, standardın temel bilgileri, kapsamı, detaylı açıklaması (kısa versiyon), kritikliği, ilgili disiplinler, uygulama alanları, ilgili diğer standartlar ve notlar bulunur. Ayrıca "Detaylı Sayfaya Git" butonu da yer alır. Detay sayfaları (dokumanlar/<standart_id>/<standart_id>.html), bu butona basıldığında açılan, daha fazla metin, dosya veya görsel barındırabilen bağımsız HTML dosyalarıdır. -->
+    <!-- Application Structure Plan: Uygulama, URL hash'leri aracılığıyla yönetilen iki ana görünüme sahiptir: #home (ana filtreleme ve kart listesi) ve #projects (projelere ve genel standartlara göre gruplandırılmış listeler). Her bir standart kartına tıklandığında, standardın detaylı bir özetini gösteren bir modal pencere açılır. Bu modal içinde, kullanıcının o standardın daha kapsamlı bilgilerini içeren ayrı bir HTML sayfasına (dokumanlar/<standart_id>.html) gitmesini sağlayan bir "Detaylı Sayfaya Git" butonu bulunur. Bu yapı, hızlı özet erişimi ile zenginleştirilmiş detaylı sayfa içeriğini birleştirir. -->
+    <!-- Visualization & Content Choices: Ana görünümde standart kartları ve disiplinlere göre dağılımı gösteren Chart.js çubuk grafiği bulunur. Projeler sayfasında, her proje ve genel standartlar için ayrı başlıklar altında standartların basit listeleri yer alır. Her standart kartı ve liste öğesi, öncelikle bir özet modalı açar. Modalda, standardın temel bilgileri, kapsamı, detaylı açıklaması (kısa versiyon), kritikliği, ilgili disiplinler, uygulama alanları, ilgili diğer standartlar ve notlar bulunur. Ayrıca "Detaylı Sayfaya Git" butonu da yer alır. Detay sayfaları (dokumanlar/<standart_id>.html), bu butona basıldığında açılan, daha fazla metin, dosya veya görsel barındırabilen bağımsız HTML dosyalarıdır. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -412,7 +412,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Genel Standartlar</h3>
                 <ul class="list-disc pl-5 space-y-2">
                     ${generalStandards.map(std => `
-                        <li><a href="dokumanlar/${std.id}/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
+                        <li><a href="dokumanlar/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
                     `).join('')}
                 </ul>
             `;
@@ -428,7 +428,7 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-4">${project} Projesi Standartları</h3>
                         <ul class="list-disc pl-5 space-y-2">
                             ${projectSpecificStandards.map(std => `
-                                <li><a href="dokumanlar/${std.id}/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
+                                <li><a href="dokumanlar/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
                             `).join('')}
                         </ul>
                     `;
@@ -438,10 +438,10 @@
         }
 
         function openSummaryModal(std) {
-            console.log("openSummaryModal çağrıldı. Standart:", std);
+            console.log("openSummaryModal çağrıldı. Standart:", std); // Debug için eklendi
             if (!std || !std.baslik || !std.standart) {
                 console.error("Geçersiz standart verisiyle özet modalı açılmaya çalışıldı:", std);
-                return;
+                return; // Veri geçersizse modalı açma
             }
 
             document.getElementById('summary-modal-standart-baslik').textContent = std.baslik;
@@ -459,14 +459,14 @@
             document.getElementById('summary-modal-standart-ilgili').textContent = std.ilgili_diger || 'Yok';
             document.getElementById('summary-modal-standart-notlar').textContent = std.notlar || 'Yok';
             
-            goToDetailPageButton.href = `dokumanlar/${std.id}/${std.id}.html`; // Yeni klasör yapısına göre link güncellendi
+            goToDetailPageButton.href = `dokumanlar/${std.id}.html`;
             goToDetailPageButton.target = '_blank';
 
             summaryModal.style.display = 'flex';
         }
 
         function closeSummaryModal() {
-            console.log("closeSummaryModal çağrıldı.");
+            console.log("closeSummaryModal çağrıldı."); // Debug için eklendi
             summaryModal.style.display = 'none';
         }
 
@@ -480,7 +480,7 @@
 
         function router() {
             const hash = window.location.hash;
-            console.log("Router çağrıldı. Hash:", hash);
+            console.log("Router çağrıldı. Hash:", hash); // Debug için eklendi
             homeView.classList.remove('active');
             projectsView.classList.remove('active');
             
@@ -503,7 +503,7 @@
         searchInput.addEventListener('input', filterAndRender);
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOMContentLoaded: Sayfa yüklendi.");
+            console.log("DOMContentLoaded: Sayfa yüklendi."); // Debug için eklendi
             fetchStandardsData();
         });
     </script>
