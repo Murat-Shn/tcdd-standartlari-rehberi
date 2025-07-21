@@ -7,10 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Calm Neutral & Railway Blue -->
-    <!-- Application Structure Plan: Uygulama, URL hash'leri aracılığıyla yönetilen iki ana görünüme sahiptir: #home (ana filtreleme ve kart listesi) ve #projects (projelere ve genel standartlara göre gruplandırılmış listeler). Her bir standart kartına tıklandığında, standardın özet bilgilerini gösteren bir modal pencere açılır. Bu modal içinde, standardın tam detay sayfasına (ayrı bir HTML dosyası olarak) yönlendiren bir buton bulunur. Bu yapı, kullanıcının hızlıca özet bilgiye ulaşmasını ve istenirse daha derinlemesine bilgiye ayrı bir sayfa üzerinden erişmesini sağlar. -->
-    <!-- Visualization & Content Choices: Ana görünümde standart kartları ve disiplinlere göre dağılımı gösteren Chart.js çubuk grafiği bulunur. Projeler sayfasında, her proje ve genel standartlar için ayrı başlıklar altında standartların basit listeleri yer alır. Her standart kartı ve liste öğesi, ilgili standardın özet modalını açar. Modal, standardın temel bilgilerini ve 'Detay Sayfasına Git' butonunu içerir. Detay sayfaları (ayrı HTML dosyaları), her standardın tüm özelliklerini temiz ve okunabilir bir düzende sunar. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; }
         .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
@@ -28,17 +24,18 @@
         /* Modal Stilleri */
         .modal {
             display: none; /* Varsayılan olarak gizli */
-            position: fixed; /* Sabit konumda */
-            z-index: 1000; /* Diğer her şeyin üstünde */
+            position: fixed; /* Ekranın üzerinde kalır */
+            z-index: 1000; /* Diğer tüm içeriklerin üzerinde */
             left: 0;
             top: 0;
-            width: 100%; /* Tam genişlik */
-            height: 100%; /* Tam yükseklik */
+            width: 100%;
+            height: 100%;
             overflow: auto; /* İçerik taşarsa kaydırma çubuğu */
-            background-color: rgba(0,0,0,0.6); /* Yarı şeffaf siyah arka plan */
+            background-color: rgba(0,0,0,0.6); /* Yarı saydam siyah arka plan */
             backdrop-filter: blur(5px); /* Arka planı bulanıklaştır */
-            justify-content: center; /* Ortala */
-            align-items: center; /* Ortala */
+            display: flex; /* İçeriği ortalamak için flex kullan */
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
         .modal-content {
@@ -47,11 +44,11 @@
             padding: 30px;
             border-radius: 12px;
             width: 90%;
-            max-width: 600px; /* Modal genişliği */
+            max-width: 600px; /* Daha küçük bir özet penceresi */
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             position: relative;
-            max-height: 90vh; /* Maksimum yükseklik */
-            overflow-y: auto; /* İçerik taşarsa kaydırma */
+            max-height: 90vh;
+            overflow-y: auto;
             animation: slideIn 0.3s ease-out;
         }
         .close-button {
@@ -84,13 +81,11 @@
             <p class="mt-2 text-lg text-gray-600">Demiryolu projeleriniz için gerekli ulusal ve uluslararası standartları keşfedin.</p>
         </header>
 
-        <!-- Ana Navigasyon Menüsü -->
         <nav class="bg-white p-4 rounded-xl shadow-md mb-8 flex justify-center space-x-4">
             <a href="#home" class="px-4 py-2 rounded-md font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200">Ana Sayfa</a>
             <a href="#projects" class="px-4 py-2 rounded-md font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200">Projeler & Genel Standartlar</a>
         </nav>
 
-        <!-- Ana Sayfa Görünümü -->
         <div id="home-view" class="view-section">
             <div class="bg-white p-6 rounded-xl shadow-md mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -132,80 +127,46 @@
             </div>
         </div>
 
-        <!-- Projeler ve Genel Standartlar Görünümü -->
         <div id="projects-view" class="view-section p-6 bg-white rounded-xl shadow-md">
             <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Projeler ve Genel Standartlar</h2>
             <p class="text-gray-600 mb-8 text-center">Aşağıda demiryolu projelerine ve genel kategorilere göre gruplandırılmış standartları bulabilirsiniz. Detaylar için standart adına tıklayın.</p>
 
             <div id="project-standards-list" class="space-y-8">
-                <!-- Proje bazlı listeler buraya JS ile doldurulacak -->
-            </div>
+                </div>
         </div>
 
-        <!-- Standart Detay Görünümü (Bu artık ayrı dosyalarda olacak, burası kullanılmayacak) -->
-        <!-- <div id="detail-view" class="view-section p-6 bg-white rounded-xl shadow-md">
-            <button id="back-button" class="mb-6 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors duration-200">
-                &larr; Geri Dön
-            </button>
-            <h2 id="detail-standart-baslik" class="text-3xl font-bold text-gray-900 mb-2"></h2>
-            <p id="detail-standart-kod" class="text-xl font-semibold text-gray-700 mb-6"></p>
-            
-            <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Kapsam:</h3>
-                <p id="detail-standart-kapsam" class="text-base text-gray-600 leading-relaxed"></p>
-            </div>
+        </div>
 
-            <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Detaylı Açıklama:</h3>
-                <p id="detail-standart-detay" class="text-base text-gray-700 leading-relaxed"></p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">Kritiklik:</h3>
-                    <span id="detail-standart-kritiklik" class="bg-red-100 text-red-800 text-base font-semibold px-4 py-1 rounded-md"></span>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">İlgili Disiplinler:</h3>
-                    <div id="detail-standart-disiplinler" class="flex flex-wrap gap-2"></div>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Uygulama Alanları:</h3>
-                <div id="detail-standart-uygulama" class="flex flex-wrap gap-2"></div>
-            </div>
-
-            <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">İlgili Diğer Standartlar:</h3>
-                <p id="detail-standart-ilgili" class="text-base text-gray-600 leading-relaxed"></p>
-            </div>
-
-            <div>
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Notlar:</h3>
-                <p id="detail-standart-notlar" class="text-base text-gray-600 leading-relaxed"></p>
-            </div>
-        </div> -->
-
-    </div>
-
-    <!-- Modal Yapısı (Özet Gösterimi) -->
     <div id="summary-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2 id="summary-modal-standart-baslik" class="text-2xl font-bold text-gray-900 mb-3"></h2>
-            <p id="summary-modal-standart-kod" class="text-lg font-semibold text-gray-700 mb-4"></p>
+            <h2 id="summary-modal-standart-baslik" class="text-xl font-bold text-gray-900 mb-2"></h2>
+            <p id="summary-modal-standart-kod" class="text-md font-semibold text-gray-700 mb-4"></p>
             
             <div class="mb-4">
                 <h3 class="text-md font-bold text-gray-800 mb-1">Kapsam:</h3>
-                <p id="summary-modal-standart-kapsam" class="text-base text-gray-600"></p>
+                <p id="summary-modal-standart-kapsam" class="text-sm text-gray-600 leading-relaxed"></p>
             </div>
 
-            <div class="flex justify-end mt-6">
-                <a id="go-to-detail-button" href="#" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium">Detay Sayfasına Git</a>
+            <div class="flex flex-wrap gap-2 mb-4">
+                <div class="flex items-center">
+                    <span class="text-sm font-bold text-gray-800 mr-2">Kritiklik:</span>
+                    <span id="summary-modal-standart-kritiklik" class="bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-md"></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm font-bold text-gray-800 mr-2">Disiplinler:</span>
+                    <div id="summary-modal-standart-disiplinler" class="flex flex-wrap"></div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a id="go-to-detail-page-button" href="#" class="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
+                    Detaylı Sayfaya Git →
+                </a>
             </div>
         </div>
     </div>
+
 
     <script>
         let standardsData = [];
@@ -218,13 +179,14 @@
         const resultsCount = document.getElementById('results-count');
         const homeView = document.getElementById('home-view');
         const projectsView = document.getElementById('projects-view');
-        // const detailView = document.getElementById('detail-view'); // Artık kullanılmıyor
+        // const detailView = document.getElementById('detail-view'); // Artık bu doğrudan kullanılmayacak
         const projectStandardsList = document.getElementById('project-standards-list');
-        // const backButton = document.getElementById('back-button'); // Artık kullanılmıyor
+        // const backButton = document.getElementById('back-button'); // Artık bu doğrudan kullanılmayacak
 
         const summaryModal = document.getElementById('summary-modal');
-        const closeSummaryModalButton = summaryModal.querySelector('.close-button');
-        const goToDetailButton = document.getElementById('go-to-detail-button');
+        const closeModalButton = summaryModal.querySelector('.close-button');
+        const goToDetailPageButton = document.getElementById('go-to-detail-page-button');
+
 
         async function fetchStandardsData() {
             try {
@@ -249,10 +211,8 @@
         }
 
         function populateFilters() {
-            // Clear existing options first to avoid duplicates on re-population
-            projectFilter.innerHTML = '<option value="all">Tüm Projeler</option>';
-            disciplineFilter.innerHTML = '<option value="all">Tüm Disiplinler</option>';
-            criticalityFilter.innerHTML = '<option value="all">Tüm Seviyeler</option>';
+            // Sadece bir kere doldurmak için kontrol
+            if (projectFilter.options.length > 1) return; 
 
             getUniqueValues(standardsData, 'uygulama_alani').forEach(value => {
                 const option = document.createElement('option');
@@ -426,7 +386,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Genel Standartlar</h3>
                 <ul class="list-disc pl-5 space-y-2">
                     ${generalStandards.map(std => `
-                        <li><a href="documents/${std.id}.html" class="text-blue-600 hover:underline font-medium">${std.standart} - ${std.baslik}</a></li>
+                        <li><a href="dokumanlar/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
                     `).join('')}
                 </ul>
             `;
@@ -442,7 +402,7 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-4">${project} Projesi Standartları</h3>
                         <ul class="list-disc pl-5 space-y-2">
                             ${projectSpecificStandards.map(std => `
-                                <li><a href="documents/${std.id}.html" class="text-blue-600 hover:underline font-medium">${std.standart} - ${std.baslik}</a></li>
+                                <li><a href="dokumanlar/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
                             `).join('')}
                         </ul>
                     `;
@@ -455,7 +415,15 @@
             document.getElementById('summary-modal-standart-baslik').textContent = std.baslik;
             document.getElementById('summary-modal-standart-kod').textContent = std.standart;
             document.getElementById('summary-modal-standart-kapsam').textContent = std.kapsam;
-            goToDetailButton.href = `documents/${std.id}.html`; // Detay sayfasına linki ayarla
+            document.getElementById('summary-modal-standart-kritiklik').textContent = std.kritiklik;
+
+            const modalDisiplinler = document.getElementById('summary-modal-standart-disiplinler');
+            modalDisiplinler.innerHTML = std.disiplinler.split(', ').map(d => `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${d}</span>`).join('');
+            
+            // Detay sayfasına git butonu linkini ayarla
+            goToDetailPageButton.href = `dokumanlar/${std.id}.html`;
+            goToDetailPageButton.target = '_blank'; // Yeni sekmede açmak için
+
             summaryModal.style.display = 'flex';
         }
 
@@ -463,29 +431,28 @@
             summaryModal.style.display = 'none';
         }
 
-        closeSummaryModalButton.addEventListener('click', closeSummaryModal);
+        closeModalButton.addEventListener('click', closeSummaryModal);
         window.addEventListener('click', (event) => {
             if (event.target === summaryModal) {
                 closeSummaryModal();
             }
         });
 
+
         function router() {
             const hash = window.location.hash;
             homeView.classList.remove('active');
             projectsView.classList.remove('active');
-            // detailView.classList.remove('active'); // Artık kullanılmıyor
-
+            
             if (hash === '#projects') {
                 projectsView.classList.add('active');
                 renderProjectsPage();
-            } else {
+            } else { // Varsayılan olarak #home
                 homeView.classList.add('active');
-                filterAndRender(); // Ana sayfada filtreleri ve kartları yeniden render et
+                filterAndRender(); 
             }
         }
 
-        // backButton.addEventListener('click', () => { history.back(); }); // Artık kullanılmıyor
         window.addEventListener('hashchange', router);
 
         projectFilter.addEventListener('change', filterAndRender);
@@ -495,8 +462,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchStandardsData();
-            // Sayfa yüklendiğinde URL'deki hash'i kontrol et (artık sadece #projects veya boş hash)
-            // Detay sayfaları ayrı HTML dosyaları olduğu için router'ın hash kontrolü değişti.
+            // Router, fetchStandardsData içinde çağrılıyor
         });
     </script>
 </body>
