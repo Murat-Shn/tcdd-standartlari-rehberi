@@ -8,8 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Neutral & Railway Blue -->
-    <!-- Application Structure Plan: Uygulama, URL hash'leri aracılığıyla yönetilen üç ana görünüme sahiptir: #home (ana filtreleme ve kart listesi), #projects (projelere ve genel standartlara göre gruplandırılmış listeler) ve #detail/<standard-id> (her standardın detay sayfası). Bu yapı, kullanıcının farklı bilgi seviyeleri arasında sorunsuz geçiş yapmasını ve belirli standartlara doğrudan erişmesini sağlar. Filtreleme ve arama, ana görünümde veri keşfini kolaylaştırırken, projeler sayfası belirli bağlamlardaki standartları öne çıkarır. Detay sayfası, her standardın kapsamlı bilgilerini sunar. -->
-    <!-- Visualization & Content Choices: Ana görünümde standart kartları ve disiplinlere göre dağılımı gösteren Chart.js çubuk grafiği bulunur. Projeler sayfasında, her proje ve genel standartlar için ayrı başlıklar altında standartların basit listeleri yer alır. Her standart kartı ve liste öğesi, ilgili standardın detay sayfasına (URL hash ile) yönlendiren tıklanabilir bir bağlantıdır. Detay sayfasında, standardın tüm özellikleri (başlık, kapsam, detaylı açıklama, kritiklik, disiplinler, uygulama alanları, ilgili diğer standartlar, notlar) temiz ve okunabilir bir düzende sunulur. Geri dönme butonu ile önceki görünüme kolayca geçiş sağlanır. -->
+    <!-- Application Structure Plan: Uygulama, URL hash'leri aracılığıyla yönetilen iki ana görünüme sahiptir: #home (ana filtreleme ve kart listesi) ve #projects (projelere ve genel standartlara göre gruplandırılmış listeler). Her bir standart kartına tıklandığında, standardın özet bilgilerini gösteren bir modal pencere açılır. Bu modal içinde, standardın tam detay sayfasına (ayrı bir HTML dosyası olarak) yönlendiren bir buton bulunur. Bu yapı, kullanıcının hızlıca özet bilgiye ulaşmasını ve istenirse daha derinlemesine bilgiye ayrı bir sayfa üzerinden erişmesini sağlar. -->
+    <!-- Visualization & Content Choices: Ana görünümde standart kartları ve disiplinlere göre dağılımı gösteren Chart.js çubuk grafiği bulunur. Projeler sayfasında, her proje ve genel standartlar için ayrı başlıklar altında standartların basit listeleri yer alır. Her standart kartı ve liste öğesi, ilgili standardın özet modalını açar. Modal, standardın temel bilgilerini ve 'Detay Sayfasına Git' butonunu içerir. Detay sayfaları (ayrı HTML dosyaları), her standardın tüm özelliklerini temiz ve okunabilir bir düzende sunar. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -24,6 +24,55 @@
         }
         .view-section { display: none; } /* Varsayılan olarak tüm görünümleri gizle */
         .view-section.active { display: block; } /* Aktif olanı göster */
+
+        /* Modal Stilleri */
+        .modal {
+            display: none; /* Varsayılan olarak gizli */
+            position: fixed; /* Sabit konumda */
+            z-index: 1000; /* Diğer her şeyin üstünde */
+            left: 0;
+            top: 0;
+            width: 100%; /* Tam genişlik */
+            height: 100%; /* Tam yükseklik */
+            overflow: auto; /* İçerik taşarsa kaydırma çubuğu */
+            background-color: rgba(0,0,0,0.6); /* Yarı şeffaf siyah arka plan */
+            backdrop-filter: blur(5px); /* Arka planı bulanıklaştır */
+            justify-content: center; /* Ortala */
+            align-items: center; /* Ortala */
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px; /* Modal genişliği */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 90vh; /* Maksimum yükseklik */
+            overflow-y: auto; /* İçerik taşarsa kaydırma */
+            animation: slideIn 0.3s ease-out;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -93,8 +142,8 @@
             </div>
         </div>
 
-        <!-- Standart Detay Görünümü -->
-        <div id="detail-view" class="view-section p-6 bg-white rounded-xl shadow-md">
+        <!-- Standart Detay Görünümü (Bu artık ayrı dosyalarda olacak, burası kullanılmayacak) -->
+        <!-- <div id="detail-view" class="view-section p-6 bg-white rounded-xl shadow-md">
             <button id="back-button" class="mb-6 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors duration-200">
                 &larr; Geri Dön
             </button>
@@ -136,8 +185,26 @@
                 <h3 class="text-lg font-bold text-gray-800 mb-2">Notlar:</h3>
                 <p id="detail-standart-notlar" class="text-base text-gray-600 leading-relaxed"></p>
             </div>
-        </div>
+        </div> -->
 
+    </div>
+
+    <!-- Modal Yapısı (Özet Gösterimi) -->
+    <div id="summary-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="summary-modal-standart-baslik" class="text-2xl font-bold text-gray-900 mb-3"></h2>
+            <p id="summary-modal-standart-kod" class="text-lg font-semibold text-gray-700 mb-4"></p>
+            
+            <div class="mb-4">
+                <h3 class="text-md font-bold text-gray-800 mb-1">Kapsam:</h3>
+                <p id="summary-modal-standart-kapsam" class="text-base text-gray-600"></p>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <a id="go-to-detail-button" href="#" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium">Detay Sayfasına Git</a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -151,9 +218,13 @@
         const resultsCount = document.getElementById('results-count');
         const homeView = document.getElementById('home-view');
         const projectsView = document.getElementById('projects-view');
-        const detailView = document.getElementById('detail-view');
+        // const detailView = document.getElementById('detail-view'); // Artık kullanılmıyor
         const projectStandardsList = document.getElementById('project-standards-list');
-        const backButton = document.getElementById('back-button');
+        // const backButton = document.getElementById('back-button'); // Artık kullanılmıyor
+
+        const summaryModal = document.getElementById('summary-modal');
+        const closeSummaryModalButton = summaryModal.querySelector('.close-button');
+        const goToDetailButton = document.getElementById('go-to-detail-button');
 
         async function fetchStandardsData() {
             try {
@@ -168,7 +239,6 @@
                 router(); // Veri yüklendikten sonra router'ı çalıştır
             } catch (error) {
                 console.error("Error fetching standards data:", error);
-                // Kullanıcıya hata mesajı gösterebiliriz
                 document.querySelector('.container').innerHTML = `<p class="text-red-600 text-center text-xl mt-10">Standart verileri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>`;
             }
         }
@@ -179,6 +249,11 @@
         }
 
         function populateFilters() {
+            // Clear existing options first to avoid duplicates on re-population
+            projectFilter.innerHTML = '<option value="all">Tüm Projeler</option>';
+            disciplineFilter.innerHTML = '<option value="all">Tüm Disiplinler</option>';
+            criticalityFilter.innerHTML = '<option value="all">Tüm Seviyeler</option>';
+
             getUniqueValues(standardsData, 'uygulama_alani').forEach(value => {
                 const option = document.createElement('option');
                 option.value = value;
@@ -214,10 +289,7 @@
             filteredData.forEach(std => {
                 const card = document.createElement('div');
                 card.className = 'bg-white border border-gray-200 rounded-lg shadow-sm p-5 flex flex-col justify-between cursor-pointer hover:shadow-lg transition-shadow duration-200 card-enter';
-                card.onclick = () => {
-                    history.pushState(null, '', `#detail/${std.id}`);
-                    router();
-                };
+                card.onclick = () => openSummaryModal(std); // Modalı aç
                 
                 const disiplinlerHtml = std.disiplinler.split(', ').map(d => `<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${d}</span>`).join('');
                 const projelerHtml = std.uygulama_alani.split(', ').map(p => `<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${p}</span>`).join('');
@@ -247,7 +319,7 @@
         }
         
         function updateChart(filteredData) {
-            if (!chartInstance) return; // Chart henüz başlatılmamışsa çık
+            if (!chartInstance) return;
 
             const disciplineCounts = {};
             const allDisciplines = getUniqueValues(standardsData, 'disiplinler');
@@ -299,7 +371,7 @@
         function initializeChart() {
             const ctx = document.getElementById('standardsChart').getContext('2d');
             if (chartInstance) {
-                chartInstance.destroy(); // Önceki chart instance'ı yok et
+                chartInstance.destroy();
             }
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -354,7 +426,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Genel Standartlar</h3>
                 <ul class="list-disc pl-5 space-y-2">
                     ${generalStandards.map(std => `
-                        <li><a href="#detail/${std.id}" class="text-blue-600 hover:underline font-medium">${std.standart} - ${std.baslik}</a></li>
+                        <li><a href="documents/${std.id}.html" class="text-blue-600 hover:underline font-medium">${std.standart} - ${std.baslik}</a></li>
                     `).join('')}
                 </ul>
             `;
@@ -370,7 +442,7 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-4">${project} Projesi Standartları</h3>
                         <ul class="list-disc pl-5 space-y-2">
                             ${projectSpecificStandards.map(std => `
-                                <li><a href="#detail/${std.id}" class="text-blue-600 hover:underline font-medium">${std.standart} - ${std.baslik}</a></li>
+                                <li><a href="documents/${std.id}.html" class="text-blue-600 hover:underline font-medium">${std.standart} - ${std.baslik}</a></li>
                             `).join('')}
                         </ul>
                     `;
@@ -379,41 +451,32 @@
             });
         }
 
-        function showStandardDetail(standardId) {
-            const std = standardsData.find(s => s.id === standardId);
-            if (!std) {
-                history.replaceState(null, '', '#home'); // Standart bulunamazsa ana sayfaya dön
-                router();
-                return;
-            }
-
-            document.getElementById('detail-standart-baslik').textContent = std.baslik;
-            document.getElementById('detail-standart-kod').textContent = std.standart;
-            document.getElementById('detail-standart-kapsam').textContent = std.kapsam;
-            document.getElementById('detail-standart-detay').textContent = std.detayli_aciklama || 'Detaylı açıklama bulunmamaktadır.';
-            document.getElementById('detail-standart-kritiklik').textContent = std.kritiklik;
-
-            const detailDisiplinler = document.getElementById('detail-standart-disiplinler');
-            detailDisiplinler.innerHTML = std.disiplinler.split(', ').map(d => `<span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">${d}</span>`).join('');
-
-            const detailUygulama = document.getElementById('detail-standart-uygulama');
-            detailUygulama.innerHTML = std.uygulama_alani.split(', ').map(p => `<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${p}</span>`).join('');
-
-            document.getElementById('detail-standart-ilgili').textContent = std.ilgili_diger || 'Yok';
-            document.getElementById('detail-standart-notlar').textContent = std.notlar || 'Yok';
+        function openSummaryModal(std) {
+            document.getElementById('summary-modal-standart-baslik').textContent = std.baslik;
+            document.getElementById('summary-modal-standart-kod').textContent = std.standart;
+            document.getElementById('summary-modal-standart-kapsam').textContent = std.kapsam;
+            goToDetailButton.href = `documents/${std.id}.html`; // Detay sayfasına linki ayarla
+            summaryModal.style.display = 'flex';
         }
+
+        function closeSummaryModal() {
+            summaryModal.style.display = 'none';
+        }
+
+        closeSummaryModalButton.addEventListener('click', closeSummaryModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === summaryModal) {
+                closeSummaryModal();
+            }
+        });
 
         function router() {
             const hash = window.location.hash;
             homeView.classList.remove('active');
             projectsView.classList.remove('active');
-            detailView.classList.remove('active');
+            // detailView.classList.remove('active'); // Artık kullanılmıyor
 
-            if (hash.startsWith('#detail/')) {
-                detailView.classList.add('active');
-                const standardId = hash.substring('#detail/'.length);
-                showStandardDetail(standardId);
-            } else if (hash === '#projects') {
+            if (hash === '#projects') {
                 projectsView.classList.add('active');
                 renderProjectsPage();
             } else {
@@ -422,10 +485,7 @@
             }
         }
 
-        backButton.addEventListener('click', () => {
-            history.back(); // Tarayıcı geçmişinde bir adım geri git
-        });
-
+        // backButton.addEventListener('click', () => { history.back(); }); // Artık kullanılmıyor
         window.addEventListener('hashchange', router);
 
         projectFilter.addEventListener('change', filterAndRender);
@@ -435,6 +495,8 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchStandardsData();
+            // Sayfa yüklendiğinde URL'deki hash'i kontrol et (artık sadece #projects veya boş hash)
+            // Detay sayfaları ayrı HTML dosyaları olduğu için router'ın hash kontrolü değişti.
         });
     </script>
 </body>
