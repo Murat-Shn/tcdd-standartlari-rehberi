@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STANDART KODU Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">STANDART KODU: Standart Başlığı Buraya Gelecek</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">Standart Kapsam Özeti Buraya Gelecek</p>
+
+        <div class="prose max-w-none text-gray-700">
+            <p>Bu alan, <strong>STANDART KODU</strong> standardının tüm detaylı bilgilerini, teknik çizimlerini, PDF dokümanlarına bağlantıları, ilgili görselleri veya daha fazla açıklayıcı metinleri içerebilir. Burayı, Notion'dan kopyaladığınız zengin içerikle doldurabilirsiniz.</p>
+            
+            <p>Örnek olarak:</p>
+            <h2 class="text-2xl font-bold mt-6 mb-3">1. Uygulama Alanları</h2>
+            <p>Bu standart, demiryolu sektöründeki X, Y ve Z bileşenlerinin tasarım ve test süreçlerinde uygulanır.</p>
+
+            <h2 class="text-2xl font-bold mt-6 mb-3">2. Test Prosedürleri</h2>
+            <p>Standardın belirlediği testler arasında titreşim testleri, termal testler ve elektriksel performans testleri bulunmaktadır.</p>
+
+            <h2 class="text-2xl font-bold mt-6 mb-3">İlgili Belgeler</h2>
+            <ul>
+                <li><a href="#" class="text-blue-600 hover:underline" target="_blank">STANDART KODU - Test Raporu (PDF)</a></li>
+                <li><a href="#" class="text-blue-600 hover:underline" target="_blank">STANDART KODU - Uygulama Kılavuzu (PDF)</a></li>
+            </ul>
+            </div>
+
+    </div>
+
+    <script>
+        // Bu script, sayfa yüklendiğinde URL'deki standard_id'yi alıp başlık ve özeti güncelleyebilir
+        // Ancak ana bilgi kaynağınız buraya doğrudan yazdığınız HTML olacak.
+        document.addEventListener('DOMContentLoaded', () => {
+            const pathSegments = window.location.pathname.split('/');
+            const fileName = pathSegments[pathSegments.length - 1];
+            const standardId = fileName.replace('.html', ''); // 'EN50126.html' -> 'EN50126'
+
+            // Eğer standards.json'daki veriyi de kullanmak isterseniz:
+            fetch('../standards.json')
+                .then(response => response.json())
+                .then(data => {
+                    const std = data.find(s => s.id === standardId);
+                    if (std) {
+                        document.title = `${std.standart} Detayları - TCDD Standartları Rehberi`;
+                        document.getElementById('standard-detail-title').textContent = `${std.standart}: ${std.baslik}`;
+                        document.getElementById('standard-detail-summary').textContent = std.kapsam;
+                        // Not: detayli_aciklama buraya otomatik gelmez, direkt HTML'e yazmanız gerekir.
+                        // Eğer detaylı açıklamayı da standards.json'dan çekmek isterseniz, yukarıdaki prose div'ine id verip textContent'ini set edebilirsiniz.
+                        // Ancak PDF gibi dosyalar için HTML içeriğini elle yazmanız daha iyi olur.
+                    }
+                })
+                .catch(error => console.error("Error fetching standard details:", error));
+        });
+    </script>
+</body>
+</html>
