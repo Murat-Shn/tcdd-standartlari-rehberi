@@ -1,718 +1,323 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>TS EN 61373</title><style>
-/* cspell:disable-file */
-/* webkit printing magic: print all background colors */
-html {
-	-webkit-print-color-adjust: exact;
-}
-* {
-	box-sizing: border-box;
-	-webkit-print-color-adjust: exact;
-}
-
-html,
-body {
-	margin: 0;
-	padding: 0;
-}
-@media only screen {
-	body {
-		margin: 2em auto;
-		max-width: 900px;
-		color: rgb(55, 53, 47);
-	}
-}
-
-body {
-	line-height: 1.5;
-	white-space: pre-wrap;
-}
-
-a,
-a.visited {
-	color: inherit;
-	text-decoration: underline;
-}
-
-.pdf-relative-link-path {
-	font-size: 80%;
-	color: #444;
-}
-
-h1,
-h2,
-h3 {
-	letter-spacing: -0.01em;
-	line-height: 1.2;
-	font-weight: 600;
-	margin-bottom: 0;
-}
-
-.page-title {
-	font-size: 2.5rem;
-	font-weight: 700;
-	margin-top: 0;
-	margin-bottom: 0.75em;
-}
-
-h1 {
-	font-size: 1.875rem;
-	margin-top: 1.875rem;
-}
-
-h2 {
-	font-size: 1.5rem;
-	margin-top: 1.5rem;
-}
-
-h3 {
-	font-size: 1.25rem;
-	margin-top: 1.25rem;
-}
-
-.source {
-	border: 1px solid #ddd;
-	border-radius: 3px;
-	padding: 1.5em;
-	word-break: break-all;
-}
-
-.callout {
-	border-radius: 3px;
-	padding: 1rem;
-}
-
-figure {
-	margin: 1.25em 0;
-	page-break-inside: avoid;
-}
-
-figcaption {
-	opacity: 0.5;
-	font-size: 85%;
-	margin-top: 0.5em;
-}
-
-mark {
-	background-color: transparent;
-}
-
-.indented {
-	padding-left: 1.5em;
-}
-
-hr {
-	background: transparent;
-	display: block;
-	width: 100%;
-	height: 1px;
-	visibility: visible;
-	border: none;
-	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
-}
-
-img {
-	max-width: 100%;
-}
-
-@media only print {
-	img {
-		max-height: 100vh;
-		object-fit: contain;
-	}
-}
-
-@page {
-	margin: 1in;
-}
-
-.collection-content {
-	font-size: 0.875rem;
-}
-
-.column-list {
-	display: flex;
-	justify-content: space-between;
-}
-
-.column {
-	padding: 0 1em;
-}
-
-.column:first-child {
-	padding-left: 0;
-}
-
-.column:last-child {
-	padding-right: 0;
-}
-
-.table_of_contents-item {
-	display: block;
-	font-size: 0.875rem;
-	line-height: 1.3;
-	padding: 0.125rem;
-}
-
-.table_of_contents-indent-1 {
-	margin-left: 1.5rem;
-}
-
-.table_of_contents-indent-2 {
-	margin-left: 3rem;
-}
-
-.table_of_contents-indent-3 {
-	margin-left: 4.5rem;
-}
-
-.table_of_contents-link {
-	text-decoration: none;
-	opacity: 0.7;
-	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
-}
-
-table,
-th,
-td {
-	border: 1px solid rgba(55, 53, 47, 0.09);
-	border-collapse: collapse;
-}
-
-table {
-	border-left: none;
-	border-right: none;
-}
-
-th,
-td {
-	font-weight: normal;
-	padding: 0.25em 0.5em;
-	line-height: 1.5;
-	min-height: 1.5em;
-	text-align: left;
-}
-
-th {
-	color: rgba(55, 53, 47, 0.6);
-}
-
-ol,
-ul {
-	margin: 0;
-	margin-block-start: 0.6em;
-	margin-block-end: 0.6em;
-}
-
-li > ol:first-child,
-li > ul:first-child {
-	margin-block-start: 0.6em;
-}
-
-ul > li {
-	list-style: disc;
-}
-
-ul.to-do-list {
-	padding-inline-start: 0;
-}
-
-ul.to-do-list > li {
-	list-style: none;
-}
-
-.to-do-children-checked {
-	text-decoration: line-through;
-	opacity: 0.375;
-}
-
-ul.toggle > li {
-	list-style: none;
-}
-
-ul {
-	padding-inline-start: 1.7em;
-}
-
-ul > li {
-	padding-left: 0.1em;
-}
-
-ol {
-	padding-inline-start: 1.6em;
-}
-
-ol > li {
-	padding-left: 0.2em;
-}
-
-.mono ol {
-	padding-inline-start: 2em;
-}
-
-.mono ol > li {
-	text-indent: -0.4em;
-}
-
-.toggle {
-	padding-inline-start: 0em;
-	list-style-type: none;
-}
-
-/* Indent toggle children */
-.toggle > li > details {
-	padding-left: 1.7em;
-}
-
-.toggle > li > details > summary {
-	margin-left: -1.1em;
-}
-
-.selected-value {
-	display: inline-block;
-	padding: 0 0.5em;
-	background: rgba(206, 205, 202, 0.5);
-	border-radius: 3px;
-	margin-right: 0.5em;
-	margin-top: 0.3em;
-	margin-bottom: 0.3em;
-	white-space: nowrap;
-}
-
-.collection-title {
-	display: inline-block;
-	margin-right: 1em;
-}
-
-.page-description {
-	margin-bottom: 2em;
-}
-
-.simple-table {
-	margin-top: 1em;
-	font-size: 0.875rem;
-	empty-cells: show;
-}
-.simple-table td {
-	height: 29px;
-	min-width: 120px;
-}
-
-.simple-table th {
-	height: 29px;
-	min-width: 120px;
-}
-
-.simple-table-header-color {
-	background: rgb(247, 246, 243);
-	color: black;
-}
-.simple-table-header {
-	font-weight: 500;
-}
-
-time {
-	opacity: 0.5;
-}
-
-.icon {
-	display: inline-block;
-	max-width: 1.2em;
-	max-height: 1.2em;
-	text-decoration: none;
-	vertical-align: text-bottom;
-	margin-right: 0.5em;
-}
-
-img.icon {
-	border-radius: 3px;
-}
-
-.user-icon {
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: 100%;
-	margin-right: 0.5rem;
-}
-
-.user-icon-inner {
-	font-size: 0.8em;
-}
-
-.text-icon {
-	border: 1px solid #000;
-	text-align: center;
-}
-
-.page-cover-image {
-	display: block;
-	object-fit: cover;
-	width: 100%;
-	max-height: 30vh;
-}
-
-.page-header-icon {
-	font-size: 3rem;
-	margin-bottom: 1rem;
-}
-
-.page-header-icon-with-cover {
-	margin-top: -0.72em;
-	margin-left: 0.07em;
-}
-
-.page-header-icon img {
-	border-radius: 3px;
-}
-
-.link-to-page {
-	margin: 1em 0;
-	padding: 0;
-	border: none;
-	font-weight: 500;
-}
-
-p > .user {
-	opacity: 0.5;
-}
-
-td > .user,
-td > time {
-	white-space: nowrap;
-}
-
-input[type="checkbox"] {
-	transform: scale(1.5);
-	margin-right: 0.6em;
-	vertical-align: middle;
-}
-
-p {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-}
-
-.image {
-	border: none;
-	margin: 1.5em 0;
-	padding: 0;
-	border-radius: 0;
-	text-align: center;
-}
-
-.code,
-code {
-	background: rgba(135, 131, 120, 0.15);
-	border-radius: 3px;
-	padding: 0.2em 0.4em;
-	border-radius: 3px;
-	font-size: 85%;
-	tab-size: 2;
-}
-
-code {
-	color: #eb5757;
-}
-
-.code {
-	padding: 1.5em 1em;
-}
-
-.code-wrap {
-	white-space: pre-wrap;
-	word-break: break-all;
-}
-
-.code > code {
-	background: none;
-	padding: 0;
-	font-size: 100%;
-	color: inherit;
-}
-
-blockquote {
-	font-size: 1.25em;
-	margin: 1em 0;
-	padding-left: 1em;
-	border-left: 3px solid rgb(55, 53, 47);
-}
-
-.bookmark {
-	text-decoration: none;
-	max-height: 8em;
-	padding: 0;
-	display: flex;
-	width: 100%;
-	align-items: stretch;
-}
-
-.bookmark-title {
-	font-size: 0.85em;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	height: 1.75em;
-	white-space: nowrap;
-}
-
-.bookmark-text {
-	display: flex;
-	flex-direction: column;
-}
-
-.bookmark-info {
-	flex: 4 1 180px;
-	padding: 12px 14px 14px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
-
-.bookmark-image {
-	width: 33%;
-	flex: 1 1 180px;
-	display: block;
-	position: relative;
-	object-fit: cover;
-	border-radius: 1px;
-}
-
-.bookmark-description {
-	color: rgba(55, 53, 47, 0.6);
-	font-size: 0.75em;
-	overflow: hidden;
-	max-height: 4.5em;
-	word-break: break-word;
-}
-
-.bookmark-href {
-	font-size: 0.75em;
-	margin-top: 0.25em;
-}
-
-.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
-.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
-.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
-.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
-.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
-.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
-.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
-.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
-.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
-.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
-.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
-.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
-.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
-.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
-.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
-.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
-.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
-.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
-.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
-.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
-.highlight-default {
-	color: rgba(50, 48, 44, 1);
-}
-.highlight-gray {
-	color: rgba(115, 114, 110, 1);
-	fill: rgba(115, 114, 110, 1);
-}
-.highlight-brown {
-	color: rgba(159, 107, 83, 1);
-	fill: rgba(159, 107, 83, 1);
-}
-.highlight-orange {
-	color: rgba(217, 115, 13, 1);
-	fill: rgba(217, 115, 13, 1);
-}
-.highlight-yellow {
-	color: rgba(203, 145, 47, 1);
-	fill: rgba(203, 145, 47, 1);
-}
-.highlight-teal {
-	color: rgba(68, 131, 97, 1);
-	fill: rgba(68, 131, 97, 1);
-}
-.highlight-blue {
-	color: rgba(51, 126, 169, 1);
-	fill: rgba(51, 126, 169, 1);
-}
-.highlight-purple {
-	color: rgba(144, 101, 176, 1);
-	fill: rgba(144, 101, 176, 1);
-}
-.highlight-pink {
-	color: rgba(193, 76, 138, 1);
-	fill: rgba(193, 76, 138, 1);
-}
-.highlight-red {
-	color: rgba(205, 60, 58, 1);
-	fill: rgba(205, 60, 58, 1);
-}
-.highlight-default_background {
-	color: rgba(50, 48, 44, 1);
-}
-.highlight-gray_background {
-	background: rgba(248, 248, 247, 1);
-}
-.highlight-brown_background {
-	background: rgba(244, 238, 238, 1);
-}
-.highlight-orange_background {
-	background: rgba(251, 236, 221, 1);
-}
-.highlight-yellow_background {
-	background: rgba(251, 243, 219, 1);
-}
-.highlight-teal_background {
-	background: rgba(237, 243, 236, 1);
-}
-.highlight-blue_background {
-	background: rgba(231, 243, 248, 1);
-}
-.highlight-purple_background {
-	background: rgba(248, 243, 252, 1);
-}
-.highlight-pink_background {
-	background: rgba(252, 241, 246, 1);
-}
-.highlight-red_background {
-	background: rgba(253, 235, 236, 1);
-}
-.block-color-default {
-	color: inherit;
-	fill: inherit;
-}
-.block-color-gray {
-	color: rgba(115, 114, 110, 1);
-	fill: rgba(115, 114, 110, 1);
-}
-.block-color-brown {
-	color: rgba(159, 107, 83, 1);
-	fill: rgba(159, 107, 83, 1);
-}
-.block-color-orange {
-	color: rgba(217, 115, 13, 1);
-	fill: rgba(217, 115, 13, 1);
-}
-.block-color-yellow {
-	color: rgba(203, 145, 47, 1);
-	fill: rgba(203, 145, 47, 1);
-}
-.block-color-teal {
-	color: rgba(68, 131, 97, 1);
-	fill: rgba(68, 131, 97, 1);
-}
-.block-color-blue {
-	color: rgba(51, 126, 169, 1);
-	fill: rgba(51, 126, 169, 1);
-}
-.block-color-purple {
-	color: rgba(144, 101, 176, 1);
-	fill: rgba(144, 101, 176, 1);
-}
-.block-color-pink {
-	color: rgba(193, 76, 138, 1);
-	fill: rgba(193, 76, 138, 1);
-}
-.block-color-red {
-	color: rgba(205, 60, 58, 1);
-	fill: rgba(205, 60, 58, 1);
-}
-.block-color-default_background {
-	color: inherit;
-	fill: inherit;
-}
-.block-color-gray_background {
-	background: rgba(248, 248, 247, 1);
-}
-.block-color-brown_background {
-	background: rgba(244, 238, 238, 1);
-}
-.block-color-orange_background {
-	background: rgba(251, 236, 221, 1);
-}
-.block-color-yellow_background {
-	background: rgba(251, 243, 219, 1);
-}
-.block-color-teal_background {
-	background: rgba(237, 243, 236, 1);
-}
-.block-color-blue_background {
-	background: rgba(231, 243, 248, 1);
-}
-.block-color-purple_background {
-	background: rgba(248, 243, 252, 1);
-}
-.block-color-pink_background {
-	background: rgba(252, 241, 246, 1);
-}
-.block-color-red_background {
-	background: rgba(253, 235, 236, 1);
-}
-.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
-.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
-.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
-.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
-.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
-.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
-.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
-.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
-.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
-.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
-
-.checkbox {
-	display: inline-flex;
-	vertical-align: text-bottom;
-	width: 16;
-	height: 16;
-	background-size: 16px;
-	margin-left: 2px;
-	margin-right: 5px;
-}
-
-.checkbox-on {
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
-}
-
-.checkbox-off {
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
-}
-	
-</style></head><body><article id="2345534d-d8bc-8099-84fa-ceb257d84793" class="page sans"><header><h1 class="page-title">TS EN 61373</h1><p class="page-description"></p></header><div class="page-body"><h1 id="2345534d-d8bc-80d8-9645-f5e399dfe62d" class="">TS EN 61373:2010 Demiryolu UygulamalarÄ± - Ekipman Åok ve TitreÅŸim Testleri Veri SayfasÄ±</h1><h2 id="2345534d-d8bc-80ee-bc91-e32004bcb122" class="">Standart Kodu ve AdÄ±</h2><p id="2345534d-d8bc-807a-932c-df1e05036cef" class=""><strong>Standart Kodu</strong>: TS EN 61373:2010</p><p id="2345534d-d8bc-80a2-8b76-dc64bf7b21ed" class=""><strong>AdÄ±</strong>: Demiryolu UygulamalarÄ± - RaylÄ± TaÅŸÄ±t EkipmanlarÄ± - Åok ve TitreÅŸim Testleri</p><p id="2345534d-d8bc-80b8-a579-c0ff7d55f4bd" class=""><strong>YayÄ±nlayan KuruluÅŸ</strong>: TÃ¼rk StandartlarÄ± EnstitÃ¼sÃ¼ (TSE), Avrupa Standardizasyon Komitesi (CENELEC) ve UluslararasÄ± Elektroteknik Komisyonu (IEC) tarafÄ±ndan uyarlanmÄ±ÅŸtÄ±r.</p><p id="2345534d-d8bc-806c-9a13-c55f7915dd90" class=""><strong>Son GÃ¼ncelleme</strong>: 2010 (IEC 61373:2010 baz alÄ±narak)</p><p id="2345534d-d8bc-8028-bf11-fb790ff383ea" class=""><strong>AÃ§Ä±klama</strong>: TS EN 61373, demiryolu taÅŸÄ±tlarÄ±nda kullanÄ±lan ekipmanlarÄ±n (mekanik, pnÃ¶matik, elektrik ve elektronik bileÅŸenler) ÅŸok ve titreÅŸimlere karÅŸÄ± dayanÄ±klÄ±lÄ±ÄŸÄ±nÄ± test etmek iÃ§in gereklilikleri belirler.</p><h2 id="2345534d-d8bc-8091-9b6f-eaa20fde842f" class="">Kapsam ve AmaÃ§</h2><p id="2345534d-d8bc-8095-9a7f-fa81e77592ec" class=""><strong>Kapsam</strong>: Standart, demiryolu taÅŸÄ±tlarÄ±nda kullanÄ±lan ekipmanlarÄ±n, iÅŸletme ortamÄ±nda karÅŸÄ±laÅŸtÄ±klarÄ± titreÅŸim ve ÅŸoklara dayanÄ±klÄ±lÄ±ÄŸÄ±nÄ± test etmek iÃ§in gerekli prosedÃ¼rleri tanÄ±mlar. EkipmanlarÄ±n araÃ§ gÃ¶vdesi, boji veya aks gibi farklÄ± konumlarÄ±na gÃ¶re test kategorileri belirler.</p><p id="2345534d-d8bc-80a2-a327-df58bf003d80" class=""><strong>AmaÃ§</strong>:</p><ul id="2345534d-d8bc-80c6-9dd5-cb727a6ae61f" class="bulleted-list"><li style="list-style-type:disc">EkipmanlarÄ±n demiryolu iÅŸletme koÅŸullarÄ±ndaki ÅŸok ve titreÅŸimlere dayanÄ±klÄ±lÄ±ÄŸÄ±nÄ± saÄŸlamak.</li></ul><ul id="2345534d-d8bc-80cc-9cc3-c4c962a30cde" class="bulleted-list"><li style="list-style-type:disc">Ekipman kalitesini ve gÃ¼venilirliÄŸini garanti altÄ±na almak.</li></ul><ul id="2345534d-d8bc-80ad-adec-e61b6dc0f63f" class="bulleted-list"><li style="list-style-type:disc">Hizmet Ã¶mrÃ¼ boyunca karÅŸÄ±laÅŸÄ±labilecek koÅŸullarÄ± simÃ¼le eden testlerle performansÄ± doÄŸrulamak.</li></ul><p id="2345534d-d8bc-80ef-9337-e5bc653711d9" class="">
-</p><p id="2345534d-d8bc-80a4-a03e-e3e2069e6c66" class="">Standart, sabit raylÄ± sistemlerdeki demiryolu taÅŸÄ±tlarÄ±na odaklanÄ±r, ancak pnÃ¶matik lastikli sistemler (Ã¶r. troleybÃ¼sler) iÃ§in de mÃ¼ÅŸteri-Ã¼retici anlaÅŸmasÄ±yla uyarlanabilir.</p><h2 id="2345534d-d8bc-8053-bfb5-fcb674303c12" class="">TanÄ±m ve Teorik Arka Plan</h2><p id="2345534d-d8bc-80bd-9791-fd1638e5c70a" class=""><strong>TanÄ±m</strong>: TS EN 61373, demiryolu ekipmanlarÄ±nÄ±n ÅŸok ve titreÅŸim testleri iÃ§in standart bir prosedÃ¼r saÄŸlar. EkipmanlarÄ±n, demiryolu ortamÄ±ndaki dinamik yÃ¼klere karÅŸÄ± iÅŸlevsel ve yapÄ±sal bÃ¼tÃ¼nlÃ¼ÄŸÃ¼nÃ¼ korumasÄ±nÄ± test eder.</p><p id="2345534d-d8bc-808e-a965-c45752b4a121" class=""><strong>Teorik Arka Plan</strong>:</p><ul id="2345534d-d8bc-808b-a0e6-d2966af8f0c1" class="bulleted-list"><li style="list-style-type:disc"><strong>Test TÃ¼rleri</strong>: Rastgele titreÅŸim (random vibration) ve ÅŸok testleri.</li></ul><ul id="2345534d-d8bc-805c-890f-df130bd293de" class="bulleted-list"><li style="list-style-type:disc"><strong>Kategoriler</strong>: EkipmanlarÄ±n araÃ§taki konumuna gÃ¶re Ã¼Ã§ kategori:<ul id="2345534d-d8bc-805a-b104-c52a57fd9ee9" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 1A</strong>: AraÃ§ gÃ¶vdesine veya altÄ±na doÄŸrudan monte edilen ekipmanlar.</li></ul><ul id="2345534d-d8bc-8069-a9a0-d630a64aa024" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 1B</strong>: GÃ¶vdeye veya altÄ±na sabitlenmiÅŸ bir kutu iÃ§ine monte edilen ekipmanlar.</li></ul><ul id="2345534d-d8bc-80ed-9166-fd49f285ea02" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 2</strong>: Bojiye monte edilen ekipmanlar.</li></ul><ul id="2345534d-d8bc-8027-b56b-c177d3faf8f2" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 3</strong>: Aksa monte edilen ekipmanlar.</li></ul></li></ul><ul id="2345534d-d8bc-80f3-9f1f-f73ac38d496e" class="bulleted-list"><li style="list-style-type:disc"><strong>Test YÃ¶ntemi</strong>: Rastgele titreÅŸim testleri, gerÃ§ek hizmet koÅŸullarÄ±nÄ± simÃ¼le eder. Åok testleri, ani darbeleri temsil eder.</li></ul><ul id="2345534d-d8bc-80e1-992f-dbe87d19fa4c" class="bulleted-list"><li style="list-style-type:disc"><strong>Referans Standartlar</strong>: IEC 60068-2-27 (ÅŸok testleri) ve IEC 60068-2-64 (rastgele titreÅŸim testleri).</li></ul><p id="2345534d-d8bc-8012-81b0-e650d9ed039c" class="">
-</p><p id="2345534d-d8bc-8064-8d68-c237d4c1d5f0" class="">Test seviyeleri, ekipmanÄ±n konumuna gÃ¶re farklÄ±lÄ±k gÃ¶sterir. Ã–rneÄŸin, aksa monte ekipmanlar (Kategori 3) en yÃ¼ksek titreÅŸim seviyelerine maruz kalÄ±r.</p><h2 id="2345534d-d8bc-8095-b206-c92584aded0b" class="">Kurumsal ve Teknik Gereklilikler</h2><p id="2345534d-d8bc-8006-9663-fc0d9a648960" class=""><strong>Kurumsal Gereklilikler</strong>:</p><ul id="2345534d-d8bc-80fb-8b88-c8a9175bda0d" class="bulleted-list"><li style="list-style-type:disc"><strong>Proje YÃ¶netimi</strong>: Test sÃ¼recini koordine edecek bir ekip (mÃ¼hendisler, kalite yÃ¶neticileri).</li></ul><ul id="2345534d-d8bc-8016-88da-ff9faf60f723" class="bulleted-list"><li style="list-style-type:disc"><strong>MÃ¼ÅŸteri-Ãœretici AnlaÅŸmasÄ±</strong>: Test kategorileri, seviyeleri ve Ã¶zel koÅŸullar iÃ§in anlaÅŸma saÄŸlanmalÄ±.</li></ul><ul id="2345534d-d8bc-80ab-a2d2-c7508bddf045" class="bulleted-list"><li style="list-style-type:disc"><strong>DokÃ¼mantasyon</strong>: Test planlarÄ±, prosedÃ¼rler, test raporlarÄ± ve sertifikasyon belgeleri hazÄ±rlanmalÄ±.</li></ul><p id="2345534d-d8bc-80a9-9f12-f72109960002" class="">
-</p><p id="2345534d-d8bc-80f8-a55c-d2e14d732803" class=""><strong>Teknik Gereklilikler</strong>:</p><ul id="2345534d-d8bc-806d-ba46-eb6c88cbdff5" class="bulleted-list"><li style="list-style-type:disc"><strong>Test EkipmanlarÄ±</strong>: TitreÅŸim test masalarÄ± (Ã¶r. elektrodinamik shaker), ÅŸok test cihazlarÄ±, ivmeÃ¶lÃ§erler.</li></ul><ul id="2345534d-d8bc-8040-bdce-e41b41f1b94c" class="bulleted-list"><li style="list-style-type:disc"><strong>Test OrtamÄ±</strong>: ISO 17025 akredite laboratuvarlar tercih edilmeli.</li></ul><ul id="2345534d-d8bc-80d6-a7fc-d12baa0cc75b" class="bulleted-list"><li style="list-style-type:disc"><strong>Ekipman Ã–zellikleri</strong>: Test edilecek ekipmanlarÄ±n boyutlarÄ± (maks. 3 m) ve aÄŸÄ±rlÄ±ÄŸÄ± (maks. 2 ton) laboratuvar kapasitesine uygun olmalÄ±.</li></ul><ul id="2345534d-d8bc-80bb-9c5c-c35956d61e97" class="bulleted-list"><li style="list-style-type:disc"><strong>Test Parametreleri ve Rakamsal Limitler</strong>:<ul id="2345534d-d8bc-80d1-81c3-d5f949366e37" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 1A (GÃ¶vdeye Monte)</strong>:<ul id="2345534d-d8bc-80fd-a491-faa3809ec659" class="bulleted-list"><li style="list-style-type:square">Fonksiyonel TitreÅŸim: 0,5 m/sÂ² RMS (rastgele titreÅŸim, 5-500 Hz).</li></ul><ul id="2345534d-d8bc-80a8-ac66-f685d11fd5b2" class="bulleted-list"><li style="list-style-type:square">DayanÄ±klÄ±lÄ±k TitreÅŸimi: 1,5 m/sÂ² RMS (artÄ±rÄ±lmÄ±ÅŸ seviye).</li></ul><ul id="2345534d-d8bc-8086-8397-cb93faf04344" class="bulleted-list"><li style="list-style-type:square">Åok Testi: 3g, 11 ms yarÄ±m sinÃ¼s dalgasÄ±.</li></ul></li></ul><ul id="2345534d-d8bc-80f3-aa29-c45c1ee20eb6" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 1B (GÃ¶vde Kutusu Ä°Ã§i)</strong>:<ul id="2345534d-d8bc-80e9-8561-e55ef872ccbe" class="bulleted-list"><li style="list-style-type:square">Fonksiyonel TitreÅŸim: 0,3 m/sÂ² RMS.</li></ul><ul id="2345534d-d8bc-8004-9826-d2df6283c01d" class="bulleted-list"><li style="list-style-type:square">DayanÄ±klÄ±lÄ±k TitreÅŸimi: 1,0 m/sÂ² RMS.</li></ul><ul id="2345534d-d8bc-8035-a1ce-d10fb7345a28" class="bulleted-list"><li style="list-style-type:square">Åok Testi: 3g, 11 ms.</li></ul></li></ul><ul id="2345534d-d8bc-800d-b389-cbd91aae8f16" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 2 (Bojiye Monte)</strong>:<ul id="2345534d-d8bc-80b4-9761-f1ec767c35a5" class="bulleted-list"><li style="list-style-type:square">Fonksiyonel TitreÅŸim: 1,0 m/sÂ² RMS.</li></ul><ul id="2345534d-d8bc-80a5-b767-ca17e9eb03be" class="bulleted-list"><li style="list-style-type:square">DayanÄ±klÄ±lÄ±k TitreÅŸimi: 3,0 m/sÂ² RMS.</li></ul><ul id="2345534d-d8bc-80b1-b26b-e406625d3797" class="bulleted-list"><li style="list-style-type:square">Åok Testi: 5g, 30 ms.</li></ul></li></ul><ul id="2345534d-d8bc-80fd-913d-d685df2fb353" class="bulleted-list"><li style="list-style-type:circle"><strong>Kategori 3 (Aksa Monte)</strong>:<ul id="2345534d-d8bc-808b-a6de-c5c3ec8a91c3" class="bulleted-list"><li style="list-style-type:square">Fonksiyonel TitreÅŸim: 2,0 m/sÂ² RMS.</li></ul><ul id="2345534d-d8bc-809e-9399-dd708473de73" class="bulleted-list"><li style="list-style-type:square">DayanÄ±klÄ±lÄ±k TitreÅŸimi: 5,0 m/sÂ² RMS.</li></ul><ul id="2345534d-d8bc-8076-9895-f1249d5a61f5" class="bulleted-list"><li style="list-style-type:square">Åok Testi: 20g, 30 ms.<strong>Rakamsal Ã–rnek</strong>:</li></ul></li></ul></li></ul><ul id="2345534d-d8bc-8080-8951-c1304ea6a499" class="bulleted-list"><li style="list-style-type:disc">Test sÃ¼resi: Fonksiyonel titreÅŸim iÃ§in 1-2 saat, dayanÄ±klÄ±lÄ±k testi iÃ§in 5-10 saat/eksen.</li></ul><ul id="2345534d-d8bc-8040-8ca0-c4d5c75c18b4" class="bulleted-list"><li style="list-style-type:disc">Test frekansÄ±: 5-500 Hz aralÄ±ÄŸÄ±nda rastgele titreÅŸim.</li></ul><ul id="2345534d-d8bc-8012-aabc-ff8670b1e9d8" class="bulleted-list"><li style="list-style-type:disc">Maksimum ekipman aÄŸÄ±rlÄ±ÄŸÄ±: 2 ton; boyut: 3x3x3 m.</li></ul><p id="2345534d-d8bc-8012-a1a7-ce806244e84e" class="">
-</p><p id="2345534d-d8bc-8094-a4ab-fff2c80c57eb" class="">Test laboratuvarÄ± seÃ§erken, cihazlarÄ±n bu limitleri desteklediÄŸinden emin olun. Ã–rneÄŸin, Keystone Compliance veya TÃœV SÃœD laboratuvarlarÄ± bu tÃ¼r testler iÃ§in uygundur.</p><h2 id="2345534d-d8bc-80a4-ae68-f9f18fee007b" class="">KullanÄ±m AlanlarÄ± (SektÃ¶rel Ã–rneklerle)</h2><p id="2345534d-d8bc-80e8-a3e0-fe82eb763c61" class="">TS EN 61373, demiryolu sektÃ¶rÃ¼nde kullanÄ±lan ekipmanlar iÃ§in geÃ§erlidir. Ã–rnekler:</p><ul id="2345534d-d8bc-80e1-b92a-f396fe005ffc" class="bulleted-list"><li style="list-style-type:disc"><strong>Otomotiv (Demiryolu)</strong>: Fren sistemleri, bataryalar, akslar (Ã¶r. Alstom tren bileÅŸenleri).</li></ul><ul id="2345534d-d8bc-80a4-a3d3-f45961f1ebbc" class="bulleted-list"><li style="list-style-type:disc"><strong>Elektronik</strong>: Tren kontrol panelleri, sinyalizasyon sistemleri (Ã¶r. Siemens sinyal ekipmanlarÄ±).</li></ul><ul id="2345534d-d8bc-8033-8928-f523f99505ae" class="bulleted-list"><li style="list-style-type:disc"><strong>Mekanik</strong>: Boji veya aksa monte sÃ¼spansiyon bileÅŸenleri.</li></ul><ul id="2345534d-d8bc-8021-aed3-c5ce3661bdb0" class="bulleted-list"><li style="list-style-type:disc"><strong>PnÃ¶matik</strong>: Hava fren sistemleri.</li></ul><p id="2345534d-d8bc-80e9-9752-e9d790f32548" class="">
-</p><p id="2345534d-d8bc-8023-b358-ea0f215c816e" class="">Ekipmanlar, araÃ§taki konumlarÄ±na gÃ¶re test edilir. Ã–rneÄŸin, bir kontrol paneli (Kategori 1B) daha dÃ¼ÅŸÃ¼k titreÅŸim seviyelerine maruz kalÄ±rken, aksa monte bir sensÃ¶r (Kategori 3) daha yÃ¼ksek seviyelerde test edilir.</p><h2 id="2345534d-d8bc-80bd-a04b-fc3fbc7b1a38" class="">Uygulama EsaslarÄ±</h2><p id="2345534d-d8bc-80f3-98a3-fe2b64e1c61a" class=""><strong>UygulayÄ±cÄ± iÃ§in AdÄ±m AdÄ±m Rehber</strong>:</p><ol type="1" id="2345534d-d8bc-80fa-89ee-fad0b77a25b2" class="numbered-list" start="1"><li><strong>Ekipman ve Kategori Belirleme</strong>:<ul id="2345534d-d8bc-8063-a0ab-ea3ef9198a10" class="bulleted-list"><li style="list-style-type:disc">EkipmanÄ±n araÃ§taki konumunu (gÃ¶vde, boji, aks) belirleyin.</li></ul><ul id="2345534d-d8bc-803a-b8f7-d2a47608404c" class="bulleted-list"><li style="list-style-type:disc">Ã–rnek: Bir sinyalizasyon cihazÄ± gÃ¶vde kutusu iÃ§indeyse, Kategori 1B seÃ§ilir.</li></ul></li></ol><ol type="1" id="2345534d-d8bc-806a-9577-eda4ef9b29a0" class="numbered-list" start="2"><li><strong>Test Gerekliliklerini TanÄ±mlama</strong>:<ul id="2345534d-d8bc-80a9-99cc-c5d3033f3e1e" class="bulleted-list"><li style="list-style-type:disc">TS EN 61373â€™Ã¼n Annex Aâ€™sÄ±na gÃ¶re test seviyelerini belirleyin (Ã¶r. Kategori 3 iÃ§in 20g ÅŸok).</li></ul><ul id="2345534d-d8bc-8032-b653-d9b879aa8fd7" class="bulleted-list"><li style="list-style-type:disc">MÃ¼ÅŸteriyle Ã¶zel test gerekliliklerini (Ã¶r. ek frekans aralÄ±ÄŸÄ±) netleÅŸtirin.</li></ul></li></ol><ol type="1" id="2345534d-d8bc-80da-981d-ee648c8c2008" class="numbered-list" start="3"><li><strong>Test PlanÄ± OluÅŸturma</strong>:<ul id="2345534d-d8bc-80c6-8069-e89488ecb02a" class="bulleted-list"><li style="list-style-type:disc">Test tÃ¼rleri (fonksiyonel, dayanÄ±klÄ±lÄ±k, ÅŸok), sÃ¼reler ve eksenler (X, Y, Z) tanÄ±mlanÄ±r.</li></ul><ul id="2345534d-d8bc-8044-a285-f7e0d36dce3a" class="bulleted-list"><li style="list-style-type:disc">Ã–rnek: Kategori 2 iÃ§in 3 eksende 3,0 m/sÂ² RMS dayanÄ±klÄ±lÄ±k testi.</li></ul></li></ol><ol type="1" id="2345534d-d8bc-8050-a082-c11e0249b71e" class="numbered-list" start="4"><li><strong>Laboratuvar SeÃ§imi ve AnlaÅŸma</strong>:<ul id="2345534d-d8bc-8006-a149-ed52d272995b" class="bulleted-list"><li style="list-style-type:disc">ISO 17025 akredite bir laboratuvar seÃ§in (Ã¶r. Element Materials Technology).</li></ul><ul id="2345534d-d8bc-8076-b182-de55e266f4d6" class="bulleted-list"><li style="list-style-type:disc">Test kapasitesini (aÄŸÄ±rlÄ±k, boyut, ivme limitleri) doÄŸrulayÄ±n.</li></ul></li></ol><ol type="1" id="2345534d-d8bc-80af-a630-f0f54985054f" class="numbered-list" start="5"><li><strong>Ekipman HazÄ±rlÄ±ÄŸÄ±</strong>:<ul id="2345534d-d8bc-809a-959c-dd9c0ab103d8" class="bulleted-list"><li style="list-style-type:disc">EkipmanÄ± test dÃ¼zeneÄŸine monte edin (IEC 60068-2-47â€™ye uygun).</li></ul><ul id="2345534d-d8bc-80ec-a487-dea521ebedb1" class="bulleted-list"><li style="list-style-type:disc">Ã–rnek: Bojiye monte bir ekipman iÃ§in sabitleme cÄ±vatalarÄ± kontrol edilir.</li></ul></li></ol><ol type="1" id="2345534d-d8bc-8029-a7a9-f34c9232d1fd" class="numbered-list" start="6"><li><strong>Test YÃ¼rÃ¼tme</strong>:<ul id="2345534d-d8bc-8065-be3b-c7fa38034ebc" class="bulleted-list"><li style="list-style-type:disc">Fonksiyonel titreÅŸim testi: Ekipman Ã§alÄ±ÅŸÄ±r durumdayken dÃ¼ÅŸÃ¼k seviyeli titreÅŸim uygulanÄ±r.</li></ul><ul id="2345534d-d8bc-809c-b61b-c1cf19b1dd56" class="bulleted-list"><li style="list-style-type:disc">DayanÄ±klÄ±lÄ±k testi: ArtÄ±rÄ±lmÄ±ÅŸ titreÅŸim seviyeleriyle yorulma testi yapÄ±lÄ±r.</li></ul><ul id="2345534d-d8bc-80a7-8256-cce30f28f6c6" class="bulleted-list"><li style="list-style-type:disc">Åok testi: Belirtilen g seviyesinde ani darbeler uygulanÄ±r.</li></ul></li></ol><ol type="1" id="2345534d-d8bc-8051-80e3-da113415fa9d" class="numbered-list" start="7"><li><strong>SonuÃ§larÄ±n DeÄŸerlendirilmesi</strong>:<ul id="2345534d-d8bc-8071-b83f-fe79ac1120be" class="bulleted-list"><li style="list-style-type:disc">Ekipmanda arÄ±za, deformasyon veya iÅŸlev kaybÄ± olup olmadÄ±ÄŸÄ±nÄ± kontrol edin.</li></ul><ul id="2345534d-d8bc-8064-ac89-d4f6736aa6b9" class="bulleted-list"><li style="list-style-type:disc">Test sonuÃ§larÄ±nÄ± raporlayÄ±n (Ã¶r. â€œKategori 1A testi geÃ§tiâ€).</li></ul></li></ol><ol type="1" id="2345534d-d8bc-8069-8e52-fc11d693dad5" class="numbered-list" start="8"><li><strong>DokÃ¼mantasyon ve Sertifikasyon</strong>:<ul id="2345534d-d8bc-8015-ab48-e956fc9778b0" class="bulleted-list"><li style="list-style-type:disc">Test raporlarÄ±nÄ± hazÄ±rlayÄ±n, mÃ¼ÅŸteri ve belgelendirme kuruluÅŸuna sunun.</li></ul><ul id="2345534d-d8bc-80ca-9200-e2294005c428" class="bulleted-list"><li style="list-style-type:disc">Uygunluk durumunda TS EN 61373 sertifikasÄ± alÄ±n.</li></ul></li></ol><p id="2345534d-d8bc-80be-9686-ddcdf3f45ca5" class="">
-</p><p id="2345534d-d8bc-80bd-8b69-d41b8a246844" class=""><strong>Rakamsal Ã–rnek</strong>:</p><ul id="2345534d-d8bc-803c-a220-e4738a16c1eb" class="bulleted-list"><li style="list-style-type:disc">Test maliyeti: KOBÄ°â€™ler iÃ§in 10.000-50.000 TL (2025 tahmini, ekipman boyutuna ve test sÃ¼resine baÄŸlÄ±).</li></ul><ul id="2345534d-d8bc-80b3-b9b1-ea047263af57" class="bulleted-list"><li style="list-style-type:disc">Test sÃ¼resi: 1-3 gÃ¼n (her eksen iÃ§in 1-2 saat fonksiyonel, 5-10 saat dayanÄ±klÄ±lÄ±k).</li></ul><ul id="2345534d-d8bc-8004-af01-d3f013bfe0bc" class="bulleted-list"><li style="list-style-type:disc">Eksen sayÄ±sÄ±: 3 eksen (X, Y, Z) iÃ§in ayrÄ± testler.</li></ul><p id="2345534d-d8bc-8080-9064-e128d78c1765" class="">
-</p><p id="2345534d-d8bc-800c-98e1-fc3b4acf9ae4" class="">UygulayÄ±cÄ±, test Ã¶ncesi ekipmanÄ±n tasarÄ±mÄ±nÄ± (Ã¶r. titreÅŸim sÃ¶nÃ¼mleme mekanizmalarÄ±) gÃ¶zden geÃ§irmeli. Test sonuÃ§larÄ±, mÃ¼ÅŸteriyle paylaÅŸÄ±lmadan Ã¶nce kalite yÃ¶neticisi tarafÄ±ndan doÄŸrulanmalÄ±.</p><h2 id="2345534d-d8bc-8029-8222-c125d1581187" class="">Disiplin BazlÄ± Sorumluluklar</h2><ul id="2345534d-d8bc-80a8-8455-eeb23f95089d" class="bulleted-list"><li style="list-style-type:disc"><strong>Proje YÃ¶neticisi</strong>: Test sÃ¼recini koordine eder, mÃ¼ÅŸteriyle iletiÅŸim kurar.</li></ul><ul id="2345534d-d8bc-8043-b3da-dbd7ee3680b3" class="bulleted-list"><li style="list-style-type:disc"><strong>Test MÃ¼hendisi</strong>: Test dÃ¼zeneÄŸini hazÄ±rlar, testleri yÃ¼rÃ¼tÃ¼r, ivmeÃ¶lÃ§er verilerini analiz eder.</li></ul><ul id="2345534d-d8bc-802e-a8e9-ce6d21e1eaa7" class="bulleted-list"><li style="list-style-type:disc"><strong>Kalite YÃ¶neticisi</strong>: Test sonuÃ§larÄ±nÄ±n standartla uyumluluÄŸunu doÄŸrular, raporlarÄ± hazÄ±rlar.</li></ul><ul id="2345534d-d8bc-8046-bb60-c7bf6d5f89a8" class="bulleted-list"><li style="list-style-type:disc"><strong>Ãœretim Ekibi</strong>: Test edilecek ekipmanlarÄ±n seri Ã¼retimden alÄ±nmasÄ±nÄ± saÄŸlar.</li></ul><ul id="2345534d-d8bc-80ae-819e-cbfeda975b5d" class="bulleted-list"><li style="list-style-type:disc"><strong>MÃ¼ÅŸteri Temsilcisi</strong>: Ã–zel test gerekliliklerini (Ã¶r. sabit frekanslÄ± titreÅŸim) tanÄ±mlar.</li></ul><p id="2345534d-d8bc-80fc-9f7c-ffb495f4a0e0" class="">
-</p><p id="2345534d-d8bc-80cf-aaad-ecc87f63f746" class="">Her disiplin iÃ§in bir sorumlu atanmalÄ±. Ã–rneÄŸin, test mÃ¼hendisi test parametrelerini belirlerken kalite yÃ¶neticisi raporlamadan sorumlu olmalÄ±.</p><h2 id="2345534d-d8bc-8008-a7a7-ff6923ea0e80" class="">Ä°zleme / Denetim / Belgelendirme SÃ¼reci</h2><ul id="2345534d-d8bc-80ed-9178-e4532fa2edd5" class="bulleted-list"><li style="list-style-type:disc"><strong>Ä°zleme</strong>: Test sÄ±rasÄ±nda ekipman performansÄ± (Ã¶r. iÅŸlevsel arÄ±zalar, titreÅŸim verileri) sÃ¼rekli izlenir.</li></ul><ul id="2345534d-d8bc-80aa-aefd-e42b9f5b1df1" class="bulleted-list"><li style="list-style-type:disc"><strong>Denetim</strong>: Testler, ISO 17025 akredite laboratuvarlarda denetlenir.</li></ul><ul id="2345534d-d8bc-80e4-9de2-ca86c044f322" class="bulleted-list"><li style="list-style-type:disc"><strong>Belgelendirme SÃ¼reci</strong>:<ol type="1" id="2345534d-d8bc-803d-b4c3-f50877e1ad60" class="numbered-list" start="1"><li>BaÅŸvuru: Akredite bir laboratuvara veya belgelendirme kuruluÅŸuna baÅŸvuru.</li></ol><ol type="1" id="2345534d-d8bc-80fb-88cc-da2bc0941c74" class="numbered-list" start="2"><li>Test PlanÄ± OnayÄ±: Test parametreleri mÃ¼ÅŸteri ve laboratuvar tarafÄ±ndan onaylanÄ±r.</li></ol><ol type="1" id="2345534d-d8bc-80d4-9e1d-cc7ae73d6f08" class="numbered-list" start="3"><li>Test YÃ¼rÃ¼tme: Åok ve titreÅŸim testleri yapÄ±lÄ±r, sonuÃ§lar raporlanÄ±r.</li></ol><ol type="1" id="2345534d-d8bc-80b7-b783-d1954d1aa1c6" class="numbered-list" start="4"><li>Sertifikasyon: Uygunluk durumunda TS EN 61373 sertifikasÄ± verilir.</li></ol></li></ul><p id="2345534d-d8bc-80c2-8d77-f0b2ab5523ca" class=""><strong>Rakamsal Ã–rnek</strong>:<div class="indented"><ul id="2345534d-d8bc-802a-83d9-fd25f3810b71" class="bulleted-list"><li style="list-style-type:disc">Denetim sÃ¼resi: 1-2 gÃ¼n/test.</li></ul><ul id="2345534d-d8bc-8031-9b92-c1d59fcf6c25" class="bulleted-list"><li style="list-style-type:disc">Sertifikasyon maliyeti: 5.000-20.000 TL (2025 tahmini).<strong>Pratik Bilgi</strong>: Test raporlarÄ±, mÃ¼ÅŸteriyle paylaÅŸÄ±lmalÄ± ve arÅŸivlenmelidir. Ekipman deÄŸiÅŸikliÄŸinde yeniden test gerekebilir.</li></ul></div></p><h2 id="2345534d-d8bc-8096-a2a2-c13b078d3842" class="">Uygulamada KarÅŸÄ±laÅŸÄ±lan Zorluklar ve Ã‡Ã¶zÃ¼mler</h2><ul id="2345534d-d8bc-8072-8144-e7eba1738a66" class="bulleted-list"><li style="list-style-type:disc"><strong>Zorluk</strong>: Ekipman montajÄ±nda uyumsuzluk. <ul id="2345534d-d8bc-806f-bbd2-e769f21c6fed" class="bulleted-list"><li style="list-style-type:circle"><strong>Ã‡Ã¶zÃ¼m</strong>: IEC 60068-2-47â€™ye uygun montaj prosedÃ¼rleri kullanÄ±lmalÄ±, sabitleme elemanlarÄ± kontrol edilmeli.</li></ul></li></ul><ul id="2345534d-d8bc-8045-aaf3-e8df04e44898" class="bulleted-list"><li style="list-style-type:disc"><strong>Zorluk</strong>: Test maliyetlerinin yÃ¼ksekliÄŸi.<ul id="2345534d-d8bc-8007-a289-fb6ab1c112d3" class="bulleted-list"><li style="list-style-type:circle"><strong>Ã‡Ã¶zÃ¼m</strong>: Ã–n testlerle (prototip testi) tasarÄ±m hatalarÄ± giderilerek maliyet dÃ¼ÅŸÃ¼rÃ¼lebilir.</li></ul></li></ul><ul id="2345534d-d8bc-800d-bda8-d652bcabded7" class="bulleted-list"><li style="list-style-type:disc"><strong>Zorluk</strong>: Test parametrelerinin belirlenmesi.<ul id="2345534d-d8bc-80dc-b2d6-cb75956c38e4" class="bulleted-list"><li style="list-style-type:circle"><strong>Ã‡Ã¶zÃ¼m</strong>: Annex Aâ€™daki gerÃ§ek hizmet verileri kullanÄ±larak test seviyeleri Ã¶zelleÅŸtirilebilir.</li></ul></li></ul><ul id="2345534d-d8bc-800b-8fdc-cea21def14c6" class="bulleted-list"><li style="list-style-type:disc"><strong>Zorluk</strong>: Ekipman arÄ±zasÄ±.<ul id="2345534d-d8bc-80bc-9523-fc21cc2d001a" class="bulleted-list"><li style="list-style-type:circle"><strong>Ã‡Ã¶zÃ¼m</strong>: TasarÄ±m aÅŸamasÄ±nda titreÅŸim sÃ¶nÃ¼mleme elemanlarÄ± (Ã¶r. kauÃ§uk yastÄ±klar) eklenmeli.</li></ul></li></ul><p id="2345534d-d8bc-80ef-b768-cd84800d1200" class="">
-</p><p id="2345534d-d8bc-80a9-a08b-e1694aac9304" class="">Test Ã¶ncesi bir deneme testi, potansiyel sorunlarÄ± tespit edebilir ve maliyeti dÃ¼ÅŸÃ¼rebilir.</p><h2 id="2345534d-d8bc-804f-9954-fccab8d17cb0" class="">GÃ¶rseller / Åemalar / AkÄ±ÅŸ DiyagramlarÄ±</h2><p id="2345534d-d8bc-80a2-836d-c4dc5929975d" class="">
-</p><h3 id="2345534d-d8bc-801d-843c-d325bc0e883a" class="">1. Test Kategorileri DiyagramÄ±</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2345534d-d8bc-80d8-a05e-e012525db3e5" class="code"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
-    A[TS EN 61373&lt;br&gt;Åok ve TitreÅŸim Testleri] --&gt; B[Kategori 1A&lt;br&gt;GÃ¶vdeye veya altÄ±na monte&lt;br&gt;3g ÅŸok, 1,5 m/sÂ² RMS]
-    A --&gt; C[Kategori 1B&lt;br&gt;GÃ¶vde kutusu iÃ§ine monte&lt;br&gt;3g ÅŸok, 1,0 m/sÂ² RMS]
-    A --&gt; D[Kategori 2&lt;br&gt;Bojiye monte&lt;br&gt;5g ÅŸok, 3,0 m/sÂ² RMS]
-    A --&gt; E[Kategori 3&lt;br&gt;Aksa monte&lt;br&gt;20g ÅŸok, 5,0 m/sÂ² RMS]
-</code></pre><p id="2345534d-d8bc-80ad-8fda-e8d7f8b93b6b" class="">
-</p><h3 id="2345534d-d8bc-80ab-bf5c-f05a88c73915" class="">2. Test SÃ¼reci AkÄ±ÅŸ DiyagramÄ±</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2345534d-d8bc-8035-a976-da0103f3b8ae" class="code"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph LR
-    A[Ekipman TanÄ±mlama&lt;br&gt;Konum belirleme] --&gt; B[Test PlanÄ± HazÄ±rlama&lt;br&gt;Parametreler tanÄ±mlanÄ±r]
-    B --&gt; C[Laboratuvar SeÃ§imi&lt;br&gt;ISO 17025 akredite]
-    C --&gt; D[Ekipman MontajÄ±&lt;br&gt;IEC 60068-2-47]
-    D --&gt; E[Test YÃ¼rÃ¼tme&lt;br&gt;Åok ve titreÅŸim testleri]
-    E --&gt; F[Raporlama&lt;br&gt;SonuÃ§lar belgelenir]
-    F --&gt; G[Sertifikasyon&lt;br&gt;TS EN 61373 sertifikasÄ±]
-</code></pre><p id="2345534d-d8bc-80c0-9ba7-d17518550214" class="">
-</p><h3 id="2345534d-d8bc-80b8-966c-e3af2f26dff2" class="">3. Åok ve TitreÅŸim Test TÃ¼rleri DiyagramÄ±</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2345534d-d8bc-8005-bc85-d5714957c499" class="code"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
-    A[TS EN 61373 Test TÃ¼rleri] --&gt; B[Fonksiyonel TitreÅŸim&lt;br&gt;GerÃ§ek koÅŸullar simÃ¼lasyonu&lt;br&gt;0,3-2,0 m/sÂ² RMS]
-    A --&gt; C[DayanÄ±klÄ±lÄ±k TitreÅŸimi&lt;br&gt;Yorulma testi&lt;br&gt;1,0-5,0 m/sÂ² RMS]
-    A --&gt; D[Åok Testi&lt;br&gt;Ani darbeler&lt;br&gt;3g-20g, 11-30 ms]
-</code></pre><p id="2345534d-d8bc-80eb-bdfa-c8b928b374ab" class="">
-</p><h3 id="2345534d-d8bc-8016-9fac-dba1a464d44b" class="">4. UygulayÄ±cÄ± iÃ§in AdÄ±m AdÄ±m Rehber DiyagramÄ±</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2345534d-d8bc-805f-977c-ea8ef3ad1b19" class="code"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
-    A[UygulayÄ±cÄ± BaÅŸlangÄ±Ã§&lt;br&gt;Ekipman ve kategori belirleme] --&gt; B[Test Gereklilikleri&lt;br&gt;Annex Aâ€™ya gÃ¶re seviyeler]
-    B --&gt; C[Test PlanÄ±&lt;br&gt;Eksen, sÃ¼re, test tÃ¼rleri]
-    C --&gt; D[Laboratuvar AnlaÅŸmasÄ±&lt;br&gt;ISO 17025 akredite]
-    D --&gt; E[Ekipman MontajÄ±&lt;br&gt;IEC 60068-2-47]
-    E --&gt; F[Test YÃ¼rÃ¼tme&lt;br&gt;Fonksiyonel, dayanÄ±klÄ±lÄ±k, ÅŸok]
-    F --&gt; G[SonuÃ§ Analizi&lt;br&gt;ArÄ±za/deformasyon kontrolÃ¼]
-    G --&gt; H[Raporlama ve Sertifikasyon&lt;br&gt;TS EN 61373 sertifikasÄ±]
-</code></pre><p id="2345534d-d8bc-807f-8098-e66b2652e95b" class="">
-</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 61373 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 61373:2010 Demiryolu Uygulamaları - Raylı Taşıt Ekipmanları - Şok ve Titreşim Testleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 61373, demiryolu taşıtlarında kullanılan ekipmanların (mekanik, pnömatik, elektrik ve elektronik bileşenler) şok ve titreşimlere karşı dayanıklılığını test etmek için gereklilikleri belirler.</p>
+
+        <div class="prose max-w-none text-gray-700">
+            <h2>1. Kapsam ve Amaç</h2>
+            <p>TS EN 61373:2010 standardı, demiryolu taşıtlarında kullanılan ekipmanların, işletme ortamında karşılaştıkları titreşim ve şoklara dayanıklılığını test etmek için gerekli prosedürleri tanımlar. Ekipmanların araç gövdesi, boji veya aks gibi farklı konumlarına göre test kategorileri belirler.</p>
+            <h3>Amaç:</h3>
+            <ul>
+                <li>Ekipmanların demiryolu işletme koşullarındaki şok ve titreşimlere dayanıklılığını sağlamak.</li>
+                <li>Ekipman kalitesini ve güvenilirliğini garanti altına almak.</li>
+                <li>Hizmet ömrü boyunca karşılaşılabilecek koşulları simüle eden testlerle performansı doğrulamak.</li>
+            </ul>
+            <p>Standart, sabit raylı sistemlerdeki demiryolu taşıtlarına odaklanır, ancak pnömatik lastikli sistemler (ör. troleybüsler) için de müşteri-üretici anlaşmasıyla uyarlanabilir.</p>
+
+            <h2>2. Tanım ve Teorik Arka Plan</h2>
+            <p>TS EN 61373, demiryolu ekipmanlarının şok ve titreşim testleri için standart bir prosedür sağlar. Ekipmanların, demiryolu ortamındaki dinamik yüklere karşı işlevsel ve yapısal bütünlüğünü korumasını test eder.</p>
+            <h3>Teorik Arka Plan:</h3>
+            <ul>
+                <li><strong>Test Türleri:</strong> Rastgele titreşim (random vibration) ve şok testleri.</li>
+                <li><strong>Kategoriler:</strong> Ekipmanların araçtaki konumuna göre üç kategori:
+                    <ul>
+                        <li><strong>Kategori 1A:</strong> Araç gövdesine veya altına doğrudan monte edilen ekipmanlar.</li>
+                        <li><strong>Kategori 1B:</strong> Gövdeye veya altına sabitlenmiş bir kutu içine monte edilen ekipmanlar.</li>
+                        <li><strong>Kategori 2:</strong> Bojiye monte edilen ekipmanlar.</li>
+                        <li><strong>Kategori 3:</strong> Aksa monte edilen ekipmanlar.</li>
+                    </ul>
+                </li>
+                <li><strong>Test Yöntemi:</strong> Rastgele titreşim testleri, gerçek hizmet koşullarını simüle eder. Şok testleri, ani darbeleri temsil eder.</li>
+                <li><strong>Referans Standartlar:</strong> IEC 60068-2-27 (şok testleri) ve IEC 60068-2-64 (rastgele titreşim testleri).</li>
+            </ul>
+            <p>Test seviyeleri, ekipmanın konumuna göre farklılık gösterir. Örneğin, aksa monte ekipmanlar (Kategori 3) en yüksek titreşim seviyelerine maruz kalır.</p>
+
+            <h2>3. Kurumsal ve Teknik Gereklilikler</h2>
+            <p>TS EN 61373 standardı, aşağıdaki kurumsal ve teknik gereklilikleri ortaya koyar:</p>
+            <h3>Kurumsal Gereklilikler:</h3>
+            <ul>
+                <li><strong>Proje Yönetimi:</strong> Test sürecini koordine edecek bir ekip (mühendisler, kalite yöneticileri).</li>
+                <li><strong>Müşteri-Üretici Anlaşması:</strong> Test kategorileri, seviyeleri ve özel koşullar için anlaşma sağlanmalı.</li>
+                <li><strong>Dokümantasyon:</strong> Test planları, prosedürler, test raporları ve sertifikasyon belgeleri hazırlanmalı.</li>
+            </ul>
+            <h3>Teknik Gereklilikler:</h3>
+            <ul>
+                <li><strong>Test Ekipmanları:</strong> Titreşim test masaları (ör. elektrodinamik shaker), şok test cihazları, ivmeölçerler.</li>
+                <li><strong>Test Ortamı:</strong> ISO 17025 akredite laboratuvarlar tercih edilmeli.</li>
+                <li><strong>Ekipman Özellikleri:</strong> Test edilecek ekipmanların boyutları (maks. 3 m) ve ağırlığı (maks. 2 ton) laboratuvar kapasitesine uygun olmalı.</li>
+                <li><strong>Test Parametreleri ve Rakamsal Limitler:</strong>
+                    <ul>
+                        <li><strong>Kategori 1A (Gövdeye Monte):</strong>
+                            <ul>
+                                <li>Fonksiyonel Titreşim: 0,5 m/s² RMS (rastgele titreşim, 5-500 Hz).</li>
+                                <li>Dayanıklılık Titreşimi: 1,5 m/s² RMS (artırılmış seviye).</li>
+                                <li>Şok Testi: 3g, 11 ms yarım sinüs dalgası.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Kategori 1B (Gövde Kutusu İçi):</strong>
+                            <ul>
+                                <li>Fonksiyonel Titreşim: 0,3 m/s² RMS.</li>
+                                <li>Dayanıklılık Titreşimi: 1,0 m/s² RMS.</li>
+                                <li>Şok Testi: 3g, 11 ms.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Kategori 2 (Bojiye Monte):</strong>
+                            <ul>
+                                <li>Fonksiyonel Titreşim: 1,0 m/s² RMS.</li>
+                                <li>Dayanıklılık Titreşimi: 3,0 m/s² RMS.</li>
+                                <li>Şok Testi: 5g, 30 ms.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Kategori 3 (Aksa Monte):</strong>
+                            <ul>
+                                <li>Fonksiyonel Titreşim: 2,0 m/s² RMS.</li>
+                                <li>Dayanıklılık Titreşimi: 5,0 m/s² RMS.</li>
+                                <li>Şok Testi: 20g, 30 ms.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <h4>Rakamsal Örnek:</h4>
+            <ul>
+                <li>Test süresi: Fonksiyonel titreşim için 1-2 saat, dayanıklılık testi için 5-10 saat/eksen.</li>
+                <li>Test frekansı: 5-500 Hz aralığında rastgele titreşim.</li>
+                <li>Maksimum ekipman ağırlığı: 2 ton; boyut: 3x3x3 m.</li>
+            </ul>
+            <p>Test laboratuvarı seçerken, cihazların bu limitleri desteklediğinden emin olun. Örneğin, Keystone Compliance veya TÜV SÜD laboratuvarları bu tür testler için uygundur.</p>
+
+            <h2>4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+            <p>TS EN 61373, demiryolu sektöründe kullanılan ekipmanlar için geçerlidir. Örnekler:</p>
+            <ul>
+                <li><strong>Otomotiv (Demiryolu):</strong> Fren sistemleri, bataryalar, akslar (ör. Alstom tren bileşenleri).</li>
+                <li><strong>Elektronik:</strong> Tren kontrol panelleri, sinyalizasyon sistemleri (ör. Siemens sinyal ekipmanları).</li>
+                <li><strong>Mekanik:</strong> Boji veya aksa monte süspansiyon bileşenleri.</li>
+                <li><strong>Pnömatik:</strong> Hava fren sistemleri.</li>
+            </ul>
+            <p>Ekipmanlar, araçtaki konumlarına göre test edilir. Örneğin, bir kontrol paneli (Kategori 1B) daha düşük titreşim seviyelerine maruz kalırken, aksa monte bir sensör (Kategori 3) daha yüksek seviyelerde test edilir.</p>
+
+            <h2>5. Uygulama Esasları</h2>
+            <h3>Uygulayıcı için Adım Adım Rehber:</h3>
+            <ol>
+                <li><strong>Ekipman ve Kategori Belirleme:</strong>
+                    <ul>
+                        <li>Ekipmanın araçtaki konumunu (gövde, boji, aks) belirleyin.</li>
+                        <li>Örnek: Bir sinyalizasyon cihazı gövde kutusu içindeyse, Kategori 1B seçilir.</li>
+                    </ul>
+                </li>
+                <li><strong>Test Gerekliliklerini Tanımlama:</strong>
+                    <ul>
+                        <li>TS EN 61373’ün Annex A’sına göre test seviyelerini belirleyin (ör. Kategori 3 için 20g şok).</li>
+                        <li>Müşteriyle özel test gerekliliklerini (ör. ek frekans aralığı) netleştirin.</li>
+                    </ul>
+                </li>
+                <li><strong>Test Planı Oluşturma:</strong>
+                    <ul>
+                        <li>Test türleri (fonksiyonel, dayanıklılık, şok), süreler ve eksenler (X, Y, Z) tanımlanır.</li>
+                        <li>Örnek: Kategori 2 için 3 eksende 3,0 m/s² RMS dayanıklılık testi.</li>
+                    </ul>
+                </li>
+                <li><strong>Laboratuvar Seçimi ve Anlaşma:</strong>
+                    <ul>
+                        <li>ISO 17025 akredite bir laboratuvar seçin (ör. Element Materials Technology).</li>
+                        <li>Test kapasitesini (ağırlık, boyut, ivme limitleri) doğrulayın.</li>
+                    </ul>
+                </li>
+                <li><strong>Ekipman Hazırlığı:</strong>
+                    <ul>
+                        <li>Ekipmanı test düzeneğine monte edin (IEC 60068-2-47’ye uygun).</li>
+                        <li>Örnek: Bojiye monte bir ekipman için sabitleme cıvataları kontrol edilir.</li>
+                    </ul>
+                </li>
+                <li><strong>Test Yürütme:</strong>
+                    <ul>
+                        <li>Fonksiyonel titreşim testi: Ekipman çalışır durumdayken düşük seviyeli titreşim uygulanır.</li>
+                        <li>Dayanıklılık testi: Artırılmış titreşim seviyeleriyle yorulma testi yapılır.</li>
+                        <li>Şok testi: Belirtilen g seviyesinde ani darbeler uygulanır.</li>
+                    </ul>
+                </li>
+                <li><strong>Sonuçların Değerlendirilmesi:</strong>
+                    <ul>
+                        <li>Ekipmanda arıza, deformasyon veya işlev kaybı olup olmadığını kontrol edin.</li>
+                        <li>Test sonuçlarını raporlayın (ör. “Kategori 1A testi geçti”).</li>
+                    </ul>
+                </li>
+                <li><strong>Dokümantasyon ve Sertifikasyon:</strong>
+                    <ul>
+                        <li>Test raporlarını hazırlayın, müşteri ve belgelendirme kuruluşuna sunun.</li>
+                        <li>Uygunluk durumunda TS EN 61373 sertifikası alın.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h4>Rakamsal Örnek:</h4>
+            <ul>
+                <li>Test maliyeti: KOBİ’ler için 10.000-50.000 TL (2025 tahmini, ekipman boyutuna ve test süresine bağlı).</li>
+                <li>Test süresi: 1-3 gün (her eksen için 1-2 saat fonksiyonel, 5-10 saat dayanıklılık).</li>
+                <li>Eksen sayısı: 3 eksen (X, Y, Z) için ayrı testler.</li>
+            </ul>
+            <p>Uygulayıcı, test öncesi ekipmanın tasarımını (ör. titreşim sönümleme mekanizmaları) gözden geçirmeli. Test sonuçları, müşteriyle paylaşılmadan önce kalite yöneticisi tarafından doğrulanmalı.</p>
+
+            <h2>6. Disiplin Bazlı Sorumluluklar</h2>
+            <ul>
+                <li><strong>Proje Yöneticisi:</strong> Test sürecini koordine eder, müşteriyle iletişim kurar.</li>
+                <li><strong>Test Mühendisi:</strong> Test düzeneğini hazırlar, testleri yürütür, ivmeölçer verilerini analiz eder.</li>
+                <li><strong>Kalite Yöneticisi:</strong> Test sonuçlarının standartla uyumluluğunu doğrular, raporları hazırlar.</li>
+                <li><strong>Üretim Ekibi:</strong> Test edilecek ekipmanların seri üretimden alınmasını sağlar.</li>
+                <li><strong>Müşteri Temsilcisi:</strong> Özel test gerekliliklerini (ör. sabit frekanslı titreşim) tanımlar.</li>
+            </ul>
+            <p>Her disiplin için bir sorumlu atanmalı. Örneğin, test mühendisi test parametrelerini belirlerken kalite yöneticisi raporlamadan sorumlu olmalı.</p>
+
+            <h2>7. İzleme / Denetim / Belgelendirme Süreci</h2>
+            <ul>
+                <li><strong>İzleme:</strong> Test sırasında ekipman performansı (ör. işlevsel arızalar, titreşim verileri) sürekli izlenir.</li>
+                <li><strong>Denetim:</strong> Testler, ISO 17025 akredite laboratuvarlarda denetlenir.</li>
+                <li><strong>Belgelendirme Süreci:</strong>
+                    <ol>
+                        <li>Başvuru: Akredite bir laboratuvara veya belgelendirme kuruluşuna başvuru.</li>
+                        <li>Test Planı Onayı: Test parametreleri müşteri ve laboratuvar tarafından onaylanır.</li>
+                        <li>Test Yürütme: Şok ve titreşim testleri yapılır, sonuçlar raporlanır.</li>
+                        <li>Sertifikasyon: Uygunluk durumunda TS EN 61373 sertifikası verilir.</li>
+                    </ol>
+                </li>
+            </ul>
+            <h4>Rakamsal Örnek:</h4>
+            <ul>
+                <li>Denetim süresi: 1-2 gün/test.</li>
+                <li>Sertifikasyon maliyeti: 5.000-20.000 TL (2025 tahmini).</li>
+            </ul>
+            <p>Test raporları, müşteriyle paylaşılmalı ve arşivlenmelidir. Ekipman değişikliğinde yeniden test gerekebilir.</p>
+
+            <h2>8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+            <ul>
+                <li><strong>Zorluk:</strong> Ekipman montajında uyumsuzluk.
+                    <ul>
+                        <li><strong>Çözüm:</strong> IEC 60068-2-47’ye uygun montaj prosedürleri kullanılmalı, sabitleme elemanları kontrol edilmeli.</li>
+                    </ul>
+                </li>
+                <li><strong>Zorluk:</strong> Test maliyetlerinin yüksekliği.
+                    <ul>
+                        <li><strong>Çözüm:</strong> Ön testlerle (prototip testi) tasarım hataları giderilerek maliyet düşürülebilir.</li>
+                    </ul>
+                </li>
+                <li><strong>Zorluk:</strong> Test parametrelerinin belirlenmesi.
+                    <ul>
+                        <li><strong>Çözüm:</strong> Annex A’daki gerçek hizmet verileri kullanılarak test seviyeleri özelleştirilebilir.</li>
+                    </ul>
+                </li>
+                <li><strong>Zorluk:</strong> Ekipman arızası.
+                    <ul>
+                        <li><strong>Çözüm:</strong> Tasarım aşamasında titreşim sönümleme elemanları (ör. kauçuk yastıklar) eklenmeli.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Test öncesi bir deneme testi, potansiyel sorunları tespit edebilir ve maliyeti düşürebilir.</p>
+
+            <h2>9. Görseller / Şemalar / Akış Diyagramları</h2>
+            <p>Bu bölümde, standardın anlaşılmasını kolaylaştıracak görseller, şemalar, akış diyagramları veya ilgili PDF dokümanlarına bağlantılar yer alabilir. Lütfen bu görselleri ve dosyaları ilgili standardın klasörüne yüklemeyi ve buraya doğru dosya yollarını verdiğinizden emin olun.</p>
+            
+            <h3>1. Test Kategorileri Diyagramı</h3>
+            <div class="diagram">
+<pre>
+graph TD
+    A[TS EN 61373<br>Şok ve Titreşim Testleri] --> B[Kategori 1A<br>Gövdeye veya altına monte<br>3g şok, 1,5 m/s² RMS]
+    A --> C[Kategori 1B<br>Gövde kutusu içine monte<br>3g şok, 1,0 m/s² RMS]
+    A --> D[Kategori 2<br>Bojiye monte<br>5g şok, 3,0 m/s² RMS]
+    A --> E[Kategori 3<br>Aksa monte<br>20g şok, 5,0 m/s² RMS]
+</pre>
+            </div>
+            <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Test Kategorilerini göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: `[TS EN 61373 Test Kategorileri Diyagramı Görseli]`</p>
+
+            <h3>2. Test Süreci Akış Diyagramı</h3>
+            <div class="diagram">
+<pre>
+graph LR
+    A[Ekipman Tanımlama<br>Konum belirleme] --> B[Test Planı Hazırlama<br>Parametreler tanımlanır]
+    B --> C[Laboratuvar Seçimi<br>ISO 17025 akredite]
+    C --> D[Ekipman Montajı<br>IEC 60068-2-47]
+    D --> E[Test Yürütme<br>Şok ve titreşim testleri]
+    E --> F[Raporlama<br>Sonuçlar belgelenir]
+    F --> G[Sertifikasyon<br>TS EN 61373 sertifikası]
+</pre>
+            </div>
+            <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Test Süreci Akış Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: `[TS EN 61373 Test Süreci Akış Diyagramı Görseli]`</p>
+
+            <h3>3. Şok ve Titreşim Test Türleri Diyagramı</h3>
+            <div class="diagram">
+<pre>
+graph TD
+    A[TS EN 61373 Test Türleri] --> B[Fonksiyonel Titreşim<br>Gerçek koşullar simülasyonu<br>0,3-2,0 m/s² RMS]
+    A --> C[Dayanıklılık Titreşimi<br>Yorulma testi<br>1,0-5,0 m/s² RMS]
+    A --> D[Şok Testi<br>Ani darbeler<br>3g-20g, 11-30 ms]
+</pre>
+            </div>
+            <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Şok ve Titreşim Test Türleri Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: `[TS EN 61373 Şok ve Titreşim Test Türleri Diyagramı Görseli]`</p>
+
+            <h3>4. Uygulayıcı için Adım Adım Rehber Diyagramı</h3>
+            <div class="diagram">
+<pre>
+graph TD
+    A[Uygulayıcı Başlangıç<br>Ekipman ve kategori belirleme] --> B[Test Gereklilikleri<br>Annex A’ya göre seviyeler]
+    B --> C[Test Planı<br>Eksen, süre, test türleri]
+    C --> D[Laboratuvar Anlaşması<br>ISO 17025 akredite]
+    D --> E[Ekipman Montajı<br>IEC 60068-2-47]
+    E --> F[Test Yürütme<br>Fonksiyonel, dayanıklılık, şok]
+    F --> G[Sonuç Analizi<br>Arıza/deformasyon kontrolü]
+    G --> H[Raporlama ve Sertifikasyon<br>TS EN 61373 sertifikası]
+</pre>
+            </div>
+            <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Uygulayıcı için Adım Adım Rehber Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: `[Uygulayıcı için Adım Adım Rehber Diyagramı Görseli]`</p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
