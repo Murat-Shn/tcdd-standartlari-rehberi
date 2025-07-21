@@ -136,7 +136,7 @@
         <!-- Projeler ve Genel Standartlar Görünümü -->
         <div id="projects-view" class="view-section p-6 bg-white rounded-xl shadow-md">
             <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Projeler ve Genel Standartlar</h2>
-            <p class="text-gray-600 mb-8 text-center">Aşağıda demiryolu projelerine ve genel kategorilere göre gruplandırılmış standartları bulabilirsiniz. Detaylar için standart adına tıklayın.</p>
+            <p class="mt-2 text-lg text-gray-600 mb-8 text-center">Aşağıda demiryolu projelerine ve genel kategorilere göre gruplandırılmış standartları bulabilirsiniz. Detaylar için standart adına tıklayın.</p>
 
             <div id="project-standards-list" class="space-y-8">
                 <!-- Proje bazlı listeler buraya JS ile doldurulacak -->
@@ -438,6 +438,12 @@
         }
 
         function openSummaryModal(std) {
+            console.log("openSummaryModal çağrıldı. Standart:", std); // Debug için eklendi
+            if (!std || !std.baslik || !std.standart) {
+                console.error("Geçersiz standart verisiyle özet modalı açılmaya çalışıldı:", std);
+                return; // Veri geçersizse modalı açma
+            }
+
             document.getElementById('summary-modal-standart-baslik').textContent = std.baslik;
             document.getElementById('summary-modal-standart-kod').textContent = std.standart;
             document.getElementById('summary-modal-standart-kapsam').textContent = std.kapsam;
@@ -460,6 +466,7 @@
         }
 
         function closeSummaryModal() {
+            console.log("closeSummaryModal çağrıldı."); // Debug için eklendi
             summaryModal.style.display = 'none';
         }
 
@@ -473,6 +480,7 @@
 
         function router() {
             const hash = window.location.hash;
+            console.log("Router çağrıldı. Hash:", hash); // Debug için eklendi
             homeView.classList.remove('active');
             projectsView.classList.remove('active');
             
@@ -483,6 +491,8 @@
                 homeView.classList.add('active');
                 filterAndRender(); 
             }
+            // Router çağrıldığında modalı kapat, çünkü modal sadece tıklama ile açılmalı
+            closeSummaryModal(); 
         }
 
         window.addEventListener('hashchange', router);
@@ -493,6 +503,7 @@
         searchInput.addEventListener('input', filterAndRender);
 
         document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded: Sayfa yüklendi."); // Debug için eklendi
             fetchStandardsData();
         });
     </script>
