@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TS EN 61373 Detayları - TCDD Standartları Rehberi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-     <script type="module">
+    <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true });
   </script>
@@ -14,6 +14,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
         .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
         .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
         .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
         .prose ul, .prose ol { padding-left: 1.5rem; }
         .prose li { margin-bottom: 0.5rem; }
@@ -34,9 +35,95 @@
             font-family: 'monospace', sans-serif; /* Kod fontu */
             color: #374151;
         }
-        .diagram pre {
-            margin: 0;
-            white-space: pre-wrap; /* Uzun satırları sar */
+        /* Removed .diagram pre as per user request */
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb; /* bg-blue-600 */
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px; /* full rounded */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af; /* hover:bg-blue-700 */
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr; /* Sidebar fixed width, content fills rest */
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -55,231 +142,239 @@
         <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 61373:2010 Demiryolu Uygulamaları - Raylı Taşıt Ekipmanları - Şok ve Titreşim Testleri</h1>
         <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 61373, demiryolu taşıtlarında kullanılan ekipmanların (mekanik, pnömatik, elektrik ve elektronik bileşenler) şok ve titreşimlere karşı dayanıklılığını test etmek için gereklilikleri belirler.</p>
 
-        <div class="prose max-w-none text-gray-700">
-            <h2>1. Kapsam ve Amaç</h2>
-            <p>TS EN 61373:2010 standardı, demiryolu taşıtlarında kullanılan ekipmanların, işletme ortamında karşılaştıkları titreşim ve şoklara dayanıklılığını test etmek için gerekli prosedürleri tanımlar. Ekipmanların araç gövdesi, boji veya aks gibi farklı konumlarına göre test kategorileri belirler.</p>
-            <h3>Amaç:</h3>
-            <ul>
-                <li>Ekipmanların demiryolu işletme koşullarındaki şok ve titreşimlere dayanıklılığını sağlamak.</li>
-                <li>Ekipman kalitesini ve güvenilirliğini garanti altına almak.</li>
-                <li>Hizmet ömrü boyunca karşılaşılabilecek koşulları simüle eden testlerle performansı doğrulamak.</li>
-            </ul>
-            <p>Standart, sabit raylı sistemlerdeki demiryolu taşıtlarına odaklanır, ancak pnömatik lastikli sistemler (ör. troleybüsler) için de müşteri-üretici anlaşmasıyla uyarlanabilir.</p>
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
 
-            <h2>2. Tanım ve Teorik Arka Plan</h2>
-            <p>TS EN 61373, demiryolu ekipmanlarının şok ve titreşim testleri için standart bir prosedür sağlar. Ekipmanların, demiryolu ortamındaki dinamik yüklere karşı işlevsel ve yapısal bütünlüğünü korumasını test eder.</p>
-            <h3>Teorik Arka Plan:</h3>
-            <ul>
-                <li><strong>Test Türleri:</strong> Rastgele titreşim (random vibration) ve şok testleri.</li>
-                <li><strong>Kategoriler:</strong> Ekipmanların araçtaki konumuna göre üç kategori:
-                    <ul>
-                        <li><strong>Kategori 1A:</strong> Araç gövdesine veya altına doğrudan monte edilen ekipmanlar.</li>
-                        <li><strong>Kategori 1B:</strong> Gövdeye veya altına sabitlenmiş bir kutu içine monte edilen ekipmanlar.</li>
-                        <li><strong>Kategori 2:</strong> Bojiye monte edilen ekipmanlar.</li>
-                        <li><strong>Kategori 3:</strong> Aksa monte edilen ekipmanlar.</li>
-                    </ul>
-                </li>
-                <li><strong>Test Yöntemi:</strong> Rastgele titreşim testleri, gerçek hizmet koşullarını simüle eder. Şok testleri, ani darbeleri temsil eder.</li>
-                <li><strong>Referans Standartlar:</strong> IEC 60068-2-27 (şok testleri) ve IEC 60068-2-64 (rastgele titreşim testleri).</li>
-            </ul>
-            <p>Test seviyeleri, ekipmanın konumuna göre farklılık gösterir. Örneğin, aksa monte ekipmanlar (Kategori 3) en yüksek titreşim seviyelerine maruz kalır.</p>
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 61373:2010 standardı, demiryolu taşıtlarında kullanılan ekipmanların, işletme ortamında karşılaştıkları titreşim ve şoklara dayanıklılığını test etmek için gerekli prosedürleri tanımlar. Ekipmanların araç gövdesi, boji veya aks gibi farklı konumlarına göre test kategorileri belirler.</p>
+                <h3>Amaç:</h3>
+                <ul>
+                    <li>Ekipmanların demiryolu işletme koşullarındaki şok ve titreşimlere dayanıklılığını sağlamak.</li>
+                    <li>Ekipman kalitesini ve güvenilirliğini garanti altına almak.</li>
+                    <li>Hizmet ömrü boyunca karşılaşılabilecek koşulları simüle eden testlerle performansı doğrulamak.</li>
+                </ul>
+                <p>Standart, sabit raylı sistemlerdeki demiryolu taşıtlarına odaklanır, ancak pnömatik lastikli sistemler (ör. troleybüsler) için de müşteri-üretici anlaşmasıyla uyarlanabilir.</p>
 
-            <h2>3. Kurumsal ve Teknik Gereklilikler</h2>
-            <p>TS EN 61373 standardı, aşağıdaki kurumsal ve teknik gereklilikleri ortaya koyar:</p>
-            <h3>Kurumsal Gereklilikler:</h3>
-            <ul>
-                <li><strong>Proje Yönetimi:</strong> Test sürecini koordine edecek bir ekip (mühendisler, kalite yöneticileri).</li>
-                <li><strong>Müşteri-Üretici Anlaşması:</strong> Test kategorileri, seviyeleri ve özel koşullar için anlaşma sağlanmalı.</li>
-                <li><strong>Dokümantasyon:</strong> Test planları, prosedürler, test raporları ve sertifikasyon belgeleri hazırlanmalı.</li>
-            </ul>
-            <h3>Teknik Gereklilikler:</h3>
-            <ul>
-                <li><strong>Test Ekipmanları:</strong> Titreşim test masaları (ör. elektrodinamik shaker), şok test cihazları, ivmeölçerler.</li>
-                <li><strong>Test Ortamı:</strong> ISO 17025 akredite laboratuvarlar tercih edilmeli.</li>
-                <li><strong>Ekipman Özellikleri:</strong> Test edilecek ekipmanların boyutları (maks. 3 m) ve ağırlığı (maks. 2 ton) laboratuvar kapasitesine uygun olmalı.</li>
-                <li><strong>Test Parametreleri ve Rakamsal Limitler:</strong>
-                    <ul>
-                        <li><strong>Kategori 1A (Gövdeye Monte):</strong>
-                            <ul>
-                                <li>Fonksiyonel Titreşim: 0,5 m/s² RMS (rastgele titreşim, 5-500 Hz).</li>
-                                <li>Dayanıklılık Titreşimi: 1,5 m/s² RMS (artırılmış seviye).</li>
-                                <li>Şok Testi: 3g, 11 ms yarım sinüs dalgası.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Kategori 1B (Gövde Kutusu İçi):</strong>
-                            <ul>
-                                <li>Fonksiyonel Titreşim: 0,3 m/s² RMS.</li>
-                                <li>Dayanıklılık Titreşimi: 1,0 m/s² RMS.</li>
-                                <li>Şok Testi: 3g, 11 ms.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Kategori 2 (Bojiye Monte):</strong>
-                            <ul>
-                                <li>Fonksiyonel Titreşim: 1,0 m/s² RMS.</li>
-                                <li>Dayanıklılık Titreşimi: 3,0 m/s² RMS.</li>
-                                <li>Şok Testi: 5g, 30 ms.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Kategori 3 (Aksa Monte):</strong>
-                            <ul>
-                                <li>Fonksiyonel Titreşim: 2,0 m/s² RMS.</li>
-                                <li>Dayanıklılık Titreşimi: 5,0 m/s² RMS.</li>
-                                <li>Şok Testi: 20g, 30 ms.</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <h4>Rakamsal Örnek:</h4>
-            <ul>
-                <li>Test süresi: Fonksiyonel titreşim için 1-2 saat, dayanıklılık testi için 5-10 saat/eksen.</li>
-                <li>Test frekansı: 5-500 Hz aralığında rastgele titreşim.</li>
-                <li>Maksimum ekipman ağırlığı: 2 ton; boyut: 3x3x3 m.</li>
-            </ul>
-            <p>Test laboratuvarı seçerken, cihazların bu limitleri desteklediğinden emin olun. Örneğin, Keystone Compliance veya TÜV SÜD laboratuvarları bu tür testler için uygundur.</p>
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 61373, demiryolu ekipmanlarının şok ve titreşim testleri için standart bir prosedür sağlar. Ekipmanların, demiryolu ortamındaki dinamik yüklere karşı işlevsel ve yapısal bütünlüğünü korumasını test eder.</p>
+                <h3>Teorik Arka Plan:</h3>
+                <ul>
+                    <li><strong>Test Türleri:</strong> Rastgele titreşim (random vibration) ve şok testleri.</li>
+                    <li><strong>Kategoriler:</strong> Ekipmanların araçtaki konumuna göre üç kategori:
+                        <ul>
+                            <li><strong>Kategori 1A:</strong> Araç gövdesine veya altına doğrudan monte edilen ekipmanlar.</li>
+                            <li><strong>Kategori 1B:</strong> Gövdeye veya altına sabitlenmiş bir kutu içine monte edilen ekipmanlar.</li>
+                            <li><strong>Kategori 2:</strong> Bojiye monte edilen ekipmanlar.</li>
+                            <li><strong>Kategori 3:</strong> Aksa monte edilen ekipmanlar.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Yöntemi:</strong> Rastgele titreşim testleri, gerçek hizmet koşullarını simüle eder. Şok testleri, ani darbeleri temsil eder.</li>
+                    <li><strong>Referans Standartlar:</strong> IEC 60068-2-27 (şok testleri) ve IEC 60068-2-64 (rastgele titreşim testleri).</li>
+                </ul>
+                <p>Test seviyeleri, ekipmanın konumuna göre farklılık gösterir. Örneğin, aksa monte ekipmanlar (Kategori 3) en yüksek titreşim seviyelerine maruz kalır.</p>
 
-            <h2>4. Kullanım Alanları (Sektörel Örneklerle)</h2>
-            <p>TS EN 61373, demiryolu sektöründe kullanılan ekipmanlar için geçerlidir. Örnekler:</p>
-            <ul>
-                <li><strong>Otomotiv (Demiryolu):</strong> Fren sistemleri, bataryalar, akslar (ör. Alstom tren bileşenleri).</li>
-                <li><strong>Elektronik:</strong> Tren kontrol panelleri, sinyalizasyon sistemleri (ör. Siemens sinyal ekipmanları).</li>
-                <li><strong>Mekanik:</strong> Boji veya aksa monte süspansiyon bileşenleri.</li>
-                <li><strong>Pnömatik:</strong> Hava fren sistemleri.</li>
-            </ul>
-            <p>Ekipmanlar, araçtaki konumlarına göre test edilir. Örneğin, bir kontrol paneli (Kategori 1B) daha düşük titreşim seviyelerine maruz kalırken, aksa monte bir sensör (Kategori 3) daha yüksek seviyelerde test edilir.</p>
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p>TS EN 61373 standardı, aşağıdaki kurumsal ve teknik gereklilikleri ortaya koyar:</p>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Proje Yönetimi:</strong> Test sürecini koordine edecek bir ekip (mühendisler, kalite yöneticileri).</li>
+                    <li><strong>Müşteri-Üretici Anlaşması:</strong> Test kategorileri, seviyeleri ve özel koşullar için anlaşma sağlanmalı.</li>
+                    <li><strong>Dokümantasyon:</strong> Test planları, prosedürler, test raporları ve sertifikasyon belgeleri hazırlanmalı.</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Test Ekipmanları:</strong> Titreşim test masaları (ör. elektrodinamik shaker), şok test cihazları, ivmeölçerler.</li>
+                    <li><strong>Test Ortamı:</strong> ISO 17025 akredite laboratuvarlar tercih edilmeli.</li>
+                    <li><strong>Ekipman Özellikleri:</strong> Test edilecek ekipmanların boyutları (maks. 3 m) ve ağırlığı (maks. 2 ton) laboratuvar kapasitesine uygun olmalı.</li>
+                    <li><strong>Test Parametreleri ve Rakamsal Limitler:</strong>
+                        <ul>
+                            <li><strong>Kategori 1A (Gövdeye Monte):</strong>
+                                <ul>
+                                    <li>Fonksiyonel Titreşim: 0,5 m/s² RMS (rastgele titreşim, 5-500 Hz).</li>
+                                    <li>Dayanıklılık Titreşimi: 1,5 m/s² RMS (artırılmış seviye).</li>
+                                    <li>Şok Testi: 3g, 11 ms yarım sinüs dalgası.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Kategori 1B (Gövde Kutusu İçi):</strong>
+                                <ul>
+                                    <li>Fonksiyonel Titreşim: 0,3 m/s² RMS.</li>
+                                    <li>Dayanıklılık Titreşimi: 1,0 m/s² RMS.</li>
+                                    <li>Şok Testi: 3g, 11 ms.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Kategori 2 (Bojiye Monte):</strong>
+                                <ul>
+                                    <li>Fonksiyonel Titreşim: 1,0 m/s² RMS.</li>
+                                    <li>Dayanıklılık Titreşimi: 3,0 m/s² RMS.</li>
+                                    <li>Şok Testi: 5g, 30 ms.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Kategori 3 (Aksa Monte):</strong>
+                                <ul>
+                                    <li>Fonksiyonel Titreşim: 2,0 m/s² RMS.</li>
+                                    <li>Dayanıklılık Titreşimi: 5,0 m/s² RMS.</li>
+                                    <li>Şok Testi: 20g, 30 ms.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>Rakamsal Örnek:</h4>
+                <ul>
+                    <li>Test süresi: Fonksiyonel titreşim için 1-2 saat, dayanıklılık testi için 5-10 saat/eksen.</li>
+                    <li>Test frekansı: 5-500 Hz aralığında rastgele titreşim.</li>
+                    <li>Maksimum ekipman ağırlığı: 2 ton; boyut: 3x3x3 m.</li>
+                </ul>
+                <p>Test laboratuvarı seçerken, cihazların bu limitleri desteklediğinden emin olun. Örneğin, Keystone Compliance veya TÜV SÜD laboratuvarları bu tür testler için uygundur.</p>
 
-            <h2>5. Uygulama Esasları</h2>
-            <h3>Uygulayıcı için Adım Adım Rehber:</h3>
-            <ol>
-                <li><strong>Ekipman ve Kategori Belirleme:</strong>
-                    <ul>
-                        <li>Ekipmanın araçtaki konumunu (gövde, boji, aks) belirleyin.</li>
-                        <li>Örnek: Bir sinyalizasyon cihazı gövde kutusu içindeyse, Kategori 1B seçilir.</li>
-                    </ul>
-                </li>
-                <li><strong>Test Gerekliliklerini Tanımlama:</strong>
-                    <ul>
-                        <li>TS EN 61373’ün Annex A’sına göre test seviyelerini belirleyin (ör. Kategori 3 için 20g şok).</li>
-                        <li>Müşteriyle özel test gerekliliklerini (ör. ek frekans aralığı) netleştirin.</li>
-                    </ul>
-                </li>
-                <li><strong>Test Planı Oluşturma:</strong>
-                    <ul>
-                        <li>Test türleri (fonksiyonel, dayanıklılık, şok), süreler ve eksenler (X, Y, Z) tanımlanır.</li>
-                        <li>Örnek: Kategori 2 için 3 eksende 3,0 m/s² RMS dayanıklılık testi.</li>
-                    </ul>
-                </li>
-                <li><strong>Laboratuvar Seçimi ve Anlaşma:</strong>
-                    <ul>
-                        <li>ISO 17025 akredite bir laboratuvar seçin (ör. Element Materials Technology).</li>
-                        <li>Test kapasitesini (ağırlık, boyut, ivme limitleri) doğrulayın.</li>
-                    </ul>
-                </li>
-                <li><strong>Ekipman Hazırlığı:</strong>
-                    <ul>
-                        <li>Ekipmanı test düzeneğine monte edin (IEC 60068-2-47’ye uygun).</li>
-                        <li>Örnek: Bojiye monte bir ekipman için sabitleme cıvataları kontrol edilir.</li>
-                    </ul>
-                </li>
-                <li><strong>Test Yürütme:</strong>
-                    <ul>
-                        <li>Fonksiyonel titreşim testi: Ekipman çalışır durumdayken düşük seviyeli titreşim uygulanır.</li>
-                        <li>Dayanıklılık testi: Artırılmış titreşim seviyeleriyle yorulma testi yapılır.</li>
-                        <li>Şok testi: Belirtilen g seviyesinde ani darbeler uygulanır.</li>
-                    </ul>
-                </li>
-                <li><strong>Sonuçların Değerlendirilmesi:</strong>
-                    <ul>
-                        <li>Ekipmanda arıza, deformasyon veya işlev kaybı olup olmadığını kontrol edin.</li>
-                        <li>Test sonuçlarını raporlayın (ör. “Kategori 1A testi geçti”).</li>
-                    </ul>
-                </li>
-                <li><strong>Dokümantasyon ve Sertifikasyon:</strong>
-                    <ul>
-                        <li>Test raporlarını hazırlayın, müşteri ve belgelendirme kuruluşuna sunun.</li>
-                        <li>Uygunluk durumunda TS EN 61373 sertifikası alın.</li>
-                    </ul>
-                </li>
-            </ol>
-            <h4>Rakamsal Örnek:</h4>
-            <ul>
-                <li>Test maliyeti: KOBİ’ler için 10.000-50.000 TL (2025 tahmini, ekipman boyutuna ve test süresine bağlı).</li>
-                <li>Test süresi: 1-3 gün (her eksen için 1-2 saat fonksiyonel, 5-10 saat dayanıklılık).</li>
-                <li>Eksen sayısı: 3 eksen (X, Y, Z) için ayrı testler.</li>
-            </ul>
-            <p>Uygulayıcı, test öncesi ekipmanın tasarımını (ör. titreşim sönümleme mekanizmaları) gözden geçirmeli. Test sonuçları, müşteriyle paylaşılmadan önce kalite yöneticisi tarafından doğrulanmalı.</p>
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <p>TS EN 61373, demiryolu sektöründe kullanılan ekipmanlar için geçerlidir. Örnekler:</p>
+                <ul>
+                    <li><strong>Otomotiv (Demiryolu):</strong> Fren sistemleri, bataryalar, akslar (ör. Alstom tren bileşenleri).</li>
+                    <li><strong>Elektronik:</strong> Tren kontrol panelleri, sinyalizasyon sistemleri (ör. Siemens sinyal ekipmanları).</li>
+                    <li><strong>Mekanik:</strong> Boji veya aksa monte süspansiyon bileşenleri.</li>
+                    <li><strong>Pnömatik:</strong> Hava fren sistemleri.</li>
+                </ul>
+                <p>Ekipmanlar, araçtaki konumlarına göre test edilir. Örneğin, bir kontrol paneli (Kategori 1B) daha düşük titreşim seviyelerine maruz kalırken, aksa monte bir sensör (Kategori 3) daha yüksek seviyelerde test edilir.</p>
 
-            <h2>6. Disiplin Bazlı Sorumluluklar</h2>
-            <ul>
-                <li><strong>Proje Yöneticisi:</strong> Test sürecini koordine eder, müşteriyle iletişim kurar.</li>
-                <li><strong>Test Mühendisi:</strong> Test düzeneğini hazırlar, testleri yürütür, ivmeölçer verilerini analiz eder.</li>
-                <li><strong>Kalite Yöneticisi:</strong> Test sonuçlarının standartla uyumluluğunu doğrular, raporları hazırlar.</li>
-                <li><strong>Üretim Ekibi:</strong> Test edilecek ekipmanların seri üretimden alınmasını sağlar.</li>
-                <li><strong>Müşteri Temsilcisi:</strong> Özel test gerekliliklerini (ör. sabit frekanslı titreşim) tanımlar.</li>
-            </ul>
-            <p>Her disiplin için bir sorumlu atanmalı. Örneğin, test mühendisi test parametrelerini belirlerken kalite yöneticisi raporlamadan sorumlu olmalı.</p>
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>Uygulayıcı için Adım Adım Rehber:</h3>
+                <ol>
+                    <li><strong>Ekipman ve Kategori Belirleme:</strong>
+                        <ul>
+                            <li>Ekipmanın araçtaki konumunu (gövde, boji, aks) belirleyin.</li>
+                            <li>Örnek: Bir sinyalizasyon cihazı gövde kutusu içindeyse, Kategori 1B seçilir.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Gerekliliklerini Tanımlama:</strong>
+                        <ul>
+                            <li>TS EN 61373’ün Annex A’sına göre test seviyelerini belirleyin (ör. Kategori 3 için 20g şok).</li>
+                            <li>Müşteriyle özel test gerekliliklerini (ör. ek frekans aralığı) netleştirin.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Planı Oluşturma:</strong>
+                        <ul>
+                            <li>Test türleri (fonksiyonel, dayanıklılık, şok), süreler ve eksenler (X, Y, Z) tanımlanır.</li>
+                            <li>Örnek: Kategori 2 için 3 eksende 3,0 m/s² RMS dayanıklılık testi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Laboratuvar Seçimi ve Anlaşma:</strong>
+                        <ul>
+                            <li>ISO 17025 akredite bir laboratuvar seçin (ör. Element Materials Technology).</li>
+                            <li>Test kapasitesini (ağırlık, boyut, ivme limitleri) doğrulayın.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ekipman Hazırlığı:</strong>
+                        <ul>
+                            <li>Ekipmanı test düzeneğine monte edin (IEC 60068-2-47’ye uygun).</li>
+                            <li>Örnek: Bojiye monte bir ekipman için sabitleme cıvataları kontrol edilir.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Yürütme:</strong>
+                        <ul>
+                            <li>Fonksiyonel titreşim testi: Ekipman çalışır durumdayken düşük seviyeli titreşim uygulanır.</li>
+                            <li>Dayanıklılık testi: Artırılmış titreşim seviyeleriyle yorulma testi yapılır.</li>
+                            <li>Şok testi: Belirtilen g seviyesinde ani darbeler uygulanır.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sonuçların Değerlendirilmesi:</strong>
+                        <ul>
+                            <li>Ekipmanda arıza, deformasyon veya işlev kaybı olup olmadığını kontrol edin.</li>
+                            <li>Test sonuçlarını raporlayın (ör. “Kategori 1A testi geçti”).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dokümantasyon ve Sertifikasyon:</strong>
+                        <ul>
+                            <li>Test raporlarını hazırlayın, müşteri ve belgelendirme kuruluşuna sunun.</li>
+                            <li>Uygunluk durumunda TS EN 61373 sertifikası alın.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>Rakamsal Örnek:</h4>
+                <ul>
+                    <li>Test maliyeti: KOBİ’ler için 10.000-50.000 TL (2025 tahmini, ekipman boyutuna ve test süresine bağlı).</li>
+                    <li>Test süresi: 1-3 gün (her eksen için 1-2 saat fonksiyonel, 5-10 saat dayanıklılık).</li>
+                    <li>Eksen sayısı: 3 eksen (X, Y, Z) için ayrı testler.</li>
+                </ul>
+                <p>Uygulayıcı, test öncesi ekipmanın tasarımını (ör. titreşim sönümleme mekanizmaları) gözden geçirmeli. Test sonuçları, müşteriyle paylaşılmadan önce kalite yöneticisi tarafından doğrulanmalı.</p>
 
-            <h2>7. İzleme / Denetim / Belgelendirme Süreci</h2>
-            <ul>
-                <li><strong>İzleme:</strong> Test sırasında ekipman performansı (ör. işlevsel arızalar, titreşim verileri) sürekli izlenir.</li>
-                <li><strong>Denetim:</strong> Testler, ISO 17025 akredite laboratuvarlarda denetlenir.</li>
-                <li><strong>Belgelendirme Süreci:</strong>
-                    <ol>
-                        <li>Başvuru: Akredite bir laboratuvara veya belgelendirme kuruluşuna başvuru.</li>
-                        <li>Test Planı Onayı: Test parametreleri müşteri ve laboratuvar tarafından onaylanır.</li>
-                        <li>Test Yürütme: Şok ve titreşim testleri yapılır, sonuçlar raporlanır.</li>
-                        <li>Sertifikasyon: Uygunluk durumunda TS EN 61373 sertifikası verilir.</li>
-                    </ol>
-                </li>
-            </ul>
-            <h4>Rakamsal Örnek:</h4>
-            <ul>
-                <li>Denetim süresi: 1-2 gün/test.</li>
-                <li>Sertifikasyon maliyeti: 5.000-20.000 TL (2025 tahmini).</li>
-            </ul>
-            <p>Test raporları, müşteriyle paylaşılmalı ve arşivlenmelidir. Ekipman değişikliğinde yeniden test gerekebilir.</p>
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Proje Yöneticisi:</strong> Test sürecini koordine eder, müşteriyle iletişim kurar.</li>
+                    <li><strong>Test Mühendisi:</strong> Test düzeneğini hazırlar, testleri yürütür, ivmeölçer verilerini analiz eder.</li>
+                    <li><strong>Kalite Yöneticisi:</strong> Test sonuçlarının standartla uyumluluğunu doğrular, raporları hazırlar.</li>
+                    <li><strong>Üretim Ekibi:</strong> Test edilecek ekipmanların seri üretimden alınmasını sağlar.</li>
+                    <li><strong>Müşteri Temsilcisi:</strong> Özel test gerekliliklerini (ör. sabit frekanslı titreşim) tanımlar.</li>
+                </ul>
+                <p>Her disiplin için bir sorumlu atanmalı. Örneğin, test mühendisi test parametrelerini belirlerken kalite yöneticisi raporlamadan sorumlu olmalı.</p>
 
-            <h2>8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
-            <ul>
-                <li><strong>Zorluk:</strong> Ekipman montajında uyumsuzluk.
-                    <ul>
-                        <li><strong>Çözüm:</strong> IEC 60068-2-47’ye uygun montaj prosedürleri kullanılmalı, sabitleme elemanları kontrol edilmeli.</li>
-                    </ul>
-                </li>
-                <li><strong>Zorluk:</strong> Test maliyetlerinin yüksekliği.
-                    <ul>
-                        <li><strong>Çözüm:</strong> Ön testlerle (prototip testi) tasarım hataları giderilerek maliyet düşürülebilir.</li>
-                    </ul>
-                </li>
-                <li><strong>Zorluk:</strong> Test parametrelerinin belirlenmesi.
-                    <ul>
-                        <li><strong>Çözüm:</strong> Annex A’daki gerçek hizmet verileri kullanılarak test seviyeleri özelleştirilebilir.</li>
-                    </ul>
-                </li>
-                <li><strong>Zorluk:</strong> Ekipman arızası.
-                    <ul>
-                        <li><strong>Çözüm:</strong> Tasarım aşamasında titreşim sönümleme elemanları (ör. kauçuk yastıklar) eklenmeli.</li>
-                    </ul>
-                </li>
-            </ul>
-            <p>Test öncesi bir deneme testi, potansiyel sorunları tespit edebilir ve maliyeti düşürebilir.</p>
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <ul>
+                    <li><strong>İzleme:</strong> Test sırasında ekipman performansı (ör. işlevsel arızalar, titreşim verileri) sürekli izlenir.</li>
+                    <li><strong>Denetim:</strong> Testler, ISO 17025 akredite laboratuvarlarda denetlenir.</li>
+                    <li><strong>Belgelendirme Süreci:</strong>
+                        <ol>
+                            <li>Başvuru: Akredite bir laboratuvara veya belgelendirme kuruluşuna başvuru.</li>
+                            <li>Test Planı Onayı: Test parametreleri müşteri ve laboratuvar tarafından onaylanır.</li>
+                            <li>Test Yürütme: Şok ve titreşim testleri yapılır, sonuçlar raporlanır.</li>
+                            <li>Sertifikasyon: Uygunluk durumunda TS EN 61373 sertifikası verilir.</li>
+                        </ol>
+                    </li>
+                </ul>
+                <h4>Rakamsal Örnek:</h4>
+                <ul>
+                    <li>Denetim süresi: 1-2 gün/test.</li>
+                    <li>Sertifikasyon maliyeti: 5.000-20.000 TL (2025 tahmini).</li>
+                </ul>
+                <p>Test raporları, müşteriyle paylaşılmalı ve arşivlenmelidir. Ekipman değişikliğinde yeniden test gerekebilir.</p>
 
-            <h2>9. Görseller / Şemalar / Akış Diyagramları</h2>
-            
-            <h3>1. Test Kategorileri Diyagramı</h3>
-            <div class="mermaid">
- 
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Zorluk:</strong> Ekipman montajında uyumsuzluk.
+                        <ul>
+                            <li><strong>Çözüm:</strong> IEC 60068-2-47’ye uygun montaj prosedürleri kullanılmalı, sabitleme elemanları kontrol edilmeli.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Zorluk:</strong> Test maliyetlerinin yüksekliği.
+                        <ul>
+                            <li><strong>Çözüm:</strong> Ön testlerle (prototip testi) tasarım hataları giderilerek maliyet düşürülebilir.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Zorluk:</strong> Test parametrelerinin belirlenmesi.
+                        <ul>
+                            <li><strong>Çözüm:</strong> Annex A’daki gerçek hizmet verileri kullanılarak test seviyeleri özelleştirilebilir.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Zorluk:</strong> Ekipman arızası.
+                        <ul>
+                            <li><strong>Çözüm:</strong> Tasarım aşamasında titreşim sönümleme elemanları (ör. kauçuk yastıklar) eklenmeli.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>Test öncesi bir deneme testi, potansiyel sorunları tespit edebilir ve maliyeti düşürebilir.</p>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                <p>Bu bölümde, standardın anlaşılmasını kolaylaştıracak görseller, şemalar, akış diyagramları veya ilgili PDF dokümanlarına bağlantılar yer alabilir. Lütfen bu görselleri ve dosyaları ilgili standardın klasörüne yüklemeyi ve buraya doğru dosya yollarını verdiğinizden emin olun.</p>
+                
+                <h3>1. Test Kategorileri Diyagramı</h3>
+                <div class="mermaid">
 graph TD
     A[TS EN 61373<br>Şok ve Titreşim Testleri] --> B[Kategori 1A<br>Gövdeye veya altına monte<br>3g şok, 1,5 m/s² RMS]
     A --> C[Kategori 1B<br>Gövde kutusu içine monte<br>3g şok, 1,0 m/s² RMS]
     A --> D[Kategori 2<br>Bojiye monte<br>5g şok, 3,0 m/s² RMS]
     A --> E[Kategori 3<br>Aksa monte<br>20g şok, 5,0 m/s² RMS]
- 
-            </div>
-            
-            <h3>2. Test Süreci Akış Diyagramı</h3>
-            <div class="mermaid">
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Test Kategorilerini göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: </p>
 
+                <h3>2. Test Süreci Akış Diyagramı</h3>
+                <div class="mermaid">
 graph LR
     A[Ekipman Tanımlama<br>Konum belirleme] --> B[Test Planı Hazırlama<br>Parametreler tanımlanır]
     B --> C[Laboratuvar Seçimi<br>ISO 17025 akredite]
@@ -287,23 +382,20 @@ graph LR
     D --> E[Test Yürütme<br>Şok ve titreşim testleri]
     E --> F[Raporlama<br>Sonuçlar belgelenir]
     F --> G[Sertifikasyon<br>TS EN 61373 sertifikası]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Test Süreci Akış Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
 
-            </div>
-            
-            <h3>3. Şok ve Titreşim Test Türleri Diyagramı</h3>
-            <div class="mermaid">
-
+                <h3>3. Şok ve Titreşim Test Türleri Diyagramı</h3>
+                <div class="mermaid">
 graph TD
     A[TS EN 61373 Test Türleri] --> B[Fonksiyonel Titreşim<br>Gerçek koşullar simülasyonu<br>0,3-2,0 m/s² RMS]
     A --> C[Dayanıklılık Titreşimi<br>Yorulma testi<br>1,0-5,0 m/s² RMS]
     A --> D[Şok Testi<br>Ani darbeler<br>3g-20g, 11-30 ms]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Şok ve Titreşim Test Türleri Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
 
-            </div>
-            <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Şok ve Titreşim Test Türleri Diyagramını göstermektedir.</p>
-
-            <h3>4. Uygulayıcı için Adım Adım Rehber Diyagramı</h3>
-            <div class="mermaid">
-
+                <h3>4. Uygulayıcı için Adım Adım Rehber Diyagramı</h3>
+                <div class="mermaid">
 graph TD
     A[Uygulayıcı Başlangıç<br>Ekipman ve kategori belirleme] --> B[Test Gereklilikleri<br>Annex A’ya göre seviyeler]
     B --> C[Test Planı<br>Eksen, süre, test türleri]
@@ -312,13 +404,90 @@ graph TD
     E --> F[Test Yürütme<br>Fonksiyonel, dayanıklılık, şok]
     F --> G[Sonuç Analizi<br>Arıza/deformasyon kontrolü]
     G --> H[Raporlama ve Sertifikasyon<br>TS EN 61373 sertifikası]
- 
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Uygulayıcı için Adım Adım Rehber Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
             </div>
-            <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Uygulayıcı için Adım Adım Rehber Diyagramını göstermektedir.</p>
 
         </div>
 
-    </div>
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
