@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TR EN 50129 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TR EN 50129: Demiryolu Uygulamaları - Haberleşme, Sinyalizasyon ve İşlem Sistemleri - Güvenlikle İlgili Elektronik Sistemler için Güvenlik</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TR EN 50129 standardı, demiryolu sinyalizasyon sistemlerinde kullanılan güvenlikle ilgili elektronik sistemlerin tasarımı, geliştirilmesi, doğrulanması ve onaylanması için gereklilikleri belirler. Standardın temel amacı, demiryolu sistemlerindeki güvenlikle ilgili elektronik ekipmanların güvenilirliğini sağlamak ve demiryolu operasyonlarında risk seviyesini kabul edilebilir sınırlar içinde tutmaktır.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TR EN 50129 standardı, demiryolu sinyalizasyon sistemlerinde kullanılan güvenlikle ilgili elektronik sistemlerin tasarımı, geliştirilmesi, doğrulanması ve onaylanması için gereklilikleri belirler. Standardın temel amacı, demiryolu sistemlerindeki güvenlikle ilgili elektronik ekipmanların güvenilirliğini sağlamak ve demiryolu operasyonlarında risk seviyesini kabul edilebilir sınırlar içinde tutmaktır.</p>
+                <p>Bu standart, demiryolu sinyalizasyon sistemlerinde kullanılan her türlü güvenlikle ilgili elektronik sisteme uygulanabilir ve tüm yaşam döngüsü boyunca güvenlik gerekliliklerini kapsar.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TR EN 50129, demiryolu sistemlerinde "Güvenlik Bütünlüğü Seviyeleri" (Safety Integrity Levels - SIL) konseptini esas alır. Bu konsept, farklı güvenlik seviyelerine sahip sistemlerin geliştirilmesi ve değerlendirilmesi için sistematik bir çerçeve sunar.</p>
+                <p>Standart, güvenlik yönetimi, teknik güvenlik ve güvenlik dosyası olmak üzere üç ana bölümden oluşur. Güvenlik yönetimi, bir organizasyonun güvenlikle ilgili sistemleri geliştirmek ve sürdürmek için uygun organizasyonel yapıları ve prosedürleri nasıl oluşturması gerektiğini tanımlar. Teknik güvenlik, sistemlerin tasarımı ve doğrulanması için teknik gereklilikleri belirler. Güvenlik dosyası ise, bir sistemin güvenlik açısından kabul edilebilir olduğunu göstermek için gerekli belgelendirme sürecini tanımlar.</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>Güvenlik yönetim sistemi kurulması</li>
+                    <li>Güvenlik politikasının oluşturulması</li>
+                    <li>Güvenlik organizasyonunun tanımlanması</li>
+                    <li>Güvenlik planının hazırlanması</li>
+                    <li>Güvenlik denetimlerinin planlanması ve uygulanması</li>
+                    <li>Bağımsız güvenlik değerlendirmesi süreçlerinin oluşturulması</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Güvenlik gereklilikleri spesifikasyonu</li>
+                    <li>Güvenlik hedeflerinin belirlenmesi</li>
+                    <li>Risk analizi ve değerlendirmesi</li>
+                    <li>Yazılım ve donanım güvenlik gereklilikleri</li>
+                    <li>Hata tespit ve düzeltme mekanizmaları</li>
+                    <li>Sistem entegrasyonu ve doğrulama testleri</li>
+                    <li>Güvenlik kanıtlaması</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TR EN 50129 standardı, aşağıdaki demiryolu uygulamalarında yaygın olarak kullanılmaktadır:</p>
+                <ul>
+                    <li><strong>Hızlı Tren Sistemleri:</strong> Yüksek hızlı trenlerde kullanılan ETCS (European Train Control System) gibi sinyalizasyon sistemleri</li>
+                    <li><strong>Metro Sistemleri:</strong> İstanbul, Ankara, İzmir gibi şehirlerdeki metro hatlarının sinyalizasyon ve güvenlik sistemleri</li>
+                    <li><strong>Konvansiyonel Demiryolları:</strong> TCDD'nin konvansiyonel hatlarındaki sinyalizasyon modernizasyon projeleri</li>
+                    <li><strong>Tramvay Sistemleri:</strong> Şehir içi raylı taşıma sistemlerinde kullanılan güvenlik kritik elektronik sistemler</li>
+                    <li><strong>Marmaray:</strong> Boğaz geçişi gibi kritik altyapılarda kullanılan güvenlik sistemleri</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <p>TR EN 50129 standardı aşağıdaki uygulama esaslarını içermektedir:</p>
+                <ul>
+                    <li><strong>V-Modeli Yaklaşımı:</strong> Sistem geliştirme yaşam döngüsünde V-modeli takip edilmesi</li>
+                    <li><strong>Güvenlik Dosyası Oluşturma:</strong> Sistemin güvenliğini kanıtlayan kapsamlı bir belge seti hazırlanması</li>
+                    <li><strong>Tehlike Analizi:</strong> HAZOP, FMEA gibi teknikler kullanılarak tehlike tanımlama ve analizi yapılması</li>
+                    <li><strong>Güvenlik Bütünlüğü Seviyesinin (SIL) Belirlenmesi:</strong> Risk değerlendirmesi sonuçlarına göre uygun SIL seviyesinin tanımlanması</li>
+                    <li><strong>Doğrulama ve Geçerleme:</strong> Her geliştirme aşamasında bağımsız doğrulama ve geçerleme faaliyetlerinin yürütülmesi</li>
+                    <li><strong>Güvenlik Vakası:</strong> Sistemin güvenli olduğunu kanıtlayan bir güvenlik vakası hazırlanması</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Sistem Mühendisliği:</strong>
+                        <ul>
+                            <li>Sistem mimarisinin tasarımı</li>
+                            <li>Sistem güvenlik gerekliliklerinin tanımlanması</li>
+                            <li>Alt sistemler arası entegrasyon güvenliğinin sağlanması</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yazılım Mühendisliği:</strong>
+                        <ul>
+                            <li>Güvenlik kritik yazılımların geliştirilmesi</li>
+                            <li>Yazılım güvenlik testlerinin yapılması</li>
+                            <li>Yazılım güvenlik analizlerinin gerçekleştirilmesi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Donanım Mühendisliği:</strong>
+                        <ul>
+                            <li>Güvenlik kritik donanım tasarımı</li>
+                            <li>Donanım hata toleransı mekanizmalarının uygulanması</li>
+                            <li>Güvenlik kritik donanım bileşenlerinin test edilmesi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Güvenlik Mühendisliği:</strong>
+                        <ul>
+                            <li>Tehlike ve risk analizlerinin yürütülmesi</li>
+                            <li>Güvenlik kanıtının oluşturulması</li>
+                            <li>Güvenlik vakasının hazırlanması ve değerlendirilmesi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Mühendisliği:</strong>
+                        <ul>
+                            <li>SIL seviyesine uygun test stratejilerinin geliştirilmesi</li>
+                            <li>Bağımsız doğrulama ve geçerleme testlerinin yürütülmesi</li>
+                            <li>Test sonuçlarının dokümantasyonu ve güvenlik kanıtına entegrasyonu</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kalite Güvence:</strong>
+                        <ul>
+                            <li>Süreçlerin standarda uygunluğunun denetlenmesi</li>
+                            <li>Dokümantasyon kalitesinin ve tamlığının kontrolü</li>
+                            <li>Düzeltici faaliyetlerin takibi ve etkinliğinin değerlendirilmesi</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="standardi-uygulama-rehberi">7. Standardı Uygulama Rehberi</h2>
+                <p>TR EN 50129 standardına uyum sağlamak isteyen organizasyonlar için aşağıdaki adımlar ve pratik bilgiler yol gösterici olacaktır:</p>
+                <h3>Uyumluluk İçin Adım Adım Yaklaşım</h3>
+                <ol>
+                    <li><strong>Mevcut Durumun Değerlendirilmesi:</strong> Organizasyonun güvenlik yönetim sisteminin ve mevcut süreçlerinin TR EN 50129 gerekliliklerine göre boşluk analizi yapılmalıdır. Bu analiz, eksik noktaları belirlemek için kritik öneme sahiptir.</li>
+                    <li><strong>Güvenlik Yönetim Sistemi Kurulması:</strong> Standardın gerektirdiği güvenlik yönetim sistemi yapısının oluşturulması, güvenlik politikalarının ve prosedürlerinin tanımlanması gereklidir. Bu yapı, en üst yönetim tarafından onaylanmalı ve tüm organizasyona duyurulmalıdır.</li>
+                    <li><strong>Güvenlik Organizasyonunun Oluşturulması:</strong> Roller ve sorumluluklar açıkça tanımlanmalı, güvenlik yöneticisi, güvenlik mühendisleri ve bağımsız değerlendiricilerin atanması yapılmalıdır. Tüm bu rollerin birbiriyle ilişkisi ve raporlama hatları net olmalıdır.</li>
+                    <li><strong>Güvenlik Yaşam Döngüsü Süreçlerinin Tanımlanması:</strong> V-modeli temel alınarak, gereksinim analizinden bakım aşamasına kadar tüm yaşam döngüsü fazlarını kapsayan süreçler dokümante edilmelidir.</li>
+                    <li><strong>Risk Yönetim Metodolojisinin Belirlenmesi:</strong> Tehlike tanımlama, risk analizi ve risk değerlendirmesi için kullanılacak metotlar (örn. HAZOP, FMEA, FTA) belirlenmeli ve dokümante edilmelidir.</li>
+                    <li><strong>Güvenlik Kanıtlama Yapısının Oluşturulması:</strong> Güvenlik Vakası (Safety Case) hazırlama süreci ve bu vakanın nasıl yapılandırılacağı tanımlanmalıdır.</li>
+                    <li><strong>Eğitim Programlarının Geliştirilmesi:</strong> Tüm ilgili personelin standart gereklilikleri ve güvenlik süreçleri konusunda eğitilmesi için programlar oluşturulmalıdır.</li>
+                    <li><strong>Araç ve Tekniklerin Seçimi:</strong> Güvenlik analizleri, risk değerlendirmesi, yazılım/donanım tasarımı ve doğrulama için uygun araçların seçilmesi gereklidir.</li>
+                    <li><strong>Pilot Uygulama Gerçekleştirilmesi:</strong> Süreçlerin etkinliğini değerlendirmek için küçük ölçekli bir projede pilot uygulama yapılması tavsiye edilir.</li>
+                    <li><strong>Bağımsız Değerlendirme Planının Hazırlanması:</strong> Bağımsız güvenlik değerlendirmesi için plan hazırlanmalı ve değerlendirme kuruluşu ile anlaşma yapılmalıdır.</li>
+                </ol>
+                <h3>Sayısal Hedefler ve Ölçümler</h3>
+                <p>TR EN 50129 standardına uyum sürecinde göz önünde bulundurulması gereken bazı sayısal hedefler ve ölçümler:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SIL Seviyesi</th>
+                            <th>Tehlikeli Arıza Oranı (Saat Başına)</th>
+                            <th>Gerekli Risk Azaltma Faktörü</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SIL 1</td>
+                            <td>10⁻⁶ - 10⁻⁵</td>
+                            <td>10 - 100</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 2</td>
+                            <td>10⁻⁷ - 10⁻⁶</td>
+                            <td>100 - 1,000</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 3</td>
+                            <td>10⁻⁸ - 10⁻⁷</td>
+                            <td>1,000 - 10,000</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 4</td>
+                            <td>10⁻⁹ - 10⁻⁸</td>
+                            <td>10,000 - 100,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Doküman Gereksinimleri:</strong> SIL seviyesine bağlı olarak, bir güvenlik vakası içinde bulunması gereken doküman sayısı genellikle 50-200 arasında değişebilir (SIL 2 için ~50-100, SIL 4 için ~150-200).</p>
+                <p><strong>Doğrulama Eforları:</strong> Toplam proje eforunun yaklaşık %30-40'ı doğrulama ve geçerleme faaliyetlerine ayrılmalıdır. SIL 4 sistemler için bu oran %50'ye çıkabilir.</p>
+                <p><strong>Güvenlik Denetimleri:</strong> Proje süresince, SIL seviyesine bağlı olarak 3-7 arası bağımsız güvenlik denetimi gerçekleştirilmelidir.</p>
+                <h3>Güvenlik Dosyası (Safety Case) İçeriği</h3>
+                <p>TR EN 50129'a göre bir Güvenlik Dosyası aşağıdaki 6 bölümü içermelidir:</p>
+                <ul>
+                    <li><strong>Bölüm 1: Tanımlama</strong>
+                        <ul>
+                            <li>Sistem tanımı ve sınırları</li>
+                            <li>Güvenlik dosyasının kapsamı ve kullanım amacı</li>
+                            <li>Sistem kullanım koşulları ve kısıtlamaları</li>
+                            <li>İlgili standartlar ve referans dokümanlar listesi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bölüm 2: Kalite Yönetim Raporu</strong>
+                        <ul>
+                            <li>Kalite yönetim sistemi sertifikasyonu</li>
+                            <li>Kalite planı</li>
+                            <li>Kalite denetim raporları</li>
+                            <li>Konfigürasyon yönetim raporları</li>
+                            <li>Donanım ve yazılım üretim süreçleri ile ilgili raporlar</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bölüm 3: Güvenlik Yönetim Raporu</strong>
+                        <ul>
+                            <li>Güvenlik organizasyonu</li>
+                            <li>Güvenlik planı</li>
+                            <li>Güvenlik denetim raporları</li>
+                            <li>Güvenlikle ilgili etkinliklerin bağımsız değerlendirme raporları</li>
+                            <li>Güvenlik gereksinimlerinin izlenebilirliği</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bölüm 4: Teknik Güvenlik Raporu</strong>
+                        <ul>
+                            <li>Güvenlik gereksinimleri spesifikasyonu</li>
+                            <li>Tehlike ve risk analiz raporları</li>
+                            <li>Güvenlik önlemlerinin doğrulama ve geçerleme raporları</li>
+                            <li>Yeni güvenlik gereksinimlerinin doğrulanması</li>
+                            <li>Güvenlik vakasının haklılığı</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bölüm 5: İlgili Güvenlik Vakaları</strong>
+                        <ul>
+                            <li>Genel ve alt sistemlere özgü güvenlik vakaları arasındaki ilişki</li>
+                            <li>Alt sistemlerin ve bileşenlerin güvenlik vakalarına referanslar</li>
+                            <li>Sistemler arası arayüz güvenlik vakaları</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bölüm 6: Sonuç</strong>
+                        <ul>
+                            <li>Sistemin güvenlik açısından kabul edilebilir olduğuna dair beyan</li>
+                            <li>Kısıtlamalar ve güvenli kullanım koşulları</li>
+                            <li>Güvenlik onayı imzaları</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Pratik Uygulama İpuçları</h3>
+                <ul>
+                    <li><strong>Süreç Entegrasyonu:</strong> TR EN 50129 gerekliliklerini mevcut geliştirme süreçlerine entegre edin. Yeni bir süreç yapısı oluşturmak yerine, mevcut süreçleri geliştirin.</li>
+                    <li><strong>Şablonlar Geliştirin:</strong> Güvenlik analizi, risk değerlendirmesi, doğrulama planları gibi kritik dokümanlar için şablonlar oluşturun. Bu, dokümantasyon sürecini standartlaştıracak ve hızlandıracaktır.</li>
+                    <li><strong>Metrik Tabanlı İzleme:</strong> Güvenlik çalışmalarının etkinliğini izlemek için metrikleri kullanın. Örneğin: tanımlanan tehlike sayısı, kapatılan güvenlik aksiyonları yüzdesi, güvenlik analizi kapsama oranı.</li>
+                    <li><strong>Değişiklik Yönetimi:</strong> Güvenlikle ilgili değişikliklerin etkilerini değerlendirmek için sağlam bir değişiklik yönetim süreci oluşturun. Her değişikliğin güvenlik üzerindeki etkisi analiz edilmelidir.</li>
+                    <li><strong>Araçların Doğrulanması:</strong> Güvenlik analizleri ve doğrulama için kullanılan araçların kendilerinin de doğrulanmış olması gerekir. Kullanılacak araçların SIL seviyesine uygun sertifikasyona sahip olduğundan emin olun.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> Güvenlikle ilgili bileşenlerin tedarikçilerinin TR EN 50129 gerekliliklerini karşılamasını sağlayın. Tedarikçilerin güvenlik süreçlerini denetleyin.</li>
+                    <li><strong>Bilgi Birikimi Yönetimi:</strong> Projeler arasında güvenlikle ilgili bilgi ve deneyimlerin paylaşılmasını sağlayın. Öğrenilen dersleri ve iyi uygulamaları dokümante edin.</li>
+                </ul>
+                <h3>Sertifikasyon Süreci</h3>
+                <ol>
+                    <li><strong>Bağımsız Güvenlik Değerlendirme Kuruluşu (ISA) Seçimi:</strong> Sistemi değerlendirecek akredite bir kuruluşun seçilmesi ve anlaşma yapılması.</li>
+                    <li><strong>Değerlendirme Planının Hazırlanması:</strong> ISA ile birlikte detaylı bir değerlendirme planı hazırlanması ve değerlendirme kriterleri üzerinde mutabakat sağlanması.</li>
+                    <li><strong>Fazlı Değerlendirme:</strong> Sistem geliştirmenin farklı aşamalarında (gereksinim, tasarım, uygulama, test) ISA tarafından değerlendirmeler yapılması.</li>
+                    <li><strong>Güvenlik Dosyasının Sunulması:</strong> Tamamlanan güvenlik dosyasının ISA'ya sunulması ve incelenmesi.</li>
+                    <li><strong>Uygunsuzlukların Giderilmesi:</strong> ISA tarafından belirlenen uygunsuzlukların giderilmesi ve düzeltici faaliyetlerin uygulanması.</li>
+                    <li><strong>Sertifika Verilmesi:</strong> ISA tarafından sistemin ilgili SIL seviyesine uygun olduğuna dair sertifika verilmesi.</li>
+                    <li><strong>Devreye Alma Onayı:</strong> Yetkili makamlar (örn. TCDD) tarafından sisteme işletmeye alma onayı verilmesi.</li>
+                </ol>
+                <p>TR EN 50129 standardına uyum, demiryolu sistemlerinin güvenliğini artırmak için kritik öneme sahiptir. Sistematik bir yaklaşım ve doğru kaynakların tahsisi ile, organizasyonlar bu standardın gerekliliklerini başarıyla uygulayabilir ve demiryolu güvenliğine önemli katkıda bulunabilir.</p>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">8. Görseller / Şemalar / Akış Diyagramları</h2>
+                <p>Bu bölümde, standardın anlaşılmasını kolaylaştıracak görseller, şemalar, akış diyagramları veya ilgili PDF dokümanlarına bağlantılar yer alabilir. Lütfen bu görselleri ve dosyaları ilgili standardın klasörüne yüklemeyi ve buraya doğru dosya yollarını verdiğinizden emin olun.</p>
+                
+                <h3>EN 50128 V-Model Yazılım Geliştirme Yaşam Döngüsü</h3>
+                <div class="mermaid">
+graph TD
+    A[Yazılım Gereksinimleri] --> B[Yazılım Mimarisi]
+    B --> C[Yazılım Tasarımı]
+    C --> D[Modül Tasarımı]
+    D --> E[Kodlama]
+    E --> F[Modül Testi]
+    F --> G[Entegrasyon Testi]
+    G --> H[Yazılım Doğrulama Testi]
+    H --> I[Yazılım Geçerleme]
+    I --> J[Yazılım Değerlendirmesi]
+    
+    A -.-> H
+    B -.-> G
+    C -.-> G
+    D -.-> F
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, EN 50128 V-Model Yazılım Geliştirme Yaşam Döngüsünü göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>SIL Seviyeleri ve Gereklilikler</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SIL Seviyesi</th>
+                            <th>Risk Tanımı</th>
+                            <th>Gerekli Teknikler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SIL 4</td>
+                            <td>Çok yüksek</td>
+                            <td>Formal metodlar, yoğun doğrulama</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 3</td>
+                            <td>Yüksek</td>
+                            <td>Yarı-formal metodlar, kapsamlı test</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 2</td>
+                            <td>Orta</td>
+                            <td>Yapısal metodoloji, sistematik test</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 1</td>
+                            <td>Düşük</td>
+                            <td>Temel yazılım geliştirme uygulamaları</td>
+                        </tr>
+                        <tr>
+                            <td>SIL 0</td>
+                            <td>Önemsiz</td>
+                            <td>Standart yazılım geliştirme</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Rol ve Sorumluluklar Organizasyon Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A[Proje Yöneticisi] --> B[Yazılım Geliştirme Yöneticisi]
+    A --> C[Doğrulama Yöneticisi]
+    A --> D[Güvenlik Yöneticisi]
+    A --> E[Kalite Güvence Yöneticisi]
+    
+    B --> F[Yazılım Mühendisleri]
+    C --> G[Doğrulama Mühendisleri]
+    D --> H[Güvenlik Mühendisleri]
+    E --> I[Kalite Güvence Personeli]
+    
+    J[Değerlendirme Kuruluşu] -.-> A
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Rol ve Sorumluluklar Organizasyon Şemasını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>Belgelendirme Süreci Akış Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A[Başlangıç] --> B[Güvenlik Planının Hazırlanması]
+    B --> C[Yazılım Geliştirme]
+    C --> D[Doğrulama ve Geçerleme]
+    D --> E[Güvenlik Vakasının Hazırlanması]
+    E --> F[Değerlendirme]
+    F --> G{Onay?}
+    G -- Evet --> H[Belgelendirme]
+    G -- Hayır --> I[Düzeltici Faaliyetler]
+    I --> D
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Belgelendirme Süreci Akış Şemasını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
+                <h2 id="turkiyede-uygulamalar">10. Türkiye'de TR EN 50128 Uygulamaları</h2>
+                <h3>Türkiye'deki Durum:</h3>
+                <ul>
+                    <li><strong>Ulusal Düzenlemeler:</strong> Türkiye'de demiryolu yazılımları için TR EN 50128 standardının uygulanması TCDD ve ilgili kurumlar tarafından zorunlu tutulmaktadır.</li>
+                    <li><strong>Sertifikasyon Kuruluşları:</strong> Türkiye'de EN 50128 sertifikasyonu verebilen akredite kuruluşlar bulunmaktadır.</li>
+                    <li><strong>Yerel Projeler:</strong> Milli Tren, MARMARAY, Yüksek Hızlı Tren projeleri gibi büyük demiryolu projelerinde bu standart uygulanmaktadır.</li>
+                </ul>
+                <h3>Türkiye'ye Özgü Zorluklar:</h3>
+                <ul>
+                    <li><strong>Uzman Eksikliği:</strong> Standarda hakim uzman personel sayısının sınırlı olması</li>
+                    <li><strong>Dokümantasyon Dili:</strong> Türkçe kaynak ve dokümantasyon eksikliği</li>
+                    <li><strong>Yerel Endüstrinin Adaptasyonu:</strong> Yerli sinyalizasyon firmalarının standarda uyum sürecinde yaşadığı zorluklar</li>
+                </ul>
+                <h3>Eğitim ve Farkındalık:</h3>
+                <ul>
+                    <li><strong>Üniversite Programları:</strong> Bazı üniversitelerde demiryolu yazılım güvenliği konusunda eğitim programları başlatılmıştır</li>
+                    <li><strong>Sektörel Eğitimler:</strong> TCDD ve özel sektör tarafından düzenlenen eğitim ve sertifikasyon programları</li>
+                    <li><strong>Konferanslar ve Çalıştaylar:</strong> Düzenli olarak gerçekleştirilen farkındalık etkinlikleri</li>
+                </ul>
+
+                <h2 id="guncel-gelismeler">11. Standartla İlgili Güncel Gelişmeler</h2>
+                <h3>Revizyon Bilgileri:</h3>
+                <ul>
+                    <li><strong>Son Güncelleme:</strong> EN 50128:2011, son olarak 2023'te gözden geçirilmiştir</li>
+                    <li><strong>Planlanan Değişiklikler:</strong> Yazılım güvenliği ve siber güvenlik entegrasyonu üzerine yeni güncellemeler planlanmaktadır</li>
+                </ul>
+                <h3>Diğer Standartlarla İlişki:</h3>
+                <ul>
+                    <li><strong>EN 50126:</strong> Demiryolu RAMS (Güvenilirlik, Kullanılabilirlik, Bakım Yapılabilirlik, Güvenlik) standardı ile entegrasyon</li>
+                    <li><strong>EN 50129:</strong> Demiryolu sinyalizasyon sistemleri için güvenlikle ilgili elektronik sistemler standardı ile bağlantılar</li>
+                    <li><strong>IEC 62279:</strong> Uluslararası denkliği ve farklılıkları</li>
+                </ul>
+
+                <h2 id="en-iyi-uygulama-ornekleri">12. En İyi Uygulama Örnekleri</h2>
+                <h3>Başarılı Proje Örnekleri:</h3>
+                <ul>
+                    <li><strong>Avrupa Tren Kontrol Sistemi (ETCS):</strong> TR EN 50128 standardını başarıyla uygulayan uluslararası bir örnek</li>
+                    <li><strong>TCDD Milli Sinyalizasyon Projesi:</strong> Standarda uygun olarak geliştirilen yerli yazılım örnekleri</li>
+                    <li><strong>Metro Hatları:</strong> Türkiye'deki çeşitli metro hatlarında uygulanan yazılım güvenliği çözümleri</li>
+                </ul>
+                <h3>Vaka Çalışmaları:</h3>
+                <ul>
+                    <li><strong>Proje Süresi Optimizasyonu:</strong> Standarda uygun geliştirme yapılırken proje süresini kısaltan yaklaşımlar</li>
+                    <li><strong>Maliyet Etkin Uygulamalar:</strong> Küçük ve orta ölçekli projelerde maliyet-etkin uygulama stratejileri</li>
+                    <li><strong>Eski Sistemlerin Modernizasyonu:</strong> Mevcut sistemlerin TR EN 50128 standardına uygun hale getirilmesi örnekleri</li>
+                </ul>
+
+                <h2 id="pratik-kilavuz">13. TR EN 50128 Uygulaması için Pratik Kılavuz</h2>
+                <aside>
+                ÖNEMLİ NOT: Bu bölüm, standardı uygulamak isteyen organizasyonlar için pratik bilgiler içermektedir. Standarda uyumluluğu sağlamak için gerekli adımları özetler.
+                </aside>
+                <h3>Uyum için Gerekli Temel Şartlar</h3>
+                <ol>
+                    <li>Organizasyonel Gereksinimler
+                    <ul>
+                        <li><strong>Rol Ayrımı:</strong> Standardın SIL 3-4 seviyelerinde kesinlikle gerekli olan bağımsız doğrulayıcı, geliştirici ve değerlendirici rolleri ayrılmalıdır</li>
+                        <li><strong>Yetkinlikler:</strong> Personel, dokümante edilmiş yetkinliklere sahip olmalıdır (minimum 3 yıl demiryolu sektörü tecrübesi önerilir)</li>
+                        <li><strong>Yönetim Sistemi:</strong> ISO 9001 veya CMMI seviye 3+ uyumlu kalite yönetim sistemi bulunmalıdır</li>
+                    </ul>
+                    </li>
+                    <li>Süreç Gereksinimleri
+                    <ul>
+                        <li><strong>V-Model Uygulaması:</strong> Sayfa 3'teki V-Model diyagramında gösterilen tüm aşamalar belgelendirilmelidir</li>
+                        <li><strong>Değişiklik Yönetimi:</strong> Yazılım değişikliklerinin SIL seviyesine uygun şekilde yönetilmesi ve dokümante edilmesi</li>
+                        <li><strong>Konfigürasyon Yönetimi:</strong> Tüm yazılım versiyonları ve bileşenleri için formal konfigürasyon yönetimi</li>
+                    </ul>
+                    </li>
+                    <li>Teknik Gereksinimler
+                    <ul>
+                        <li><strong>Kodlama Standartları:</strong> SIL seviyesine uygun kodlama standartları ve kuralları tanımlanmalıdır</li>
+                        <li><strong>Test Kapsamı:</strong> SIL seviyesine göre test kapsamı gereksinimleri:
+                            <ul>
+                                <li>SIL 4: %100 yapısal kapsam (MC/DC) + formal doğrulama</li>
+                                <li>SIL 3: %100 karar kapsamı + %100 ifade kapsamı</li>
+                                <li>SIL 2: %100 ifade kapsamı</li>
+                                <li>SIL 1: Temel test kapsama metrikleri</li>
+                            </ul>
+                        </li>
+                        <li><strong>Araçlar:</strong> Kullanılan tüm yazılım geliştirme ve test araçları SIL seviyesine uygun olarak doğrulanmalıdır</li>
+                    </ul>
+                    </li>
+                </ol>
+                <aside>
+                UYARI: SIL seviyesi yükseldikçe (özellikle SIL 3-4), gerekli dokümantasyon ve kanıt miktarı önemli ölçüde artmaktadır. Proje başlangıcında bu iş yükü dikkate alınmalıdır.
+                </aside>
+                <h3>Rakamsal Değerler ve Metrikleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kriter</th>
+                            <th>SIL 1</th>
+                            <th>SIL 2</th>
+                            <th>SIL 3</th>
+                            <th>SIL 4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Test Kapsamı</td>
+                            <td>&gt;80% ifade</td>
+                            <td>100% ifade</td>
+                            <td>100% karar</td>
+                            <td>100% MC/DC</td>
+                        </tr>
+                        <tr>
+                            <td>Kod Karmaşıklığı</td>
+                            <td>McCabe &lt;15</td>
+                            <td>McCabe &lt;10</td>
+                            <td>McCabe &lt;10</td>
+                            <td>McCabe &lt;10</td>
+                        </tr>
+                        <tr>
+                            <td>Kod İnceleme</td>
+                            <td>Örnekleme</td>
+                            <td>&gt;50%</td>
+                            <td>100%</td>
+                            <td>100% + formal</td>
+                        </tr>
+                        <tr>
+                            <td>İzlenebilirlik</td>
+                            <td>Kısmi</td>
+                            <td>Tam</td>
+                            <td>Tam + analiz</td>
+                            <td>Tam + formal</td>
+                        </tr>
+                        <tr>
+                            <td>Dokümantasyon</td>
+                            <td>Temel</td>
+                            <td>Kapsamlı</td>
+                            <td>Detaylı</td>
+                            <td>Formal</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Uyumluluk Kontrol Listesi</h3>
+                <ul>
+                    <li>[ ] Organizasyonel yapı ve sorumluluklar tanımlanmış mı?</li>
+                    <li>[ ] Yazılım güvenlik planı hazırlanmış mı?</li>
+                    <li>[ ] Yazılım gereksinimleri dokümante edilmiş mi?</li>
+                    <li>[ ] Her bileşen için SIL seviyesi belirlenmiş mi?</li>
+                    <li>[ ] Doğrulama ve geçerleme planları hazırlanmış mı?</li>
+                    <li>[ ] Kodlama standartları tanımlanmış mı?</li>
+                    <li>[ ] Test planları ve senaryoları hazırlanmış mı?</li>
+                    <li>[ ] Güvenlik vakası (Safety Case) hazırlanmış mı?</li>
+                    <li>[ ] Değerlendirme raporu alınmış mı?</li>
+                    <li>[ ] Konfigürasyon yönetimi planı uygulanıyor mu?</li>
+                </ul>
+                <aside>
+                KRİTİK NOT: TR EN 50128 sertifikasyonu, bağımsız bir değerlendirme kuruluşu tarafından onaylanmış bir güvenlik vakası olmadan tamamlanamaz. Bu süreç için proje başlangıcında bağımsız değerlendirme kuruluşu ile iletişime geçilmelidir.
+                </aside>
+                <h3>Türkiye'de Sertifikasyon Süreci</h3>
+                <ol>
+                    <li>TÜRKAK tarafından akredite edilmiş bir değerlendirme kuruluşu ile anlaşma yapılması</li>
+                    <li>Proje başlangıcında değerlendirme kuruluşunun sürece dahil edilmesi</li>
+                    <li>Ara değerlendirmeler ve gözden geçirmeler yapılması</li>
+                    <li>Final değerlendirme ve sertifikasyon raporunun hazırlanması</li>
+                    <li>TCDD veya ilgili kurumlara sertifikasyon belgelerinin sunulması</li>
+                </ol>
+                <aside>
+                ÖNERİ: Standardın uygulanmasında yaşanan zorlukları aşmak için, deneyimli bir danışmanlık firması ile çalışmak ve Türkiye'de başarılı olmuş projeleri örnek almak faydalı olacaktır.
+                </aside>
+
+                <h2 id="guncel-trendler-ve-gelecek-yonelimler">14. Güncel Trendler ve Gelecek Yönelimler</h2>
+                <p>TR EN 50128 standardı, demiryolu sistemlerinde yazılım geliştirme alanında sürekli gelişmektedir. Sektördeki en son gelişmeler ve gelecek eğilimler şunları içermektedir:</p>
+                <ul>
+                    <li><strong>Model Tabanlı Tasarım:</strong> Formal doğrulama için otomatik kod üretimi ve doğrulama yöntemlerinin artan kullanımı</li>
+                    <li><strong>Entegre Güvenlik Değerlendirmesi:</strong> Siber güvenlik (EN 50159) ile fonksiyonel güvenliğin (TR EN 50128) bütünleşik değerlendirilmesi</li>
+                    <li><strong>Yapay Zeka Uygulamaları:</strong> Demiryolu sistemlerinde güvenlik açısından kritik AI uygulamalarının standartlara uygun değerlendirilmesi</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
