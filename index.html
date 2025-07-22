@@ -94,7 +94,7 @@
         <!-- Ana Sayfa Görünümü -->
         <div id="home-view" class="view-section">
             <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
                         <label for="project-filter" class="block text-sm font-medium text-gray-700 mb-1">Projeye Göre Filtrele</label>
                         <select id="project-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
@@ -117,6 +117,11 @@
                         <label for="search-input" class="block text-sm font-medium text-gray-700 mb-1">Metin ile Ara</label>
                         <input type="text" id="search-input" placeholder="Standart kodu veya anahtar kelime..." class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button id="reset-filters-button" class="px-6 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors duration-200">
+                        Filtreleri Sıfırla
+                    </button>
                 </div>
             </div>
 
@@ -208,6 +213,7 @@
         const homeView = document.getElementById('home-view');
         const projectsView = document.getElementById('projects-view');
         const projectStandardsList = document.getElementById('project-standards-list');
+        const resetFiltersButton = document.getElementById('reset-filters-button'); // Yeni buton
 
         const summaryModal = document.getElementById('summary-modal');
         const closeModalButton = summaryModal.querySelector('.close-button');
@@ -412,7 +418,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Genel Standartlar</h3>
                 <ul class="list-disc pl-5 space-y-2">
                     ${generalStandards.map(std => `
-                        <li><a href="dokumanlar/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
+                        <li><a href="dokumanlar/${std.id}/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
                     `).join('')}
                 </ul>
             `;
@@ -428,7 +434,7 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-4">${project} Projesi Standartları</h3>
                         <ul class="list-disc pl-5 space-y-2">
                             ${projectSpecificStandards.map(std => `
-                                <li><a href="dokumanlar/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
+                                <li><a href="dokumanlar/${std.id}/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
                             `).join('')}
                         </ul>
                     `;
@@ -438,10 +444,10 @@
         }
 
         function openSummaryModal(std) {
-            console.log("openSummaryModal çağrıldı. Standart:", std); // Debug için eklendi
+            console.log("openSummaryModal çağrıldı. Standart:", std);
             if (!std || !std.baslik || !std.standart) {
                 console.error("Geçersiz standart verisiyle özet modalı açılmaya çalışıldı:", std);
-                return; // Veri geçersizse modalı açma
+                return;
             }
 
             document.getElementById('summary-modal-standart-baslik').textContent = std.baslik;
@@ -466,8 +472,16 @@
         }
 
         function closeSummaryModal() {
-            console.log("closeSummaryModal çağrıldı."); // Debug için eklendi
+            console.log("closeSummaryModal çağrıldı.");
             summaryModal.style.display = 'none';
+        }
+
+        function resetFilters() {
+            projectFilter.value = 'all';
+            disciplineFilter.value = 'all';
+            criticalityFilter.value = 'all';
+            searchInput.value = '';
+            filterAndRender();
         }
 
         closeModalButton.addEventListener('click', closeSummaryModal);
@@ -480,7 +494,7 @@
 
         function router() {
             const hash = window.location.hash;
-            console.log("Router çağrıldı. Hash:", hash); // Debug için eklendi
+            console.log("Router çağrıldı. Hash:", hash);
             homeView.classList.remove('active');
             projectsView.classList.remove('active');
             
@@ -501,9 +515,10 @@
         disciplineFilter.addEventListener('change', filterAndRender);
         criticalityFilter.addEventListener('change', filterAndRender);
         searchInput.addEventListener('input', filterAndRender);
+        resetFiltersButton.addEventListener('click', resetFilters); // Yeni butonun olay dinleyicisi
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOMContentLoaded: Sayfa yüklendi."); // Debug için eklendi
+            console.log("DOMContentLoaded: Sayfa yüklendi.");
             fetchStandardsData();
         });
     </script>
