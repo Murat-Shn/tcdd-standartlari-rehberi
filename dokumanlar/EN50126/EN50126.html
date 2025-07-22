@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TR EN 50126 Detayları - TCDD Standartları Rehberi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-   <script type="module">
+     <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true });
   </script>
@@ -14,6 +14,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
         .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
         .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
         .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
         .prose ul, .prose ol { padding-left: 1.5rem; }
         .prose li { margin-bottom: 0.5rem; }
@@ -38,6 +39,95 @@
             margin: 0;
             white-space: pre-wrap; /* Uzun satırları sar */
         }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb; /* bg-blue-600 */
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px; /* full rounded */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af; /* hover:bg-blue-700 */
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr; /* Sidebar fixed width, content fills rest */
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -55,196 +145,205 @@
         <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TR EN 50126: Demiryolu Uygulamaları - Güvenilirlik, Kullanılabilirlik, Bakım Yapılabilirlik ve Emniyet (RAMS) Şartnamesi ve Gösterimi</h1>
         <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TR EN 50126 standardı, demiryolu sistemlerinin tüm yaşam döngüsü boyunca Güvenilirlik, Kullanılabilirlik, Bakım Yapılabilirlik ve Emniyet (RAMS) gereksinimlerini tanımlayan kapsamlı bir çerçeve sunar.</p>
 
-        <div class="prose max-w-none text-gray-700">
-            <h2>1. Kapsam ve Amaç</h2>
-            <p>TR EN 50126 standardı, demiryolu sistemlerinin tüm yaşam döngüsü boyunca Güvenilirlik, Kullanılabilirlik, Bakım Yapılabilirlik ve Emniyet (RAMS) gereksinimlerini tanımlayan kapsamlı bir çerçeve sunar. Standardın temel amacı:</p>
-            <ul>
-                <li>Demiryolu sistemleri için sistematik bir RAMS yönetimi sağlamak</li>
-                <li>Demiryolu projelerinde RAMS hedeflerinin belirlenmesi ve karşılanması için metodoloji sunmak</li>
-                <li>Demiryolu sistemlerinin güvenli, güvenilir ve maliyet-etkin işletilmesini sağlamak</li>
-                <li>Tedarikçiler ile işletmeciler arasında RAMS konularında ortak bir anlayış geliştirmek</li>
-            </ul>
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
 
-            <h2>2. Tanım ve Teorik Arka Plan</h2>
-            <p>TR EN 50126 standardı, RAMS kavramını demiryolu sistemlerine uygulayan temel bir standarttır. RAMS bileşenleri şunlardır:</p>
-            <ul>
-                <li><strong>Güvenilirlik (Reliability):</strong> Bir sistemin belirtilen koşullar altında, belirli bir zaman diliminde görevini yerine getirme olasılığı</li>
-                <li><strong>Kullanılabilirlik (Availability):</strong> Bir sistemin ihtiyaç duyulduğunda kullanıma hazır olma durumu</li>
-                <li><strong>Bakım Yapılabilirlik (Maintainability):</strong> Bir sistemin bakım koşulları altında, belirli prosedürler ve kaynaklar kullanılarak, belirtilen zaman içinde bakımının yapılabilme kabiliyeti</li>
-                <li><strong>Emniyet (Safety):</strong> Kabul edilemez zarar riskinden arınma durumu</li>
-            </ul>
-            <p>Standart, sistem güvenlik mühendisliği, güvenilirlik mühendisliği ve risk yönetimi prensiplerini demiryolu sektörüne uygular. V-modeli yaklaşımını benimseyen yaşam döngüsü modeli, sistemin tasarımından işletilmesine ve hizmet dışı bırakılmasına kadar tüm aşamaları kapsar.</p>
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TR EN 50126 standardı, demiryolu sistemlerinin tüm yaşam döngüsü boyunca Güvenilirlik, Kullanılabilirlik, Bakım Yapılabilirlik ve Emniyet (RAMS) gereksinimlerini tanımlayan kapsamlı bir çerçeve sunar. Standardın temel amacı:</p>
+                <ul>
+                    <li>Demiryolu sistemleri için sistematik bir RAMS yönetimi sağlamak</li>
+                    <li>Demiryolu projelerinde RAMS hedeflerinin belirlenmesi ve karşılanması için metodoloji sunmak</li>
+                    <li>Demiryolu sistemlerinin güvenli, güvenilir ve maliyet-etkin işletilmesini sağlamak</li>
+                    <li>Tedarikçiler ile işletmeciler arasında RAMS konularında ortak bir anlayış geliştirmek</li>
+                </ul>
 
-            <h2>3. Kurumsal ve Teknik Gereklilikler</h2>
-            <p>TR EN 50126 standardı, aşağıdaki kurumsal ve teknik gereklilikleri ortaya koyar:</p>
-            <h3>Kurumsal Gereklilikler:</h3>
-            <ul>
-                <li>RAMS yönetim sisteminin kurulması ve sürdürülmesi</li>
-                <li>RAMS politikası ve stratejisinin oluşturulması</li>
-                <li>RAMS hedeflerinin belirlenmesi ve dokümante edilmesi</li>
-                <li>RAMS sorumluluklarının tanımlanması ve atanması</li>
-                <li>Bağımsız değerlendirme ve doğrulama süreçlerinin oluşturulması</li>
-                <li>Emniyet yönetim sistemi ile entegrasyon</li>
-            </ul>
-            <h3>Teknik Gereklilikler:</h3>
-            <ul>
-                <li>Sistematik tehlike analizi ve risk değerlendirmesi</li>
-                <li>RAMS gereksinimlerinin belirlenmesi ve belgelenmesi</li>
-                <li>RAMS performansının ölçülmesi ve izlenmesi</li>
-                <li>Güvenilirlik, kullanılabilirlik ve bakım yapılabilirlik analizleri</li>
-                <li>Emniyet analizi ve kanıtlama</li>
-                <li>Hata yönetimi ve kök neden analizi</li>
-            </ul>
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TR EN 50126 standardı, RAMS kavramını demiryolu sistemlerine uygulayan temel bir standarttır. RAMS bileşenleri şunlardır:</p>
+                <ul>
+                    <li><strong>Güvenilirlik (Reliability):</strong> Bir sistemin belirtilen koşullar altında, belirli bir zaman diliminde görevini yerine getirme olasılığı</li>
+                    <li><strong>Kullanılabilirlik (Availability):</strong> Bir sistemin ihtiyaç duyulduğunda kullanıma hazır olma durumu</li>
+                    <li><strong>Bakım Yapılabilirlik (Maintainability):</strong> Bir sistemin bakım koşulları altında, belirli prosedürler ve kaynaklar kullanılarak, belirtilen zaman içinde bakımının yapılabilme kabiliyeti</li>
+                    <li><strong>Emniyet (Safety):</strong> Kabul edilemez zarar riskinden arınma durumu</li>
+                </ul>
+                <p>Standart, sistem güvenlik mühendisliği, güvenilirlik mühendisliği ve risk yönetimi prensiplerini demiryolu sektörüne uygular. V-modeli yaklaşımını benimseyen yaşam döngüsü modeli, sistemin tasarımından işletilmesine ve hizmet dışı bırakılmasına kadar tüm aşamaları kapsar.</p>
 
-            <h2>4. Kullanım Alanları (Sektörel Örneklerle)</h2>
-            <p>TR EN 50126 standardı öncelikle demiryolu sektöründe kullanılmaktadır, ancak benzer prensiplerin uygulanabileceği çeşitli alanlar vardır:</p>
-            <h3>Demiryolu Sektörü:</h3>
-            <ul>
-                <li><strong>Yüksek Hızlı Tren Projeleri:</strong> Türkiye'deki Ankara-İstanbul YHT projesi gibi yüksek hızlı tren hatlarının tasarım ve işletiminde</li>
-                <li><strong>Kent İçi Raylı Sistemler:</strong> İstanbul, Ankara, İzmir gibi büyükşehirlerdeki metro, tramvay ve hafif raylı sistemlerin geliştirilmesinde</li>
-                <li><strong>Sinyalizasyon Sistemleri:</strong> ERTMS/ETCS gibi modern sinyalizasyon sistemlerinin uygulanmasında</li>
-                <li><strong>Yük Taşımacılığı:</strong> Lojistik koridorları ve yük taşımacılığı hatlarının geliştirilmesinde</li>
-            </ul>
-            <h3>Diğer Sektörler:</h3>
-            <ul>
-                <li><strong>Havacılık:</strong> Benzer prensiplerin havalimanı yer sistemleri ve hava trafik kontrol sistemlerine uyarlanması</li>
-                <li><strong>Enerji:</strong> Güç dağıtım sistemleri ve kritik altyapı yönetiminde</li>
-                <li><strong>Otomotiv:</strong> Otomatik sürüş sistemleri ve kritik güvenlik sistemlerinin geliştirilmesinde</li>
-            </ul>
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p>TR EN 50126 standardı, aşağıdaki kurumsal ve teknik gereklilikleri ortaya koyar:</p>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>RAMS yönetim sisteminin kurulması ve sürdürülmesi</li>
+                    <li>RAMS politikası ve stratejisinin oluşturulması</li>
+                    <li>RAMS hedeflerinin belirlenmesi ve dokümante edilmesi</li>
+                    <li>RAMS sorumluluklarının tanımlanması ve atanması</li>
+                    <li>Bağımsız değerlendirme ve doğrulama süreçlerinin oluşturulması</li>
+                    <li>Emniyet yönetim sistemi ile entegrasyon</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Sistematik tehlike analizi ve risk değerlendirmesi</li>
+                    <li>RAMS gereksinimlerinin belirlenmesi ve belgelenmesi</li>
+                    <li>RAMS performansının ölçülmesi ve izlenmesi</li>
+                    <li>Güvenilirlik, kullanılabilirlik ve bakım yapılabilirlik analizleri</li>
+                    <li>Emniyet analizi ve kanıtlama</li>
+                    <li>Hata yönetimi ve kök neden analizi</li>
+                </ul>
 
-            <h2>5. Uygulama Esasları</h2>
-            <p>TR EN 50126 standardının uygulanması, aşağıdaki temel esaslara dayanır:</p>
-            <h3>Yaşam Döngüsü Yaklaşımı:</h3>
-            <p>Standart, 14 aşamalı bir sistem yaşam döngüsü modeli tanımlar:</p>
-            <ol>
-                <li><strong>Konsept:</strong> Projenin amaç ve kapsamının belirlenmesi</li>
-                <li><strong>Sistem Tanımı ve Uygulama Koşulları:</strong> Sistem sınırlarının ve çevresel koşulların tanımlanması</li>
-                <li><strong>Risk Analizi:</strong> Tehlikelerin belirlenmesi ve risk değerlendirmesi</li>
-                <li><strong>Sistem Gereksinimleri:</strong> RAMS dahil tüm sistem gereksinimlerinin belirlenmesi</li>
-                <li><strong>Gereksinimlerin Tahsisi:</strong> Sistem gereksinimlerinin alt sistemlere dağıtılması</li>
-                <li><strong>Tasarım ve Uygulama:</strong> Sistem ve alt sistemlerin tasarlanması ve geliştirilmesi</li>
-                <li><strong>Üretim:</strong> Sistem bileşenlerinin üretilmesi</li>
-                <li><strong>Kurulum:</strong> Sistemin kurulumu ve entegrasyonu</li>
-                <li><strong>Sistem Validasyonu:</strong> Sistemin gereksinimlerine uygunluğunun doğrulanması</li>
-                <li><strong>Sistem Kabulü:</strong> Sistemin resmi olarak kabulü</li>
-                <li><strong>İşletme ve Bakım:</strong> Sistemin işletilmesi ve bakımı</li>
-                <li><strong>Performans İzleme:</strong> RAMS performansının sürekli izlenmesi</li>
-                <li><strong>Modifikasyon ve Retrofit:</strong> Sistem değişikliklerinin yönetimi</li>
-                <li><strong>Hizmet Dışı Bırakma ve İmha:</strong> Sistemin güvenli bir şekilde hizmet dışı bırakılması</li>
-            </ol>
-            <h3>Dokümantasyon Gereksinimleri:</h3>
-            <ul>
-                <li>RAMS Yönetim Planı</li>
-                <li>Emniyet Planı</li>
-                <li>Tehlike Kaydı</li>
-                <li>Emniyet Vaka Raporu</li>
-                <li>Güvenilirlik, Kullanılabilirlik ve Bakım Yapılabilirlik Planı</li>
-                <li>Doğrulama ve Geçerleme Planı</li>
-            </ul>
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TR EN 50126 standardı öncelikle demiryolu sektöründe kullanılmaktadır, ancak benzer prensiplerin uygulanabileceği çeşitli alanlar vardır:</p>
+                <h3>Demiryolu Sektörü:</h3>
+                <ul>
+                    <li><strong>Yüksek Hızlı Tren Projeleri:</strong> Türkiye'deki Ankara-İstanbul YHT projesi gibi yüksek hızlı tren hatlarının tasarım ve işletiminde</li>
+                    <li><strong>Kent İçi Raylı Sistemler:</strong> İstanbul, Ankara, İzmir gibi büyükşehirlerdeki metro, tramvay ve hafif raylı sistemlerin geliştirilmesinde</li>
+                    <li><strong>Sinyalizasyon Sistemleri:</strong> ERTMS/ETCS gibi modern sinyalizasyon sistemlerinin uygulanmasında</li>
+                    <li><strong>Yük Taşımacılığı:</strong> Lojistik koridorları ve yük taşımacılığı hatlarının geliştirilmesinde</li>
+                </ul>
+                <h3>Diğer Sektörler:</h3>
+                <ul>
+                    <li><strong>Havacılık:</strong> Benzer prensiplerin havalimanı yer sistemleri ve hava trafik kontrol sistemlerine uyarlanması</li>
+                    <li><strong>Enerji:</strong> Güç dağıtım sistemleri ve kritik altyapı yönetiminde</li>
+                    <li><strong>Otomotiv:</strong> Otomatik sürüş sistemleri ve kritik güvenlik sistemlerinin geliştirilmesinde</li>
+                </ul>
 
-            <h2>6. Disiplin Bazlı Sorumluluklar</h2>
-            <p>TR EN 50126 standardının uygulanmasında çeşitli disiplinlere özgü sorumluluklar bulunmaktadır:</p>
-            <h3>Proje Yönetimi:</h3>
-            <ul>
-                <li>RAMS hedeflerinin proje gereksinimlerine dahil edilmesi</li>
-                <li>RAMS aktivitelerinin planlanması ve koordinasyonu</li>
-                <li>Kaynak tahsisi ve bütçe yönetimi</li>
-                <li>Proje risk yönetimi</li>
-            </ul>
-            <h3>Sistem Mühendisliği:</h3>
-            <ul>
-                <li>Sistem gereksinimlerinin belirlenmesi ve analizi</li>
-                <li>Sistem mimarisinin geliştirilmesi</li>
-                <li>Alt sistemler arasındaki arayüzlerin tanımlanması</li>
-                <li>Sistem entegrasyonu ve doğrulama</li>
-            </ul>
-            <h3>Emniyet Mühendisliği:</h3>
-            <ul>
-                <li>Tehlike analizi ve risk değerlendirmesi</li>
-                <li>Emniyet gereksinimlerinin belirlenmesi</li>
-                <li>Emniyet kanıtlama ve argümantasyon</li>
-                <li>Emniyet vaka raporunun hazırlanması</li>
-            </ul>
-            <h3>Güvenilirlik Mühendisliği:</h3>
-            <ul>
-                <li>Güvenilirlik modellemesi ve analizi</li>
-                <li>Arıza Türleri ve Etkileri Analizi (FMEA)</li>
-                <li>Hata Ağacı Analizi (FTA)</li>
-                <li>Güvenilirlik tahminleri ve testleri</li>
-            </ul>
-            <h3>Bakım Mühendisliği:</h3>
-            <ul>
-                <li>Bakım stratejisinin geliştirilmesi</li>
-                <li>Bakım yapılabilirlik analizleri</li>
-                <li>Bakım planları ve prosedürlerinin hazırlanması</li>
-                <li>Yedek parça optimizasyonu</li>
-            </ul>
-            <h3>Kalite Yönetimi:</h3>
-            <ul>
-                <li>Kalite güvence süreçlerinin uygulanması</li>
-                <li>Denetim ve incelemeler</li>
-                <li>Uygunsuzluk yönetimi</li>
-                <li>Sürekli iyileştirme</li>
-            </ul>
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <p>TR EN 50126 standardının uygulanması, aşağıdaki temel esaslara dayanır:</p>
+                <h3>Yaşam Döngüsü Yaklaşımı:</h3>
+                <p>Standart, 14 aşamalı bir sistem yaşam döngüsü modeli tanımlar:</p>
+                <ol>
+                    <li><strong>Konsept:</strong> Projenin amaç ve kapsamının belirlenmesi</li>
+                    <li><strong>Sistem Tanımı ve Uygulama Koşulları:</strong> Sistem sınırlarının ve çevresel koşulların tanımlanması</li>
+                    <li><strong>Risk Analizi:</strong> Tehlikelerin belirlenmesi ve risk değerlendirmesi</li>
+                    <li><strong>Sistem Gereksinimleri:</strong> RAMS dahil tüm sistem gereksinimlerinin belirlenmesi</li>
+                    <li><strong>Gereksinimlerin Tahsisi:</strong> Sistem gereksinimlerinin alt sistemlere dağıtılması</li>
+                    <li><strong>Tasarım ve Uygulama:</strong> Sistem ve alt sistemlerin tasarlanması ve geliştirilmesi</li>
+                    <li><strong>Üretim:</strong> Sistem bileşenlerinin üretilmesi</li>
+                    <li><strong>Kurulum:</strong> Sistemin kurulumu ve entegrasyonu</li>
+                    <li><strong>Sistem Validasyonu:</strong> Sistemin gereksinimlerine uygunluğunun doğrulanması</li>
+                    <li><strong>Sistem Kabulü:</strong> Sistemin resmi olarak kabulü</li>
+                    <li><strong>İşletme ve Bakım:</strong> Sistemin işletilmesi ve bakımı</li>
+                    <li><strong>Performans İzleme:</strong> RAMS performansının sürekli izlenmesi</li>
+                    <li><strong>Modifikasyon ve Retrofit:</strong> Sistem değişikliklerinin yönetimi</li>
+                    <li><strong>Hizmet Dışı Bırakma ve İmha:</strong> Sistemin güvenli bir şekilde hizmet dışı bırakılması</li>
+                </ol>
+                <h3>Dokümantasyon Gereksinimleri:</h3>
+                <ul>
+                    <li>RAMS Yönetim Planı</li>
+                    <li>Emniyet Planı</li>
+                    <li>Tehlike Kaydı</li>
+                    <li>Emniyet Vaka Raporu</li>
+                    <li>Güvenilirlik, Kullanılabilirlik ve Bakım Yapılabilirlik Planı</li>
+                    <li>Doğrulama ve Geçerleme Planı</li>
+                </ul>
 
-            <h2>7. İzleme / Denetim / Belgelendirme Süreci</h2>
-            <p>TR EN 50126 standardına uyum, aşağıdaki süreçlerle izlenir, denetlenir ve belgelendirilir:</p>
-            <h3>İzleme Süreci:</h3>
-            <ul>
-                <li>RAMS performans göstergelerinin tanımlanması ve ölçülmesi</li>
-                <li>Düzenli RAMS gözden geçirmeleri</li>
-                <li>Olay ve kaza raporlama ve analizi</li>
-                <li>Düzeltici ve önleyici faaliyetlerin takibi</li>
-            </ul>
-            <h3>Denetim Süreci:</h3>
-            <ul>
-                <li>İç denetimler (organizasyon içi)</li>
-                <li>Tedarikçi denetimleri</li>
-                <li>Bağımsız değerlendirme ve doğrulama</li>
-                <li>Düzenleyici denetimler (Ulusal Emniyet Otoritesi tarafından)</li>
-            </ul>
-            <h3>Belgelendirme Süreci:</h3>
-            <ul>
-                <li>Emniyet vaka dosyasının hazırlanması</li>
-                <li>Değerlendiriciler tarafından inceleme</li>
-                <li>Değerlendirme raporlarının hazırlanması</li>
-                <li>Uygunluk belgelerinin düzenlenmesi</li>
-                <li>Düzenleyici otoritelerden gerekli onayların alınması</li>
-            </ul>
-            <h3>Temel Belgeler:</h3>
-            <ul>
-                <li>Emniyet Yönetim Sistemi Dokümantasyonu</li>
-                <li>Emniyet Vaka Dosyası</li>
-                <li>Tehlike Kaydı</li>
-                <li>Değerlendirme Raporları</li>
-                <li>Uygunluk Belgeleri</li>
-            </ul>
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <p>TR EN 50126 standardının uygulanmasında çeşitli disiplinlere özgü sorumluluklar bulunmaktadır:</p>
+                <h3>Proje Yönetimi:</h3>
+                <ul>
+                    <li>RAMS hedeflerinin proje gereksinimlerine dahil edilmesi</li>
+                    <li>RAMS aktivitelerinin planlanması ve koordinasyonu</li>
+                    <li>Kaynak tahsisi ve bütçe yönetimi</li>
+                    <li>Proje risk yönetimi</li>
+                </ul>
+                <h3>Sistem Mühendisliği:</h3>
+                <ul>
+                    <li>Sistem gereksinimlerinin belirlenmesi ve analizi</li>
+                    <li>Sistem mimarisinin geliştirilmesi</li>
+                    <li>Alt sistemler arasındaki arayüzlerin tanımlanması</li>
+                    <li>Sistem entegrasyonu ve doğrulama</li>
+                </ul>
+                <h3>Emniyet Mühendisliği:</h3>
+                <ul>
+                    <li>Tehlike analizi ve risk değerlendirmesi</li>
+                    <li>Emniyet gereksinimlerinin belirlenmesi</li>
+                    <li>Emniyet kanıtlama ve argümantasyon</li>
+                    <li>Emniyet vaka raporunun hazırlanması</li>
+                </ul>
+                <h3>Güvenilirlik Mühendisliği:</h3>
+                <ul>
+                    <li>Güvenilirlik modellemesi ve analizi</li>
+                    <li>Arıza Türleri ve Etkileri Analizi (FMEA)</li>
+                    <li>Hata Ağacı Analizi (FTA)</li>
+                    <li>Güvenilirlik tahminleri ve testleri</li>
+                </ul>
+                <h3>Bakım Mühendisliği:</h3>
+                <ul>
+                    <li>Bakım stratejisinin geliştirilmesi</li>
+                    <li>Bakım yapılabilirlik analizleri</li>
+                    <li>Bakım planları ve prosedürlerinin hazırlanması</li>
+                    <li>Yedek parça optimizasyonu</li>
+                </ul>
+                <h3>Kalite Yönetimi:</h3>
+                <ul>
+                    <li>Kalite güvence süreçlerinin uygulanması</li>
+                    <li>Denetim ve incelemeler</li>
+                    <li>Uygunsuzluk yönetimi</li>
+                    <li>Sürekli iyileştirme</li>
+                </ul>
 
-            <h2>8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
-            <h3>Zorluklar:</h3>
-            <ul>
-                <li><strong>Karmaşık Teknik Gereksinimler:</strong> Standardın teknik gereksinimlerinin anlaşılması ve uygulanması zor olabilir.</li>
-                <li><strong>Kaynak Yoğun Süreç:</strong> RAMS yönetimi, önemli miktarda kaynak ve uzmanlık gerektirir.</li>
-                <li><strong>Tedarik Zinciri Entegrasyonu:</strong> Tüm tedarikçilerin RAMS gereksinimlerini anlaması ve uygulaması zorlu olabilir.</li>
-                <li><strong>Dokümantasyon Yükü:</strong> Kapsamlı dokümantasyon gereksinimleri, proje kaynaklarını zorlayabilir.</li>
-                <li><strong>Mevcut Sistemlerin Uyumu:</strong> Eski sistemlerin standardın gereksinimlerine uyarlanması zorluk yaratabilir.</li>
-                <li><strong>Kültürel Değişim:</strong> RAMS odaklı bir kültürün oluşturulması zaman alabilir.</li>
-            </ul>
-            <h3>Çözümler:</h3>
-            <ul>
-                <li><strong>Eğitim ve Farkındalık:</strong> Tüm paydaşlar için RAMS konularında kapsamlı eğitim programları düzenlemek.</li>
-                <li><strong>Aşamalı Uygulama:</strong> Standardı aşamalı olarak uygulamak, kaynakların etkin kullanımını sağlar.</li>
-                <li><strong>Tedarikçi Yönetimi:</strong> Tedarikçilere net RAMS gereksinimleri sağlamak ve uyumlarını denetlemek.</li>
-                <li><strong>Otomasyon ve Araçlar:</strong> RAMS süreçlerini destekleyecek yazılım araçları kullanmak.</li>
-                <li><strong>Ortak Metodoloji:</strong> Tüm projeler için tutarlı bir RAMS metodolojisi geliştirmek.</li>
-                <li><strong>Sürekli İyileştirme:</strong> Düzenli gözden geçirmeler ve geribildirim mekanizmaları ile süreçleri iyileştirmek.</li>
-            </ul>
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <p>TR EN 50126 standardına uyum, aşağıdaki süreçlerle izlenir, denetlenir ve belgelendirilir:</p>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>RAMS performans göstergelerinin tanımlanması ve ölçülmesi</li>
+                    <li>Düzenli RAMS gözden geçirmeleri</li>
+                    <li>Olay ve kaza raporlama ve analizi</li>
+                    <li>Düzeltici ve önleyici faaliyetlerin takibi</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç denetimler (organizasyon içi)</li>
+                    <li>Tedarikçi denetimleri</li>
+                    <li>Bağımsız değerlendirme ve doğrulama</li>
+                    <li>Düzenleyici denetimler (Ulusal Emniyet Otoritesi tarafından)</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Emniyet vaka dosyasının hazırlanması</li>
+                    <li>Değerlendiriciler tarafından inceleme</li>
+                    <li>Değerlendirme raporlarının hazırlanması</li>
+                    <li>Uygunluk belgelerinin düzenlenmesi</li>
+                    <li>Düzenleyici otoritelerden gerekli onayların alınması</li>
+                </ul>
+                <h3>Temel Belgeler:</h3>
+                <ul>
+                    <li>Emniyet Yönetim Sistemi Dokümantasyonu</li>
+                    <li>Emniyet Vaka Dosyası</li>
+                    <li>Tehlike Kaydı</li>
+                    <li>Değerlendirme Raporları</li>
+                    <li>Uygunluk Belgeleri</li>
+                </ul>
 
-            <h2>9. Görseller / Şemalar / Akış Diyagramları</h2>
-            
-            
-            <h3>RAMS Yaşam Döngüsü V-Modeli</h3>
-            <div class="mermaid">
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
+                <ul>
+                    <li><strong>Karmaşık Teknik Gereksinimler:</strong> Standardın teknik gereksinimlerinin anlaşılması ve uygulanması zor olabilir.</li>
+                    <li><strong>Kaynak Yoğun Süreç:</strong> RAMS yönetimi, önemli miktarda kaynak ve uzmanlık gerektirir.</li>
+                    <li><strong>Tedarik Zinciri Entegrasyonu:</strong> Tüm tedarikçilerin RAMS gereksinimlerini anlaması ve uygulaması zorlu olabilir.</li>
+                    <li><strong>Dokümantasyon Yükü:</strong> Kapsamlı dokümantasyon gereksinimleri, proje kaynaklarını zorlayabilir.</li>
+                    <li><strong>Mevcut Sistemlerin Uyumu:</strong> Eski sistemlerin standardın gereksinimlerine uyarlanması zorluk yaratabilir.</li>
+                    <li><strong>Kültürel Değişim:</strong> RAMS odaklı bir kültürün oluşturulması zaman alabilir.</li>
+                </ul>
+                <h3>Çözümler:</h3>
+                <ul>
+                    <li><strong>Eğitim ve Farkındalık:</strong> Tüm paydaşlar için RAMS konularında kapsamlı eğitim programları düzenlemek.</li>
+                    <li><strong>Aşamalı Uygulama:</strong> Standardı aşamalı olarak uygulamak, kaynakların etkin kullanımını sağlar.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> Tedarikçilere net RAMS gereksinimleri sağlamak ve uyumlarını denetlemek.</li>
+                    <li><strong>Otomasyon ve Araçlar:</strong> RAMS süreçlerini destekleyecek yazılım araçları kullanmak.</li>
+                    <li><strong>Ortak Metodoloji:</strong> Tüm projeler için tutarlı bir RAMS metodolojisi geliştirmek.</li>
+                    <li><strong>Sürekli İyileştirme:</strong> Düzenli gözden geçirmeler ve geribildirim mekanizmaları ile süreçleri iyileştirmek.</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                <p>Bu bölümde, standardın anlaşılmasını kolaylaştıracak görseller, şemalar, akış diyagramları veya ilgili PDF dokümanlarına bağlantılar yer alabilir. Lütfen bu görselleri ve dosyaları ilgili standardın klasörüne yüklemeyi ve buraya doğru dosya yollarını verdiğinizden emin olun.</p>
+                
+                <h3>RAMS Yaşam Döngüsü V-Modeli</h3>
+                <div class="mermaid">
 graph TD;
     A["1. Konsept"] --> B["2. Sistem Tanımı"];
     B --> C["3. Risk Analizi"];
@@ -263,11 +362,11 @@ graph TD;
     I --> E;
     H --> F;
     G --> E;
-    
-            </div>
-            
-            <h3>RAMS Bileşenleri ve İlişkileri</h3>
-            <div class="mermaid">
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, RAMS Yaşam Döngüsü V-Modelini göstermektedir. Bu diyagramı  gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz.</p>
+
+                <h3>RAMS Bileşenleri ve İlişkileri</h3>
+                <div class="mermaid">
 graph TD;
     RAMS["RAMS Yönetimi"] --> R["Güvenilirlik\n(Reliability)"];
     RAMS --> A["Kullanılabilirlik\n(Availability)"];
@@ -281,13 +380,12 @@ graph TD;
     RISK --> HA["Tehlike Analizi"];
     RISK --> RA["Risk Değerlendirmesi"];
     RISK --> RM["Risk Azaltma Önlemleri"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, RAMS Bileşenleri ve İlişkilerini göstermektedir. Bu diyagramı da  gibi bir araç kullanarak görsel olarak dönüştürüp ekleyebilirsiniz.</p>
 
-            </div>
-            
-            <h3>Emniyet Kanıtlama Süreci</h3>
-            <div class="mermaid">
-
-graph LR;
+                <h3>Emniyet Kanıtlama Süreci</h3>
+                <div class="mermaid">
+graph TD;
     A["Tehlike Tanımlama"] --> B["Risk Analizi"];
     B --> C["Emniyet Gereksinimleri"];
     C --> D["Emniyet Önlemleri"];
@@ -295,54 +393,132 @@ graph LR;
     E --> F["Emniyet Vaka Raporu"];
     F --> G["Değerlendirme"];
     G --> H["Onay"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Emniyet Kanıtlama Sürecini göstermektedir. Bu diyagramı da  gibi bir araç kullanarak görsel olarak dönüştürüp ekleyebilirsiniz.</p>
 
+                <h3>RAMS Performans Ölçüm Parametreleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bileşen</th>
+                            <th>Ölçüm Parametreleri</th>
+                            <th>Birim</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Güvenilirlik</td>
+                            <td>MTBF (Arızalar Arası Ortalama Süre)</td>
+                            <td>Saat</td>
+                        </tr>
+                        <tr>
+                            <td>Güvenilirlik</td>
+                            <td>Arıza Oranı (λ)</td>
+                            <td>Arıza/saat</td>
+                        </tr>
+                        <tr>
+                            <td>Kullanılabilirlik</td>
+                            <td>Kullanılabilirlik (A)</td>
+                            <td>%</td>
+                        </tr>
+                        <tr>
+                            <td>Bakım Yapılabilirlik</td>
+                            <td>MTTR (Ortalama Tamir Süresi)</td>
+                            <td>Saat</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet</td>
+                            <td>THR (Tolere Edilebilir Tehlike Oranı)</td>
+                            <td>Tehlike/saat</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet</td>
+                            <td>SIL (Emniyet Bütünlük Seviyesi)</td>
+                            <td>1-4</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            
-            <h3>RAMS Performans Ölçüm Parametreleri</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Bileşen</th>
-                        <th>Ölçüm Parametreleri</th>
-                        <th>Birim</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Güvenilirlik</td>
-                        <td>MTBF (Arızalar Arası Ortalama Süre)</td>
-                        <td>Saat</td>
-                    </tr>
-                    <tr>
-                        <td>Güvenilirlik</td>
-                        <td>Arıza Oranı (λ)</td>
-                        <td>Arıza/saat</td>
-                    </tr>
-                    <tr>
-                        <td>Kullanılabilirlik</td>
-                        <td>Kullanılabilirlik (A)</td>
-                        <td>%</td>
-                    </tr>
-                    <tr>
-                        <td>Bakım Yapılabilirlik</td>
-                        <td>MTTR (Ortalama Tamir Süresi)</td>
-                        <td>Saat</td>
-                    </tr>
-                    <tr>
-                        <td>Emniyet</td>
-                        <td>THR (Tolere Edilebilir Tehlike Oranı)</td>
-                        <td>Tehlike/saat</td>
-                    </tr>
-                    <tr>
-                        <td>Emniyet</td>
-                        <td>SIL (Emniyet Bütünlük Seviyesi)</td>
-                        <td>1-4</td>
-                    </tr>
-                </tbody>
-            </table>
+
         </div>
 
-    </div>
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
