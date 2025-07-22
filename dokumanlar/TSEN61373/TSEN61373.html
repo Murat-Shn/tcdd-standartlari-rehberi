@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TS EN 61373 Detayları - TCDD Standartları Rehberi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
@@ -264,20 +268,20 @@
             <p>Bu bölümde, standardın anlaşılmasını kolaylaştıracak görseller, şemalar, akış diyagramları veya ilgili PDF dokümanlarına bağlantılar yer alabilir. Lütfen bu görselleri ve dosyaları ilgili standardın klasörüne yüklemeyi ve buraya doğru dosya yollarını verdiğinizden emin olun.</p>
             
             <h3>1. Test Kategorileri Diyagramı</h3>
-            <div class="diagram">
-<pre>
+            <div class="mermaid">
+ 
 graph TD
     A[TS EN 61373<br>Şok ve Titreşim Testleri] --> B[Kategori 1A<br>Gövdeye veya altına monte<br>3g şok, 1,5 m/s² RMS]
     A --> C[Kategori 1B<br>Gövde kutusu içine monte<br>3g şok, 1,0 m/s² RMS]
     A --> D[Kategori 2<br>Bojiye monte<br>5g şok, 3,0 m/s² RMS]
     A --> E[Kategori 3<br>Aksa monte<br>20g şok, 5,0 m/s² RMS]
-</pre>
+ 
             </div>
             <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Test Kategorilerini göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: `[TS EN 61373 Test Kategorileri Diyagramı Görseli]`</p>
 
             <h3>2. Test Süreci Akış Diyagramı</h3>
-            <div class="diagram">
-<pre>
+            <div class="mermaid">
+
 graph LR
     A[Ekipman Tanımlama<br>Konum belirleme] --> B[Test Planı Hazırlama<br>Parametreler tanımlanır]
     B --> C[Laboratuvar Seçimi<br>ISO 17025 akredite]
@@ -285,24 +289,24 @@ graph LR
     D --> E[Test Yürütme<br>Şok ve titreşim testleri]
     E --> F[Raporlama<br>Sonuçlar belgelenir]
     F --> G[Sertifikasyon<br>TS EN 61373 sertifikası]
-</pre>
+
             </div>
             <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Test Süreci Akış Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: `[TS EN 61373 Test Süreci Akış Diyagramı Görseli]`</p>
 
             <h3>3. Şok ve Titreşim Test Türleri Diyagramı</h3>
-            <div class="diagram">
-<pre>
+            <div class="mermaid">
+
 graph TD
     A[TS EN 61373 Test Türleri] --> B[Fonksiyonel Titreşim<br>Gerçek koşullar simülasyonu<br>0,3-2,0 m/s² RMS]
     A --> C[Dayanıklılık Titreşimi<br>Yorulma testi<br>1,0-5,0 m/s² RMS]
     A --> D[Şok Testi<br>Ani darbeler<br>3g-20g, 11-30 ms]
-</pre>
+
             </div>
             <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 61373 Şok ve Titreşim Test Türleri Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: `[TS EN 61373 Şok ve Titreşim Test Türleri Diyagramı Görseli]`</p>
 
             <h3>4. Uygulayıcı için Adım Adım Rehber Diyagramı</h3>
-            <div class="diagram">
-<pre>
+            <div class="mermaid">
+
 graph TD
     A[Uygulayıcı Başlangıç<br>Ekipman ve kategori belirleme] --> B[Test Gereklilikleri<br>Annex A’ya göre seviyeler]
     B --> C[Test Planı<br>Eksen, süre, test türleri]
@@ -311,7 +315,7 @@ graph TD
     E --> F[Test Yürütme<br>Fonksiyonel, dayanıklılık, şok]
     F --> G[Sonuç Analizi<br>Arıza/deformasyon kontrolü]
     G --> H[Raporlama ve Sertifikasyon<br>TS EN 61373 sertifikası]
-</pre>
+ 
             </div>
             <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Uygulayıcı için Adım Adım Rehber Diyagramını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: `[Uygulayıcı için Adım Adım Rehber Diyagramı Görseli]`</p>
 
