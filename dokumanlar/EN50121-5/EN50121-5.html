@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50121-5 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50121-5: Demiryolu Uygulamaları - Elektromanyetik Uyumluluk - Bölüm 5: Sabit Güç Besleme Tesisleri ve Cihazlarının Emisyon ve Bağışıklığı</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50121-5 standardı, demiryolu sistemlerindeki sabit güç besleme tesisleri ve cihazlarının elektromanyetik uyumluluk (EMU) gereksinimlerini belirler. Standardın temel amacı, demiryolu altyapısındaki güç besleme ekipmanlarının diğer sistemlere elektromanyetik girişim yapmadan çalışmasını ve dış kaynaklı elektromanyetik girişimlere karşı yeterli bağışıklığa sahip olmasını sağlamaktır.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50121-5 standardı, demiryolu sistemlerindeki sabit güç besleme tesisleri ve cihazlarının elektromanyetik uyumluluk (EMU) gereksinimlerini belirler. Standardın temel amacı, demiryolu altyapısındaki güç besleme ekipmanlarının diğer sistemlere elektromanyetik girişim yapmadan çalışmasını ve dış kaynaklı elektromanyetik girişimlere karşı yeterli bağışıklığa sahip olmasını sağlamaktır.</p>
+                <p>Bu standart kapsamında;</p>
+                <ul>
+                    <li>Traksiyon güç besleme sistemleri (Örn: Trafo merkezleri, frekans dönüştürücüler)</li>
+                    <li>Demiryolu koruma ve kontrol ekipmanları</li>
+                    <li>Güç dağıtım sistemleri</li>
+                    <li>Yardımcı güç besleme ekipmanları</li>
+                </ul>
+                <p>gibi sistemlerin emisyon limitleri ve bağışıklık kriterleri belirlenmektedir.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>Elektromanyetik Uyumluluk (EMU), bir cihazın veya sistemin bulunduğu elektromanyetik ortamda düzgün çalışabilmesi ve aynı zamanda bu ortamdaki diğer ekipmanlara kabul edilemez elektromanyetik girişimde bulunmaması yeteneği olarak tanımlanır.</p>
+                <p>TS EN 50121-5 standardı, iki temel EMU bileşenini ele alır:</p>
+                <ul>
+                    <li><strong>Emisyon:</strong> Ekipmanların yaydığı elektromanyetik enerji miktarı ve bu emisyonların belirlenen limitleri aşmaması gerekliliği.</li>
+                    <li><strong>Bağışıklık:</strong> Ekipmanların dış kaynaklardan gelen elektromanyetik girişimlere karşı dayanıklılığı ve fonksiyonlarını sürdürebilme kabiliyeti.</li>
+                </ul>
+                <p>Demiryolu sistemlerinde güç besleme tesisleri, yüksek güçlü elektriksel sistemler olduğundan, hem yüksek seviyede elektromanyetik emisyon üretme potansiyeline sahiptirler hem de kendileri dış kaynaklı girişimlere maruz kalabilirler. Bu nedenle bu standart, demiryolu ekosisteminin güvenli ve güvenilir işletimini sağlamak için kritik öneme sahiptir.</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>EMU yönetim planının oluşturulması ve dokümantasyonu</li>
+                    <li>Ölçüm ve test süreçlerinin akredite laboratuvarlar tarafından yürütülmesi</li>
+                    <li>Personel yetkinliğinin sağlanması (EMU konusunda eğitimli personel bulundurma)</li>
+                    <li>Düzenli iç denetimler ve uygunluk değerlendirmelerinin gerçekleştirilmesi</li>
+                    <li>Teknik dosya ve belgelerin hazırlanması ve muhafaza edilmesi</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <h4>Emisyon Limitleri:</h4>
+                <ul>
+                    <li>Radyo frekans emisyonları: 9 kHz - 1 GHz frekans aralığında tanımlanan limitler</li>
+                    <li>Harmonik emisyonlar: IEC 61000-3-2 ve IEC 61000-3-12 standartlarına uygun değerler</li>
+                    <li>Gerilim dalgalanmaları ve kırpışma (flicker): IEC 61000-3-3 ve IEC 61000-3-11 standartlarına uygunluk</li>
+                    <li>DC beslemede gerilim dalgalanmaları: EN 50121-3-1'e göre limitlerin sağlanması</li>
+                </ul>
+                <h4>Bağışıklık Gereksinimleri:</h4>
+                <ul>
+                    <li>Elektrostatik deşarja karşı bağışıklık: IEC 61000-4-2, 8 kV kontak deşarj, 15 kV hava deşarjı</li>
+                    <li>Elektromanyetik alanlara karşı bağışıklık: IEC 61000-4-3, 10 V/m (80 MHz - 1 GHz)</li>
+                    <li>Hızlı geçici/patlama bağışıklığı: IEC 61000-4-4, 4 kV (güç hatları), 2 kV (sinyal hatları)</li>
+                    <li>Darbeli gerilime karşı bağışıklık: IEC 61000-4-5, 4 kV (hat-toprak), 2 kV (hat-hat)</li>
+                    <li>İletilen RF girişimlerine karşı bağışıklık: IEC 61000-4-6, 10 V (150 kHz - 80 MHz)</li>
+                    <li>Güç frekansı manyetik alanlarına karşı bağışıklık: IEC 61000-4-8, 100 A/m (50 Hz)</li>
+                    <li>Gerilim düşmeleri ve kesintilerine karşı bağışıklık: IEC 61000-4-11, belirli süre ve seviyeler için</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TS EN 50121-5 standardı aşağıdaki demiryolu altyapı unsurlarında uygulanır:</p>
+                <h3>1. Traksiyon Güç Besleme Sistemleri:</h3>
+                <ul>
+                    <li>Traksiyon trafo merkezleri (25 kV AC, 15 kV AC, 1,5 kV DC, 3 kV DC vb.)</li>
+                    <li>Enerji iletim hatları ve katener sistemleri</li>
+                    <li>Güç dönüştürücü istasyonları</li>
+                    <li>Örnek: TCDD'nin Ankara-İstanbul YHT hattında kullanılan 25 kV AC trafo merkezleri</li>
+                </ul>
+                <h3>2. Demiryolu Sinyalizasyon ve Kontrol Sistemleri:</h3>
+                <ul>
+                    <li>Elektronik kilitleme sistemleri (elektronik interlocking)</li>
+                    <li>Ray devresi güç besleme üniteleri</li>
+                    <li>Makas kontrol sistemleri</li>
+                    <li>Örnek: Marmaray projesindeki CBTC (Communication Based Train Control) sisteminin güç besleme birimleri</li>
+                </ul>
+                <h3>3. İstasyon Güç Dağıtım Sistemleri:</h3>
+                <ul>
+                    <li>İstasyon trafo merkezleri</li>
+                    <li>Acil durum güç sistemleri</li>
+                    <li>Kesintisiz güç kaynakları (UPS)</li>
+                    <li>Örnek: İzmir Metro istasyonlarındaki güç dağıtım sistemleri</li>
+                </ul>
+                <h3>4. Telekomünikasyon ve Uzaktan Kontrol Sistemleri:</h3>
+                <ul>
+                    <li>SCADA sistemlerinin güç besleme birimleri</li>
+                    <li>GSM-R baz istasyonları güç kaynakları</li>
+                    <li>Telsiz sistemleri güç kaynakları</li>
+                    <li>Örnek: Bursa-Yenişehir demiryolu hattında kullanılan SCADA kontrol sistemlerinin besleme üniteleri</li>
+                </ul>
+                <h3>5. Tünel Altyapı Sistemleri:</h3>
+                <ul>
+                    <li>Tünel havalandırma sistemleri güç beslemesi</li>
+                    <li>Acil durum aydınlatma sistemleri</li>
+                    <li>Yangın algılama ve söndürme sistemleri güç üniteleri</li>
+                    <li>Örnek: Ankara-İstanbul YHT hattındaki tünel acil durum ve güvenlik sistemlerinin güç kaynakları</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <p>TS EN 50121-5 standardının etkin uygulanması için aşağıdaki adımların takip edilmesi önerilir:</p>
+                <h3>1. EMU Yönetim Planı Oluşturma:</h3>
+                <ul>
+                    <li>Proje başlangıcında detaylı bir EMU yönetim planı hazırlayın</li>
+                    <li>EMU kontrolünden sorumlu ekibi ve görevlerini belirleyin</li>
+                    <li>EMU test ve doğrulama planını tanımlayın</li>
+                </ul>
+                <h3>2. Risk Değerlendirmesi:</h3>
+                <ul>
+                    <li>Potansiyel EMU sorunlarını belirlemek için risk analizi yapın</li>
+                    <li>Kritik sistemleri ve bileşenleri tanımlayın</li>
+                    <li>Risk azaltma stratejilerini belirleyin</li>
+                </ul>
+                <h3>3. Tasarım Aşaması EMU Önlemleri:</h3>
+                <ul>
+                    <li>Ekipman yerleşimini EMU prensiplerine göre planlayın (örn: güç ve sinyal kablolarının ayrılması)</li>
+                    <li>Uygun topraklama ve ekranlama tasarımı yapın</li>
+                    <li>Harmonik filtreler ve gerilim dengeleyicileri gibi EMU çözümlerini tasarıma dahil edin</li>
+                    <li>Kablo güzergahları için EMU şartlarına uygun planlama yapın</li>
+                </ul>
+                <h3>4. Tedarik ve Satınalma:</h3>
+                <ul>
+                    <li>Tedarikçilerden bileşenler için uygunluk beyanları ve test raporları talep edin</li>
+                    <li>Ekipman şartnamelerinde EMU gereksinimlerini açıkça belirtin</li>
+                    <li>CE işaretli ve uygunluk beyanı olan ürünleri tercih edin</li>
+                </ul>
+                <h3>5. Kurulum ve Entegrasyon:</h3>
+                <ul>
+                    <li>EMU-uyumlu kurulum pratiklerini uygulayın (topraklama bağlantıları, kablo ekranları vb.)</li>
+                    <li>Kurulum sırasında ara kontroller ve testler yapın</li>
+                    <li>Özellikle farklı sistemlerin birleştiği noktalarda dikkatli olun</li>
+                </ul>
+                <h3>6. Test ve Doğrulama:</h3>
+                <ul>
+                    <li>EN 50121-5'te belirtilen test prosedürlerini uygulayın</li>
+                    <li>Emisyon testleri için:
+                        <ul>
+                            <li>Anten ile ölçüm (30 MHz - 1 GHz)</li>
+                            <li>Akım probu ile ölçüm (9 kHz - 30 MHz)</li>
+                            <li>Harmonik ölçümleri</li>
+                        </ul>
+                    </li>
+                    <li>Bağışıklık testleri için:
+                        <ul>
+                            <li>Elektrostatik deşarj (ESD) testleri</li>
+                            <li>Işınan elektromanyetik alan testleri</li>
+                            <li>Elektriksel hızlı geçişler/patlamalar testleri</li>
+                            <li>Darbe testleri</li>
+                            <li>İletilen RF bağışıklık testleri</li>
+                            <li>Manyetik alan testleri</li>
+                            <li>Gerilim düşmeleri ve kesintileri testleri</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>7. Dokümantasyon:</h3>
+                <ul>
+                    <li>Teknik dosya hazırlayın (test raporları, uygunluk beyanları, risk analizleri)</li>
+                    <li>Topraklama şeması, EMU önlemleri ve yerleşim planlarını dokümante edin</li>
+                    <li>Bakım ve işletme personeli için EMU kılavuzları hazırlayın</li>
+                </ul>
+                <h3>8. Devreye Alma:</h3>
+                <ul>
+                    <li>Sistemin tamamı için entegrasyon testleri yapın</li>
+                    <li>EMU performansını gerçek çalışma koşullarında değerlendirin</li>
+                    <li>Gerekli düzeltici önlemleri uygulayın</li>
+                </ul>
+                <h3>9. Periyodik Değerlendirme:</h3>
+                <ul>
+                    <li>Düzenli EMU kontrolleri ve ölçümleri planlayın</li>
+                    <li>Ekipman değişikliklerinden sonra yeniden değerlendirme yapın</li>
+                    <li>EMU performansını sürekli izleyin</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>Elektrik Mühendisleri:</h3>
+                <ul>
+                    <li>Güç besleme sistemlerinin EMU uyumlu tasarımı</li>
+                    <li>Topraklama ve ekranlama sistemlerinin tasarımı ve uygulanması</li>
+                    <li>Harmonik filtreleme ve güç kalitesi iyileştirme çözümleri</li>
+                    <li>EMU test programlarının planlanması ve yürütülmesi</li>
+                </ul>
+                <h3>Elektronik Mühendisleri:</h3>
+                <ul>
+                    <li>Kontrol ve haberleşme sistemlerinin EMU uyumlu tasarımı</li>
+                    <li>PCB tasarımında EMU prensiplerinin uygulanması</li>
+                    <li>Sinyal ve veri hatlarının girişime karşı korunması</li>
+                    <li>Hassas elektronik ekipmanlar için özel EMU çözümleri</li>
+                </ul>
+                <h3>Sistem Mühendisleri:</h3>
+                <ul>
+                    <li>Sistem seviyesinde EMU uyumluluğun sağlanması</li>
+                    <li>Farklı alt sistemler arasındaki EMU etkileşimlerinin yönetimi</li>
+                    <li>EMU gereksinimlerinin sistem şartnamelerine entegrasyonu</li>
+                    <li>Risk analizi ve yönetimi</li>
+                </ul>
+                <h3>Kalite ve Belgelendirme Uzmanları:</h3>
+                <ul>
+                    <li>EMU test planlarının ve prosedürlerinin hazırlanması</li>
+                    <li>Test sonuçlarının değerlendirilmesi ve raporlanması</li>
+                    <li>Teknik dokümantasyonun hazırlanması ve yönetimi</li>
+                    <li>Uygunluk değerlendirme süreçlerinin takibi</li>
+                </ul>
+                <h3>İnşaat ve Altyapı Mühendisleri:</h3>
+                <ul>
+                    <li>Bina ve tesislerde topraklama altyapısının kurulması</li>
+                    <li>Elektromanyetik ekranlama için yapısal çözümler</li>
+                    <li>Kablo geçiş yolları ve kanallarının EMU prensiplerine göre tasarımı</li>
+                </ul>
+                <h3>İşletme ve Bakım Personeli:</h3>
+                <ul>
+                    <li>EMU performansının düzenli izlenmesi</li>
+                    <li>Topraklama ve bağlantıların periyodik kontrolü</li>
+                    <li>EMU ile ilgili sorunların tespiti ve raporlanması</li>
+                    <li>Düzeltici ve önleyici bakım faaliyetlerinin yürütülmesi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>1. Ön Değerlendirme:</h3>
+                <ul>
+                    <li>Tasarım ve proje dokümantasyonunun gözden geçirilmesi</li>
+                    <li>EMU yönetim planının kontrol edilmesi</li>
+                    <li>Risk değerlendirmesi ve azaltma önlemlerinin incelenmesi</li>
+                    <li>Tedarikçi uygunluk beyanlarının ve test raporlarının kontrolü</li>
+                </ul>
+                <h3>2. EMU Testleri:</h3>
+                <ul>
+                    <li><em>Emisyon Testleri (IEC/CISPR 16-2-1 ve 16-2-3 metodolojileri):</em>
+                        <ul>
+                            <li>İletilen emisyonlar: 9 kHz - 30 MHz</li>
+                            <li>Işınan emisyonlar: 30 MHz - 1 GHz</li>
+                            <li>Harmonik emisyonlar: IEC 61000-3-2/12 metodolojileri</li>
+                            <li>Gerilim dalgalanmaları ve kırpışma: IEC 61000-3-3/11 metodolojileri</li>
+                        </ul>
+                    </li>
+                    <li><em>Bağışıklık Testleri (IEC 61000-4 serisi metodolojileri):</em>
+                        <ul>
+                            <li>Elektrostatik deşarj: IEC 61000-4-2</li>
+                            <li>Işınan elektromanyetik alan: IEC 61000-4-3</li>
+                            <li>Hızlı geçici/patlamalar: IEC 61000-4-4</li>
+                            <li>Darbeli gerilim: IEC 61000-4-5</li>
+                            <li>İletilen RF bozuklukları: IEC 61000-4-6</li>
+                            <li>Güç frekansı manyetik alanı: IEC 61000-4-8</li>
+                            <li>Gerilim düşmeleri ve kesintileri: IEC 61000-4-11</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>3. Saha Ölçümleri:</h3>
+                <ul>
+                    <li>Gerçek çalışma koşullarında emisyon ölçümleri (EN 50121-2'ye göre)</li>
+                    <li>Sistem entegrasyonu sonrası genel EMU performans değerlendirmesi</li>
+                    <li>Komşu sistemlerle etkileşimin kontrol edilmesi</li>
+                    <li>Özel çalışma koşullarında (maksimum yük, acil durum senaryoları vb.) ölçümler</li>
+                </ul>
+                <h3>4. Dokümantasyon ve Teknik Dosya:</h3>
+                <ul>
+                    <li>Sistem tanımı ve teknik özelliklerinin dokümantasyonu</li>
+                    <li>Test raporları ve ölçüm sonuçları</li>
+                    <li>Uygunluk beyanı ve CE işaretlemesi için gerekli belgeler</li>
+                    <li>Bakım ve izleme prosedürleri</li>
+                </ul>
+                <h3>5. Belgelendirme:</h3>
+                <ul>
+                    <li>Üreticinin uygunluk beyanı (DoC) hazırlanması</li>
+                    <li>Gerekirse bağımsız test kuruluşu raporları</li>
+                    <li>Teknik dokümantasyonun 10 yıl süreyle saklanması</li>
+                    <li>CE işaretlemesi (Avrupa pazarı için)</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk 1: Topraklama ve Ekranlama Sorunları</h3>
+                <p><strong>Problem:</strong> Demiryolu ortamında topraklama ve ekranlama için uygun koşulların sağlanması zordur. Özellikle farklı sistemlerin birleştiği noktalarda toprak döngüleri oluşabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Tek-nokta topraklama ve yıldız topolojisi uygulayın</li>
+                    <li>Ekranlı kabloların her iki ucunda değil, yalnızca bir ucunda topraklanmasını sağlayın</li>
+                    <li>Gerekirse galvanik izolatörler veya optik izolatörler kullanın</li>
+                    <li>Tüm metal parçaların ve ekipmanların düşük empedanslı toprak bağlantısı olduğundan emin olun</li>
+                </ul>
+                <h3>Zorluk 2: Harmonik Bozulmalar</h3>
+                <p><strong>Problem:</strong> Güç elektroniği tabanlı dönüştürücüler ve sürücüler, güç hattında önemli harmonik bozulmalara neden olabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Aktif veya pasif harmonik filtreleri kullanın</li>
+                    <li>12-pulse, 18-pulse veya 24-pulse dönüştürücüler gibi daha yüksek pulse sayılı dönüştürücüler tercih edin</li>
+                    <li>PWM (Darbe Genişlik Modülasyonu) tekniklerini optimize edin</li>
+                    <li>Harmonik distorsiyon oranını (THD) düzenli olarak ölçün (EN 50160 kriterlerine göre gerilim THD %8'in altında olmalıdır)</li>
+                </ul>
+                <h3>Zorluk 3: Elektrifikasyon Sistemleri Arası Uyumluluk</h3>
+                <p><strong>Problem:</strong> Farklı elektrifikasyon sistemleri (örn: 25 kV AC ve 3 kV DC) arasındaki geçiş bölgelerinde EMU problemleri yaşanabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Sistem geçişlerinde nötr bölgeler oluşturun</li>
+                    <li>Filtre ve kompanzasyon sistemlerini her iki sistem için optimize edin</li>
+                    <li>Geçiş bölgelerinde özel topraklama düzenlemeleri yapın</li>
+                    <li>Sistemler arası elektromanyetik kuplajı minimize eden yerleşim planları tasarlayın</li>
+                </ul>
+                <h3>Zorluk 4: Sinyalizasyon Sistemleriyle Etkileşim</h3>
+                <p><strong>Problem:</strong> Güç sistemlerinden kaynaklanan elektromanyetik girişimler, sinyal ve haberleşme sistemlerini etkileyebilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Ray devrelerinin çalışma frekanslarını güç sisteminin harmoniklerinden uzak seçin</li>
+                    <li>Sinyal kabloları için ekstra ekranlama önlemleri alın</li>
+                    <li>Güç ve sinyal kablolarını minimum mesafede (en az 0.5-1 metre) ayrı tutun</li>
+                    <li>Sinyalizasyon ekipmanlarını elektromanyetik parazitlerden korumak için filtreleme ve yalıtım uygulayın</li>
+                </ul>
+                <h3>Zorluk 5: Test ve Doğrulama Zorlukları</h3>
+                <p><strong>Problem:</strong> Büyük güç sistemlerinin tam yükte test edilmesi ve gerçek çalışma koşullarının simüle edilmesi zordur.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Modüler testler yapın ve sonuçları entegre edin</li>
+                    <li>Simülasyon yazılımları kullanarak tam sistem davranışını öngörün</li>
+                    <li>Kademeli devreye alma stratejisi uygulayın ve her aşamada EMU ölçümleri yapın</li>
+                    <li>Kritik durum senaryolarını özel olarak test edin (örn: maksimum yük, arıza durumları)</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>TS EN 50121-5 Uygulama Süreci Akış Şeması</h3>
+                <div class="mermaid">
+graph TD;
+    A["1. Başlangıç"] --> B["2. EMU Gereksinimlerinin Belirlenmesi"];
+    B --> C["3. Tasarım ve Geliştirme"];
+    C --> D["4. Tedarik ve Satınalma"];
+    D --> E["5. Kurulum ve Entegrasyon"];
+    E --> F["6. Test ve Doğrulama"];
+    F --> G{"Uygunluk?"}
+    G -- Hayır --> H["Düzeltici Önlemler"];
+    H --> F;
+    G -- Evet --> I["7. Dokümantasyon"];
+    I --> J["8. Devreye Alma"];
+    J --> K["9. Periyodik Değerlendirme"];
+    K --> L["Gerektiğinde Yeniden Değerlendirme"];
+    L --> F;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50121-5 Uygulama Süreci Akış Şemasını göstermektedir.</p>
+
+                <h3>Topraklama ve Ekranlama Prensipleri</h3>
+                <div class="mermaid">
+graph TD;
+    A["Ana Toprak Barasıa"] --> B["Güç Dağıtım Sistemi"];
+    A --> C["Kontrol ve Sinyal Sistemleri"];
+    A --> D["Yapısal Elemanlar"];
+    B --> E["Trafo Merkezi Ekipmanları"];
+    B --> F["Güç Dönüştürücüler"];
+    C --> G["Sinyal Kabloları (Tek Nokta Topraklama)"];
+    C --> H["Kontrol Panelleri"];
+    D --> I["Metal Yapılar"];
+    D --> J["Kablo Kanalları"];
+    style A fill:#90EE90,stroke:#006400,stroke-width:2px;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Topraklama ve Ekranlama Prensiplerini göstermektedir.</p>
+
+                <h3>Emisyon Limitleri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Frekans Aralığı</th>
+                            <th>Ölçüm Mesafesi</th>
+                            <th>Limit (dBμV/m)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>9 kHz - 150 kHz</td>
+                            <td>10 m</td>
+                            <td>Değerlendirme aşamasında</td>
+                        </tr>
+                        <tr>
+                            <td>150 kHz - 30 MHz</td>
+                            <td>10 m</td>
+                            <td>Quasi-peak: 40-30 (frekansa bağlı olarak azalan)</td>
+                        </tr>
+                        <tr>
+                            <td>30 MHz - 230 MHz</td>
+                            <td>10 m</td>
+                            <td>Quasi-peak: 50</td>
+                        </tr>
+                        <tr>
+                            <td>230 MHz - 1 GHz</td>
+                            <td>10 m</td>
+                            <td>Quasi-peak: 60</td>
+                        </tr>
+                        <tr>
+                            <td>1 GHz - 6 GHz</td>
+                            <td>3 m</td>
+                            <td>Peak: 50</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Test Düzeni Şeması</h3>
+                <div class="mermaid">
+graph LR;
+    A["Test Edilen Ekipman (EUT)"] -- "≥ 0.8m" --> B["Toprak Düzlemi"];
+    C["Ölçüm Anteni"] -- "10m veya 3m" --> A;
+    D["Spektrum Analizörü"] --> C;
+    E["Yardımcı Ekipmanlar"] -- "EMU Filtreli" --> A;
+    F["Güç Kaynağı"] -- "LISN üzerinden" --> A;
+    G["Kontrol/İzleme Ekipmanı"] -- "Fiber Optik veya Filtreli" --> A;
+    style A fill:#FFB6C1,stroke:#FF0000,stroke-width:2px;
+    style B fill:#A9A9A9,stroke:#000000,stroke-width:1px;
+    style C fill:#ADD8E6,stroke:#0000FF,stroke-width:1px;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Test Düzeni Şemasını göstermektedir.</p>
+
+                <h3>Bağışıklık Test Seviyeleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bağışıklık Testi</th>
+                            <th>Test Standardı</th>
+                            <th>Test Seviyesi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Elektrostatik Deşarj (ESD)</td>
+                            <td>IEC 61000-4-2</td>
+                            <td>±8 kV temas, ±15 kV hava</td>
+                        </tr>
+                        <tr>
+                            <td>Işınan RF Elektromanyetik Alan</td>
+                            <td>IEC 61000-4-3</td>
+                            <td>10 V/m (80% AM, 1 kHz), 80 MHz - 6 GHz</td>
+                        </tr>
+                        <tr>
+                            <td>Elektriksel Hızlı Geçici/Patlamalar</td>
+                            <td>IEC 61000-4-4</td>
+                            <td>±2 kV güç hatları, ±1 kV sinyal hatları</td>
+                        </tr>
+                        <tr>
+                            <td>Darbeli Gerilim</td>
+                            <td>IEC 61000-4-5</td>
+                            <td>±2 kV hat-toprak, ±1 kV hat-hat</td>
+                        </tr>
+                        <tr>
+                            <td>İletilen RF Bozuklukları</td>
+                            <td>IEC 61000-4-6</td>
+                            <td>10 V (80% AM, 1 kHz), 150 kHz - 80 MHz</td>
+                        </tr>
+                        <tr>
+                            <td>Güç Frekansı Manyetik Alan</td>
+                            <td>IEC 61000-4-8</td>
+                            <td>100 A/m sürekli, 1000 A/m kısa süreli</td>
+                        </tr>
+                        <tr>
+                            <td>Gerilim Düşmeleri ve Kesintileri</td>
+                            <td>IEC 61000-4-11</td>
+                            <td>%0, %40, %70 düşme (farklı süreler için)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="sonuc-ve-degerlendirme">10. Sonuç ve Değerlendirme</h2>
+                <p>TS EN 50121-5 standardı, demiryolu sistemlerinde kullanılan sabit güç besleme tesisleri ve cihazlarının elektromanyetik uyumluluğunu sağlamak için kritik öneme sahiptir. Bu standardın etkin bir şekilde uygulanması, sistemin güvenli ve güvenilir çalışmasını garanti ederken, elektromanyetik girişimlerden kaynaklanan sorunları minimize eder.</p>
+                <p>Standart gereksinimlerinin sağlanması için düzenli testler, uygun ekranlama ve topraklama teknikleri, ve titiz bir EMU yönetimi şarttır. Demiryolu sistemlerinin elektromanyetik uyumluluğu, sadece teknik bir gereklilik değil, aynı zamanda operasyonel güvenlik ve sistem performansı için de temel bir gerekliliktir.</p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
