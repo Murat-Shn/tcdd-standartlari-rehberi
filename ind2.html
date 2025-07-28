@@ -1,24 +1,1037 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Mermaid Demo</title>
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCDD Standartları İnteraktif Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral & Railway Blue -->
+    <!-- Application Structure Plan: Uygulama, URL hash'leri aracılığıyla yönetilen üç ana görünüme sahiptir: #overview (genel bilgilendirme sayfası), #home (ana filtreleme ve kart listesi) ve #projects (projelere ve genel standartlara göre gruplandırılmış listeler). Varsayılan görünüm #overview'dir. Her bir standart kartına tıklandığında, standardın detaylı bir özetini gösteren bir modal pencere açılır. Bu modal içinde, kullanıcının o standardın daha kapsamlı bilgilerini içeren ayrı bir HTML sayfasına (dokumanlar/<standart_id>/<standart_id>.html) gitmesini sağlayan bir "Detaylı Sayfaya Git" butonu bulunur. Bu yapı, hızlı özet erişimi ile zenginleştirilmiş detaylı sayfa içeriğini birleştirir. -->
+    <!-- Visualization & Content Choices: #overview görünümü, raporlardan derlenmiş kapsamlı metinsel bilgileri ve başlık yapısını içerir, bu sayede genel bir bakış sunar. Ana görünümde standart kartları ve disiplinlere göre dağılımı gösteren Chart.js çubuk grafiği bulunur. Projeler sayfasında, her proje ve genel standartlar için ayrı başlıklar altında standartların basit listeleri yer alır. Her standart kartı ve liste öğesi, öncelikle bir özet modalı açar. Modalda, standardın temel bilgileri, kapsamı, detaylı açıklaması (kısa versiyon), kritikliği, ilgili disiplinler, uygulama alanları, ilgili diğer standartlar ve notlar bulunur. Ayrıca "Detaylı Sayfaya Git" butonu da yer alır. Detay sayfaları (dokumanlar/<standart_id>/<standart_id>.html), bu butona basıldığında açılan, daha fazla metin, dosya veya görsel barındırabilen bağımsız HTML dosyalarıdır. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .card-enter {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .view-section { display: none; } /* Varsayılan olarak tüm görünümleri gizle */
+        .view-section.active { display: block; } /* Aktif olanı göster */
+
+        /* Modal Stilleri */
+        .modal {
+            display: none; /* Varsayılan olarak gizli */
+            position: fixed; /* Ekranın üzerinde kalır */
+            z-index: 1000; /* Diğer tüm içeriklerin üzerinde */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* İçerik taşarsa kaydırma çubuğu */
+            background-color: rgba(0,0,0,0.6); /* Yarı saydam siyah arka plan */
+            backdrop-filter: blur(5px); /* Arka planı bulanıklaştır */
+            display: flex; /* İçeriği ortalamak için flex kullan */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px; /* Modal genişliğini artırdık */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Overview Page Specific Styles */
+        .overview-prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .overview-prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .overview-prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .overview-prose p, .overview-prose ul, .overview-prose ol, .overview-prose table { margin-bottom: 1.25rem; }
+        .overview-prose ul, .overview-prose ol { padding-left: 1.5rem; }
+        .overview-prose li { margin-bottom: 0.5rem; }
+        .overview-prose a { color: #2563eb; text-decoration: none; }
+        .overview-prose a:hover { text-decoration: underline; }
+        .overview-prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .overview-prose th, .overview-prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .overview-prose th { background-color: #f3f4f6; font-weight: 600; }
+        .overview-prose aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        /* Table of Contents (ToC) styles for Overview */
+        #overview-toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #overview-toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #overview-toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #overview-toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #overview-toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #overview-toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        /* Back to Top Button for Overview */
+        #overview-back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #overview-back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #overview-back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .overview-main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr; /* Sidebar fixed width, content fills rest */
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #overview-toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
 
-<h2>Flowchart Örneği</h2>
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">TCDD Standartları İnteraktif Rehberi</h1>
+            <p class="mt-2 text-lg text-gray-600">Demiryolu projeleriniz için gerekli ulusal ve uluslararası standartları keşfedin.</p>
+        </header>
 
-<div class="mermaid">
-  graph TD;
-    A[Başla] --> B{Karar};
-    B -- Evet --> C[Devam];
-    B -- Hayır --> D[Bitir];
-    C --> D
-</div>
+        <!-- Ana Navigasyon Menüsü -->
+        <nav class="bg-white p-4 rounded-xl shadow-md mb-8 flex justify-center space-x-4">
+            <a href="#overview" class="px-4 py-2 rounded-md font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200">Genel Bakış</a>
+            <a href="#home" class="px-4 py-2 rounded-md font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200">Standartları Keşfet</a>
+            <a href="#projects" class="px-4 py-2 rounded-md font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors duration-200">Projeler & Genel Standartlar</a>
+        </nav>
 
+        <!-- Genel Bakış Sayfası Görünümü (Yeni Ana Sayfa) -->
+        <div id="overview-view" class="view-section p-6 bg-white rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Demiryolu Projeleri İçin Güvenlik ve Standartlar Rehberi</h2>
+            <p class="text-gray-600 mb-8 text-center">Bu rehber, TCDD projelerinde uygulanması gereken ulusal ve uluslararası standartları açıklayarak, demiryolu projeleri için kapsamlı bir güvenlik ve standart rehberi sunmaktadır. Amacımız, demiryolu sistemlerinin güvenilirliğini, emniyetini ve sürdürülebilirliğini sağlamak için gerekli standartları anlaşılır bir şekilde sunmaktır.</p>
+
+            <div class="overview-main-content-grid">
+                <!-- Table of Contents Sidebar for Overview -->
+                <nav id="overview-toc-sidebar">
+                    <h3>İçindekiler</h3>
+                    <ul id="overview-toc-list">
+                        <!-- ToC items will be dynamically inserted here by JavaScript -->
+                    </ul>
+                </nav>
+
+                <div class="overview-prose max-w-none">
+                    <h2 id="giris">Giriş</h2>
+                    <p>Bu rapor, TCDD projelerinde kullanılan güvenlik ve standartlar rehberini, verilen veri tablosuna dayandırarak detaylı bir şekilde açıklamaktadır. Rapor, "Otomatik Test Muayene İstasyonu", "Elektronik Gabari Projesi", "Test Treni Projesi" ve "Pantograf Denetleme Projesi" için gerekli standartları disiplinler ve proje bazında detaylandırmaktadır. Tüm standartlar, Türk Standartları Enstitüsü (TSE) portalından kontrol edilerek güncellenmiştir.</p>
+
+                    <h2 id="genel-standartlar-ve-onemi">1. Genel Standartların Kapsamı ve Önemi</h2>
+                    <p>Demiryolu projelerinde kullanılan standartlar, sistemlerin güvenliği, güvenilirliği, çevresel uyumluluğu ve operasyonel verimliliği için temel bir çerçeve sunar. Bu standartlar, yasal zorunluluklar ve endüstriyel gereksinimlere uygunluğu garanti ederken, aynı zamanda uluslararası uyumluluğu sağlar. Genel standartlar, tüm demiryolu projelerinde uygulanması gereken temel prensipleri kapsar ve genellikle yönetim, kalite, çevre ve iş güvenliği gibi alanlarda rehberlik eder.</p>
+                    <h3>1.1. Temel Demiryolu Standartları</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Standart</th>
+                                <th>Tanım</th>
+                                <th>Uygulama Alanı</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EN 50126</td>
+                                <td>Güvenilirlik, Kullanılabilirlik, Sürdürülebilirlik ve Emniyet (RAMS)</td>
+                                <td>Tüm demiryolu projeleri için temel güvenlik çerçevesi</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50128</td>
+                                <td>Demiryolu kontrol ve koruma sistemleri için yazılım</td>
+                                <td>Yazılım içeren tüm projeler</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50129</td>
+                                <td>Emniyet ile ilgili elektronik sistemler</td>
+                                <td>Sinyalizasyon ve kontrol sistemleri</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50159</td>
+                                <td>Haberleşme, sinyalizasyon ve işleme sistemleri</td>
+                                <td>Tüm iletişim sistemleri</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50125</td>
+                                <td>Çevresel koşullar ve ekipman dayanıklılığı</td>
+                                <td>Dış ortamda çalışacak tüm ekipmanlar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Bu standartlar, demiryolu sistemlerinin güvenli ve güvenilir şekilde tasarlanması, uygulanması ve işletilmesi için gerekli temel çerçeveyi sağlar. Özellikle EN 50126 serisi, demiryolu projelerinin tüm yaşam döngüsü boyunca risk yönetimi ve güvenlik gereksinimlerini tanımlar.</p>
+
+                    <h2 id="branslar-bazinda-standartlar">2. Branşlar Bazında Standartlar ve Dikkat Edilmesi Gereken Noktalar</h2>
+                    <p>Demiryolu projeleri, farklı disiplinlerdeki teknik gereksinimlere göre standartlara ihtiyaç duyar. Aşağıda, ana branşlara göre ilgili standartlar ve dikkat edilmesi gereken noktalar özetlenmiştir:</p>
+                    <h3>2.1. Genel Yönetim</h3>
+                    <ul>
+                        <li><strong>Standartlar</strong>: TS EN ISO 9001, TS EN ISO 14001, TS EN ISO 45001, TS ISO/IEC 27001, EN 50126, TS EN 17025</li>
+                        <li><strong>Dikkat Edilmesi Gerekenler</strong>:
+                            <ul>
+                                <li>Kalite yönetim sistemi (ISO 9001) tüm süreçlerde uygulanmalı, tedarikçi ve üretim süreçleri denetlenmelidir.</li>
+                                <li>Çevre (ISO 14001) ve iş güvenliği (ISO 45001) standartları, yasal uyumluluk ve çalışan refahı için dikkate alınmalıdır.</li>
+                                <li>Bilgi güvenliği (ISO 27001) özellikle veri yoğun projelerde (örneğin, ölçüm sistemleri) kritik öneme sahiptir.</li>
+                                <li>EN 50126, sistem güvenilirliği ve emniyet yönetimi için temel bir çerçeve sunar.</li>
+                                <li>Test ve kalibrasyon laboratuvarlarının yeterliliği (TS EN 17025) ölçüm doğruluğu için zorunludur.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3>2.2. Yazılım</h3>
+                    <ul>
+                        <li><strong>Standartlar</strong>: EN 50128, IEC 62443-4-2, EN ISO 9241-110, ISO 19115, ISO 19157</li>
+                        <li><strong>Dikkat Edilmesi Gerekenler</strong>:
+                            <ul>
+                                <li>EN 50128, güvenlik kritik yazılımların geliştirilmesi, test edilmesi ve doğrulanması için zorunludur (örneğin, sinyalizasyon yazılımları).</li>
+                                <li>IEC 62443-4-2, siber güvenlik tehditlerine karşı sistem koruması sağlar. Dijital sistemlerde (örneğin, kontrol yazılımları) uygulanmalıdır.</li>
+                                <li>EN ISO 9241-110, kullanıcı arayüzlerinin ergonomik tasarımını destekler, operatör hatalarını azaltır.</li>
+                                <li>ISO 19115 ve ISO 19157, coğrafi verilerin (örneğin, GPS tabanlı ölçümler) metaveri ve kalite kontrolü için gereklidir.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3>2.3. Mekanik</h3>
+                    <ul>
+                        <li><strong>Standartlar</strong>: TS EN 15085, TS EN 61373, EN 15273, EN 14363, EN 50238, EN 50317, EN 50119, TS EN 14067-4, TS EN 14427, TS EN 14752, TS EN 15227, TS EN 15313, TS EN 15528, TS EN 15663, TS EN 15839, TS EN 16186-1, TS EN 16235, TS EN 16281, TS EN 16334, TS EN 16732, TS EN 16733, TS EN 16907 serisi, TS EN 13232-2+A1, TS EN 13232-7+A1, TS EN 14535-2, TS EN 16116-2, UIC 719, UIC 712, UIC 518, ISO 8608</li>
+                        <li><strong>Dikkat Edilmesi Gerekenler</strong>:
+                            <ul>
+                                <li>TS EN 15085, kaynaklı imalatların kalitesini sağlar, araç şasileri ve boji çerçeveleri için zorunludur.</li>
+                                <li>TS EN 61373, titreşim ve şok testleri için gereklidir, ekipman dayanıklılığını doğrular.</li>
+                                <li>EN 15273, gabari ölçümleri için temel standarttır, trenlerin altyapıyla uyumluluğunu sağlar.</li>
+                                <li>EN 14363 ve UIC 518, araçların dinamik davranışlarını test eder, sürüş güvenliği için kritik öneme sahiptir.</li>
+                                <li>Fren sistemleri (TS EN 14427, TS EN 15839, TS EN 16235, TS EN 16281, TS EN 16334, TS EN 16732, TS EN 16733) frenleme performansı ve güvenliği için zorunludur.</li>
+                                <li>TS EN 16907 serisi, ray hattı tasarımı, geometrisi, bileşenleri ve bakımı için kapsamlı bir çerçeve sunar.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3>2.4. Elektrik/Donanım</h3>
+                    <ul>
+                        <li><strong>Standartlar</strong>: EN 50155, EN 50121 serisi, IEC 61508, TS EN 50163, TS EN 50124-1/A1, TS EN 50124-1/A2, EN 302609:2020, EN 302608:2020, TS EN 50125-1, TS EN 50343, TS EN 60077-1, TS EN 60077-2, TS EN 60077-4, TS EN 60077-5, tst EN 60310, TS EN 60322, TS EN 60349-1:2010</li>
+                        <li><strong>Dikkat Edilmesi Gerekenler</strong>:
+                            <ul>
+                                <li>EN 50155, demiryolu araçlarındaki elektronik ekipmanların çevresel koşullara dayanıklılığını sağlar.</li>
+                                <li>EN 50121 serisi, elektromanyetik uyumluluğu (EMC) düzenler, sinyalizasyon ve kontrol sistemleri için kritik.</li>
+                                <li>IEC 61508, fonksiyonel güvenliği sağlar, demiryolu standartlarına temel oluşturur.</li>
+                                <li>TS EN 50163, elektrifikasyon sistemlerinin besleme gerilimini düzenler, enerji sürekliliği için önemlidir.</li>
+                                <li>EN 302609:2020 ve EN 302608:2020, kablosuz iletişim sistemlerinin (Euroloop, Eurobalise) EMC uyumluluğunu düzenler.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3>2.5. Siber Güvenlik</h3>
+                    <ul>
+                        <li><strong>Standartlar</strong>: IEC 62443-4-2, TS ISO/IEC 27001</li>
+                        <li><strong>Dikkat Edilmesi Gerekenler</strong>:
+                            <ul>
+                                <li>IEC 62443-4-2, endüstriyel otomasyon sistemlerinin siber güvenliğini sağlar, özellikle sinyalizasyon ve kontrol sistemleri için kritik.</li>
+                                <li>TS ISO/IEC 27001, veri güvenliği ve sistem erişim kontrollerini düzenler, hassas verilerin korunması için gereklidir.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3>2.6. Çevre</h3>
+                    <ul>
+                        <li><strong>Standartlar</strong>: EN ISO 3095</li>
+                        <li><strong>Dikkat Edilmesi Gerekenler</strong>:
+                            <ul>
+                                <li>EN ISO 3095, trenlerin yaydığı gürültü seviyelerini ölçer, çevresel gürültü kirliliğini kontrol etmek için önemlidir.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h2 id="projeler-bazinda-standart-uygulamalari">3. Projeler Bazında Standart Uygulamaları</h2>
+                    <p>Aşağıda, belirli demiryolu projelerine özgü standartlar ve bunların projelerdeki önemleri açıklanmıştır:</p>
+                    <h3>3.1. Otomatik Test Muayene İstasyonu</h3>
+                    <p>Otomatik Test Muayene İstasyonu, demiryolu araçlarının test ve muayene işlemlerini otomatikleştiren bir sistemdir. Bu sistemin güvenli ve etkili çalışması için aşağıdaki standartlar özellikle önemlidir:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Standart</th>
+                                <th>Önemi ve Uygulaması</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EN 50126</td>
+                                <td>Sistemin RAMS (Güvenilirlik, Kullanılabilirlik, Sürdürülebilirlik ve Emniyet) gereksinimlerini karşılamasını sağlar</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50128</td>
+                                <td>Test istasyonunda kullanılan yazılımların emniyet bütünlüğünü garanti eder</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 50125-3</td>
+                                <td>Sinyalizasyon ve telekomünikasyon ekipmanlarının çevresel koşullara dayanıklılığını sağlar</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 13103-1:2018</td>
+                                <td>Aksların tahribatsız muayenesi için gereklilikleri tanımlar</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 13979-1:2020</td>
+                                <td>Tekerleklerin tahribatsız muayenesi için gereklilikleri tanımlar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>3.2. Elektronik Gabari Projesi</h3>
+                    <p>Elektronik Gabari Projesi, demiryolu araçlarının ölçüm ve denetimini elektronik olarak gerçekleştiren bir sistemdir. Bu proje için kritik standartlar:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Standart</th>
+                                <th>Önemi ve Uygulaması</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EN 15273 serisi</td>
+                                <td>Demiryolu gabari (yapı gabarisi ve araç gabarisi) tanımları ve ölçüm metodolojisi</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50129</td>
+                                <td>Elektronik ölçüm sistemlerinin güvenlik gereksinimleri</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 50125-3</td>
+                                <td>Elektronik ekipmanların çevresel koşullara dayanıklılığı</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50159</td>
+                                <td>Ölçüm verilerinin güvenli iletimi için haberleşme protokolleri</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>3.3. Test Treni Projesi</h3>
+                    <p>Test Treni Projesi, demiryolu altyapısını ve üstyapısını test etmek için kullanılan özel bir tren sistemidir. Bu projede dikkat edilmesi gereken standartlar:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Standart</th>
+                                <th>Önemi ve Uygulaması</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TS EN 13260:2020, 13261:2020, 13262:2020</td>
+                                <td>Tekerlek takımları, akslar ve tekerlekler için tasarım gereksinimleri</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 15227:2020</td>
+                                <td>Test treninin çarpışma güvenliği gereksinimleri</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 14427:2014, TS EN 15839:2012+A1:2015</td>
+                                <td>Fren sistemleri gereksinimleri ve test yöntemleri</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 15313:2016</td>
+                                <td>Dinamik test yöntemleri için gereklilikler</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 16186-1:2014+A1:2018</td>
+                                <td>Sürücü kabini için ergonomik gereklilikler</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>3.4. Pantograf Denetleme Projesi</h3>
+                    <p>Pantograf Denetleme Projesi, elektrikli trenlerin katener sistemine bağlantı sağlayan pantografların denetimini gerçekleştiren sistemdir. Bu proje için önem taşıyan standartlar:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Standart</th>
+                                <th>Önemi ve Uygulaması</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EN 50206 serisi</td>
+                                <td>Pantograflar için tasarım, test ve doğrulama gereksinimleri</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50119</td>
+                                <td>Katener sistemleri için gereklilikler</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50367</td>
+                                <td>Pantograf-katener arasındaki teknik kriterler</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 50125-1</td>
+                                <td>Dış ortamda çalışan ekipmanlar için çevresel koşullar</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50129</td>
+                                <td>Denetleme sisteminin güvenlik gereksinimleri</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 id="disiplinler-arasi-etkilesim-ve-uyumluluk">4. Disiplinler Arası Etkileşim ve Uyumluluk</h2>
+                    <p>Demiryolu projeleri, birden fazla disiplinin entegrasyonunu gerektirir. Bu nedenle, standartlar arasındaki uyumluluk ve etkileşim büyük önem taşır:</p>
+                    <ul>
+                        <li><strong>Sistem Mühendisliği Yaklaşımı:</strong> EN 50126 serisi, tüm disiplinlerin uyumlu çalışması için bir çerçeve sağlar ve projenin tüm yaşam döngüsünü kapsar.</li>
+                        <li><strong>Disiplinler Arası Arayüzler:</strong> Elektrik/elektronik sistemlerin mekanik yapılarla entegrasyonu, yazılım sistemlerinin donanımlarla iletişimi gibi konular için ilgili standartlar beraber değerlendirilmelidir.</li>
+                        <li><strong>Emniyet Değerlendirmesi:</strong> Farklı disiplinlerin emniyet gereksinimleri (EN 50126, EN 50128, EN 50129) bütünsel bir yaklaşımla ele alınmalıdır.</li>
+                    </ul>
+
+                    <h2 id="kritik-standartlar-ve-zorunluluklar">5. Kritik Standartlar ve Zorunluluklar</h2>
+                    <p>Demiryolu projelerinde özellikle dikkat edilmesi gereken kritik standartlar şunlardır:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Standart</th>
+                                <th>Kritiklik Nedeni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EN 50126 serisi</td>
+                                <td>Tüm demiryolu sistemlerinin güvenliği ve güvenilirliği için temel çerçeve</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50128</td>
+                                <td>Yazılım güvenliğini sağlayarak sistem hatalarını önler</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 15227:2020</td>
+                                <td>Çarpışma durumunda yolcu ve personel güvenliğini sağlar</td>
+                            </tr>
+                            <tr>
+                                <td>EN 50159</td>
+                                <td>Haberleşme sistemlerinde güvenlik gereksinimlerini tanımlar</td>
+                            </tr>
+                            <tr>
+                                <td>TS EN 13103-1:2018, TS EN 13979-1:2020</td>
+                                <td>Kritik bileşenlerin (akslar, tekerlekler) tahribatsız muayenesi için gereklilikleri belirler</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 id="standartlarin-uygulanmasi-icin-pratik-oneriler">6. Standartların Uygulanması İçin Pratik Öneriler</h2>
+                    <ul>
+                        <li><strong>Standartların Güncelliğini Takip Edin:</strong> TSE ve uluslararası standardizasyon kuruluşlarının (CEN, CENELEC, IEC) web sitelerinden düzenli güncellemeler kontrol edilmelidir.</li>
+                        <li><strong>Etki Analizi Yapın:</strong> Standartlardaki değişikliklerin mevcut ve planlanan projelere etkisi değerlendirilmelidir.</li>
+                        <li><strong>Çapraz Referans Matrisi Oluşturun:</strong> Her proje için ilgili standartları ve uygulama alanlarını gösteren bir matris hazırlanmalıdır.</li>
+                        <li><strong>Doğrulama ve Geçerleme Planı Hazırlayın:</strong> Her standart için uygunluk değerlendirme yöntemlerini belirleyen bir plan oluşturun.</li>
+                        <li><strong>Eğitim ve Farkındalık:</strong> Proje ekibinin ilgili standartlar hakkında bilgi sahibi olmasını sağlayın.</li>
+                    </ul>
+
+                    <h2 id="sonuc-ve-oneriler">7. Sonuç ve Öneriler</h2>
+                    <p>Demiryolu projelerinde güvenlik ve standartlar, sistemlerin güvenilirliğini, emniyetini ve sürdürülebilirliğini sağlamak için kritik öneme sahiptir. Genel standartlar (ISO 9001, ISO 14001, ISO 45001, ISO 27001, EN 50126) tüm projelerde temel bir çerçeve sunarken, branş bazında standartlar (mekanik, elektrik, yazılım, siber güvenlik) teknik gereksinimlere odaklanır. Proje bazında ise her bir proje (Otomatik Test Muayene İstasyonu, Elektronik Gabari, Test Treni, Pantograf Denetleme) kendine özgü standartlara ihtiyaç duyar.</p>
+                    <h3>Öneriler:</h3>
+                    <ul>
+                        <li><strong>Standart Uyumluluk Kontrolü:</strong> Her proje için ilgili standartların güncel durumları TSE portalından (<a href="https://intweb.tse.org.tr/Standard/Standard/StandardAra.aspx" target="_blank">https://intweb.tse.org.tr/Standard/Standard/StandardAra.aspx</a>) düzenli olarak kontrol edilmelidir.</li>
+                        <li><strong>Eğitim ve Sertifikasyon:</strong> Ekip üyeleri, ilgili standartlar (özellikle EN 50126, EN 50128, EN 50129) konusunda eğitilmeli ve sertifikasyon süreçleri takip edilmelidir.</li>
+                        <li><strong>Siber Güvenlik:</strong> IEC 62443-4-2 ve ISO 27001, dijitalleşen sistemlerde giderek daha önemli hale gelmektedir. Bu standartlara uyum önceliklendirilmelidir.</li>
+                        <li><strong>Dokümantasyon ve İzleme:</strong> Teknik resimler (TS EN 15016 serisi) ve revizyon süreçleri standartlara uygun şekilde belgelenmelidir.</li>
+                        <li><strong>Test ve Kalibrasyon:</strong> TS EN 17025’e uygun kalibrasyonlar, ölçüm doğruluğunu garanti etmek için düzenli olarak yapılmalıdır.</li>
+                    </ul>
+                    <p>Bu rapor, demiryolu projelerinde standartların doğru uygulanmasıyla güvenli, verimli ve sürdürülebilir sistemler geliştirilmesine katkı sağlamayı amaçlamaktadır.</p>
+                </div>
+            </div>
+            <button id="overview-back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Standartları Keşfet Görünümü (Eski Ana Sayfa) -->
+        <div id="home-view" class="view-section">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <label for="project-filter" class="block text-sm font-medium text-gray-700 mb-1">Projeye Göre Filtrele</label>
+                        <select id="project-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">Tüm Projeler</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="discipline-filter" class="block text-sm font-medium text-gray-700 mb-1">Disipline Göre Filtrele</label>
+                        <select id="discipline-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">Tüm Disiplinler</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="criticality-filter" class="block text-sm font-medium text-gray-700 mb-1">Kritikliğe Göre Filtrele</label>
+                        <select id="criticality-filter" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">Tüm Seviyeler</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="search-input" class="block text-sm font-medium text-gray-700 mb-1">Metin ile Ara</label>
+                        <input type="text" id="search-input" placeholder="Standart kodu veya anahtar kelime..." class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button id="reset-filters-button" class="px-6 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors duration-200">
+                        Filtreleri Sıfırla
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Filtrelenmiş Standartların Disiplinlere Göre Dağılımı</h2>
+                 <div class="chart-container">
+                    <canvas id="standardsChart"></canvas>
+                </div>
+            </div>
+
+            <div id="results-count" class="mb-4 text-gray-600 font-medium"></div>
+
+            <div id="standards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            </div>
+        </div>
+
+        <!-- Projeler ve Genel Standartlar Görünümü -->
+        <div id="projects-view" class="view-section p-6 bg-white rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Projeler ve Genel Standartlar</h2>
+            <p class="mt-2 text-lg text-gray-600 mb-8 text-center">Aşağıda demiryolu projelerine ve genel kategorilere göre gruplandırılmış standartları bulabilirsiniz. Detaylar için standart adına tıklayın.</p>
+
+            <div id="project-standards-list" class="space-y-8">
+                <!-- Proje bazlı listeler buraya JS ile doldurulacak -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Özet Modal Yapısı -->
+    <div id="summary-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="summary-modal-standart-baslik" class="text-2xl font-bold text-gray-900 mb-3"></h2>
+            <p id="summary-modal-standart-kod" class="text-lg font-semibold text-gray-700 mb-6"></p>
+            
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Kapsam:</h3>
+                <p id="summary-modal-standart-kapsam" class="text-base text-gray-600 leading-relaxed"></p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Detaylı Açıklama:</h3>
+                <p id="summary-modal-standart-detay" class="text-base text-gray-700 leading-relaxed"></p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Kritiklik:</h3>
+                <span id="summary-modal-standart-kritiklik" class="bg-red-100 text-red-800 text-base font-semibold px-4 py-1 rounded-md"></span>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Disiplinler:</h3>
+                <div id="summary-modal-standart-disiplinler" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Uygulama Alanları:</h3>
+                <div id="summary-modal-standart-uygulama" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">İlgili Diğer Standartlar:</h3>
+                <p id="summary-modal-standart-ilgili" class="text-base text-gray-600"></p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Notlar:</h3>
+                <p id="summary-modal-standart-notlar" class="text-base text-gray-600"></p>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a id="go-to-detail-page-button" href="#" class="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
+                    Detaylı Sayfaya Git →
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let standardsData = [];
+        let chartInstance;
+        const projectFilter = document.getElementById('project-filter');
+        const disciplineFilter = document.getElementById('discipline-filter');
+        const criticalityFilter = document.getElementById('criticality-filter');
+        const searchInput = document.getElementById('search-input');
+        const standardsGrid = document.getElementById('standards-grid');
+        const resultsCount = document.getElementById('results-count');
+        const overviewView = document.getElementById('overview-view'); // Yeni genel bakış görünümü
+        const homeView = document.getElementById('home-view');
+        const projectsView = document.getElementById('projects-view');
+        const projectStandardsList = document.getElementById('project-standards-list');
+        const resetFiltersButton = document.getElementById('reset-filters-button');
+
+        const summaryModal = document.getElementById('summary-modal');
+        const closeModalButton = summaryModal.querySelector('.close-button');
+        const goToDetailPageButton = document.getElementById('go-to-detail-page-button');
+
+        // For Overview TOC and Back to Top
+        const overviewTocList = document.getElementById('overview-toc-list');
+        const overviewContentHeadings = document.querySelectorAll('#overview-view .overview-prose h2');
+        const overviewBackToTopBtn = document.getElementById('overview-back-to-top-btn');
+
+
+        async function fetchStandardsData() {
+            try {
+                const response = await fetch('standards.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                standardsData = await response.json();
+                console.log("Standards data loaded:", standardsData.length);
+                populateFilters();
+                initializeChart();
+                router(); // Veri yüklendikten sonra router'ı çalıştır
+            } catch (error) {
+                console.error("Error fetching standards data:", error);
+                document.querySelector('.container').innerHTML = `<p class="text-red-600 text-center text-xl mt-10">Standart verileri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>`;
+            }
+        }
+
+        function getUniqueValues(data, key, separator = ', ') {
+            const allValues = data.flatMap(item => item[key].split(separator).map(v => v.trim()));
+            return [...new Set(allValues)].sort();
+        }
+
+        function populateFilters() {
+            // Sadece bir kere doldurmak için kontrol
+            if (projectFilter.options.length > 1) return; 
+
+            getUniqueValues(standardsData, 'uygulama_alani').forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                projectFilter.appendChild(option);
+            });
+
+            getUniqueValues(standardsData, 'disiplinler').forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                disciplineFilter.appendChild(option);
+            });
+            
+            getUniqueValues(standardsData, 'kritiklik').forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                criticalityFilter.appendChild(option);
+            });
+        }
+
+        function renderStandardsGrid(filteredData) {
+            standardsGrid.innerHTML = '';
+            
+            resultsCount.textContent = `${filteredData.length} standart bulundu.`;
+
+            if (filteredData.length === 0) {
+                standardsGrid.innerHTML = `<p class="text-gray-500 col-span-full text-center">Seçilen kriterlere uygun standart bulunamadı.</p>`;
+                return;
+            }
+
+            filteredData.forEach(std => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-gray-200 rounded-lg shadow-sm p-5 flex flex-col justify-between cursor-pointer hover:shadow-lg transition-shadow duration-200 card-enter';
+                card.onclick = () => openSummaryModal(std); // Modalı aç
+                
+                const disiplinlerHtml = std.disiplinler.split(', ').map(d => `<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${d}</span>`).join('');
+                const projelerHtml = std.uygulama_alani.split(', ').map(p => `<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${p}</span>`).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                             <h3 class="text-lg font-bold text-gray-900">${std.standart}</h3>
+                             <span class="bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-md">${std.kritiklik}</span>
+                        </div>
+                        <p class="text-md font-semibold text-gray-700 mb-3">${std.baslik}</p>
+                        <p class="text-sm text-gray-600 mb-4">${std.kapsam.substring(0, 150)}${std.kapsam.length > 150 ? '...' : ''}</p>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">İlgili Disiplinler:</h4>
+                            <div class="flex flex-wrap">${disiplinlerHtml}</div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Uygulama Alanları:</h4>
+                            <div class="flex flex-wrap">${projelerHtml}</div>
+                        </div>
+                    </div>
+                `;
+                standardsGrid.appendChild(card);
+            });
+        }
+        
+        function updateChart(filteredData) {
+            if (!chartInstance) return;
+
+            const disciplineCounts = {};
+            const allDisciplines = getUniqueValues(standardsData, 'disiplinler');
+            allDisciplines.forEach(d => disciplineCounts[d] = 0);
+
+            filteredData.forEach(std => {
+                std.disiplinler.split(', ').forEach(d => {
+                    const trimmedDiscipline = d.trim();
+                    if (disciplineCounts.hasOwnProperty(trimmedDiscipline)) {
+                        disciplineCounts[trimmedDiscipline]++;
+                    }
+                });
+            });
+
+            const chartLabels = Object.keys(disciplineCounts);
+            const chartData = Object.values(disciplineCounts);
+
+            chartInstance.data.labels = chartLabels;
+            chartInstance.data.datasets[0].data = chartData;
+            chartInstance.update();
+        }
+
+        function filterAndRender() {
+            const project = projectFilter.value;
+            const discipline = disciplineFilter.value;
+            const criticality = criticalityFilter.value;
+            const searchTerm = searchInput.value.toLowerCase();
+
+            const filtered = standardsData.filter(std => {
+                const projectMatch = project === 'all' || std.uygulama_alani.includes(project);
+                const disciplineMatch = discipline === 'all' || std.disiplinler.includes(discipline);
+                const criticalityMatch = criticality === 'all' || std.kritiklik.includes(criticality);
+                
+                const searchMatch = !searchTerm || 
+                    std.standart.toLowerCase().includes(searchTerm) ||
+                    std.baslik.toLowerCase().includes(searchTerm) ||
+                    std.kapsam.toLowerCase().includes(searchTerm) ||
+                    (std.detayli_aciklama && std.detayli_aciklama.toLowerCase().includes(searchTerm)) ||
+                    (std.ilgili_diger && std.ilgili_diger.toLowerCase().includes(searchTerm)) ||
+                    (std.notlar && std.notlar.toLowerCase().includes(searchTerm));
+
+                return projectMatch && disciplineMatch && criticalityMatch && searchMatch;
+            });
+
+            renderStandardsGrid(filtered);
+            updateChart(filtered);
+        }
+        
+        function initializeChart() {
+            const ctx = document.getElementById('standardsChart').getContext('2d');
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Standart Sayısı',
+                        data: [],
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                           callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    return `${label}: ${context.raw}`;
+                                }
+                           }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderProjectsPage() {
+            projectStandardsList.innerHTML = '';
+            const projects = getUniqueValues(standardsData, 'uygulama_alani');
+            const generalStandards = standardsData.filter(std => std.uygulama_alani.includes('Tüm Projeler'));
+
+            // Genel Standartlar
+            const generalSection = document.createElement('div');
+            generalSection.className = 'bg-gray-50 p-4 rounded-lg shadow-sm';
+            generalSection.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Genel Standartlar</h3>
+                <ul class="list-disc pl-5 space-y-2">
+                    ${generalStandards.map(std => `
+                        <li><a href="dokumanlar/${std.id}/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
+                    `).join('')}
+                </ul>
+            `;
+            projectStandardsList.appendChild(generalSection);
+
+            // Proje Bazlı Standartlar
+            projects.filter(p => p !== 'Tüm Projeler').forEach(project => {
+                const projectSpecificStandards = standardsData.filter(std => std.uygulama_alani.includes(project) && !std.uygulama_alani.includes('Tüm Projeler'));
+                if (projectSpecificStandards.length > 0) {
+                    const projectSection = document.createElement('div');
+                    projectSection.className = 'bg-gray-50 p-4 rounded-lg shadow-sm';
+                    projectSection.innerHTML = `
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">${project} Projesi Standartları</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            ${projectSpecificStandards.map(std => `
+                                <li><a href="dokumanlar/${std.id}/${std.id}.html" class="text-blue-600 hover:underline font-medium" target="_blank">${std.standart} - ${std.baslik}</a></li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    projectStandardsList.appendChild(projectSection);
+                }
+            });
+        }
+
+        function openSummaryModal(std) {
+            console.log("openSummaryModal çağrıldı. Standart:", std);
+            if (!std || !std.baslik || !std.standart) {
+                console.error("Geçersiz standart verisiyle özet modalı açılmaya çalışıldı:", std);
+                return;
+            }
+
+            document.getElementById('summary-modal-standart-baslik').textContent = std.baslik;
+            document.getElementById('summary-modal-standart-kod').textContent = std.standart;
+            document.getElementById('summary-modal-standart-kapsam').textContent = std.kapsam;
+            document.getElementById('summary-modal-standart-detay').textContent = std.detayli_aciklama || 'Detaylı açıklama bulunmamaktadır.';
+            document.getElementById('summary-modal-standart-kritiklik').textContent = std.kritiklik;
+
+            const modalDisiplinler = document.getElementById('summary-modal-standart-disiplinler');
+            modalDisiplinler.innerHTML = std.disiplinler.split(', ').map(d => `<span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${d}</span>`).join('');
+
+            const modalUygulama = document.getElementById('summary-modal-standart-uygulama');
+            modalUygulama.innerHTML = std.uygulama_alani.split(', ').map(p => `<span class="bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">${p}</span>`).join('');
+
+            document.getElementById('summary-modal-standart-ilgili').textContent = std.ilgili_diger || 'Yok';
+            document.getElementById('summary-modal-standart-notlar').textContent = std.notlar || 'Yok';
+            
+            goToDetailPageButton.href = `dokumanlar/${std.id}/${std.id}.html`;
+            goToDetailPageButton.target = '_blank';
+
+            summaryModal.style.display = 'flex';
+        }
+
+        function closeSummaryModal() {
+            console.log("closeSummaryModal çağrıldı.");
+            summaryModal.style.display = 'none';
+        }
+
+        function resetFilters() {
+            projectFilter.value = 'all';
+            disciplineFilter.value = 'all';
+            criticalityFilter.value = 'all';
+            searchInput.value = '';
+            filterAndRender();
+        }
+
+        // Overview Page TOC and Back to Top Logic
+        function setupOverviewPage() {
+            overviewTocList.innerHTML = ''; // Clear existing TOC
+            overviewContentHeadings.forEach((heading, index) => {
+                const id = heading.id || `overview-section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                overviewTocList.appendChild(listItem);
+            });
+
+            // Ensure observer is only created once for overview page
+            if (window.overviewObserver) {
+                window.overviewObserver.disconnect();
+            }
+            const overviewObserverOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            window.overviewObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#overview-toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, overviewObserverOptions);
+
+            overviewContentHeadings.forEach(heading => {
+                window.overviewObserver.observe(heading);
+            });
+
+            // Ensure scroll listener is only added once for overview page
+            if (!window.overviewScrollListenerAdded) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        overviewBackToTopBtn.classList.add('show');
+                    } else {
+                        overviewBackToTopBtn.classList.remove('show');
+                    }
+                });
+                window.overviewScrollListenerAdded = true;
+            }
+            
+            overviewBackToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+
+        closeModalButton.addEventListener('click', closeSummaryModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === summaryModal) {
+                closeSummaryModal();
+            }
+        });
+
+
+        function router() {
+            const hash = window.location.hash;
+            console.log("Router çağrıldı. Hash:", hash);
+            overviewView.classList.remove('active');
+            homeView.classList.remove('active');
+            projectsView.classList.remove('active');
+            
+            if (hash === '#home') {
+                homeView.classList.add('active');
+                filterAndRender(); 
+            } else if (hash === '#projects') {
+                projectsView.classList.add('active');
+                renderProjectsPage();
+            } else { // Varsayılan olarak #overview veya bilinmeyen hash
+                overviewView.classList.add('active');
+                setupOverviewPage(); // Genel bakış sayfasını kur
+            }
+            closeSummaryModal(); // Router çağrıldığında modalı kapat
+        }
+
+        window.addEventListener('hashchange', router);
+
+        projectFilter.addEventListener('change', filterAndRender);
+        disciplineFilter.addEventListener('change', filterAndRender);
+        criticalityFilter.addEventListener('change', filterAndRender);
+        searchInput.addEventListener('input', filterAndRender);
+        resetFiltersButton.addEventListener('click', resetFilters);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded: Sayfa yüklendi.");
+            fetchStandardsData();
+        });
+    </script>
 </body>
 </html>
