@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50121-4 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50121-4: Demiryolu Uygulamaları - Elektromanyetik Uyumluluk - Bölüm 4: Sinyalizasyon ve Haberleşme Cihazlarının Emisyon ve Bağışıklığı</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50121-4 standardı, demiryolu ağlarında kullanılan sinyalizasyon ve haberleşme cihazlarının elektromanyetik uyumluluk (EMC) gereksinimlerini belirler.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50121-4 standardı, demiryolu ağlarında kullanılan sinyalizasyon ve haberleşme cihazlarının elektromanyetik uyumluluk (EMC) gereksinimlerini belirler. Bu standart:</p>
+                <ul>
+                    <li>Demiryolu hatları üzerinde veya yakınında kurulu sinyal ve telekomünikasyon cihazlarının elektromanyetik emisyon sınırlarını tanımlar</li>
+                    <li>Bu cihazların elektromanyetik bozulmalara karşı bağışıklık seviyelerini belirler</li>
+                    <li>Demiryolu altyapısı içindeki elektromanyetik ortamı korumayı amaçlar</li>
+                    <li>Sinyalizasyon ve haberleşme sistemlerinin güvenli ve güvenilir çalışmasını sağlamayı hedefler</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>Elektromanyetik Uyumluluk (EMC), elektrikli ve elektronik ekipmanların birbirleriyle ve çevreleriyle uyumlu çalışabilmelerini sağlayan bir disiplindir. TS EN 50121-4 standardı, demiryolu ortamındaki elektromanyetik uyumluluğu iki temel açıdan ele alır:</p>
+                <h3>1. Emisyon</h3>
+                <p>Cihazların yaydığı elektromanyetik enerjinin kontrolünü kapsar. Demiryolu sistemlerindeki sinyalizasyon ve haberleşme ekipmanlarının, çevrelerindeki diğer ekipmanların çalışmasını bozacak düzeyde elektromanyetik girişim (EMI) yaratmaması gerekir.</p>
+                <h3>2. Bağışıklık</h3>
+                <p>Cihazların maruz kaldığı elektromanyetik bozulmalara karşı dayanıklılığını ifade eder. Demiryolu ortamındaki sinyalizasyon ve haberleşme ekipmanları, demiryolu çevresindeki güçlü elektromanyetik alanlar altında (örneğin, çekiş sistemleri, enerji hatları) güvenilir şekilde çalışabilmelidir.</p>
+                <p>Standardın teorik arka planı, demiryolu ortamının kendine özgü elektromanyetik koşullarını dikkate alır:</p>
+                <ul>
+                    <li>Yüksek güçlü elektrik çekiş sistemleri (3 kV DC, 25 kV AC vb.)</li>
+                    <li>Elektrik besleme hatları</li>
+                    <li>Güç dalgalanmaları ve geçici rejimler</li>
+                    <li>Ani yük değişimleri</li>
+                    <li>Ray-toprak potansiyel farkları</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler</h3>
+                <ul>
+                    <li>EMC yönetim planı oluşturulması</li>
+                    <li>Proje başlangıcında EMC risk değerlendirmesi yapılması</li>
+                    <li>Test ve doğrulama süreçlerinin planlanması</li>
+                    <li>EMC test raporlarının hazırlanması ve saklanması</li>
+                    <li>Teknik personelin EMC konularında eğitilmesi</li>
+                    <li>Tedarikçilerden EMC uyumluluk beyanlarının alınması</li>
+                </ul>
+                <h3>Teknik Gereklilikler</h3>
+                <h4>Emisyon Limitleri</h4>
+                <p>Port tipine göre emisyon limitleri:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Port Tipi</th>
+                            <th>Frekans Aralığı</th>
+                            <th>Limit Değeri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Muhafaza Portu</td>
+                            <td>30 MHz - 230 MHz</td>
+                            <td>40 dBμV/m @ 10m</td>
+                        </tr>
+                        <tr>
+                            <td>Muhafaza Portu</td>
+                            <td>230 MHz - 1 GHz</td>
+                            <td>47 dBμV/m @ 10m</td>
+                        </tr>
+                        <tr>
+                            <td>DC Güç Portu</td>
+                            <td>0.15 MHz - 0.5 MHz</td>
+                            <td>79 dBμV</td>
+                        </tr>
+                        <tr>
+                            <td>DC Güç Portu</td>
+                            <td>0.5 MHz - 30 MHz</td>
+                            <td>73 dBμV</td>
+                        </tr>
+                        <tr>
+                            <td>AC Güç Portu</td>
+                            <td>0.15 MHz - 0.5 MHz</td>
+                            <td>79 dBμV</td>
+                        </tr>
+                        <tr>
+                            <td>AC Güç Portu</td>
+                            <td>0.5 MHz - 30 MHz</td>
+                            <td>73 dBμV</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Bağışıklık Gereksinimleri</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test Tipi</th>
+                            <th>Test Seviyesi</th>
+                            <th>Performans Kriteri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Elektrostatik Deşarj (ESD)</td>
+                            <td>±6 kV temas, ±8 kV hava</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>Radyo Frekansı Elektromanyetik Alan</td>
+                            <td>10 V/m (80 MHz - 1 GHz)</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Elektriksel Hızlı Geçici Rejimler</td>
+                            <td>±2 kV güç hatları, ±1 kV sinyal hatları</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>Darbeler</td>
+                            <td>±1 kV hat-hat, ±2 kV hat-toprak</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>İletilen RF Bozulmaları</td>
+                            <td>10 V (0.15 MHz - 80 MHz)</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Güç Frekansı Manyetik Alan</td>
+                            <td>30 A/m</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Gerilim Düşmeleri ve Kesintileri</td>
+                            <td>%0, %40, %70 (farklı süreler)</td>
+                            <td>B/C</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Performans Kriterleri:</p>
+                <ul>
+                    <li>A: Test sırasında ve sonrasında normal çalışma</li>
+                    <li>B: Test sırasında geçici bozulma, kendiliğinden düzelme</li>
+                    <li>C: Test sırasında fonksiyon kaybı, operatör müdahalesiyle düzelme</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>1. Demiryolu Sinyalizasyon Sistemleri</h3>
+                <ul>
+                    <li>Sinyalizasyon kumanda merkezleri ve ekipmanları</li>
+                    <li>Tren tespit sistemleri (ray devreleri, aks sayıcılar)</li>
+                    <li>Makas kontrol sistemleri</li>
+                    <li>Hemzemin geçit koruma sistemleri</li>
+                    <li>Tren koruma ve kontrol sistemleri (ETCS, ATP, ATO)</li>
+                    <li>Örnek: TCDD Ankara-İstanbul YHT hattı sinyalizasyon sistemleri</li>
+                </ul>
+                <h3>2. Demiryolu Haberleşme Sistemleri</h3>
+                <ul>
+                    <li>GSM-R sistemleri</li>
+                    <li>Telsiz haberleşme ekipmanları</li>
+                    <li>Optik fiber iletişim altyapısı</li>
+                    <li>Yolcu bilgilendirme sistemleri</li>
+                    <li>SCADA sistemleri</li>
+                    <li>Örnek: Marmaray haberleşme sistemleri</li>
+                </ul>
+                <h3>3. İstasyon Kontrol Sistemleri</h3>
+                <ul>
+                    <li>İstasyon kontrol merkezleri</li>
+                    <li>Yolcu bilgilendirme ekranları</li>
+                    <li>Anons sistemleri</li>
+                    <li>Güvenlik ve CCTV sistemleri</li>
+                    <li>Örnek: İzmir Metro istasyon kontrol sistemleri</li>
+                </ul>
+                <h3>4. Elektrifikasyon Kontrol ve İzleme</h3>
+                <ul>
+                    <li>SCADA sistemleri</li>
+                    <li>Enerji izleme sistemleri</li>
+                    <li>Trafo merkezleri kontrol ekipmanları</li>
+                    <li>Örnek: Başkentray elektrifikasyon kontrol sistemi</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>EMC Uyumluluk Süreci</h3>
+                <ol>
+                    <li>Planlama Aşaması
+                        <ul>
+                            <li>EMC gereksinimlerinin proje şartnamelerine dahil edilmesi</li>
+                            <li>EMC risk değerlendirmesinin yapılması</li>
+                            <li>EMC yönetim planının oluşturulması</li>
+                            <li>EMC sorumlularının belirlenmesi</li>
+                            <li>Doğrulama stratejisinin belirlenmesi</li>
+                        </ul>
+                    </li>
+                    <li>Tasarım Aşaması
+                        <ul>
+                            <li>EMC tasarım prensiplerinin uygulanması</li>
+                            <li>Topraklama ve ekranlama tasarımlarının yapılması</li>
+                            <li>Bileşen seçiminde EMC özelliklerinin gözetilmesi</li>
+                            <li>Filtreleme ve koruma devrelerinin tasarlanması</li>
+                            <li>Tasarım aşamasında EMC analizlerinin yapılması</li>
+                        </ul>
+                    </li>
+                    <li>Üretim ve Kurulum Aşaması
+                        <ul>
+                            <li>Bileşenlerin EMC sertifikalarının kontrol edilmesi</li>
+                            <li>Üretim sürecinde EMC özelliklerinin korunması</li>
+                            <li>Kablo döşeme ve topraklama uygulamalarının standarda göre yapılması</li>
+                            <li>Ekranlama ve korumaların doğru uygulanması</li>
+                            <li>Kurulum sırasında EMC denetimlerinin yapılması</li>
+                        </ul>
+                    </li>
+                    <li>Test ve Doğrulama Aşaması
+                        <ul>
+                            <li>Laboratuvar EMC testlerinin yapılması</li>
+                            <li>Saha EMC testlerinin yapılması</li>
+                            <li>Test sonuçlarının değerlendirilmesi</li>
+                            <li>Uygunsuzlukların giderilmesi</li>
+                            <li>Nihai EMC uyumluluk raporunun hazırlanması</li>
+                        </ul>
+                    </li>
+                    <li>İşletme ve Bakım Aşaması
+                        <ul>
+                            <li>Periyodik EMC kontrolleri</li>
+                            <li>EMC performansının izlenmesi</li>
+                            <li>Bakım prosedürlerinde EMC faktörlerinin dikkate alınması</li>
+                            <li>Değişiklik yönetimi süreçlerinde EMC etkilerinin değerlendirilmesi</li>
+                            <li>EMC kayıtlarının tutulması ve güncellenmesi</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h3>EMC Testleri</h3>
+                <h4>Emisyon Testleri:</h4>
+                <ul>
+                    <li>Işınan emisyon testleri (30 MHz - 1 GHz)</li>
+                    <li>İletilen emisyon testleri (150 kHz - 30 MHz)</li>
+                    <li>Harmonik emisyon testleri</li>
+                    <li>Gerilim dalgalanmaları ve kırpışma testleri</li>
+                </ul>
+                <h4>Bağışıklık Testleri:</h4>
+                <ul>
+                    <li>Elektrostatik deşarj (ESD) testi</li>
+                    <li>Işınan elektromanyetik alan bağışıklık testi</li>
+                    <li>Elektriksel hızlı geçici rejimler bağışıklık testi</li>
+                    <li>Darbe bağışıklık testi</li>
+                    <li>İletilen bozulmalara karşı bağışıklık testi</li>
+                    <li>Güç frekansı manyetik alan bağışıklık testi</li>
+                    <li>Gerilim düşmeleri ve kesintileri bağışıklık testi</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>1. Proje Yönetimi</h3>
+                <ul>
+                    <li>EMC yönetim planının oluşturulması ve takibi</li>
+                    <li>EMC gereksinimlerinin proje takvimi ve bütçesine entegrasyonu</li>
+                    <li>EMC uyumluluk sürecinin koordinasyonu</li>
+                    <li>EMC test ve belgelendirme süreçlerinin planlanması</li>
+                    <li>Tedarikçi EMC gereksinimlerinin yönetimi</li>
+                </ul>
+                <h3>2. Elektrik Mühendisliği</h3>
+                <ul>
+                    <li>Güç beslemesi ve dağıtım sistemlerinin EMC uyumlu tasarımı</li>
+                    <li>Topraklama ve ekranlama sistemlerinin tasarımı ve uygulanması</li>
+                    <li>Filtreleme ve koruma devrelerinin tasarımı</li>
+                    <li>Kablo tiplerinin ve yönlendirmelerinin belirlenmesi</li>
+                    <li>EMC testlerinin gerçekleştirilmesi ve değerlendirilmesi</li>
+                </ul>
+                <h3>3. Elektronik Mühendisliği</h3>
+                <ul>
+                    <li>Elektronik devrelerin EMC uyumlu tasarımı</li>
+                    <li>PCB tasarımında EMC prensiplerinin uygulanması</li>
+                    <li>Elektronik bileşenlerin EMC özelliklerine göre seçilmesi</li>
+                    <li>Sinyal bütünlüğü analizlerinin yapılması</li>
+                    <li>Yazılım tabanlı EMC çözümlerinin geliştirilmesi</li>
+                </ul>
+                <h3>4. Mekanik Mühendisliği</h3>
+                <ul>
+                    <li>Ekipman muhafazalarının EMC gereksinimlerine göre tasarlanması</li>
+                    <li>Topraklama ve ekranlama için mekanik bağlantıların tasarımı</li>
+                    <li>Kablo geçişleri ve muhafaza açıklıklarının EMC uyumlu tasarımı</li>
+                    <li>Montaj ve kurulum detaylarının EMC prensiplerine göre belirlenmesi</li>
+                    <li>Titreşim ve sıcaklık etkilerinin EMC performansına etkisinin değerlendirilmesi</li>
+                </ul>
+                <h3>5. Sinyalizasyon Mühendisliği</h3>
+                <ul>
+                    <li>Sinyalizasyon sistemlerinin EMC uyumlu tasarımı</li>
+                    <li>Ray devrelerinin EMC performansının sağlanması</li>
+                    <li>Sinyalizasyon ekipmanlarının EMC gereksinimlerinin belirlenmesi</li>
+                    <li>Sinyalizasyon-elektrifikasyon EMC etkileşimlerinin yönetimi</li>
+                    <li>Sinyalizasyon sistemlerinin EMC testlerinin gerçekleştirilmesi</li>
+                </ul>
+                <h3>6. Haberleşme Mühendisliği</h3>
+                <ul>
+                    <li>Haberleşme sistemlerinin EMC uyumlu tasarımı</li>
+                    <li>Anten yerleşimlerinin EMC etkileşimlerini minimize edecek şekilde planlanması</li>
+                    <li>Haberleşme kablolarının EMC uyumlu döşenmesi</li>
+                    <li>Haberleşme protokollerinin EMC bozulmalara karşı dayanıklılığının sağlanması</li>
+                    <li>Radyo frekans spektrumunun EMC açısından yönetilmesi</li>
+                </ul>
+                <h3>7. Kalite Kontrol</h3>
+                <ul>
+                    <li>EMC test prosedürlerinin oluşturulması ve takibi</li>
+                    <li>EMC test sonuçlarının değerlendirilmesi</li>
+                    <li>EMC uyumluluk belgelendirmesinin yönetimi</li>
+                    <li>EMC kalite güvence sisteminin oluşturulması</li>
+                    <li>Düzeltici ve önleyici faaliyetlerin yönetimi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>1. İzleme Süreci</h3>
+                <p>Projenin EMC performansının düzenli olarak izlenmesi gerekir:</p>
+                <ul>
+                    <li>Periyodik EMC ölçümleri (3-6 aylık aralıklarla)</li>
+                    <li>Kritik noktalarda sürekli EMC izleme sistemleri kurulması</li>
+                    <li>Elektromanyetik ortamdaki değişimlerin takip edilmesi</li>
+                    <li>EMC performans göstergelerinin tanımlanması ve takibi</li>
+                    <li>İzleme sonuçlarının raporlanması ve değerlendirilmesi</li>
+                </ul>
+                <h4>İzleme Ekipmanları:</h4>
+                <ul>
+                    <li>Spektrum analizörleri</li>
+                    <li>EMC probları</li>
+                    <li>Elektrik ve manyetik alan ölçerler</li>
+                    <li>Akım ve gerilim dedektörleri</li>
+                    <li>Veri kaydediciler</li>
+                </ul>
+                <h3>2. Denetim Süreci</h3>
+                <p>EMC uyumluluğunun denetlenmesi için:</p>
+                <ul>
+                    <li>İç denetimler (organizasyon tarafından, 6 aylık periyotlarla)</li>
+                    <li>Dış denetimler (akredite kuruluşlar tarafından, yıllık)</li>
+                    <li>Tedarikçi denetimleri</li>
+                    <li>Tasarım denetimleri</li>
+                    <li>Kurulum denetimleri</li>
+                    <li>Denetim sonuçlarının raporlanması ve düzeltici faaliyetlerin planlanması</li>
+                </ul>
+                <h4>Denetim Kapsamı:</h4>
+                <ul>
+                    <li>EMC yönetim planına uygunluk</li>
+                    <li>Tasarım ve uygulama dokümanlarının incelenmesi</li>
+                    <li>Test sonuçlarının değerlendirilmesi</li>
+                    <li>Topraklama ve ekranlama uygulamalarının kontrolü</li>
+                    <li>Kablo döşeme ve ayrım kurallarına uygunluk</li>
+                    <li>EMC önlemlerinin etkinliğinin değerlendirilmesi</li>
+                </ul>
+                <h3>3. Belgelendirme Süreci</h3>
+                <p>TS EN 50121-4 standardına uygunluğun belgelendirilmesi için:</p>
+                <ul>
+                    <li>Aşama 1: Hazırlık
+                        <ul>
+                            <li>EMC test planının hazırlanması</li>
+                            <li>Test laboratuvarının seçilmesi</li>
+                            <li>Numunelerin hazırlanması</li>
+                            <li>Test senaryolarının belirlenmesi</li>
+                            <li>Gerekli dokümanların hazırlanması</li>
+                        </ul>
+                    </li>
+                    <li>Aşama 2: Test ve Değerlendirme
+                        <ul>
+                            <li>Emisyon testlerinin gerçekleştirilmesi</li>
+                            <li>Bağışıklık testlerinin gerçekleştirilmesi</li>
+                            <li>Test sonuçlarının değerlendirilmesi</li>
+                            <li>Uygunsuzlukların giderilmesi</li>
+                            <li>Tekrar testlerin yapılması (gerekirse)</li>
+                        </ul>
+                    </li>
+                    <li>Aşama 3: Belgelendirme
+                        <ul>
+                            <li>Test raporlarının hazırlanması</li>
+                            <li>Uygunluk beyanının hazırlanması</li>
+                            <li>Teknik dosyanın oluşturulması</li>
+                            <li>Belgelendirme kuruluşuna başvuru</li>
+                            <li>Belgenin alınması ve yayınlanması</li>
+                        </ul>
+                    </li>
+                    <li>Aşama 4: Sürdürme
+                        <ul>
+                            <li>Periyodik gözden geçirmeler</li>
+                            <li>Değişiklik yönetimi</li>
+                            <li>Yeniden belgelendirme (önemli değişiklikler sonrası)</li>
+                            <li>Belge geçerliliğinin takibi</li>
+                            <li>Kayıtların muhafaza edilmesi</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>Gerekli Belgeler:</h4>
+                <ul>
+                    <li>EMC test raporları</li>
+                    <li>Teknik dosya</li>
+                    <li>Uygunluk beyanı</li>
+                    <li>Risk analizi raporu</li>
+                    <li>Komponent sertifikaları</li>
+                    <li>Kalite yönetim sistemi belgeleri</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk 1: Demiryolu Ortamındaki Yüksek Elektromanyetik Girişimler</h3>
+                <p><strong>Problem:</strong> Demiryolu ortamında özellikle çekiş sistemlerinden kaynaklanan yüksek elektromanyetik girişimler, sinyalizasyon ve haberleşme sistemlerinin çalışmasını etkileyebilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Daha yüksek bağışıklık seviyelerine sahip ekipmanların seçilmesi</li>
+                    <li>İlave filtreleme ve koruma devrelerinin kullanılması</li>
+                    <li>Metal muhafazaların ve ekranlamanın güçlendirilmesi</li>
+                    <li>Optik fiber gibi elektromanyetik bağışıklığı yüksek iletim ortamlarının kullanılması</li>
+                    <li>Kritik sistemlerin elektromanyetik girişim kaynaklarından uzağa yerleştirilmesi</li>
+                </ul>
+                <h3>Zorluk 2: Topraklama ve Ekranlama Sorunları</h3>
+                <p><strong>Problem:</strong> Demiryolu sistemlerinde topraklama ve ekranlama uygulamalarının karmaşıklığı ve mevcut altyapı kısıtlamaları.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Detaylı topraklama ve ekranlama planının oluşturulması</li>
+                    <li>Tek-nokta ve çok-nokta topraklama stratejilerinin doğru uygulanması</li>
+                    <li>Ekranlı kabloların doğru şekilde sonlandırılması</li>
+                    <li>Topraklama empedanslarının düşük tutulması</li>
+                    <li>Topraklama ağı ile ray topraklaması arasındaki etkileşimlerin yönetilmesi</li>
+                    <li>Periyodik topraklama ölçümlerinin yapılması</li>
+                </ul>
+                <h3>Zorluk 3: Eski ve Yeni Sistemlerin Entegrasyonu</h3>
+                <p><strong>Problem:</strong> Mevcut demiryolu altyapısına yeni sistemlerin entegrasyonu sırasında EMC uyumluluk sorunları yaşanabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Entegrasyon öncesi detaylı EMC risk analizi yapılması</li>
+                    <li>Eski sistemlerin EMC karakteristiklerinin belirlenmesi</li>
+                    <li>Arayüz noktalarında ilave EMC önlemlerinin alınması</li>
+                    <li>Aşamalı entegrasyon ve her aşamada EMC testlerinin yapılması</li>
+                    <li>Geçiş sürecinde sürekli EMC izleme sistemlerinin kullanılması</li>
+                </ul>
+                <h3>Zorluk 4: Çevresel Faktörler</h3>
+                <p><strong>Problem:</strong> Sıcaklık, nem, titreşim gibi çevresel faktörler EMC önlemlerinin etkinliğini azaltabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Çevresel koşulları dikkate alan EMC tasarımının yapılması</li>
+                    <li>Sıcaklık ve nem değişimlerine dayanıklı malzemelerin seçilmesi</li>
+                    <li>Titreşime dayanıklı bağlantı ve montaj yöntemlerinin kullanılması</li>
+                    <li>Farklı çevresel koşullarda EMC testlerinin yapılması</li>
+                    <li>Mevsimsel değişimlerin EMC performansına etkisinin izlenmesi</li>
+                </ul>
+                <h3>Zorluk 5: Belgelendirme Maliyetleri ve Süreleri</h3>
+                <p><strong>Problem:</strong> EMC test ve belgelendirme süreçlerinin maliyetli ve zaman alıcı olması.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Proje başlangıcında EMC gereksinimlerinin net olarak belirlenmesi</li>
+                    <li>Tasarım aşamasında EMC simülasyonlarının kullanılması</li>
+                    <li>Ön-uyumluluk testlerinin yapılması</li>
+                    <li>Test gereksinimlerinin optimize edilmesi (test planının doğru yapılması)</li>
+                    <li>Belgelendirme sürecinin proje takviminde gerçekçi şekilde planlanması</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>1. EMC Yönetim Süreci Akış Diyagramı</h3>
+                <div class="mermaid">
+graph TD;
+    A["Proje Başlangıcı"] --> B["EMC Gereksinimlerinin Belirlenmesi"];
+    B --> C["EMC Risk Analizi"];
+    C --> D["EMC Yönetim Planı Oluşturma"];
+    D --> E["EMC Tasarım Prensiplerinin Uygulanması"];
+    E --> F["Komponent/Ekipman EMC Uyumluluk Kontrolü"];
+    F --> G["Kurulum Aşaması EMC Denetimleri"];
+    G --> H["EMC Testlerinin Gerçekleştirilmesi"];
+    H --> I{"Test Sonuçları Uygun mu?"};
+    I -- Hayır --> J["Düzeltici Faaliyetler"];
+    J --> H;
+    I -- Evet --> K["EMC Uyumluluk Belgelendirmesi"];
+    K --> L["Periyodik EMC İzleme ve Kontrol"];
+    L --> M["Değişiklik Yönetimi"];
+    M --> N{"Önemli Değişiklik var mı?"};
+    N -- Evet --> C;
+    N -- Hayır --> L;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, EMC Yönetim Süreci Akış Diyagramını göstermektedir. </p>
+
+                <h3>2. TS EN 50121-4 Test Gereksinimleri</h3>
+                <div class="mermaid">
+graph LR;
+    A["TS EN 50121-4 Test Gereksinimleri"] --> B["Emisyon Testleri"];
+    A --> C["Bağışıklık Testleri"];
+    
+    B --> D["Işınan Emisyon"];
+    B --> E["İletilen Emisyon"];
+    
+    C --> F["ESD Bağışıklığı"];
+    C --> G["Işınan EM Alan Bağışıklığı"];
+    C --> H["Hızlı Geçici Rejimler Bağışıklığı"];
+    C --> I["Darbe Bağışıklığı"];
+    C --> J["İletilen RF Bağışıklığı"];
+    C --> K["Manyetik Alan Bağışıklığı"];
+    C --> L["Gerilim Düşmeleri/Kesintileri Bağışıklığı"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50121-4 Test Gereksinimlerini göstermektedir.</p>
+
+                <h3>3. Demiryolu Ortamında EMC Etkileşimleri</h3>
+                <div class="mermaid">
+flowchart TD
+    A["Demiryolu Elektrifikasyon Sistemi"] -->|Elektromanyetik Emisyon| B["Demiryolu Ortamı"]
+    C["Harici Elektromanyetik Kaynaklar"] -->|Elektromanyetik Emisyon| B
+    B -->|Elektromanyetik Etki| D["Sinyalizasyon Sistemleri"]
+    B -->|Elektromanyetik Etki| E["Haberleşme Sistemleri"]
+    F["EMC Önlemleri"] -->|Azaltma| B
+    D -->|Emisyon| B
+    E -->|Emisyon| B
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Demiryolu Ortamında EMC Etkileşimlerini göstermektedir.</p>
+
+                <h3>4. Topraklama ve Ekranlama Prensipleri</h3>
+                <div class="mermaid">
+graph TD;
+    A["Topraklama ve Ekranlama Prensipleri"] --> B["Ekipman Topraklaması"];
+    A --> C["Kablo Ekranlaması"];
+    A --> D["Muhafaza Ekranlaması"];
+    
+    B --> E["Tek-Nokta Topraklama"];
+    B --> F["Çok-Nokta Topraklama"];
+    B --> G["Hibrit Topraklama"];
+    
+    C --> H["360° Ekran Sonlandırma"];
+    C --> I["Drenaj Teli Bağlantısı"];
+    C --> J["Ekran Sürekliliği"];
+    
+    D --> K["Elektriksel Süreklilik"];
+    D --> L["RF Contalama"];
+    D --> M["Açıklık Kontrolü"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Topraklama ve Ekranlama Prensiplerini göstermektedir.</p>
+
+                <h3>5. EMC Belgelendirme Süreci</h3>
+                <div class="mermaid">
+flowchart LR
+    A["EMC Test Planı Hazırlama"] --> B["Pre-Compliance Testleri"]
+    B --> C{"Sonuçlar Uygun mu?"}
+    C -- Hayır --> D["Tasarım İyileştirmeleri"]
+    D --> B
+    C -- Evet --> E["Akredite Laboratuvarda Resmi Testler"]
+    E --> F{"Tüm Testler Geçildi mi?"}
+    F -- Hayır --> D
+    F -- Evet --> G["Test Raporlarının Hazırlanması"]
+    G --> H["Teknik Dosyanın Oluşturulması"]
+    H --> I["Uygunluk Beyanının Hazırlanması"]
+    I --> J["CE İşaretlemesi / Belgelendirme"]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, EMC Belgelendirme Sürecini göstermektedir.</p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
