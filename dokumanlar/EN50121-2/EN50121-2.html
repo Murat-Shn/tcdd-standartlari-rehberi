@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50121-2 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50121-2: Demiryolu Uygulamaları - Elektromanyetik Uyumluluk - Bölüm 2: Tüm Demiryolu Sisteminden Dış Ortama Yayılan Emisyon</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50121-2, demiryolu sisteminin tamamından (araçlar, altyapı ve güç besleme sistemleri dahil) dış çevreye yayılan elektromanyetik emisyonların sınırlarını ve ölçüm yöntemlerini tanımlar.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50121-2, demiryolu sisteminin tamamından (araçlar, altyapı ve güç besleme sistemleri dahil) dış çevreye yayılan elektromanyetik emisyonların sınırlarını ve ölçüm yöntemlerini tanımlar. Standardın temel amacı, demiryolu sistemlerinin çevrelerindeki diğer sistemlere (örneğin radyo-televizyon yayınları, telekomünikasyon sistemleri, yerleşim yerlerindeki elektronik cihazlar) elektromanyetik etkilerini kontrol altında tutmaktır.</p>
+                <h3>Temel Amaçlar:</h3>
+                <ul>
+                    <li>Demiryolu sistemlerinin elektromanyetik emisyonlarının belirlenen limitleri aşmamasını sağlamak</li>
+                    <li>Radyo ve telekomünikasyon hizmetlerinin korunmasını sağlamak</li>
+                    <li>Demiryolu yakınındaki yerleşim alanlarında EMC uyumluluğunu garantilemek</li>
+                    <li>Demiryolu sistemleri ile çevredeki diğer sistemler arasındaki elektromanyetik etkileşimleri minimize etmek</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <h3>Temel Kavramlar:</h3>
+                <ul>
+                    <li><strong>Elektromanyetik Emisyon:</strong> Demiryolu sistemlerinin çalışması sırasında oluşturduğu ve dış ortama yayılan elektromanyetik bozulmalar</li>
+                    <li><strong>İletilen Emisyonlar:</strong> Kablolar ve iletkenler vasıtasıyla yayılan elektromanyetik bozulmalar</li>
+                    <li><strong>Işınan Emisyonlar:</strong> Havadan yayılan elektromanyetik dalgalar şeklinde</li>
+                    <li><strong>Emisyon Limitleri:</strong> Demiryolu sistemlerinin elektromanyetik emisyonlarının aşmaması gereken sınır değerler</li>
+                    <li><strong>Demiryolu Hattı Merkez Noktası:</strong> Rayların orta noktası (ölçüm mesafeleri için referans)</li>
+                </ul>
+                <h3>Emisyon Kaynakları:</h3>
+                <ul>
+                    <li><strong>Çekiş Sistemi:</strong> Lokomotif ve motorlu araçların elektrik motoru ve güç dönüştürücüleri</li>
+                    <li><strong>Pantograf ve Katener Etkileşimi:</strong> Pantograf ile katener arasındaki ark oluşumu</li>
+                    <li><strong>Güç Besleme Sistemleri:</strong> Trafo merkezleri, besleyici hatlar ve güç dağıtım sistemleri</li>
+                    <li><strong>Elektronik Ekipmanlar:</strong> Sinyalizasyon, haberleşme ve yolcu bilgi sistemleri</li>
+                    <li><strong>Raylı Sistem Devreleri:</strong> Ray devreleri ve topraklama sistemleri</li>
+                </ul>
+                <h3>Elektromanyetik Yayılım Mekanizmaları:</h3>
+                <ul>
+                    <li><strong>İletimsel Yayılım:</strong> Güç ve sinyal kabloları üzerinden</li>
+                    <li><strong>Işınımsal Yayılım:</strong> Havadan elektromanyetik dalgalar şeklinde</li>
+                    <li><strong>Kapasitif Kuplaj:</strong> Elektrik alanı üzerinden yakın sistemlere etkileşim</li>
+                    <li><strong>İndüktif Kuplaj:</strong> Manyetik alanlar üzerinden yakın sistemlere etkileşim</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>EMC yönetim planı oluşturulması ve uygulanması</li>
+                    <li>EMC sorumlusunun atanması ve görev tanımının yapılması</li>
+                    <li>Düzenli EMC ölçümleri için prosedür ve program oluşturulması</li>
+                    <li>Test ve ölçüm sonuçlarının dokümantasyonu için sistem kurulması</li>
+                    <li>Tedarikçilerden alınan bileşenler için EMC uyumluluk beyanlarının yönetimi</li>
+                    <li>EMC eğitimlerinin planlanması ve uygulanması</li>
+                </ul>
+                <h3>Teknik Gereklilikler - Emisyon Limitleri:</h3>
+                <ul>
+                    <li><strong>9 kHz - 30 MHz frekans aralığı:</strong> Manyetik alan şiddeti limitleri (10m mesafede)</li>
+                    <li><strong>30 MHz - 1 GHz frekans aralığı:</strong> Elektrik alan şiddeti limitleri (10m mesafede)</li>
+                    <li><strong>Yavaş Sürüş Modu:</strong> 20 km/saat</li>
+                    <li><strong>Normal Sürüş Modu:</strong> Hat için tanımlanmış maksimum hız</li>
+                </ul>
+                <h3>Emisyon Limit Değerleri (10m mesafede):</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Frekans Aralığı</th>
+                            <th>Ölçüm Birimi</th>
+                            <th>Limit Değeri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>9 kHz - 150 kHz</td>
+                            <td>dBμA/m</td>
+                            <td>53 - 23 (frekansa bağlı olarak azalan)</td>
+                        </tr>
+                        <tr>
+                            <td>150 kHz - 30 MHz</td>
+                            <td>dBμA/m</td>
+                            <td>23 - -3 (frekansa bağlı olarak azalan)</td>
+                        </tr>
+                        <tr>
+                            <td>30 MHz - 300 MHz</td>
+                            <td>dBμV/m</td>
+                            <td>40</td>
+                        </tr>
+                        <tr>
+                            <td>300 MHz - 1 GHz</td>
+                            <td>dBμV/m</td>
+                            <td>47</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Ölçüm Gereksinimleri:</h3>
+                <ul>
+                    <li><strong>Ölçüm Mesafesi:</strong> Hat merkezinden 10m, yer seviyesinden 1-2m yükseklikte</li>
+                    <li><strong>Ölçüm Süresi:</strong> En az 120 saniye</li>
+                    <li><strong>Ölçüm Cihazı Ayarları:</strong> Quasi-peak dedektör, CISPR 16-1 uyumlu</li>
+                    <li><strong>Ölçüm Noktaları:</strong> Trafik koşulları, güç besleme sistemi değişimleri vb. faktörler dikkate alınarak seçilmeli</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>1. Yüksek Hızlı Tren Hatları:</h3>
+                <ul>
+                    <li><strong>Örnek:</strong> Ankara-İstanbul YHT hattında, elektromanyetik emisyonların hat boyunca yerleşim yerlerine etkisinin kontrol edilmesi</li>
+                    <li><strong>Uygulama:</strong> Hat boyunca kritik noktalarda düzenli ölçümler yapılarak emisyon seviyelerinin izlenmesi</li>
+                </ul>
+                <h3>2. Şehir İçi Raylı Sistemler:</h3>
+                <ul>
+                    <li><strong>Örnek:</strong> İstanbul Metro hatlarının yoğun yerleşim bölgelerinden geçen kısımlarında EMC uyumluluğunun sağlanması</li>
+                    <li><strong>Uygulama:</strong> Yeraltı ve yerüstü hatlarında farklı ölçüm yöntemleri kullanılarak emisyon kontrolü</li>
+                </ul>
+                <h3>3. Karma Trafik Hatları:</h3>
+                <ul>
+                    <li><strong>Örnek:</strong> Hem yolcu hem yük trenleri tarafından kullanılan ana hatlarda emisyon profilinin belirlenmesi</li>
+                    <li><strong>Uygulama:</strong> Farklı tren türleri ve hızları için ayrı ayrı ölçümler yapılması</li>
+                </ul>
+                <h3>4. Elektrikli/Elektrifikasyonlu Hatlar:</h3>
+                <ul>
+                    <li><strong>Örnek:</strong> AC/DC besleme sistemlerine sahip hatlarda elektromanyetik emisyon farklılıklarının değerlendirilmesi</li>
+                    <li><strong>Uygulama:</strong> 25 kV AC ve 1500V/3000V DC beslemeli hatların karşılaştırmalı emisyon ölçümleri</li>
+                </ul>
+                <h3>5. Yeni Hat Projeleri:</h3>
+                <ul>
+                    <li><strong>Örnek:</strong> Planlanan yeni demiryolu hatlarının çevresel etki değerlendirmesi kapsamında EMC analizleri</li>
+                    <li><strong>Uygulama:</strong> Hat tasarımı aşamasında simülasyonlar yapılarak potansiyel EMC sorunlarının öngörülmesi</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>1. Planlama Aşaması:</h3>
+                <ul>
+                    <li>EMC yönetim planının oluşturulması</li>
+                    <li>Mevcut ortam elektromanyetik karakterizasyonunun yapılması (temel ölçümler)</li>
+                    <li>Kritik ölçüm noktalarının belirlenmesi (yerleşim yerleri, hastaneler, telekomünikasyon merkezleri vb.)</li>
+                    <li>Ölçüm programının hazırlanması</li>
+                </ul>
+                <h3>2. Tasarım Aşaması:</h3>
+                <ul>
+                    <li>Elektromanyetik emisyonları azaltacak tasarım önlemlerinin belirlenmesi</li>
+                    <li>Güç besleme sistemlerinin EMC uyumlu tasarımı</li>
+                    <li>Topraklama ve ekranlama sistemlerinin planlanması</li>
+                    <li>Kablo güzergahlarının ve tiplerinin EMC açısından optimizasyonu</li>
+                </ul>
+                <h3>3. Kurulum Aşaması:</h3>
+                <ul>
+                    <li>EMC uyumlu bileşen ve ekipmanların seçimi</li>
+                    <li>Uygun topraklama ve ekranlama uygulamaları</li>
+                    <li>Kablo yönlendirme ve ayrım kurallarına uygun montaj</li>
+                    <li>Filtre ve diğer EMC çözümlerinin kurulumu</li>
+                </ul>
+                <h3>4. Test ve Doğrulama Aşaması:</h3>
+                <ul>
+                    <li>İlk ölçümlerin yapılması (commissioning)</li>
+                    <li>Farklı işletme koşullarında (hız, trafik yoğunluğu) emisyon ölçümleri</li>
+                    <li>Sonuçların EN 50121-2 limitleriyle karşılaştırılması</li>
+                    <li>Uygunsuzluk durumunda düzeltici faaliyetlerin planlanması</li>
+                </ul>
+                <h3>5. İşletme Aşaması:</h3>
+                <ul>
+                    <li>Düzenli emisyon ölçümlerinin yapılması (yıllık veya 2 yıllık periyotlarla)</li>
+                    <li>Sistem değişikliklerinden sonra doğrulama ölçümlerinin tekrarlanması</li>
+                    <li>EMC performansının sürekli izlenmesi ve raporlanması</li>
+                    <li>Şikayetlerin değerlendirilmesi ve gerekli önlemlerin alınması</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>1. Elektrik Mühendisliği:</h3>
+                <ul>
+                    <li>Güç sistemlerinin EMC uyumlu tasarımı ve uygulaması</li>
+                    <li>Topraklama ve ekranlama sistemlerinin kurulması</li>
+                    <li>Filtre ve koruma cihazlarının seçimi ve kurulumu</li>
+                    <li>Elektriksel emisyon kaynaklarının kontrolü</li>
+                </ul>
+                <h3>2. Elektronik ve Haberleşme Mühendisliği:</h3>
+                <ul>
+                    <li>EMC ölçüm sistemlerinin tasarımı ve kurulumu</li>
+                    <li>Ölçümlerin gerçekleştirilmesi ve analizi</li>
+                    <li>Sinyalizasyon ve haberleşme sistemlerinin EMC uyumluluğunun kontrolü</li>
+                    <li>EMC test raporlarının hazırlanması</li>
+                </ul>
+                <h3>3. İnşaat ve Altyapı Mühendisliği:</h3>
+                <ul>
+                    <li>Altyapı bileşenlerinin EMC gereksinimlerine uygun tasarımı</li>
+                    <li>Topraklama ağının inşaat aşamasında uygun şekilde kurulması</li>
+                    <li>Ekranlama yapılarının (tüneller, bariyerler vb.) planlanması ve inşası</li>
+                    <li>Altyapı güzergah planlamasında EMC faktörlerinin dikkate alınması</li>
+                </ul>
+                <h3>4. Kalite ve Belgelendirme:</h3>
+                <ul>
+                    <li>EMC test planlarının hazırlanması</li>
+                    <li>Test sonuçlarının dokümantasyonu ve arşivlenmesi</li>
+                    <li>Uygunluk beyanlarının hazırlanması</li>
+                    <li>Düzeltici faaliyetlerin takibi ve dokümantasyonu</li>
+                </ul>
+                <h3>5. İşletme ve Bakım:</h3>
+                <ul>
+                    <li>Düzenli EMC kontrollerinin planlanması ve uygulanması</li>
+                    <li>EMC performansının sürekli izlenmesi</li>
+                    <li>Bakım faaliyetlerinde EMC faktörlerinin göz önünde bulundurulması</li>
+                    <li>Arıza ve şikayetlerin EMC perspektifinden değerlendirilmesi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>1. İzleme Süreci:</h3>
+                <ul>
+                    <li><strong>Ölçüm Planı:</strong> Yılda en az bir kez veya sistem değişikliklerinde</li>
+                    <li><strong>Ölçüm Noktaları:</strong> Hat boyunca kritik noktalar (yerleşim yerleri, elektronik sistemler yakını)</li>
+                    <li><strong>Ölçüm Parametreleri:</strong> 9 kHz - 1 GHz frekans aralığında emisyon seviyeleri</li>
+                    <li><strong>Ölçüm Koşulları:</strong> Normal trafik ve maksimum yük koşulları</li>
+                    <li><strong>Sürekli İzleme:</strong> Kritik noktalarda sabit ölçüm istasyonları kurulabilir</li>
+                </ul>
+                <h3>2. Denetim Süreci:</h3>
+                <ul>
+                    <li><strong>İç Denetim:</strong> Kurum içi EMC denetim ekibi tarafından yıllık denetimler</li>
+                    <li><strong>Dış Denetim:</strong> Akredite kuruluşlar tarafından 2-3 yılda bir denetim</li>
+                    <li><strong>Denetim Kapsamı:</strong> Ölçüm sonuçları, dokümantasyon, düzeltici faaliyetler</li>
+                    <li><strong>Denetim Raporlaması:</strong> Bulgular, uygunsuzluklar ve düzeltici faaliyet önerileri</li>
+                    <li><strong>Takip Denetimleri:</strong> Uygunsuzlukların giderilmesi için takip denetimleri</li>
+                </ul>
+                <h3>3. Belgelendirme Süreci:</h3>
+                <ul>
+                    <li><strong>Teknik Dosya Hazırlama:</strong> EMC test raporları, ölçüm sonuçları, risk analizleri</li>
+                    <li><strong>Belgelendirme Kuruluşu Başvurusu:</strong> Onaylanmış kuruluşa (NoBo) başvuru</li>
+                    <li><strong>Uygunluk Değerlendirmesi:</strong> Dokümanların ve test sonuçlarının incelenmesi</li>
+                    <li><strong>Saha Denetimi:</strong> Belgelendirme kuruluşu tarafından yerinde denetim</li>
+                    <li><strong>Belgelendirme:</strong> EN 50121-2 uyumluluk sertifikasının düzenlenmesi</li>
+                    <li><strong>Periyodik Yenileme:</strong> 3-5 yılda bir belge yenileme süreci</li>
+                </ul>
+                <h3>4. Gereken Dokümantasyon:</h3>
+                <ul>
+                    <li>EMC yönetim planı</li>
+                    <li>Ölçüm raporları ve sonuçları</li>
+                    <li>Tedarikçi uygunluk beyanları</li>
+                    <li>Düzeltici faaliyet raporları</li>
+                    <li>Risk analizi dokümanları</li>
+                    <li>Teknik dosya</li>
+                    <li>Bakım ve izleme prosedürleri</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk 1: Karmaşık ölçüm ortamı ve dış faktörlerin etkisi</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Arka plan gürültüsünün ayrı ölçülmesi ve sonuçların buna göre düzeltilmesi. Ölçümlerin ideal hava koşullarında ve mümkünse gece saatlerinde yapılması. İstatistiksel analiz yöntemlerinin kullanılması.</li>
+                </ul>
+                <h3>Zorluk 2: Farklı tren tipleri ve işletme koşullarında değişken emisyon profilleri</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Farklı tren tipleri ve işletme koşulları için ayrı ölçüm kampanyaları düzenlenmesi. En kötü durum senaryosuna göre değerlendirme yapılması. Uzun süreli ölçümlerle istatistiksel olarak anlamlı sonuçlar elde edilmesi.</li>
+                </ul>
+                <h3>Zorluk 3: Mevcut hatların emisyon limitlerini aşması durumunda yapılacak iyileştirmeler</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Kademeli iyileştirme planı hazırlanması. Öncelikli kritik bölgelerin belirlenmesi. Ekranlama, filtreleme ve topraklama iyileştirmeleri. Bazı durumlarda işletme koşullarının (hız, yük vb.) sınırlandırılması.</li>
+                </ul>
+                <h3>Zorluk 4: Çoklu emisyon kaynaklarının (demiryolu dışı) olduğu ortamlarda demiryolu kaynaklı emisyonların ayrıştırılması</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Tren geçişi sırasında ve olmadığında karşılaştırmalı ölçümler yapılması. Zaman-frekans analizi yöntemlerinin kullanılması. Demiryolu sistemine özgü emisyon imzalarının belirlenmesi.</li>
+                </ul>
+                <h3>Zorluk 5: Ölçüm noktalarına erişim ve güvenlik sorunları</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Ölçüm noktalarının erişilebilir ve güvenli yerlerden seçilmesi. Uzaktan izleme sistemlerinin kurulması. Hat kapanışı veya bakım periyotlarında ölçümlerin planlanması.</li>
+                </ul>
+                <h3>Zorluk 6: Belgelendirme için gerekli kapsamlı doküman ve kanıt toplama</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Proje başlangıcından itibaren EMC dokümantasyon sisteminin kurulması. EMC veri tabanı oluşturulması. Belgelendirme kuruluşları ile erken iletişim kurularak beklentilerin netleştirilmesi.</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>TS EN 50121-2 Uyumluluk Süreç Akışı</h3>
+                <div class="mermaid">
+graph TD;
+    A["TS EN 50121-2 Uyumluluk Süreci"] --> B["1. Planlama Aşaması"];
+    A --> C["2. Ölçüm Aşaması"];
+    A --> D["3. Değerlendirme Aşaması"];
+    A --> E["4. Belgelendirme Aşaması"];
+    
+    B --> B1["EMC Yönetim Planı Oluşturma"];
+    B --> B2["Kritik Ölçüm Noktalarını Belirleme"];
+    B --> B3["Ölçüm Metodolojisini Tanımlama"];
+    
+    C --> C1["Arka Plan Ölçümleri (Trensiz)"];
+    C --> C2["Normal İşletme Koşullarında Ölçümler"];
+    C --> C3["Maksimum Yük Koşullarında Ölçümler"];
+    
+    D --> D1["Ölçüm Sonuçlarının Analizi"];
+    D --> D2["Limit Değerlerle Karşılaştırma"];
+    D --> D3["Uygunsuzluk Durumunda Düzeltici Faaliyetler"];
+    
+    E --> E1["Teknik Dosya Hazırlama"];
+    E --> E2["Belgelendirme Kuruluşuna Başvuru"];
+    E --> E3["Sertifikasyon ve Periyodik İzleme"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50121-2 Uyumluluk Süreç Akışını göstermektedir. </p>
+
+                <h3>TS EN 50121-2 Ölçüm Ekipmanları ve Parametreleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ölçüm Parametresi</th>
+                            <th>Frekans Aralığı</th>
+                            <th>Ölçüm Ekipmanı</th>
+                            <th>Dedektör Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Manyetik Alan Şiddeti</td>
+                            <td>9 kHz - 30 MHz</td>
+                            <td>Kalibre Loop Anten</td>
+                            <td>Quasi-peak</td>
+                        </tr>
+                        <tr>
+                            <td>Elektrik Alan Şiddeti</td>
+                            <td>30 MHz - 300 MHz</td>
+                            <td>Bikonik Anten</td>
+                            <td>Quasi-peak</td>
+                        </tr>
+                        <tr>
+                            <td>Elektrik Alan Şiddeti</td>
+                            <td>300 MHz - 1 GHz</td>
+                            <td>Log-periyodik Anten</td>
+                            <td>Quasi-peak</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>TS EN 50121-2 Emisyon Ölçüm Metodolojisi</h3>
+                <div class="mermaid">
+flowchart TD
+    subgraph "Emisyon Ölçüm Metodolojisi"
+    A[Ölçüm Öncesi Hazırlık] --> B[Arka Plan Ölçümü]
+    B --> C[Tren Geçişi Sırasında Ölçüm]
+    C --> D[Veri Analizi ve Karşılaştırma]
+    D --> E{Limitler Aşıldı mı?}
+    E -- Evet --> F[Düzeltici Faaliyetler]
+    F --> G[Doğrulama Ölçümleri]
+    G --> E
+    E -- Hayır --> H[Raporlama ve Dokümantasyon]
+    end
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50121-2 Emisyon Ölçüm Metodolojisini göstermektedir.</p>
+
+                <h3>Demiryolu Sistemi Emisyon Kaynakları ve Etkileri</h3>
+                <div class="mermaid">
+graph LR
+    subgraph "Emisyon Kaynakları ve Etkileri"
+    A[Demiryolu Sistemi Emisyon Kaynakları] --> B[Pantograf-Katener Etkileşimi]
+    A --> C[Çekiş Sistemleri]
+    A --> D[Güç Elektroniği]
+    A --> E[Frenleme Sistemleri]
+    A --> F[Yardımcı Sistemler]
+    
+    B --> G[Radyo/TV Yayınlarına Etki]
+    C --> G
+    D --> H[Telekomünikasyon Sistemlerine Etki]
+    E --> I[Yakın Yerleşim Bölgelerine Etki]
+    F --> I
+    end
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Demiryolu Sistemi Emisyon Kaynakları ve Etkilerini göstermektedir.</p>
+
+                <h3>TS EN 50121-2 Standardına Göre Tipik Ölçüm Düzeni:</h3>
+                <ul>
+                    <li>Ölçüm noktası: Ray merkezinden 10m mesafede</li>
+                    <li>Anten yüksekliği: Yerden 1-2m</li>
+                    <li>Ölçüm cihazları: EMI alıcı, antenler, veri kayıt sistemi</li>
+                    <li>Ölçüm süresi: Minimum 120 saniye</li>
+                    <li>Tren durumu: Normal işletme hızında hareket halinde</li>
+                    <li>Hava koşulları: Kuru, yağışsız</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
