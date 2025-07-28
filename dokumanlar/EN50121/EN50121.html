@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50121-1 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50121-1: Demiryolu Uygulamaları - Elektromanyetik Uyumluluk - Bölüm 1: Genel</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50121-1, demiryolu sistemlerinde elektromanyetik uyumluluk (EMC) için temel standartları belirler. Bu standart, demiryolu araçları, altyapı bileşenleri ve bunların çevresiyle olan elektromanyetik etkileşimleri kapsar.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50121-1, demiryolu sistemlerinde elektromanyetik uyumluluk (EMC) için temel standartları belirler. Bu standart, demiryolu sistemlerinin elektromanyetik emisyonlarını ve bağışıklığını düzenleyen gereklilikleri tanımlar. Standart, demiryolu araçları, altyapı bileşenleri ve bunların çevresiyle olan elektromanyetik etkileşimleri kapsar.</p>
+                <h3>Standardın temel amacı:</h3>
+                <ul>
+                    <li>Demiryolu sistemlerinin güvenli ve güvenilir çalışmasını sağlamak</li>
+                    <li>Demiryolu sistemlerinden kaynaklanan elektromanyetik parazitleri sınırlamak</li>
+                    <li>Demiryolu sistemlerinin dış elektromanyetik parazitlerden etkilenmemesini sağlamak</li>
+                    <li>Avrupa Birliği EMC Direktifi (2014/30/EU) ile uyumluluğu desteklemek</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>Elektromanyetik Uyumluluk (EMC), elektrikli ve elektronik ekipmanların aynı ortamda, birbirlerini olumsuz etkilemeden çalışabilme yeteneğidir. Demiryolu sistemleri gibi karmaşık elektrikli sistemlerde EMC, kritik öneme sahiptir.</p>
+                <h3>Temel EMC kavramları:</h3>
+                <ul>
+                    <li><strong>Emisyon:</strong> Cihazların elektromanyetik enerji yayması</li>
+                    <li><strong>Bağışıklık:</strong> Cihazların dış elektromanyetik enerjiden etkilenmeden çalışabilmesi</li>
+                    <li><strong>İletim Yolu:</strong> Elektromanyetik enerjinin bir kaynaktan alıcıya aktarılma mekanizması (iletken yollar veya radyasyon)</li>
+                </ul>
+                <p>TS EN 50121-1, serinin diğer bölümleri için genel bir çerçeve sunar ve şu alt standartlarla bağlantılıdır:</p>
+                <ul>
+                    <li>EN 50121-2: Demiryolu sisteminden dış ortama yayılan emisyonlar</li>
+                    <li>EN 50121-3-1: Trenler ve komple araçlar</li>
+                    <li>EN 50121-3-2: Araç üzerindeki cihazlar</li>
+                    <li>EN 50121-4: Sinyalizasyon ve haberleşme cihazları</li>
+                    <li>EN 50121-5: Sabit güç beslemesi tesisleri ve ekipmanları</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>EMC Yönetim Planı oluşturulması ve belgelenmesi</li>
+                    <li>Teknik personelin uygun EMC eğitimlerini alması</li>
+                    <li>Ürün ve sistem seviyesinde EMC değerlendirme süreçlerinin tanımlanması</li>
+                    <li>Satın alma süreçlerinde EMC gereksinimlerinin belirtilmesi</li>
+                    <li>Tedarikçilerin EMC uyumluluğunu göstermesi için gerekli belgelerin talep edilmesi</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Emisyon Limitleri:</strong> Demiryolu sistemlerinin, standardın ilgili bölümlerinde (EN 50121-2, 3-1, 3-2, 4, 5) belirtilen emisyon limitlerini aşmaması</li>
+                    <li><strong>Bağışıklık Seviyeleri:</strong> Ekipmanların, standardın ilgili bölümlerinde belirtilen elektromanyetik parazit seviyelerine karşı bağışıklık göstermesi</li>
+                    <li><strong>Test Gereksinimleri:</strong> Belirlenmiş test metotları ve konfigürasyonlarına uygun testlerin gerçekleştirilmesi</li>
+                    <li><strong>Dokümantasyon:</strong> EMC değerlendirme sonuçlarının ve uyumluluk beyanlarının belgelenmesi</li>
+                </ul>
+                <h3>Teknik Limit Değerler (Örnek):</h3>
+                <ul>
+                    <li>Manyetik alan emisyonu: 10 m mesafede 9 kHz - 30 MHz aralığında maksimum 60 dBμA/m</li>
+                    <li>Elektrik alan emisyonu: 10 m mesafede 30 MHz - 1 GHz aralığında maksimum 40 dBμV/m</li>
+                    <li>Elektrostatik boşalma bağışıklığı: ±8 kV temas deşarjı, ±15 kV hava deşarjı</li>
+                    <li>Radyo frekans bağışıklığı: 80 MHz - 6 GHz aralığında 20 V/m</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <ul>
+                    <li><strong>Yüksek Hızlı Trenler:</strong> Shinkansen (Japonya), TGV (Fransa), ICE (Almanya) gibi yüksek hızlı trenlerde EMC uyumluluğu kritik öneme sahiptir. Bu trenler, yüksek hızda ve yüksek güçte çalıştıklarından, EMC sorunları güvenliği etkileyebilir.</li>
+                    <li><strong>Şehir İçi Raylı Sistemler:</strong> Metro, tramvay ve banliyö trenlerinde, sinyalizasyon sistemlerinin güvenilir çalışması ve yolcu bilgi sistemlerinin etkilenmemesi için EMC uyumluluğu gereklidir.</li>
+                    <li><strong>Yük Trenleri:</strong> Yük trenlerindeki izleme ve kontrol sistemlerinin güvenilirliği için EMC standartlarına uyum sağlanmalıdır.</li>
+                    <li><strong>Sinyalizasyon Sistemleri:</strong> ERTMS/ETCS gibi modern sinyalizasyon sistemlerinin güvenilir çalışması, EMC standartlarına uyumla doğrudan ilişkilidir.</li>
+                    <li><strong>Türkiye'deki Uygulamalar:</strong> Marmaray, Yüksek Hızlı Tren projeleri, İstanbul Metrosu gibi projelerde TS EN 50121 serisi standartlar uygulanmaktadır.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>Proje Aşamasında:</h3>
+                <ul>
+                    <li>Proje başlangıcında EMC gereksinimleri belirlenmeli ve teknik şartnamelere dahil edilmelidir</li>
+                    <li>EMC Yönetim Planı hazırlanmalıdır (IEC 62236-1'e göre)</li>
+                    <li>Potansiyel EMC risklerinin belirlenmesi için risk analizi yapılmalıdır</li>
+                    <li>Topraklama, kablolama ve ekranlama gereksinimleri tasarım aşamasında belirlenmelidir</li>
+                </ul>
+                <h3>Uygulama Aşamasında:</h3>
+                <ul>
+                    <li>Tedarikçilerden alınan bileşenlerin EMC uyumluluk belgelerinin kontrol edilmesi</li>
+                    <li>Kritik bileşenlerin laboratuvar ortamında EMC testlerinden geçirilmesi</li>
+                    <li>Topraklama ve ekranlama uygulamalarının standartlara uygun şekilde yapılması</li>
+                    <li>Kablo yönlendirmelerinin EMC gereksinimlerine göre yapılması (güç ve sinyal kablolarının ayrılması)</li>
+                </ul>
+                <h3>Test ve Devreye Alma Aşamasında:</h3>
+                <ul>
+                    <li>Sistem seviyesinde EMC ölçümlerinin yapılması (EN 50121-2'ye göre)</li>
+                    <li>Kritik ara yüzlerde uyumluluk testlerinin gerçekleştirilmesi</li>
+                    <li>Belirlenen uygunsuzlukların giderilmesi için düzeltici faaliyetlerin uygulanması</li>
+                    <li>Final EMC uyumluluk raporunun hazırlanması</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>Elektrik Mühendisleri:</h3>
+                <ul>
+                    <li>Güç dağıtım sistemlerinin EMC gereksinimlerine uygun tasarlanması</li>
+                    <li>Topraklama ve ekranlama sistemlerinin kurulması</li>
+                    <li>Güç filtreleri ve koruma cihazlarının seçimi ve kurulumu</li>
+                    <li>Emisyon ölçümlerinin gerçekleştirilmesi ve değerlendirilmesi</li>
+                </ul>
+                <h3>Elektronik Mühendisleri:</h3>
+                <ul>
+                    <li>Elektronik kontrol ve haberleşme sistemlerinin EMC uyumlu tasarlanması</li>
+                    <li>PCB tasarımlarında EMC prensiplerine uyulması</li>
+                    <li>Elektronik cihazların EMC testlerinin planlanması ve değerlendirilmesi</li>
+                    <li>Bağışıklık testlerinin gerçekleştirilmesi ve değerlendirilmesi</li>
+                </ul>
+                <h3>Mekanik Mühendisleri:</h3>
+                <ul>
+                    <li>Elektromanyetik ekranlama için mekanik yapıların tasarlanması</li>
+                    <li>Topraklama bağlantıları için mekanik ara yüzlerin tasarlanması</li>
+                    <li>Kablo kanalları ve kablo yollarının EMC gereksinimlerine uygun tasarlanması</li>
+                </ul>
+                <h3>Proje Yöneticileri:</h3>
+                <ul>
+                    <li>EMC Yönetim Planının hazırlanması ve takibi</li>
+                    <li>EMC test programının planlanması ve bütçelendirilmesi</li>
+                    <li>EMC uyumluluk sürecinin koordinasyonu</li>
+                    <li>Uygunsuzlukların giderilmesi için düzeltici faaliyet planlarının yönetimi</li>
+                </ul>
+                <h3>Kalite Mühendisleri:</h3>
+                <ul>
+                    <li>EMC test sonuçlarının ve uyumluluk belgelerinin kontrolü</li>
+                    <li>EMC gereksinimlerinin doğrulanması için denetim planlarının hazırlanması</li>
+                    <li>Uygunsuzlukların raporlanması ve takibi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Düzenli EMC ölçümleri yapılarak sistemin standartlara uygunluğunun kontrolü</li>
+                    <li>Kritik noktalarda sürekli EMC izleme sistemlerinin kurulması</li>
+                    <li>Periyodik bakım sırasında EMC performansının kontrol edilmesi</li>
+                    <li>Değişiklik yönetimi sürecinde EMC etkilerinin değerlendirilmesi</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç denetimler: Yılda en az bir kez EMC uyumluluğunun iç denetimle kontrol edilmesi</li>
+                    <li>Dış denetimler: Akredite kuruluşlar tarafından periyodik denetimler</li>
+                    <li>Tedarikçi denetimleri: Kritik bileşen tedarikçilerinin EMC yönetim süreçlerinin denetlenmesi</li>
+                    <li>Denetim bulguları için düzeltici faaliyet planlarının hazırlanması ve takibi</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Üretici Uygunluk Beyanı (DoC) hazırlanması</li>
+                    <li>Test raporlarının akredite laboratuvarlardan alınması</li>
+                    <li>Teknik dosyanın hazırlanması (tasarım dokümanları, risk analizleri, test raporları)</li>
+                    <li>CE işaretlemesi için EMC Direktifi (2014/30/EU) gereksinimlerinin karşılanması</li>
+                    <li>NoBo (Onaylanmış Kuruluş) belgelendirmesi için başvuru ve süreç takibi</li>
+                </ul>
+                <h3>Belgelendirme için Gereken Dokümanlar:</h3>
+                <ul>
+                    <li>EMC Test Raporları</li>
+                    <li>Risk Analizi Dokümanları</li>
+                    <li>Teknik Dosya</li>
+                    <li>EMC Yönetim Planı</li>
+                    <li>Üretici Uygunluk Beyanı</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk 1: Farklı sistemlerin entegrasyonundan kaynaklanan EMC sorunları</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Sistem entegrasyonu öncesinde EMC ara yüz analizleri yapılmalı, farklı sistemler arasında uygun filtreleme ve izolasyon çözümleri uygulanmalıdır.</li>
+                </ul>
+                <h3>Zorluk 2: Mevcut altyapıya yeni sistemlerin entegrasyonu</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Mevcut ortamın EMC karakteristiği ölçülmeli, yeni sistemler bu ortama uygun EMC özellikleriyle seçilmeli veya mevcut altyapıda iyileştirmeler yapılmalıdır.</li>
+                </ul>
+                <h3>Zorluk 3: Yüksek güç sistemleri ile hassas elektronik sistemlerin bir arada bulunması</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Fiziksel ayrım, ekranlama, filtreler ve optik izolatörler kullanılarak sistemler arasındaki etkileşim minimize edilmelidir.</li>
+                </ul>
+                <h3>Zorluk 4: Test ortamı kısıtlamaları (tam sistem testlerinin zorluğu)</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Modüler test yaklaşımı benimsenebilir; alt sistemler ayrı ayrı test edilip, simülasyon ve analiz yöntemleriyle tam sistem davranışı tahmin edilebilir.</li>
+                </ul>
+                <h3>Zorluk 5: Çevresel EMC sorunları (çevredeki diğer sistemlerden kaynaklanan parazitler)</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Saha ölçümleri yapılarak çevresel EMC ortamı karakterize edilmeli, sistemler bu ortama uygun bağışıklık seviyelerinde tasarlanmalıdır.</li>
+                </ul>
+                <h3>Zorluk 6: Tedarikçilerden gelen bileşenlerin EMC uyumluluğunun doğrulanması</h3>
+                <ul>
+                    <li><strong>Çözüm:</strong> Tedarikçi seçiminde EMC yetkinliği değerlendirilmeli, sözleşmelerde EMC gereksinimleri net olarak belirtilmeli, kabul testleri EMC testlerini içermelidir.</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+               
+                <h3>TS EN 50121 Standardı Serisi Yapısı</h3>
+                <div class="mermaid">
+flowchart TD
+    subgraph "EN 50121 Standardı Serisi"
+    A[EN 50121-1: Genel] --> B[EN 50121-2: Dış Ortama Emisyon]
+    A --> C[EN 50121-3-1: Trenler ve Araçlar]
+    A --> D[EN 50121-3-2: Araç Üzeri Cihazlar]
+    A --> E[EN 50121-4: Sinyalizasyon ve Haberleşme]
+    A --> F[EN 50121-5: Sabit Güç Tesisleri]
+    end
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50121 standart serisi yapısını göstermektedir. </p>
+
+                <h3>EMC Test Gereksinimleri ve Limit Değerleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EMC Fenomeni</th>
+                            <th>Test Standardı</th>
+                            <th>Temel Limit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>İletilen Emisyonlar</td>
+                            <td>EN 55016-2-1</td>
+                            <td>9 kHz - 30 MHz: 40-70 dBμV</td>
+                        </tr>
+                        <tr>
+                            <td>Yayılan Emisyonlar</td>
+                            <td>EN 55016-2-3</td>
+                            <td>30 MHz - 1 GHz: 30-47 dBμV/m</td>
+                        </tr>
+                        <tr>
+                            <td>Elektrostatik Boşalma</td>
+                            <td>EN 61000-4-2</td>
+                            <td>±8 kV kontak, ±15 kV hava</td>
+                        </tr>
+                        <tr>
+                            <td>Radyo Frekansı Bağışıklık</td>
+                            <td>EN 61000-4-3</td>
+                            <td>80 MHz - 6 GHz: 10-20 V/m</td>
+                        </tr>
+                        <tr>
+                            <td>Hızlı Geçici Rejimler</td>
+                            <td>EN 61000-4-4</td>
+                            <td>±2 kV güç, ±1 kV sinyal</td>
+                        </tr>
+                        <tr>
+                            <td>Darbeler</td>
+                            <td>EN 61000-4-5</td>
+                            <td>±2 kV hat-toprak, ±1 kV hat-hat</td>
+                        </tr>
+                        <tr>
+                            <td>İletilen RF Bağışıklık</td>
+                            <td>EN 61000-4-6</td>
+                            <td>150 kHz - 80 MHz: 10 V</td>
+                        </tr>
+                        <tr>
+                            <td>Manyetik Alan Bağışıklık</td>
+                            <td>EN 61000-4-8</td>
+                            <td>50 Hz: 100 A/m</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="sonuc">10. Sonuç</h2>
+                <p>TS EN 50121-1 standardı, demiryolu uygulamalarında elektromanyetik uyumluluk için temel çerçeveyi belirleyen önemli bir standarttır. Bu standardın doğru bir şekilde uygulanması, demiryolu sistemlerinin güvenli ve güvenilir bir şekilde çalışmasını sağlamak için kritik öneme sahiptir.</p>
+                <p>Standardın başarılı bir şekilde uygulanması için:</p>
+                <ul>
+                    <li>Projenin erken aşamalarında EMC gereksinimleri belirlenmelidir</li>
+                    <li>EMC yönetim planı hazırlanmalı ve uygulanmalıdır</li>
+                    <li>Tasarım aşamasında EMC prensiplerine dikkat edilmelidir</li>
+                    <li>Bileşen ve sistem seviyesinde EMC testleri gerçekleştirilmelidir</li>
+                    <li>Belgelendirme süreci için gerekli dokümanlar hazırlanmalıdır</li>
+                </ul>
+                <p>Bu şekilde, demiryolu sistemleri elektromanyetik parazitlerden etkilenmeden güvenli bir şekilde çalışabilir ve çevreye zararlı elektromanyetik emisyonlar yaymadan işletilebilir.</p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
