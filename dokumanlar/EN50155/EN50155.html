@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TR EN 50155 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TR EN 50155: Demiryolu Uygulamaları - Demiryolu Araçlarında Kullanılan Elektronik Ekipmanlar</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">EN 50155 standardı, demiryolu araçlarında kullanılan tüm elektronik ekipmanların tasarım, üretim ve test gereksinimlerini belirler. Bu standart, demiryolu taşıtlarının elektrikli ve elektronik sistemlerinin güvenilirliğini, dayanıklılığını ve uyumluluğunu sağlamayı amaçlamaktadır.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>EN 50155 standardı, demiryolu araçlarında kullanılan tüm elektronik ekipmanların tasarım, üretim ve test gereksinimlerini belirler. Bu standart, demiryolu taşıtlarının elektrikli ve elektronik sistemlerinin güvenilirliğini, dayanıklılığını ve uyumluluğunu sağlamayı amaçlamaktadır.</p>
+                <p>Standartta şu konular ele alınmaktadır:</p>
+                <ul>
+                    <li>Çevresel koşullara dayanıklılık (sıcaklık, nem, titreşim, şok)</li>
+                    <li>Elektromanyetik uyumluluk (EMC) gereksinimleri</li>
+                    <li>Güç kaynağı ve elektriksel gereksinimler</li>
+                    <li>Donanım ve yazılım güvenilirliği</li>
+                    <li>Test prosedürleri ve belgelendirme</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>EN 50155, CENELEC (Avrupa Elektroteknik Standardizasyon Komitesi) tarafından geliştirilen, demiryolu endüstrisinde elektronik ekipmanların standardizasyonunu sağlayan bir normdur. Demiryolu araçlarının zorlu çalışma koşullarında (geniş sıcaklık aralıkları, sürekli titreşim, elektromanyetik parazitler vb.) güvenilir şekilde çalışabilmesi için gerekli parametreleri tanımlar.</p>
+                <p>Standardın temel ilkesi, demiryolu taşımacılığında kullanılan elektronik sistemlerin dayanıklılığını ve güvenilirliğini garanti altına almaktır. Böylece yolcu güvenliği artırılırken, bakım maliyetleri ve işletme kesintileri en aza indirilir.</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Sıcaklık Sınıfları:</strong> Ekipmanların çalışması gereken sıcaklık aralıkları (T1: -25°C ila +55°C, T2: -40°C ila +55°C, T3: -25°C ila +70°C, TX: özel uygulamalar)</li>
+                    <li><strong>Titreşim ve Şok Direnci:</strong> Mekanik dayanıklılık testleri ve gereksinimleri</li>
+                    <li><strong>EMC Uyumluluğu:</strong> EN 50121 standardına göre elektromanyetik uyumluluk</li>
+                    <li><strong>Güç Kaynağı Toleransları:</strong> Gerilim dalgalanmaları, güç kesintileri ve geçici rejimler sırasında çalışma</li>
+                    <li><strong>Yazılım Güvenirliği:</strong> EN 50128 standardına uygun yazılım geliştirme ve doğrulama</li>
+                    <li><strong>IP Koruma Sınıfı:</strong> Toza ve suya karşı koruma dereceleri</li>
+                    <li><strong>Yangın ve Duman Gereksinimleri:</strong> Alev geciktiricilik ve duman emisyonu limitleri</li>
+                </ul>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Kalite Yönetim Sistemi:</strong> ISO 9001 veya eşdeğeri</li>
+                    <li><strong>Dokümantasyon:</strong> Teknik dosyalar, kullanım kılavuzları, bakım prosedürleri</li>
+                    <li><strong>Ürün Yaşam Döngüsü Yönetimi:</strong> Uzun süreli destek ve yedek parça tedariki</li>
+                    <li><strong>Risk Yönetimi:</strong> EN 50126 standardına uygun RAMS (Güvenilirlik, Kullanılabilirlik, Bakım Yapılabilirlik, Güvenlik) analizleri</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>EN 50155 standardı, demiryolu sektöründe aşağıdaki alanlarda yaygın olarak kullanılmaktadır:</p>
+                <h3>1. Yolcu Trenleri:</h3>
+                <ul>
+                    <li>Yolcu bilgilendirme sistemleri</li>
+                    <li>İklimlendirme kontrolü</li>
+                    <li>Aydınlatma sistemleri</li>
+                    <li>Kapı kontrol sistemleri</li>
+                </ul>
+                <p><strong>Örnek:</strong> Türkiye'deki YHT (Yüksek Hızlı Tren) setlerindeki tüm elektronik sistemler bu standarda göre üretilmektedir.</p>
+                <h3>2. Yük Trenleri:</h3>
+                <ul>
+                    <li>Yük izleme sistemleri</li>
+                    <li>Telemetre ekipmanları</li>
+                    <li>Uzaktan denetim sistemleri</li>
+                </ul>
+                <p><strong>Örnek:</strong> TCDD'nin yük vagonlarında kullanılan izleme cihazları EN 50155 sertifikalıdır.</p>
+                <h3>3. Metro ve Hafif Raylı Sistemler:</h3>
+                <ul>
+                    <li>Sinyalizasyon ekipmanları</li>
+                    <li>Yolcu sayım sistemleri</li>
+                    <li>CCTV güvenlik kameraları</li>
+                </ul>
+                <p><strong>Örnek:</strong> İstanbul Metrosu'nun güvenlik ve kontrol sistemleri bu standart gereksinimlerine uygun olarak tasarlanmıştır.</p>
+                <h3>4. Altyapı Bakım Araçları:</h3>
+                <ul>
+                    <li>Ölçüm cihazları</li>
+                    <li>Kontrol sistemleri</li>
+                </ul>
+                <p><strong>Örnek:</strong> Ray bakım ekipmanlarında kullanılan elektronik ölçüm cihazları.</p>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <p>EN 50155 standardının başarılı bir şekilde uygulanması için izlenmesi gereken adımlar:</p>
+                <h3>1. Tasarım Aşaması:</h3>
+                <ul>
+                    <li>Standart gereksinimlerinin detaylı analizi</li>
+                    <li>Sıcaklık sınıfı, çevresel koşullar ve mekanik dayanıklılık gereksinimlerinin belirlenmesi</li>
+                    <li>Bileşen seçimi ve devre tasarımı</li>
+                    <li>Termal analiz ve soğutma sistemlerinin tasarımı</li>
+                </ul>
+                <h3>2. Prototip Üretimi ve Test:</h3>
+                <ul>
+                    <li>Prototip üretimi</li>
+                    <li>Laboratuvar testleri (EMC, çevresel, titreşim, şok vb.)</li>
+                    <li>Sonuçların değerlendirilmesi ve tasarım iyileştirmeleri</li>
+                </ul>
+                <h3>3. Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Test raporlarının hazırlanması</li>
+                    <li>Teknik dosyanın oluşturulması</li>
+                    <li>Bağımsız değerlendirme kuruluşlarına başvuru</li>
+                    <li>Uygunluk sertifikasının alınması</li>
+                </ul>
+                <h3>4. Seri Üretim ve Kalite Kontrolü:</h3>
+                <ul>
+                    <li>Üretim süreçlerinin standardizasyonu</li>
+                    <li>Kalite kontrol prosedürlerinin uygulanması</li>
+                    <li>Düzenli denetimler ve örnekleme testleri</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>1. Elektronik Mühendisliği:</h3>
+                <ul>
+                    <li>Devre tasarımı ve donanım geliştirme</li>
+                    <li>EMC uyumlu tasarım</li>
+                    <li>Komponent seçimi ve kalifikasyonu</li>
+                    <li>Elektronik testlerin yürütülmesi</li>
+                </ul>
+                <h3>2. Mekanik Mühendisliği:</h3>
+                <ul>
+                    <li>Muhafaza tasarımı ve IP koruma seviyesi sağlama</li>
+                    <li>Titreşim ve şok dayanımının sağlanması</li>
+                    <li>Termal yönetim ve soğutma sistemlerinin tasarımı</li>
+                    <li>Mekanik testlerin yürütülmesi</li>
+                </ul>
+                <h3>3. Yazılım Mühendisliği:</h3>
+                <ul>
+                    <li>EN 50128 uyumlu yazılım geliştirme</li>
+                    <li>Yazılım doğrulama ve geçerleme süreçleri</li>
+                    <li>Hata toleranslı yazılım mimarisi tasarımı</li>
+                </ul>
+                <h3>4. Kalite Güvence:</h3>
+                <ul>
+                    <li>Test planlarının hazırlanması ve denetlenmesi</li>
+                    <li>Belgelendirme sürecinin yönetimi</li>
+                    <li>Uygunsuzlukların takibi ve düzeltici faaliyetlerin koordinasyonu</li>
+                </ul>
+                <h3>5. Proje Yönetimi:</h3>
+                <ul>
+                    <li>Standart gereksinimlerinin projeye entegrasyonu</li>
+                    <li>Test ve belgelendirme süreçlerinin planlanması</li>
+                    <li>Kaynak ve zaman yönetimi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>1. Belgelendirme Öncesi Hazırlık:</h3>
+                <ul>
+                    <li>Ürün teknik dosyasının hazırlanması</li>
+                    <li>Risk analizi dokümanlarının oluşturulması</li>
+                    <li>Ön testlerin yapılması ve sonuçların derlenmesi</li>
+                </ul>
+                <h3>2. Belgelendirme Kuruluşu Seçimi:</h3>
+                <ul>
+                    <li>Akredite test laboratuvarı ve belgelendirme kuruluşu araştırması</li>
+                    <li>Belgelendirme maliyeti ve süre değerlendirmesi</li>
+                    <li>Belgelendirme sözleşmesinin imzalanması</li>
+                </ul>
+                <h3>3. Test ve Değerlendirme:</h3>
+                <ul>
+                    <li>Tip testleri (sıcaklık, nem, titreşim, EMC vb.)</li>
+                    <li>Rutin testler (her üretilen birim için)</li>
+                    <li>Örnek testleri (üretim partilerinden örnekleme ile)</li>
+                    <li>Kalite yönetim sistemi denetimi</li>
+                </ul>
+                <h3>4. Belgelendirme ve Takip:</h3>
+                <ul>
+                    <li>Sertifikanın düzenlenmesi</li>
+                    <li>Periyodik denetimler (yıllık)</li>
+                    <li>Ürün değişikliklerinde yeniden değerlendirme</li>
+                    <li>Sertifika yenileme (genellikle 3-5 yıl)</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk 1: Geniş Sıcaklık Aralığı Gereksinimleri</h3>
+                <p><strong>Problem:</strong> Elektronik bileşenler genellikle geniş sıcaklık aralıklarında (örn. -40°C ila +85°C) güvenilir çalışma konusunda zorluk yaşarlar.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Endüstriyel sınıf bileşenlerin kullanımı</li>
+                    <li>Termal analiz ve simülasyonlar</li>
+                    <li>Etkin soğutma sistemleri ve ısı yönetimi</li>
+                    <li>Konformal kaplama ve özel malzemeler</li>
+                </ul>
+                <h3>Zorluk 2: EMC Uyumluluğu</h3>
+                <p><strong>Problem:</strong> Demiryolu ortamında yüksek elektromanyetik parazitler mevcuttur ve ekipmanların hem bundan etkilenmemesi hem de parazit yaymaması gerekir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>EMC odaklı PCB tasarımı (topraklama, filtreleme)</li>
+                    <li>Uygun muhafaza ve kablolama teknikleri</li>
+                    <li>EMI/RFI filtreler ve koruyucu ekranlama</li>
+                    <li>Pre-compliance testleri</li>
+                </ul>
+                <h3>Zorluk 3: Titreşim ve Mekanik Dayanıklılık</h3>
+                <p><strong>Problem:</strong> Demiryolu araçlarındaki sürekli titreşim, elektronik bileşenlerin ve bağlantıların zamanla hasar görmesine neden olabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Titreşim sönümleyici montaj sistemleri</li>
+                    <li>Mekanik rezonans analizleri</li>
+                    <li>Lehim bağlantılarının güçlendirilmesi</li>
+                    <li>Konformel kaplama ve potting uygulamaları</li>
+                </ul>
+                <h3>Zorluk 4: Uzun Ürün Ömrü ve Bileşen Tedariki</h3>
+                <p><strong>Problem:</strong> Demiryolu ekipmanlarının 20-30 yıl gibi uzun süre hizmet vermesi beklenirken, elektronik bileşenlerin ürün ömürleri çok daha kısadır.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Uzun ömürlü bileşen seçimi ve LTB (Last Time Buy) stratejileri</li>
+                    <li>Modüler tasarım yaklaşımı</li>
+                    <li>Alternatif bileşen belgelendirmesi</li>
+                    <li>Obsolesan yönetim planı oluşturulması</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                <p>Bu bölümde, standardın anlaşılmasını kolaylaştıracak görseller, şemalar, akış diyagramları veya ilgili PDF dokümanlarına bağlantılar yer alabilir. Lütfen bu görselleri ve dosyaları ilgili standardın klasörüne yüklemeyi ve buraya doğru dosya yollarını verdiğinizden emin olun.</p>
+                
+                <h3>EN 50155 Test Süreç Akış Diyagramı</h3>
+                <div class="mermaid">
+graph TD;
+    A["Ürün Tasarımı"] --> B["Sıcaklık Sınıfı ve Gereksinim Analizi"];
+    B --> C["Prototip Üretimi"];
+    C --> D["Tip Testleri"];
+    D --> D1["Sıcaklık Testleri"];
+    D --> D2["Titreşim ve Şok Testleri"];
+    D --> D3["EMC Testleri"];
+    D --> D4["IP Koruma Testleri"];
+    D1 --> E["Test Sonuçlarının Değerlendirilmesi"];
+    D2 --> E;
+    D3 --> E;
+    D4 --> E;
+    E --> F{"Testler Başarılı mı?"};
+    F -- "Hayır" --> G["Tasarım İyileştirmeleri"];
+    G --> C;
+    F -- "Evet" --> H["Belgelendirme Başvurusu"];
+    H --> I["Sertifikasyon"];
+    I --> J["Seri Üretim"];
+    J --> K["Rutin ve Örnek Testleri"];
+    K --> L["Periyodik Denetimler"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, EN 50155 Test Süreç Akış Diyagramını göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>EN 50155 Sıcaklık Sınıfları</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sınıf</th>
+                            <th>Çalışma Sıcaklığı Aralığı</th>
+                            <th>Tipik Uygulama Alanları</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>T1</td>
+                            <td>-25°C ila +55°C</td>
+                            <td>Standart uygulamalar, çoğu ülkedeki demiryolu araçları</td>
+                        </tr>
+                        <tr>
+                            <td>T2</td>
+                            <td>-40°C ila +55°C</td>
+                            <td>Soğuk iklim bölgeleri (Kuzey Avrupa, Kanada)</td>
+                        </tr>
+                        <tr>
+                            <td>T3</td>
+                            <td>-25°C ila +70°C</td>
+                            <td>Motor bölmesi veya çatı ekipmanları gibi yüksek sıcaklık bölgeleri</td>
+                        </tr>
+                        <tr>
+                            <td>TX</td>
+                            <td>Özel tanımlanmış aralık</td>
+                            <td>Özel projeler veya spesifik gereksinimler</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>EN 50155 ile İlişkili Diğer Standartlar</h3>
+                <div class="mermaid">
+mindmap
+  root((EN 50155))
+    EN 50121
+      Emisyon Limitleri
+      Bağışıklık Gereksinimleri
+    EN 45545
+      Malzeme Yanmazlık
+      Duman Toksisitesi
+    EN 50124
+      Yalıtım Koordinasyonu
+    EN 61373
+      Titreşim ve Şok
+    EN 50126
+      Risk Analizi
+      Yaşam Döngüsü
+    EN 50128
+      Yazılım Geliştirme
+      Doğrulama ve Geçerleme
+    EN 50129
+      Teknik Emniyet
+      Fonksiyonel Emniyet
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, EN 50155 ile İlişkili Diğer Standartları (Mindmap 1) göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
+                <div class="mermaid">
+mindmap
+  root((EN 50155: Demiryolu Araçlarında Kullanılan Elektronik Ekipmanlar))
+    EN 50121: Elektromanyetik Uyumluluk (EMC)
+      Emisyon Limitleri
+      Bağışıklık Gereksinimleri
+    EN 45545: Yangın Koruma
+      Malzeme Yanmazlık Testleri
+      Duman Toksisitesi
+    EN 50124: Yalıtım Koordinasyonu
+    EN 61373: Titreşim ve Şok Testleri
+    RAMS ve Güvenlik Standartları
+      EN 50126: RAMS
+        Risk Analizi
+        Yaşam Döngüsü Yönetimi
+      EN 50128: Yazılım Güvenliği
+        Yazılım Geliştirme Süreçleri
+        Doğrulama ve Geçerleme
+      EN 50129: Güvenlikle İlgili Elektronik Sistemler
+        Teknik Emniyet Raporu
+        Fonksiyonel Emniyet
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, EN 50155 ile İlişkili Diğer Standartları (Mindmap 2) göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
