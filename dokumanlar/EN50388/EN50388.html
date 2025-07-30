@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50388 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50388: Demiryolu Uygulamaları - Sabit Tesisler ve Araçlar - Elektrikli Besleme Sistemlerinin Koordinasyonu için Teknik Kriterler ve Pantograf ile Temas Hattının Arayüzü</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50388 standardı, demiryolu elektrik besleme sistemlerinin koordinasyonu için teknik kriterleri tanımlar ve pantograf ile temas hattı arasındaki arayüzü düzenler.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50388 standardı, demiryolu elektrik besleme sistemlerinin koordinasyonu için teknik kriterleri tanımlar ve pantograf ile temas hattı arasındaki arayüzü düzenler. Bu standart şunları kapsar:</p>
+                <ul>
+                    <li>Sabit tesisler ve demiryolu araçları arasındaki elektriksel arayüzün optimizasyonu</li>
+                    <li>Çekiş güç besleme sistemlerinin performans değerlendirmesi</li>
+                    <li>Enerji verimliliğini artırmak için gerekli teknik parametreler</li>
+                    <li>Pantograf-katener etkileşiminin teknik gereklilikleri</li>
+                    <li>Elektromanyetik uyumluluk gereksinimleri</li>
+                </ul>
+                <p>Standardın amacı, interoperabilite (birlikte çalışabilirlik) gereksinimlerini karşılayan, güvenli ve verimli bir demiryolu elektrik besleme altyapısının tasarlanması, inşa edilmesi ve işletilmesini sağlamaktır.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 50388 standardı, enerji tedariki ve demiryolu araçları arasındaki etkileşimi düzenleyen temel prensipler üzerine kuruludur. Bu standart, Avrupa Demiryolu Ajansı (ERA) tarafından belirlenen teknik şartnameler doğrultusunda geliştirilmiştir.</p>
+                <h3>Temel Kavramlar:</h3>
+                <ul>
+                    <li><strong>Çekiş Güç Besleme Sistemi:</strong> Demiryolu araçlarının çalışması için gerekli elektrik enerjisini sağlayan sistemdir. Genel olarak şu bileşenlerden oluşur: trafo merkezleri, iletim hatları, katener sistemleri.</li>
+                    <li><strong>Pantograf:</strong> Demiryolu aracı üzerinde bulunan ve katener hattından elektrik enerjisini alan ekipmandır.</li>
+                    <li><strong>Katener Sistemi:</strong> Sabit tesislere ait olup elektrik enerjisini ileten ve pantograf ile temas eden iletken hatlardır.</li>
+                    <li><strong>Harmonik Distorsiyon:</strong> Demiryolu araçlarında kullanılan güç elektroniği cihazlarının şebekede yarattığı dalga bozulmaları.</li>
+                    <li><strong>Gerilim Regülasyonu:</strong> Çekiş güç sisteminde gerilim seviyesinin belirlenen limitler içinde tutulması.</li>
+                </ul>
+                <h3>Teorik Temeller:</h3>
+                <p>Standart, elektrik mühendisliği, malzeme bilimi ve mekanik mühendisliği prensiplerini bir araya getirir. Elektrik güç kalitesi, elektromanyetik uyumluluk, dinamik mekanik davranış gibi disiplinler arası konuları kapsar.</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Kalite Yönetim Sistemi:</strong> ISO 9001 veya eşdeğer bir kalite yönetim sisteminin uygulanması.</li>
+                    <li><strong>Dokümantasyon:</strong> Tüm tasarım, test ve devreye alma süreçlerinin dokümante edilmesi ve 10 yıl süreyle saklanması.</li>
+                    <li><strong>Personel Yetkinliği:</strong> Sistem tasarımı, kurulumu ve testlerini gerçekleştirecek personelin sertifikalandırılması.</li>
+                    <li><strong>Risk Değerlendirmesi:</strong> EN 50126 standardına uygun risk analizi ve değerlendirmesi yapılması.</li>
+                    <li><strong>Acil Durum Planları:</strong> Elektrik kesintisi veya sistem arızası durumlarına yönelik acil durum prosedürlerinin oluşturulması.</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <h3>1. Gerilim ve Frekans Parametreleri:</h3>
+                <ul>
+                    <li><strong>Nominal gerilim değerleri:</strong> 25 kV AC, 15 kV AC, 3 kV DC veya 1.5 kV DC</li>
+                    <li><strong>Gerilim toleransları:</strong>
+                        <ul>
+                            <li>AC sistemlerde: Nominal değerin %90-110'u arasında</li>
+                            <li>DC sistemlerde: Nominal değerin %85-120'si arasında</li>
+                        </ul>
+                    </li>
+                    <li><strong>Frekans değerleri (AC sistemlerde):</strong> 16.7 Hz veya 50 Hz, ±1% tolerans ile</li>
+                </ul>
+                <h3>2. Güç Kalitesi Parametreleri:</h3>
+                <ul>
+                    <li><strong>Harmonik distorsiyon limitleri:</strong> Toplam harmonik distorsiyon (THD) ≤ %8</li>
+                    <li><strong>Gerilim dengesizliği:</strong> ≤ %2</li>
+                    <li><strong>Güç faktörü:</strong> ≥ 0.95 (indüktif veya kapasitif)</li>
+                    <li><strong>Kısa devre kapasitesi:</strong> Minimum 10 MVA</li>
+                </ul>
+                <h3>3. Pantograf-Katener Etkileşimi:</h3>
+                <ul>
+                    <li><strong>Ortalama temas kuvveti:</strong> 70 N ila 200 N arasında (hız ve sistem tipine bağlı olarak)</li>
+                    <li><strong>İzin verilen maksimum kaldırma kuvveti:</strong> 350 N</li>
+                    <li><strong>Maksimum ark süresi:</strong> 100 ms'den az</li>
+                    <li><strong>Katener yüksekliği:</strong> 4.95 m ile 6.50 m arasında (nominal 5.30 m)</li>
+                    <li><strong>Yan sapma limiti:</strong> ±400 mm</li>
+                </ul>
+                <h3>4. Elektromanyetik Uyumluluk:</h3>
+                <ul>
+                    <li><strong>Emisyon limitleri:</strong> EN 50121 serisi standartlarına uygunluk</li>
+                    <li><strong>İndüksiyon etkileri:</strong> Paralel telekomünikasyon hatlarında 60 mV'dan az</li>
+                    <li><strong>Koruma mesafeleri:</strong> Elektronik sinyalizasyon ekipmanlarına minimum 10 m</li>
+                </ul>
+                <h3>5. Enerji Tüketimi ve Rejeneratif Frenleme:</h3>
+                <ul>
+                    <li><strong>Enerji verimliliği:</strong> Minimum %85</li>
+                    <li><strong>Rejeneratif enerji geri kazanımı:</strong> Üretilen frenleme enerjisinin en az %40'ının geri kazanılması</li>
+                    <li><strong>Maksimum anlık geri besleme gücü:</strong> Çekiş gücünün %100'ü</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>Yüksek Hızlı Demiryolu Hatları:</h3>
+                <p>Ankara-İstanbul YHT hattı gibi yüksek hızlı demiryolu projelerinde, TS EN 50388 standardı katener sistemlerinin 25 kV AC, 50 Hz elektriksel karakteristiklerini ve pantograf-katener etkileşimini 300 km/h'e kadar olan hızlarda düzenler. Örneğin, TCDD YHT hatlarında gerilim düşümünün %5'in altında tutulması ve 250 km/h'de pantograf temas kuvvetinin 120±20 N olması gibi parametreler bu standart uyarınca belirlenir.</p>
+                <h3>Konvansiyonel Demiryolu Hatları:</h3>
+                <p>Adana-Mersin hattı gibi konvansiyonel demiryolu hatlarında, elektrikli tren işletmeciliğinin teknik parametreleri (güç faktörü, harmonik distorsiyon, enerji verimliliği, vb.) TS EN 50388 standardına göre belirlenir. Örneğin, bu hatta 25 kV AC besleme sisteminde, trafo merkezleri arası mesafenin 50-60 km olarak tasarlanması standardın ilgili maddelerindeki kriterlere dayanmaktadır.</p>
+                <h3>Kent İçi Raylı Sistemler:</h3>
+                <p>İstanbul, Ankara, İzmir Metro ve tramvay hatlarında (genellikle 750 V DC veya 1500 V DC besleme sistemleri), TS EN 50388 standardı kent içi raylı sistemlerde elektrik besleme sistemi tasarımı için temel oluşturur. İstanbul Metro hattında, DC besleme sisteminde gerilim dalgalanmalarının 500 V - 900 V aralığında sınırlandırılması bu standarda uygun olarak gerçekleştirilir.</p>
+                <h3>Uluslararası Demiryolu Koridorları:</h3>
+                <p>Avrupa-Asya demiryolu koridorları (örneğin Marmaray ve Bakü-Tiflis-Kars hattı) gibi sınır ötesi demiryolu projelerinde, farklı ülkelerin demiryolu sistemleri arasında birlikte çalışabilirliği sağlamak için TS EN 50388 standardı kritik önem taşır. Bu koridorlarda elektrik besleme sistemlerinin ve pantograf tiplerinin uyumluluğu bu standart kapsamında değerlendirilir.</p>
+                <h3>Sanayi Tesisleri ve Lojistik Merkezleri:</h3>
+                <p>Büyük sanayi tesisleri ve lojistik merkezlerindeki özel demiryolu hatlarında (örneğin İskenderun Demir-Çelik Fabrikası demiryolu bağlantısı), TS EN 50388 standardı elektrik besleme sistemlerinin ana şebeke ile uyumlu çalışmasını düzenler. Bu tesislerde elektrik tüketim profillerinin optimizasyonu ve rejeneratif frenleme enerjisinin geri kazanımı bu standart uyarınca yapılır.</p>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>Uygulama Adımları:</h3>
+                <h3>1. Ön Değerlendirme ve Planlama:</h3>
+                <ul>
+                    <li>Sistem parametrelerinin belirlenmesi (gerilim, frekans, güç ihtiyacı)</li>
+                    <li>Araç ve altyapı teknik özelliklerinin incelenmesi</li>
+                    <li>Mevcut veya planlanan demiryolu hattı için simülasyon modelinin oluşturulması</li>
+                    <li>Güç besleme sisteminin yerleşim planının oluşturulması</li>
+                </ul>
+                <h3>2. Tasarım ve Mühendislik:</h3>
+                <ul>
+                    <li>Trafo merkezlerinin boyutlandırılması ve yerleşiminin belirlenmesi:
+                        <ul>
+                            <li>AC sistemlerde: 40-60 km aralıklarla</li>
+                            <li>DC sistemlerde: 10-20 km aralıklarla</li>
+                        </ul>
+                    </li>
+                    <li>Katener sistemi tasarımı (iletken boyutları, gergi kuvvetleri, geometrik parametreler):
+                        <ul>
+                            <li>Kontak teli kesiti: Minimum 100 mm²</li>
+                            <li>Taşıyıcı tel kesiti: Minimum 70 mm²</li>
+                            <li>Toplam kesit: Hız ve akım değerlerine göre 150-500 mm²</li>
+                        </ul>
+                    </li>
+                    <li>Güç kalitesi için gerekli filtrelerin tasarımı</li>
+                    <li>Koruma sistemlerinin tasarımı ve koordinasyonu</li>
+                    <li>Pantograf-katener dinamik etkileşiminin modellenmesi</li>
+                </ul>
+                <h3>3. Kurulum ve Montaj:</h3>
+                <ul>
+                    <li>Katener direği ve temellerin tesis edilmesi (direk arası mesafe: 40-70 m)</li>
+                    <li>İletkenlerin montajı ve gergi ayarları (kontak teli gergi kuvveti: 10-20 kN)</li>
+                    <li>Trafo merkezleri ve besleme ekipmanlarının kurulumu</li>
+                    <li>Topraklama ve koruma sistemlerinin tesis edilmesi (topraklama direnci: ≤ 0.5 Ω)</li>
+                    <li>SCADA ve uzaktan izleme sistemlerinin kurulumu</li>
+                </ul>
+                <h3>4. Test ve Devreye Alma:</h3>
+                <ul>
+                    <li>Yüksüz testler:
+                        <ul>
+                            <li>Yalıtım testleri (minimum 10 MΩ @ 1000 V)</li>
+                            <li>Elektriksel süreklilik testleri</li>
+                            <li>Koruma sistemi fonksiyon testleri</li>
+                        </ul>
+                    </li>
+                    <li>Yüklü testler:
+                        <ul>
+                            <li>Gerilim düşümü testleri (maksimum %10)</li>
+                            <li>Güç kalitesi ölçümleri</li>
+                            <li>Pantograf-katener dinamik testleri</li>
+                        </ul>
+                    </li>
+                    <li>Entegrasyon testleri:
+                        <ul>
+                            <li>Araç-altyapı uyumluluk testleri</li>
+                            <li>Sinyalizasyon etkileşim testleri</li>
+                            <li>EMC testleri</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>5. İşletme ve Bakım:</h3>
+                <ul>
+                    <li>Düzenli ölçüm ve kontroller (3-6 aylık periyotlarda)</li>
+                    <li>Katener aşınma ölçümleri (maksimum aşınma: kontak teli çapının %20'si)</li>
+                    <li>Güç kalitesi izleme (sürekli)</li>
+                    <li>Periyodik bakım planlaması</li>
+                    <li>Arıza kayıtları ve analizi</li>
+                </ul>
+                <h3>Uyum Kriterleri ve Doğrulama Yöntemleri:</h3>
+                <ul>
+                    <li><strong>Gerilim ve frekans ölçümleri:</strong> Trafo merkezlerinde ve hat boyunca belirli noktalarda, yüklü ve yüksüz durumda ölçümler</li>
+                    <li><strong>Harmonik analizi:</strong> Güç analizörleri ile 50. harmoniğe kadar ölçüm</li>
+                    <li><strong>Pantograf-katener temas kuvveti ölçümleri:</strong> Enstrümante edilmiş pantograflar kullanılarak dinamik ölçümler</li>
+                    <li><strong>Termal analiz:</strong> İletkenlerin yük altında sıcaklık artışının kontrolü (maksimum sıcaklık: Cu için 80°C, Al için 65°C)</li>
+                    <li><strong>EMC ölçümleri:</strong> Elektromanyetik alan şiddeti ve indüksiyon etkilerinin ölçümü</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>Elektrik Mühendisliği:</h3>
+                <ul>
+                    <li>Güç beslemesi sistem tasarımı ve boyutlandırması</li>
+                    <li>Güç kalitesi analizleri ve çözümler (harmonik filtreler, kompanzasyon sistemleri)</li>
+                    <li>Koruma koordinasyonu ve rölaj ayarları</li>
+                    <li>Elektromanyetik uyumluluk analizleri</li>
+                    <li>Enerji verimliliği optimizasyonu</li>
+                    <li>Sorumlu olunan standardın ilgili maddeleri: 5, 6, 7, 8, 10, 11, 12, 14</li>
+                </ul>
+                <h3>Mekanik Mühendisliği:</h3>
+                <ul>
+                    <li>Katener sistemi mekanik tasarımı (gergi sistemleri, konsol tasarımı)</li>
+                    <li>Pantograf-katener dinamik davranış analizleri</li>
+                    <li>Rüzgâr ve buz yükü hesaplamaları</li>
+                    <li>Sıcaklık değişimlerine bağlı mekanik gerilimlerin hesaplanması</li>
+                    <li>Sorumlu olunan standardın ilgili maddeleri: 7.1, 7.2, 9, 13</li>
+                </ul>
+                <h3>İnşaat Mühendisliği:</h3>
+                <ul>
+                    <li>Katener direği temellerinin tasarımı</li>
+                    <li>Trafo merkezi bina ve yapılarının tasarımı</li>
+                    <li>Topraklama altyapısı tasarımı</li>
+                    <li>Yapısal analiz ve deprem dayanımı hesapları</li>
+                    <li>Sorumlu olunan standardın ilgili maddeleri: 13.3, 15.4</li>
+                </ul>
+                <h3>Elektronik ve Haberleşme Mühendisliği:</h3>
+                <ul>
+                    <li>SCADA ve izleme sistemleri tasarımı</li>
+                    <li>Haberleşme altyapısı tasarımı</li>
+                    <li>EMC önlemleri ve sinyal bütünlüğünün sağlanması</li>
+                    <li>Ölçüm ve veri toplama sistemleri tasarımı</li>
+                    <li>Sorumlu olunan standardın ilgili maddeleri: 14.1, 14.2, 15.2, 15.3</li>
+                </ul>
+                <h3>Proje Yönetimi:</h3>
+                <ul>
+                    <li>Disiplinler arası koordinasyon</li>
+                    <li>Dokümantasyon ve kayıt yönetimi</li>
+                    <li>Test ve devreye alma faaliyetlerinin planlanması</li>
+                    <li>Uygunluk değerlendirme süreçlerinin yönetimi</li>
+                    <li>Sorumlu olunan standardın ilgili maddeleri: Tüm bölümler (entegrasyon açısından)</li>
+                </ul>
+                <h3>İşletme ve Bakım:</h3>
+                <ul>
+                    <li>Periyodik kontrol ve bakım prosedürlerinin oluşturulması</li>
+                    <li>Arıza tespit ve giderme yöntemlerinin geliştirilmesi</li>
+                    <li>Performans izleme ve raporlama</li>
+                    <li>Bakım personeli eğitimi</li>
+                    <li>Sorumlu olunan standardın ilgili maddeleri: 16, 17</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li><strong>Sürekli İzleme Parametreleri:</strong>
+                        <ul>
+                            <li>Gerilim seviyeleri ve dalgalanmalar (±%10 tolerans)</li>
+                            <li>Akım değerleri (nominal değerin maksimum %130'u)</li>
+                            <li>Güç faktörü (minimum 0.95)</li>
+                            <li>Harmonik distorsiyon (THD &lt; %8)</li>
+                            <li>Enerji tüketimi ve geri kazanımı</li>
+                        </ul>
+                    </li>
+                    <li><strong>Periyodik İzleme:</strong>
+                        <ul>
+                            <li>Katener geometrisi (3 aylık kontroller)</li>
+                            <li>Kontak teli aşınması (6 aylık ölçümler)</li>
+                            <li>Pantograf-katener dinamik etkileşimi (yıllık testler)</li>
+                            <li>Koruma sistemleri fonksiyonları (6 aylık testler)</li>
+                            <li>Topraklama direnci ölçümleri (yıllık)</li>
+                        </ul>
+                    </li>
+                    <li><strong>İzleme Teknolojileri:</strong>
+                        <ul>
+                            <li>SCADA sistemleri</li>
+                            <li>Güç kalitesi analizörleri</li>
+                            <li>Lazer tabanlı katener ölçüm araçları</li>
+                            <li>Termal görüntüleme sistemleri</li>
+                            <li>Enstrümante edilmiş pantograflar</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li><strong>İç Denetimler:</strong>
+                        <ul>
+                            <li>Aylık teknik denetimler</li>
+                            <li>3 aylık sistem performans denetimleri</li>
+                            <li>6 aylık dokümantasyon denetimleri</li>
+                            <li>Yıllık kapsamlı sistem denetimi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dış Denetimler:</strong>
+                        <ul>
+                            <li>Bağımsız denetim kuruluşları tarafından yıllık denetimler</li>
+                            <li>Ulaştırma Bakanlığı/TCDD tarafından gerçekleştirilen resmi denetimler</li>
+                            <li>Akreditasyon kuruluşları tarafından yapılan denetimler</li>
+                            <li>NoBo (Notified Body) denetimleri (uluslararası hatlar için)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Denetim Kontrol Listesi Ana Başlıkları:</strong>
+                        <ul>
+                            <li>Teknik parametrelerin standarda uygunluğu</li>
+                            <li>Dokümantasyon ve kayıtların yeterliliği</li>
+                            <li>Test ve ölçüm ekipmanlarının kalibrasyonu</li>
+                            <li>Personel yetkinliği ve eğitim kayıtları</li>
+                            <li>Acil durum prosedürlerinin etkinliği</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li><strong>Belgelendirme Öncesi Hazırlık:</strong>
+                        <ul>
+                            <li>Öz değerlendirme raporu hazırlanması</li>
+                            <li>Teknik dosyanın oluşturulması</li>
+                            <li>Test raporlarının derlenmesi</li>
+                            <li>Uygunluk beyanının hazırlanması</li>
+                        </ul>
+                    </li>
+                    <li><strong>Belgelendirme Başvurusu:</strong>
+                        <ul>
+                            <li>Akredite belgelendirme kuruluşuna başvuru</li>
+                            <li>Dokümantasyon incelemesi</li>
+                            <li>Ön değerlendirme ziyareti</li>
+                            <li>Belgelendirme planının oluşturulması</li>
+                        </ul>
+                    </li>
+                    <li><strong>Belgelendirme Denetimi:</strong>
+                        <ul>
+                            <li>Saha denetimi (1-3 gün)</li>
+                            <li>Teknik parametrelerin doğrulanması</li>
+                            <li>Dokümantasyon incelemesi</li>
+                            <li>Personel mülakatları</li>
+                            <li>Uygunsuzlukların tespiti ve raporlanması</li>
+                        </ul>
+                    </li>
+                    <li><strong>Belgelendirme Sonrası:</strong>
+                        <ul>
+                            <li>Uygunsuzlukların giderilmesi (maksimum 3 ay)</li>
+                            <li>Takip denetimi (gerekirse)</li>
+                            <li>Belgenin düzenlenmesi ve tescili</li>
+                            <li>Gözetim denetimleri (yıllık)</li>
+                            <li>Yeniden belgelendirme (3 yılda bir)</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Gerekli Dokümantasyon:</h3>
+                <ul>
+                    <li>Sistem tasarım dokümanları</li>
+                    <li>Hesap raporları (güç akışı, kısa devre, harmonik analizleri vb.)</li>
+                    <li>Test ve devreye alma raporları</li>
+                    <li>Kalibrasyon sertifikaları</li>
+                    <li>Personel yetkinlik belgeleri</li>
+                    <li>Bakım kayıtları ve prosedürleri</li>
+                    <li>Uygunsuzluk ve düzeltici faaliyet kayıtları</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Teknik Zorluklar:</h3>
+                <h3>1. Gerilim Dalgalanmaları ve Gerilim Düşümleri:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Özellikle yüksek hızlı trenlerde, aynı anda birden fazla trenin besleme bölgesinde bulunması durumunda gerilim düşümleri yaşanabilir.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Trafo merkezleri arasındaki mesafelerin optimizasyonu (AC sistemlerde 40-50 km, DC sistemlerde 10-15 km)</li>
+                            <li>Otomatik gerilim regülatörlerinin kullanımı</li>
+                            <li>Paralel besleme hatlarının tesis edilmesi</li>
+                            <li>Enerji depolama sistemlerinin kritik noktalara yerleştirilmesi</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>2. Harmonik Distorsiyon Problemleri:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Modern demiryolu araçlarında kullanılan güç elektroniği cihazları (IGBT konvertörler, vb.) şebekede harmonik distorsiyona neden olabilir.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Pasif harmonik filtrelerin kullanımı</li>
+                            <li>Aktif güç filtrelerinin kurulumu</li>
+                            <li>12 veya 24 pulse redresörlerin kullanımı</li>
+                            <li>Araç tarafında harmonik filtreleme şartı getirilmesi</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>3. Pantograf-Katener Etkileşim Sorunları:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Yüksek hızlarda, pantograf ile katener arasındaki dinamik etkileşim, temas kayıplarına ve ark oluşumuna neden olabilir.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Katener geometrisinin optimizasyonu (zigzag değeri: ±20 cm)</li>
+                            <li>Pantograf temas kuvvetinin hıza göre otomatik ayarlanması</li>
+                            <li>Aerodinamik pantograf tasarımlarının kullanılması</li>
+                            <li>Gelişmiş pantograf damper sistemleri</li>
+                            <li>Katener gergi sistemlerinin iyileştirilmesi (sabit gergi yerine otomatik gergi sistemleri)</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>4. Rejeneratif Frenleme Enerjisinin Kullanımı:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Trenlerin frenleme sırasında ürettikleri enerjinin etkin kullanılamaması.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Enerji depolama sistemlerinin kurulumu (superkondansatörler, bataryalar)</li>
+                            <li>Çift yönlü trafo merkezleri (DC sistemlerde)</li>
+                            <li>Akıllı enerji yönetim sistemleri</li>
+                            <li>Tren hareketlerinin koordinasyonu (bir tren frenlerken diğerinin hızlanması)</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Operasyonel Zorluklar:</h3>
+                <h3>1. Farklı Tren Tipleri ve Elektriksel Karakteristikler:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Aynı hatta farklı elektriksel karakteristiklere sahip tren tiplerinin çalışması durumunda uyumsuzluklar yaşanabilir.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Araç-altyapı teknik şartnamelerinin uyumlu hale getirilmesi</li>
+                            <li>Çok sistemli araçların tercih edilmesi</li>
+                            <li>Araç kabul testlerinin kapsamlı yapılması</li>
+                            <li>Simülasyon çalışmaları ile olası etkileşimlerin önceden tespiti</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>2. Bakım Zorlukları:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Kesintisiz işletme gerekliliği nedeniyle bakım faaliyetlerinin planlanmasındaki zorluklar.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Gece bakım pencerelerinin etkin kullanımı</li>
+                            <li>Kesinti gerektirmeyen bakım tekniklerinin geliştirilmesi</li>
+                            <li>Durum bazlı bakım yaklaşımı ve uzaktan izleme sistemleri</li>
+                            <li>Yedek besleme sistemlerinin tesis edilmesi</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>3. Personel Yetkinliği:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> TS EN 50388 standardının gerektirdiği teknik bilgi ve deneyime sahip personel eksikliği.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Kapsamlı eğitim programlarının oluşturulması</li>
+                            <li>Sertifikasyon sisteminin geliştirilmesi</li>
+                            <li>Uluslararası deneyim paylaşımı</li>
+                            <li>Simülatör tabanlı eğitim yöntemleri</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Uyum ve Dokümantasyon Zorlukları:</h3>
+                <h3>1. Standardın Karmaşıklığı:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> TS EN 50388 standardının teknik karmaşıklığı ve diğer standartlarla ilişkilerinin anlaşılması.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Standarda özel uygulama kılavuzlarının hazırlanması</li>
+                            <li>Kontrol listeleri ve örnek uygulamaların geliştirilmesi</li>
+                            <li>Periyodik eğitimler ve bilgi güncellemeleri</li>
+                            <li>Danışmanlık hizmetlerinden yararlanma</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>2. Kapsamlı Dokümantasyon Gereklilikleri:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Standardın gerektirdiği kapsamlı dokümantasyonun hazırlanması ve güncel tutulması.</li>
+                    <li><strong>Çözüm:</strong>
+                        <ul>
+                            <li>Elektronik dokümantasyon yönetim sistemlerinin kullanımı</li>
+                            <li>Standart dokümantasyon şablonlarının geliştirilmesi</li>
+                            <li>Dokümantasyon sorumlularının atanması</li>
+                            <li>Periyodik dokümantasyon denetimleri</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>Tipik 25 kV AC Besleme Sistemi Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A[Yüksek Gerilim Şebekesi<br/>154 kV] --> B[Trafo Merkezi<br/>154/25 kV]
+    B --> C[Katener Sistemi<br/>25 kV AC, 50 Hz]
+    C --> D[Pantograf]
+    D --> E[Demiryolu Aracı<br/>Elektrikli Lokomotif/EMU]
+    E --> F[Trafo<br/>25 kV/1000 V]
+    F --> G[Konvertör<br/>AC/DC]
+    G --> H[Çekiş Motorları]
+    E --> I[Rejeneratif Frenleme<br/>Enerji Geri Kazanımı]
+    I --> C
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbf,stroke:#333,stroke-width:2px
+    style E fill:#fbb,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Tipik 25 kV AC Besleme Sistemi Şemasını göstermektedir. </p>
+
+                <h3>Pantograf-Katener Arayüz Parametreleri</h3>
+                <div class="mermaid">
+graph LR
+    A["Pantograf"] --> B["Katener Arayüzü"]
+    B --> C["Katener Sistemi"]
+    
+    B --> D["Temas Kuvveti<br/>70-200 N"]
+    B --> E["Kaldırma Kuvveti<br/>≤ 350 N"]
+    B --> F["Yan Sapma<br/>±400 mm"]
+    B --> G["Ark Süresi<br/>≤ 100 ms"]
+    B --> H["Dinamik Davranış<br/>0-20 Hz"]
+    
+    style A fill:#bbf,stroke:#333,stroke-width:2px
+    style B fill:#ff9,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Pantograf-Katener Arayüz Parametrelerini göstermektedir.</p>
+
+                <h3>TS EN 50388 Uyum Süreci Akış Diyagramı</h3>
+                <div class="mermaid">
+flowchart TD
+    A["Başlangıç"] --> B["Sistem Parametrelerinin Belirlenmesi"]
+    B --> C["Tasarım ve Mühendislik Çalışmaları"]
+    C --> D["Simülasyon ve Modelleme"]
+    D --> E{"Tasarım<br/>Kriterleri<br/>Uygun mu?"}
+    E -- Hayır --> C
+    E -- Evet --> F["Kurulum ve Montaj"]
+    F --> G["Test ve Devreye Alma"]
+    G --> H{"Testler<br/>Başarılı mı?"}
+    H -- Hayır --> I["Düzeltici Faaliyetler"]
+    I --> G
+    H -- Evet --> J["İşletmeye Alma"]
+    J --> K["Periyodik İzleme ve Bakım"]
+    K --> L{"Performans<br/>Kriterleri<br/>Sağlanıyor mu?"}
+    L -- Hayır --> M["İyileştirme Çalışmaları"]
+    M --> K
+    L -- Evet --> N["Standarda Uygunluğun Sürdürülmesi"]
+    
+    style A fill:#9f9,stroke:#333,stroke-width:2px
+    style E fill:#ff9,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style H fill:#ff9,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style L fill:#ff9,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style N fill:#f99,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50388 Uyum Süreci Akış Diyagramını göstermektedir.</p>
+
+                <h3>Güç Kalitesi Parametreleri ve Limitler</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parametre</th>
+                            <th>AC Sistem (25 kV)</th>
+                            <th>DC Sistem (3 kV)</th>
+                            <th>Test Metodu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gerilim Toleransı</td>
+                            <td>%90 - %110</td>
+                            <td>%85 - %120</td>
+                            <td>EN 50163</td>
+                        </tr>
+                        <tr>
+                            <td>Frekans Toleransı</td>
+                            <td>±%1</td>
+                            <td>N/A</td>
+                            <td>EN 50163</td>
+                        </tr>
+                        <tr>
+                            <td>THD (Toplam Harmonik Distorsiyon)</td>
+                            <td>≤ %8</td>
+                            <td>N/A</td>
+                            <td>EN 50160</td>
+                        </tr>
+                        <tr>
+                            <td>Bireysel Harmonikler</td>
+                            <td>3. harmonik: ≤ %55. harmonik: ≤ %67. harmonik: ≤ %5</td>
+                            <td>N/A</td>
+                            <td>EN 61000-2-4</td>
+                        </tr>
+                        <tr>
+                            <td>Gerilim Dengesizliği</td>
+                            <td>≤ %2</td>
+                            <td>N/A</td>
+                            <td>EN 50160</td>
+                        </tr>
+                        <tr>
+                            <td>Güç Faktörü</td>
+                            <td>≥ 0.95</td>
+                            <td>N/A</td>
+                            <td>EN 50388</td>
+                        </tr>
+                        <tr>
+                            <td>Ripple (Dalgalanma)</td>
+                            <td>N/A</td>
+                            <td>≤ %15</td>
+                            <td>EN 50163</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Pantograf-Katener Sistem Kesiti</h3>
+                <div class="mermaid">
+graph TD
+    A["Taşıyıcı Tel<br/>(70-120 mm²)"] --- B["Askı Teli"]
+    B --- C["Kontak Teli<br/>(100-150 mm²)"]
+    C --- D["Pantograf Karbon Bandı"]
+    D --- E["Pantograf"]
+    E --- F["Demiryolu Aracı"]
+    
+    style A fill:#bfb,stroke:#333,stroke-width:2px
+    style C fill:#fbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#fbb,stroke:#333,stroke-width:2px
+    style F fill:#ff9,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Pantograf-Katener Sistem Kesitini göstermektedir.</p>
+
+                <h3>TS EN 50388 Standardı Temel Bileşenleri</h3>
+                <div class="mermaid">
+mindmap
+  root((TS EN 50388))
+    Güç Beslemesi
+      Gerilim ve Frekans
+      Güç Kalitesi
+      Güç Faktörü
+      Harmonikler
+    Pantograf-Katener
+      Geometri
+      Temas Kuvveti
+      Dinamik Davranış
+      Aşınma Limitleri
+    Enerji Verimliliği
+      Rejeneratif Frenleme
+      Enerji Tüketimi
+      Optimizasyon
+    EMC
+      Emisyon Limitleri
+      Bağışıklık
+      Topraklama
+    Test ve Doğrulama
+      Simülasyon
+      Saha Testleri
+      Ölçüm Yöntemleri
+    Dokümantasyon
+      Tasarım Dokümanları
+      Test Raporları
+      Bakım Kayıtları
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50388 Standardı Temel Bileşenlerini göstermektedir.</p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
