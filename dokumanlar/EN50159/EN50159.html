@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50159 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50159: Demiryolu Uygulamaları - Haberleşme, Sinyalizasyon ve İşleme Sistemleri - Güvenlikle İlgili İletişim İçin Haberleşme Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50159 standardı, demiryolu sinyalizasyon ve kontrol sistemleri içindeki güvenlikle ilgili iletişim için kullanılan haberleşme sistemlerinin gereksinimlerini tanımlar. Bu standart, güvenlik mesajlarının iletildiği iletişim kanalları arasında meydana gelebilecek tehlikeli ve rastgele hataların etkilerini azaltmak için gerekli önlemleri kapsar.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50159 standardı, demiryolu sinyalizasyon ve kontrol sistemleri içindeki güvenlikle ilgili iletişim için kullanılan haberleşme sistemlerinin gereksinimlerini tanımlar. Bu standart, güvenlik mesajlarının iletildiği iletişim kanalları arasında meydana gelebilecek tehlikeli ve rastgele hataların etkilerini azaltmak için gerekli önlemleri kapsar.</p>
+                <h3>Standardın temel amacı:</h3>
+                <ul>
+                    <li>Demiryolu sinyalizasyon sistemlerinde kullanılan haberleşme sistemlerinin güvenilirliğini sağlamak</li>
+                    <li>Veri iletişimindeki olası tehditleri tanımlamak ve bunlara karşı savunma mekanizmaları geliştirmek</li>
+                    <li>İletişim sistemlerinde oluşabilecek hatalardan kaynaklanan riskleri azaltmak</li>
+                    <li>Emniyet bütünlüğü seviyesi (SIL) gereksinimlerini karşılamak</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 50159, haberleşme sistemlerini iki ana kategoride sınıflandırır:</p>
+                <ul>
+                    <li><strong>Kategori 1:</strong> Kapalı iletişim sistemleri - Bilinen ve sabit sayıda katılımcı arasında, bilinen ve sabit özelliklere sahip iletişim sistemleri</li>
+                    <li><strong>Kategori 2:</strong> Açık iletişim sistemleri - Bilinmeyen veya değişken sayıda katılımcı arasında, bilinmeyen veya değişken özelliklere sahip iletişim sistemleri</li>
+                </ul>
+                <p>Standart, aşağıdaki temel tehdit türlerini tanımlar:</p>
+                <ul>
+                    <li><strong>Tekrarlama:</strong> Daha önce gönderilen bir mesajın tekrar alınması</li>
+                    <li><strong>Silme:</strong> Bir mesajın iletilememesi</li>
+                    <li><strong>Ekleme:</strong> İstenmeyen veya sahte bir mesajın alınması</li>
+                    <li><strong>Yeniden sıralama:</strong> Mesajların orijinal sırasının değişmesi</li>
+                    <li><strong>Bozulma:</strong> Mesaj içeriğinin değişmesi</li>
+                    <li><strong>Gecikme:</strong> Mesajın belirlenenden daha uzun sürede iletilmesi</li>
+                    <li><strong>Maskeleme:</strong> Yetkisiz bir kaynaktan gelen mesajın yetkili bir kaynaktan gelmiş gibi görünmesi</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>Güvenlik yönetim sistemi oluşturulması ve belgelendirilmesi</li>
+                    <li>Risk analizi ve risk değerlendirme süreçlerinin tanımlanması</li>
+                    <li>Personel yetkinliklerinin belirlenmesi ve eğitimlerin sağlanması</li>
+                    <li>Değişiklik yönetimi prosedürlerinin oluşturulması</li>
+                    <li>Kalite güvence planlarının hazırlanması</li>
+                    <li>Dış kaynaklı ürün ve hizmetlerin değerlendirilmesi için prosedürler</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Mesaj formatı:</strong> Her mesaj aşağıdaki bileşenleri içermelidir:</li>
+                    <ul>
+                        <li>Güvenlik kod numarası (Safety Code)</li>
+                        <li>Mesaj tipi tanımlayıcısı</li>
+                        <li>Mesaj numarası (sıra numarası)</li>
+                        <li>Kaynak ve hedef adresleri</li>
+                        <li>Zaman damgası</li>
+                        <li>Veri bütünlüğü kontrol kodu (CRC, Hash vb.)</li>
+                    </ul>
+                </ul>
+                <h4>Savunma mekanizmaları:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tehdit</th>
+                            <th>Savunma Mekanizması</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tekrarlama</td>
+                            <td>Sıra numarası, zaman damgası</td>
+                        </tr>
+                        <tr>
+                            <td>Silme</td>
+                            <td>Mesaj sayacı, timeout kontrolü, alındı bildirimi</td>
+                        </tr>
+                        <tr>
+                            <td>Ekleme</td>
+                            <td>Güvenlik kodu, kaynak adresi doğrulama</td>
+                        </tr>
+                        <tr>
+                            <td>Yeniden sıralama</td>
+                            <td>Sıra numarası</td>
+                        </tr>
+                        <tr>
+                            <td>Bozulma</td>
+                            <td>CRC, hash fonksiyonları, hata düzeltme kodları</td>
+                        </tr>
+                        <tr>
+                            <td>Gecikme</td>
+                            <td>Zaman damgası, timeout kontrolü</td>
+                        </tr>
+                        <tr>
+                            <td>Maskeleme</td>
+                            <td>Kimlik doğrulama, kriptografik imzalar</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>SIL (Safety Integrity Level) gereksinimleri:</h4>
+                <ul>
+                    <li>SIL 4: Tehlikeli arıza oranı 10^-9 - 10^-8 arası/saat</li>
+                    <li>SIL 3: Tehlikeli arıza oranı 10^-8 - 10^-7 arası/saat</li>
+                    <li>SIL 2: Tehlikeli arıza oranı 10^-7 - 10^-6 arası/saat</li>
+                    <li>SIL 1: Tehlikeli arıza oranı 10^-6 - 10^-5 arası/saat</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TS EN 50159 standardı, aşağıdaki demiryolu uygulamalarında kullanılmaktadır:</p>
+                <ul>
+                    <li><strong>Şehiriçi Raylı Sistemler:</strong>
+                        <ul>
+                            <li>Metro sistemleri</li>
+                            <li>Tramvay hatları</li>
+                            <li>Hafif raylı sistemler (LRT)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Konvansiyonel Demiryolları:</strong>
+                        <ul>
+                            <li>Sinyalizasyon sistemleri</li>
+                            <li>Tren kontrol sistemleri</li>
+                            <li>Hemzemin geçit kontrol sistemleri</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yüksek Hızlı Tren Hatları:</strong>
+                        <ul>
+                            <li>ETCS (European Train Control System) uygulamaları</li>
+                            <li>ERTMS (European Rail Traffic Management System) uygulamaları</li>
+                        </ul>
+                    </li>
+                    <li><strong>Endüstriyel Demiryolları:</strong>
+                        <ul>
+                            <li>Liman raylı sistemleri</li>
+                            <li>Maden raylı sistemleri</li>
+                            <li>Fabrika içi raylı taşıma sistemleri</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Örnek Uygulama Senaryoları:</h3>
+                <ul>
+                    <li><strong>Marmaray Projesi (Türkiye):</strong> Avrupa ve Asya yakasını birleştiren tüp geçitte kullanılan CBTC (Communication Based Train Control) sisteminde TS EN 50159 standardı uygulanmıştır.</li>
+                    <li><strong>Ankara-İstanbul Hızlı Tren Hattı:</strong> ETCS Seviye 2 sinyalizasyon sisteminde, GSM-R üzerinden tren kontrolü için TS EN 50159 uyumlu iletişim protokolleri kullanılmaktadır.</li>
+                    <li><strong>İstanbul Metro Hatları:</strong> Araç üstü ve yer ekipmanları arasındaki güvenli iletişim için TS EN 50159 standartları uygulanmaktadır.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>Uygulama Adımları:</h3>
+                <ol>
+                    <li><strong>Sistem Analizi:</strong> Mevcut veya planlanan iletişim sistemi analiz edilmeli ve kategori (1 veya 2) belirlenmelidir.</li>
+                    <li><strong>Risk Değerlendirmesi:</strong> Sistem için kapsamlı bir risk analizi yapılmalı ve potansiyel tehditler belirlenmelidir.</li>
+                    <li><strong>Güvenlik Gereksinimlerinin Tanımlanması:</strong> Sistemin SIL seviyesi ve buna bağlı olarak güvenlik gereksinimleri belirlenmelidir.</li>
+                    <li><strong>Savunma Mekanizmalarının Seçimi:</strong> Belirlenmiş tehditlere karşı uygun savunma mekanizmaları seçilmelidir.</li>
+                    <li><strong>Protokol Tasarımı:</strong> Mesaj formatı, zaman aşımı değerleri, güvenlik kodları ve diğer protokol özellikleri tanımlanmalıdır.</li>
+                    <li><strong>Doğrulama ve Geçerleme:</strong> Tasarlanan sistemin gereksinimleri karşıladığı doğrulanmalı ve geçerlenmelidir.</li>
+                    <li><strong>Belgelendirme:</strong> Tüm süreç belgelendirilerek güvenlik kanıtları oluşturulmalıdır.</li>
+                </ol>
+                <h3>Teknik Uygulama Detayları:</h3>
+                <ul>
+                    <li><strong>Mesaj Yapısı Örneği:</strong>
+                        <div class="diagram">
+<pre>
+[Header] [Safety Code] [Message Type] [Sequence Number] [Source Address] 
+[Destination Address] [Timestamp] [Data] [Integrity Check]
+</pre>
+                        </div>
+                    </li>
+                    <li><strong>CRC Hesaplama:</strong> Tipik olarak CRC-32 veya daha güçlü algoritmalar kullanılmalıdır. Örnek CRC-32 uygulaması:
+                        <div class="diagram">
+<pre>
+uint32_t calculateCRC32(uint8_t *data, size_t length) {
+    uint32_t crc = 0xFFFFFFFF;
+    for (size_t i = 0; i < length; i++) {
+        crc ^= data[i];
+        for (int j = 0; j < 8; j++) {
+            if (crc & 1)
+                crc = (crc >> 1) ^ 0xEDB88320;
+            else
+                crc = crc >> 1;
+        }
+    }
+    return ~crc;
+}
+</pre>
+                        </div>
+                    </li>
+                    <li><strong>Timeout Değerleri:</strong> İletişim güvenilirliğini sağlamak için önerilen timeout değerleri:
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sistem Tipi</th>
+                                    <th>Önerilen Timeout</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Kritik komutlar</td>
+                                    <td>100-300 ms</td>
+                                </tr>
+                                <tr>
+                                    <td>Normal operasyon</td>
+                                    <td>300-1000 ms</td>
+                                </tr>
+                                <tr>
+                                    <td>Periyodik durum bilgisi</td>
+                                    <td>1-5 s</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <p>TS EN 50159 standardının uygulanmasında farklı disiplinlerin sorumlulukları:</p>
+                <ul>
+                    <li><strong>Yazılım Mühendisleri:</strong>
+                        <ul>
+                            <li>Güvenli iletişim protokollerinin tasarımı ve uygulaması</li>
+                            <li>Savunma mekanizmalarının kodlanması</li>
+                            <li>Yazılım güvenlik analizi ve doğrulama testleri</li>
+                            <li>Hata işleme mekanizmalarının geliştirilmesi</li>
+                            <li>Yazılım yaşam döngüsü dokümantasyonu</li>
+                        </ul>
+                    </li>
+                    <li><strong>Donanım Mühendisleri:</strong>
+                        <ul>
+                            <li>İletişim donanımlarının güvenlik gereksinimlerine uygun seçimi</li>
+                            <li>Fiziksel katman hata toleransı tasarımı</li>
+                            <li>Donanım arıza analizleri</li>
+                            <li>EMC (Elektromanyetik Uyumluluk) testleri</li>
+                            <li>Donanım bileşenlerinin güvenilirlik hesaplamaları</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sistem Mühendisleri:</strong>
+                        <ul>
+                            <li>Sistem mimarisinin tasarımı</li>
+                            <li>Alt sistemler arası entegrasyon</li>
+                            <li>Risk analizi ve değerlendirme</li>
+                            <li>Sistemin genel güvenlik seviyesinin doğrulanması</li>
+                            <li>Sistem seviyesi güvenlik gereksinimlerinin tanımlanması</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test ve Doğrulama Mühendisleri:</strong>
+                        <ul>
+                            <li>Test planlarının hazırlanması</li>
+                            <li>Birim ve entegrasyon testlerinin yürütülmesi</li>
+                            <li>Güvenlik kanıtlarının toplanması</li>
+                            <li>Hata enjeksiyon testleri</li>
+                            <li>Validasyon raporlarının hazırlanması</li>
+                        </ul>
+                    </li>
+                    <li><strong>Proje Yöneticileri:</strong>
+                        <ul>
+                            <li>Güvenlik yönetim planının oluşturulması</li>
+                            <li>Kaynakların etkin kullanımının sağlanması</li>
+                            <li>Disiplinler arası koordinasyonun sağlanması</li>
+                            <li>Proje risklerinin yönetimi</li>
+                            <li>Belgelendirme sürecinin yönetimi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kalite Güvence Ekibi:</strong>
+                        <ul>
+                            <li>Kalite yönetim sisteminin uygulanması</li>
+                            <li>Süreç denetimlerinin gerçekleştirilmesi</li>
+                            <li>Dokümantasyon kontrolü</li>
+                            <li>Düzeltici ve önleyici faaliyetlerin takibi</li>
+                            <li>Kalite kayıtlarının yönetimi</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Mesaj iletişim loglarının tutulması ve periyodik analizi (en az 30 gün saklama)</li>
+                    <li>İletişim hatalarının kaydedilmesi ve kategorilendirilmesi</li>
+                    <li>Performans metriklerinin ölçülmesi (gecikme, paket kaybı, hata oranı vb.)</li>
+                    <li>Alarm sistemlerinin oluşturulması (belirli eşik değerleri aşıldığında)</li>
+                    <li>Periyodik güvenlik testlerinin yapılması (3-6 aylık periyotlarda)</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç denetimler (kuruluş içi, yılda en az 2 kez)</li>
+                    <li>Dış denetimler (bağımsız değerlendirme kuruluşları tarafından)</li>
+                    <li>Düzenleyici kurum denetimleri</li>
+                    <li>Güvenlik kanıtlarının gözden geçirilmesi</li>
+                    <li>Düzeltici faaliyetlerin tanımlanması ve takibi</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ol>
+                    <li><strong>Hazırlık:</strong> Belgelendirme kapsamının belirlenmesi ve başvuru</li>
+                    <li><strong>Doküman İncelemesi:</strong> Teknik dosyanın incelenmesi</li>
+                    <li><strong>Değerlendirme:</strong> Yerinde denetim ve değerlendirme</li>
+                    <li><strong>Düzeltici Faaliyetler:</strong> Tespit edilen uygunsuzlukların giderilmesi</li>
+                    <li><strong>Belgelendirme:</strong> Uygunluk belgesinin düzenlenmesi</li>
+                    <li><strong>Gözetim:</strong> Periyodik gözetim denetimleri (yılda en az 1 kez)</li>
+                </ol>
+                <h3>Gerekli Belgelendirme Dokümanları:</h3>
+                <ul>
+                    <li>Güvenlik yönetim planı</li>
+                    <li>Risk analizi raporu</li>
+                    <li>Sistem tanımlama dokümanı</li>
+                    <li>Güvenlik gereksinimleri spesifikasyonu</li>
+                    <li>Tasarım dokümanları</li>
+                    <li>Doğrulama ve geçerleme planı</li>
+                    <li>Test raporları</li>
+                    <li>Güvenlik kanıtı (Safety Case)</li>
+                    <li>Kullanım ve bakım kılavuzları</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>1. Mevcut Sistemlerin Entegrasyonu</h3>
+                <p><strong>Zorluk:</strong> Eski sistemlerin TS EN 50159 standartlarına uyarlanması.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Gateway çözümleri ile eski ve yeni sistemler arasında güvenli geçiş sağlanması</li>
+                    <li>Kademeli geçiş planlarının oluşturulması</li>
+                    <li>Eski sistemlerin risk değerlendirmesinin yapılarak kabul edilebilir risk seviyesinin belirlenmesi</li>
+                </ul>
+                <h3>2. Performans ve Güvenlik Dengesinin Sağlanması</h3>
+                <p><strong>Zorluk:</strong> Güvenlik önlemleri genellikle sistem performansını düşürebilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Optimum CRC algoritmaları kullanımı (hız ve güvenilirlik dengesi)</li>
+                    <li>Donanım hızlandırıcıların kullanılması (özellikle kriptografik işlemler için)</li>
+                    <li>Güvenlik kritikliğine göre farklı seviyelerde önlemler uygulanması</li>
+                </ul>
+                <h3>3. Kompleks Sistemlerde Test ve Doğrulama</h3>
+                <p><strong>Zorluk:</strong> Karmaşık sistemlerde tüm hata senaryolarının test edilmesi zordur.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Formal doğrulama yöntemlerinin kullanılması</li>
+                    <li>Otomatik test araçlarının geliştirilmesi</li>
+                    <li>Simülasyon ve modelleme tekniklerinin kullanılması</li>
+                    <li>Hata enjeksiyon testleri için özel platformlar geliştirilmesi</li>
+                </ul>
+                <h3>4. Kablosuz İletişim Güvenliği</h3>
+                <p><strong>Zorluk:</strong> Kablosuz iletişimde ek güvenlik tehditleri bulunmaktadır.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Güçlü şifreleme protokollerinin kullanılması (AES-256 gibi)</li>
+                    <li>Frekans atlamalı sistemlerin kullanılması</li>
+                    <li>Yedekli iletişim kanallarının tasarlanması</li>
+                    <li>Fiziksel katman güvenlik önlemlerinin alınması</li>
+                </ul>
+                <h3>5. Belgelendirme Süreci Karmaşıklığı</h3>
+                <p><strong>Zorluk:</strong> Belgelendirme süreci karmaşık ve zaman alıcıdır.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Proje başlangıcında belgelendirme kuruluşları ile ön görüşmelerin yapılması</li>
+                    <li>Belgelendirme sürecine özel ekip oluşturulması</li>
+                    <li>Otomatik dokümantasyon araçlarının kullanılması</li>
+                    <li>Benzer projelerin deneyimlerinden faydalanılması</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>TS EN 50159 İletişim Sistemi Yaşam Döngüsü</h3>
+                <div class="mermaid">
+graph TD;
+    A["Başlangıç: Sistem Gereksinimleri"] --> B["İletişim Sistemi Kategori Belirleme"];
+    B --> C{"Kategori 1 mi\nKategori 2 mi?"};
+    C -->|"Kategori 1"| D["Kapalı Sistem Tehditleri Belirleme"];
+    C -->|"Kategori 2"| E["Açık Sistem Tehditleri Belirleme"];
+    D --> F["Savunma Mekanizmaları Seçimi"];
+    E --> F;
+    F --> G["İletişim Protokolü Tasarımı"];
+    G --> H["Doğrulama ve Geçerleme"];
+    H --> I{"Gereksinimler\nKarşılandı mı?"};
+    I -->|"Hayır"| F;
+    I -->|"Evet"| J["Belgelendirme Süreci"];
+    J --> K["Uygulama ve Devreye Alma"];
+    K --> L["İzleme ve Bakım"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50159 İletişim Sistemi Yaşam Döngüsünü göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>TS EN 50159 Tehdit Türleri ve Savunma Mekanizmaları</h3>
+                <div class="mermaid">
+flowchart LR
+    subgraph Tehditler
+        T1["Tekrarlama"]
+        T2["Silme"]
+        T3["Ekleme"]
+        T4["Yeniden sıralama"]
+        T5["Bozulma"]
+        T6["Gecikme"]
+        T7["Maskeleme"]
+    end
+    subgraph Savunma_Mekanizmaları
+        S1["Sıra Numarası"]
+        S2["Zaman Damgası"]
+        S3["Timeout Kontrolü"]
+        S4["Mesaj Sayacı"]
+        S5["Güvenlik Kodu"]
+        S6["CRC / Hash"]
+        S7["Kriptografik İmza"]
+    end
+    T1 --> S1 & S2
+    T2 --> S3 & S4
+    T3 --> S5
+    T4 --> S1
+    T5 --> S6
+    T6 --> S2 & S3
+    T7 --> S5 & S7
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50159 Tehdit Türleri ve Savunma Mekanizmalarını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>Mesaj Yapısı Örneği</h3>
+                <div class="mermaid">
+graph LR
+    A["Header"] --> B["Safety Code"]
+    B --> C["Message Type"]
+    C --> D["Sequence Number"]
+    D --> E["Source Address"]
+    E --> F["Destination Address"]
+    F --> G["Timestamp"]
+    G --> H["Data"]
+    H --> I["Integrity Check"]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Mesaj Yapısı Örneğini göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>Belgelendirme Süreci Akışı</h3>
+                <div class="mermaid">
+graph TD
+    A["Hazırlık Aşaması"] -->|"Başvuru Yapılması"| B["Doküman İncelemesi"]
+    B -->|"Uygun"| C["Yerinde Değerlendirme"]
+    B -->|"Uygun Değil"| D["Düzeltici Faaliyetler-1"]
+    D --> B
+    C -->|"Uygunsuzluk Var"| E["Düzeltici Faaliyetler-2"]
+    E --> C
+    C -->|"Uygunsuzluk Yok"| F["Belgelendirme Kararı"]
+    F -->|"Olumlu"| G["Sertifika Düzenlenmesi"]
+    F -->|"Olumsuz"| H["Başvurunun Reddi"]
+    G --> I["Periyodik Gözetim Denetimleri"]
+    I -->|"Her Yıl"| I
+    I -->|"3 Yılda Bir"| J["Yeniden Belgelendirme"]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Belgelendirme Süreci Akışını göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>Kategori 1 ve Kategori 2 Sistem Karşılaştırması</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Özellik</th>
+                            <th>Kategori 1 Sistem</th>
+                            <th>Kategori 2 Sistem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Katılımcılar</td>
+                            <td>Bilinen ve sabit sayıda</td>
+                            <td>Bilinmeyen veya değişken sayıda</td>
+                        </tr>
+                        <tr>
+                            <td>İletişim ortamı</td>
+                            <td>Kontrollü, özel</td>
+                            <td>Açık, paylaşımlı</td>
+                        </tr>
+                        <tr>
+                            <td>Erişim kontrolü</td>
+                            <td>Fiziksel ve/veya mantıksal</td>
+                            <td>Mantıksal (şifreleme vb.)</td>
+                        </tr>
+                        <tr>
+                            <td>Tehdit seviyesi</td>
+                            <td>Düşük</td>
+                            <td>Yüksek</td>
+                        </tr>
+                        <tr>
+                            <td>Savunma gereksinimleri</td>
+                            <td>Temel</td>
+                            <td>Kapsamlı</td>
+                        </tr>
+                        <tr>
+                            <td>Uygulama örneği</td>
+                            <td>Tren içi kontrol ağı</td>
+                            <td>GSM-R üzerinden tren kontrolü</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="ts-en-50159-kontrol-listesi">10. TS EN 50159 Kontrol Listesi</h2>
+                <p>Aşağıda, TS EN 50159 standardının uygulanmasında kullanılabilecek örnek kontrol listesi sunulmuştur. Bu liste, standardın temel gereksinimlerini karşılamak için proje ekiplerinin kullanabileceği bir rehber niteliğindedir.</p>
+                <h3>1. Sistem Sınıflandırma ve Risk Değerlendirme</h3>
+                <ul>
+                    <li>[ ] Haberleşme sistemi Kategori 1 veya Kategori 2 olarak doğru sınıflandırıldı mı?</li>
+                    <li>[ ] Tüm olası tehditler (tekrarlama, silme, ekleme, yeniden sıralama, bozulma, gecikme, maskeleme) değerlendirildi mi?</li>
+                    <li>[ ] Her tehdit için risk seviyesi belirlenip dokümante edildi mi?</li>
+                </ul>
+                <h3>2. Savunma Mekanizmaları Seçimi</h3>
+                <ul>
+                    <li>[ ] Belirlenen tehditler için uygun savunma mekanizmaları seçildi mi?</li>
+                    <li>[ ] Sıra numarası, zaman damgası, timeout kontrolü, güvenlik kodu vb. önlemler uygulandı mı?</li>
+                    <li>[ ] Seçilen savunma mekanizmalarının etkinliği analiz edildi mi?</li>
+                </ul>
+                <h3>3. Protokol Tasarımı</h3>
+                <ul>
+                    <li>[ ] Mesaj formatı güvenlik gereksinimlerini karşılayacak şekilde tasarlandı mı?</li>
+                    <li>[ ] Veri bütünlüğü için uygun CRC/hash algoritmaları seçildi mi?</li>
+                    <li>[ ] Kategori 2 sistemler için kriptografik önlemler yeterli mi?</li>
+                </ul>
+                <h3>4. Doğrulama ve Geçerleme Testleri</h3>
+                <ul>
+                    <li>[ ] Güvenlik gereksinimleri ve savunma mekanizmaları için kapsamlı test planı hazırlandı mı?</li>
+                    <li>[ ] Hata enjeksiyon testleri planlandı ve uygulandı mı?</li>
+                    <li>[ ] Performans testleri, sistemin zaman kısıtlamalarını karşıladığını doğruluyor mu?</li>
+                </ul>
+                <h3>5. Dokümantasyon ve Belgelendirme</h3>
+                <ul>
+                    <li>[ ] Güvenlik vakası (safety case) hazırlandı ve tüm savunma mekanizmaları dokümante edildi mi?</li>
+                    <li>[ ] İlgili referans dokümanları (RAMS analizleri, tehlike logları vb.) hazırlandı mı?</li>
+                    <li>[ ] Sistem bakım ve izleme prosedürleri dokümante edildi mi?</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
