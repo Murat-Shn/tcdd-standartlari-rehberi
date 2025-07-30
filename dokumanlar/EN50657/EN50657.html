@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50657 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50657: Demiryolu Uygulamaları - Demiryolu Araçları Üzerindeki Uygulamalar - Yazılım Gereksinimleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50657 standardı, demiryolu araçlarındaki yazılım tabanlı sistemlerin geliştirilmesi, doğrulanması ve bakımı için güvenlik gereksinimlerini belirler. Bu standart, demiryolu araçlarında kullanılan yazılımların güvenilirliğini, emniyet seviyesini ve kalitesini sağlamak amacıyla oluşturulmuştur.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p>TS EN 50657 standardı, demiryolu araçlarındaki yazılım tabanlı sistemlerin geliştirilmesi, doğrulanması ve bakımı için güvenlik gereksinimlerini belirler. Bu standart, demiryolu araçlarında kullanılan yazılımların güvenilirliğini, emniyet seviyesini ve kalitesini sağlamak amacıyla oluşturulmuştur.</p>
+                <p>Standart, demiryolu araçlarında bulunan her türlü yazılım uygulamasını kapsar ve bu yazılımların yaşam döngüsü boyunca uygulanması gereken süreçleri tanımlar. Özellikle, güvenlikle ilgili yazılımların geliştirilmesi ve bakımı için gerekli olan sistematik yaklaşımları içerir.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 50657, demiryolu araçlarındaki yazılımların güvenlik bütünlüğü seviyelerine (Software Safety Integrity Level - SWSIL) göre sınıflandırılmasını ve bu seviyelere uygun geliştirme süreçlerini tanımlar. Bu standart, EN 50128 standardının demiryolu araçlarına özel uyarlaması olarak düşünülebilir.</p>
+                <p>Standart, aşağıdaki güvenlik bütünlük seviyelerini tanımlar:</p>
+                <ul>
+                    <li>SWSIL 0: Güvenlikle ilgili olmayan yazılımlar</li>
+                    <li>SWSIL 1: Düşük güvenlik riski taşıyan yazılımlar</li>
+                    <li>SWSIL 2: Orta düzeyde güvenlik riski taşıyan yazılımlar</li>
+                    <li>SWSIL 3/4: Yüksek güvenlik riski taşıyan yazılımlar</li>
+                </ul>
+                <p>Yazılım yaşam döngüsü, aşağıdaki ana fazları içerir:</p>
+                <ul>
+                    <li>Planlama ve gereksinim analizi</li>
+                    <li>Tasarım</li>
+                    <li>Kodlama</li>
+                    <li>Entegrasyon</li>
+                    <li>Doğrulama ve geçerleme</li>
+                    <li>Bakım ve değişiklik yönetimi</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>Kalite Yönetim Sistemi: ISO 9001 veya eşdeğeri bir kalite yönetim sistemi kurulmalıdır.</li>
+                    <li>Güvenlik Yönetim Sistemi: Organizasyon içinde bir güvenlik yönetim sistemi oluşturulmalıdır.</li>
+                    <li>Rol ve Sorumluluklar: Yazılım geliştirme sürecinde yer alan tüm rollerin ve sorumlulukların net bir şekilde tanımlanması gerekmektedir.</li>
+                    <li>Eğitim ve Yetkinlik: Personelin uygun eğitim ve yetkinliğe sahip olması sağlanmalıdır.</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Gereksinim Yönetimi: Yazılım gereksinimleri detaylı bir şekilde belgelenmelidir.</li>
+                    <li>Tasarım ve Kodlama Standartları: Yazılım tasarımı ve kodlama için standartlar belirlenmelidir.</li>
+                    <li>Test ve Doğrulama: Kapsamlı test ve doğrulama süreçleri uygulanmalıdır.</li>
+                    <li>Konfigürasyon Yönetimi: Yazılım konfigürasyonu kontrol edilmeli ve yönetilmelidir.</li>
+                    <li>Değişiklik Yönetimi: Yazılım değişiklikleri sistematik bir şekilde yönetilmelidir.</li>
+                    <li>Hata Raporlama ve Düzeltme: Hataların raporlanması ve düzeltilmesi için prosedürler oluşturulmalıdır.</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TS EN 50657 standardı, demiryolu araçlarındaki çeşitli yazılım sistemleri için uygulanır:</p>
+                <ul>
+                    <li><strong>Tren Kontrol Sistemleri:</strong> Sürüş kontrol sistemleri, otomatik tren koruma sistemleri, otomatik tren işletim sistemleri</li>
+                    <li><strong>Fren Sistemleri:</strong> Elektronik kontrollü fren sistemleri, acil durum fren sistemleri</li>
+                    <li><strong>Güç ve Çekiş Kontrol Sistemleri:</strong> Güç dönüştürücüler, motor kontrol sistemleri</li>
+                    <li><strong>Yolcu Bilgi Sistemleri:</strong> Yolcu bilgilendirme ekranları, anons sistemleri</li>
+                    <li><strong>Kapı Kontrol Sistemleri:</strong> Otomatik kapı açma-kapama sistemleri, kapı kilitleme sistemleri</li>
+                    <li><strong>İklimlendirme Sistemleri:</strong> Isıtma, havalandırma ve iklimlendirme kontrol yazılımları</li>
+                    <li><strong>Diyagnostik Sistemler:</strong> Araç durumu izleme, arıza teşhis sistemleri</li>
+                </ul>
+                <h3>Sektörel Örnekler:</h3>
+                <ul>
+                    <li>Yüksek Hızlı Trenler: Siemens Velaro, Alstom AGV, Bombardier Zefiro gibi yüksek hızlı trenlerdeki kritik kontrol sistemleri</li>
+                    <li>Metro Araçları: Metro sistemlerindeki otomatik sürüş ve kontrol yazılımları</li>
+                    <li>Tramvaylar: Şehir içi tramvaylardaki güvenlik sistemleri</li>
+                    <li>Yük Trenleri: Yük trenlerindeki otomatik kontrol ve izleme sistemleri</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>1. Yazılım Güvenlik Bütünlüğü Seviyesinin Belirlenmesi:</h3>
+                <ul>
+                    <li>Tehlike ve risk analizi yapılmalıdır</li>
+                    <li>Yazılımın sistem üzerindeki etkisi değerlendirilmelidir</li>
+                    <li>Uygun SWSIL seviyesi belirlenmelidir</li>
+                </ul>
+                <h3>2. Yazılım Yaşam Döngüsü Planlaması:</h3>
+                <ul>
+                    <li>Yazılım geliştirme planı oluşturulmalıdır</li>
+                    <li>Kalite güvence planı hazırlanmalıdır</li>
+                    <li>Doğrulama ve geçerleme planı oluşturulmalıdır</li>
+                </ul>
+                <h3>3. Gereksinim Analizi ve Spesifikasyon:</h3>
+                <ul>
+                    <li>Fonksiyonel gereksinimler tanımlanmalıdır</li>
+                    <li>Güvenlik gereksinimleri belirlenmeli ve belgelenmelidir</li>
+                    <li>Gereksinimler takip edilebilir ve doğrulanabilir olmalıdır</li>
+                </ul>
+                <h3>4. Yazılım Tasarımı:</h3>
+                <ul>
+                    <li>Modüler tasarım yapılmalıdır</li>
+                    <li>Arayüz spesifikasyonları tanımlanmalıdır</li>
+                    <li>Tasarım dokümanları hazırlanmalıdır</li>
+                </ul>
+                <h3>5. Kodlama:</h3>
+                <ul>
+                    <li>Kodlama standartları uygulanmalıdır</li>
+                    <li>Kod gözden geçirmeleri yapılmalıdır</li>
+                    <li>Statik kod analizi gerçekleştirilmelidir</li>
+                </ul>
+                <h3>6. Entegrasyon ve Test:</h3>
+                <ul>
+                    <li>Birim testleri yapılmalıdır</li>
+                    <li>Entegrasyon testleri gerçekleştirilmelidir</li>
+                    <li>Sistem testleri yapılmalıdır</li>
+                </ul>
+                <h3>7. Doğrulama ve Geçerleme:</h3>
+                <ul>
+                    <li>Doğrulama ve geçerleme raporları hazırlanmalıdır</li>
+                    <li>Güvenlik analizleri yapılmalıdır</li>
+                    <li>Bağımsız değerlendirme gerçekleştirilmelidir</li>
+                </ul>
+                <h3>8. Bakım ve Değişiklik Yönetimi:</h3>
+                <ul>
+                    <li>Değişiklik talep süreci tanımlanmalıdır</li>
+                    <li>Değişiklik etki analizi yapılmalıdır</li>
+                    <li>Sürüm yönetimi uygulanmalıdır</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>Proje Yönetimi:</h3>
+                <ul>
+                    <li>Yazılım geliştirme planının oluşturulması ve izlenmesi</li>
+                    <li>Kaynakların planlanması ve yönetimi</li>
+                    <li>Proje zaman çizelgesinin takibi</li>
+                    <li>Risk yönetimi</li>
+                </ul>
+                <h3>Yazılım Mühendisliği:</h3>
+                <ul>
+                    <li>Gereksinim analizi ve spesifikasyon</li>
+                    <li>Yazılım tasarımı</li>
+                    <li>Kodlama</li>
+                    <li>Birim testleri</li>
+                </ul>
+                <h3>Kalite Güvence:</h3>
+                <ul>
+                    <li>Kalite planının hazırlanması</li>
+                    <li>Kalite denetimlerinin yapılması</li>
+                    <li>Süreç iyileştirme</li>
+                    <li>Uyumluluk kontrolü</li>
+                </ul>
+                <h3>Doğrulama ve Geçerleme:</h3>
+                <ul>
+                    <li>Test planlarının hazırlanması</li>
+                    <li>Test senaryolarının oluşturulması</li>
+                    <li>Test faaliyetlerinin yürütülmesi</li>
+                    <li>Test raporlarının hazırlanması</li>
+                </ul>
+                <h3>Konfigürasyon Yönetimi:</h3>
+                <ul>
+                    <li>Sürüm kontrolü</li>
+                    <li>Değişiklik yönetimi</li>
+                    <li>Konfigürasyon denetimi</li>
+                    <li>Durum raporlama</li>
+                </ul>
+                <h3>Güvenlik Mühendisliği:</h3>
+                <ul>
+                    <li>Tehlike ve risk analizi</li>
+                    <li>Güvenlik gereksinimlerinin belirlenmesi</li>
+                    <li>Güvenlik analizlerinin yapılması</li>
+                    <li>Güvenlik kanıtlarının oluşturulması</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Yazılım geliştirme sürecinin izlenmesi</li>
+                    <li>Metriklerin toplanması ve analizi (kod kalitesi, test kapsamı, hata oranları)</li>
+                    <li>Düzenli durum raporlarının hazırlanması</li>
+                    <li>Gereksinimlerin izlenebilirliğinin sağlanması</li>
+                </ul>
+                <h3>İç Denetim:</h3>
+                <ul>
+                    <li>Yazılım süreç denetimleri (en az yılda bir kez)</li>
+                    <li>Kod gözden geçirmeleri</li>
+                    <li>Tasarım gözden geçirmeleri</li>
+                    <li>Dokümantasyon denetimleri</li>
+                </ul>
+                <h3>Dış Denetim:</h3>
+                <ul>
+                    <li>Belgelendirme kuruluşları tarafından yapılan denetimler</li>
+                    <li>Müşteri denetimleri</li>
+                    <li>Düzenleyici kurum denetimleri</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li><strong>Aşama 1:</strong> Başvuru ve ön değerlendirme</li>
+                    <li><strong>Aşama 2:</strong> Dokümantasyon incelemesi</li>
+                    <li><strong>Aşama 3:</strong> Yerinde denetim</li>
+                    <li><strong>Aşama 4:</strong> Bulguların değerlendirilmesi</li>
+                    <li><strong>Aşama 5:</strong> Belgelendirme kararı</li>
+                    <li><strong>Aşama 6:</strong> Gözetim denetimleri (yıllık)</li>
+                    <li><strong>Aşama 7:</strong> Yeniden belgelendirme (3-5 yılda bir)</li>
+                </ul>
+                <h3>Gerekli Belgeler:</h3>
+                <ul>
+                    <li>Yazılım Kalite Planı</li>
+                    <li>Yazılım Geliştirme Planı</li>
+                    <li>Gereksinim Spesifikasyonu</li>
+                    <li>Yazılım Tasarım Dokümanı</li>
+                    <li>Yazılım Doğrulama ve Geçerleme Planı</li>
+                    <li>Test Planları ve Raporları</li>
+                    <li>Güvenlik Analiz Raporları</li>
+                    <li>Konfigürasyon Yönetim Planı</li>
+                    <li>Değişiklik Yönetim Kayıtları</li>
+                    <li>Yazılım Sürüm Notları</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk 1: Güvenlik Bütünlüğü Seviyesinin Belirlenmesi</h3>
+                <p><strong>Sorun:</strong> Yazılımın uygun SWSIL seviyesinin belirlenmesi karmaşık bir süreçtir ve yanlış belirlenmesi durumunda ya gereksiz maliyet artışına ya da güvenlik risklerine yol açabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Detaylı tehlike ve risk analizi yapılmalıdır</li>
+                    <li>Sistem düzeyinde güvenlik analizleri gerçekleştirilmelidir</li>
+                    <li>Gerektiğinde uzman görüşü alınmalıdır</li>
+                    <li>Benzer sistemlerden edinilen tecrübelerden faydalanılmalıdır</li>
+                </ul>
+                <h3>Zorluk 2: Dokümantasyon Yükü</h3>
+                <p><strong>Sorun:</strong> TS EN 50657 standardı kapsamlı dokümantasyon gerektirmektedir, bu da proje zaman çizelgesini ve maliyetleri etkileyebilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Dokümantasyon şablonları oluşturulmalıdır</li>
+                    <li>Dokümantasyon yönetim sistemi kurulmalıdır</li>
+                    <li>Gereksinim yönetim araçları kullanılmalıdır</li>
+                    <li>Dokümantasyon süreçleri otomatize edilmelidir</li>
+                </ul>
+                <h3>Zorluk 3: Bağımsız Değerlendirme Gerekliliği</h3>
+                <p><strong>Sorun:</strong> Yüksek SWSIL seviyelerinde bağımsız değerlendirme gereklidir, ancak uygun değerlendiricilerin bulunması ve sürece dahil edilmesi zor olabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Önceden onaylanmış değerlendirici listesi oluşturulmalıdır</li>
+                    <li>Değerlendirme süreci proje planına dahil edilmelidir</li>
+                    <li>Değerlendiricilerin eğitilmesi için kaynak ayrılmalıdır</li>
+                    <li>Değerlendirme kriterlerinin net bir şekilde tanımlanması sağlanmalıdır</li>
+                </ul>
+                <h3>Zorluk 4: Değişiklik Yönetimi</h3>
+                <p><strong>Sorun:</strong> Yazılım değişikliklerinin etkin bir şekilde yönetilmesi ve değişikliklerin sistem güvenliği üzerindeki etkilerinin değerlendirilmesi zor olabilir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Kapsamlı değişiklik yönetim süreci tanımlanmalıdır</li>
+                    <li>Değişiklik etki analizi metodolojisi oluşturulmalıdır</li>
+                    <li>Değişiklik yönetim araçları kullanılmalıdır</li>
+                    <li>Değişiklik kurulları oluşturulmalıdır</li>
+                </ul>
+                <h3>Zorluk 5: Yazılım Araçlarının Doğrulanması</h3>
+                <p><strong>Sorun:</strong> Yazılım geliştirme sürecinde kullanılan araçların doğrulanması ve nitelendirilmesi gerekir, bu da ek zaman ve kaynak gerektirir.</p>
+                <p><strong>Çözüm:</strong></p>
+                <ul>
+                    <li>Önceden nitelendirilmiş araçlar kullanılmalıdır</li>
+                    <li>Araç doğrulama süreçleri tanımlanmalıdır</li>
+                    <li>Araç kullanım kısıtlamaları belgelenmelidir</li>
+                    <li>Araç doğrulama sonuçları paylaşılmalıdır</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">9. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>Yazılım Geliştirme Yaşam Döngüsü (V-Model)</h3>
+                <div class="mermaid">
+graph TD;
+    A["Başlangıç: Yazılım Geliştirme Projesi"] --> B["SWSIL Seviyesinin Belirlenmesi"];
+    B --> C["Yazılım Geliştirme Planı Oluşturma"];
+    C --> D["Gereksinim Analizi ve Spesifikasyon"];
+    D --> E["Yazılım Tasarımı"];
+    E --> F["Kodlama"];
+    F --> G["Birim Testleri"];
+    G --> H["Entegrasyon Testleri"];
+    H --> I["Sistem Testleri"];
+    I --> J["Doğrulama ve Geçerleme"];
+    J --> K["Değerlendirme ve Belgelendirme"];
+    K --> L["Yazılım Sürümünün Yayınlanması"];
+    L --> M["Bakım ve Değişiklik Yönetimi"];
+    
+    %% Yan süreçler
+    C -.-> N["Kalite Güvence Planı"];
+    C -.-> O["Doğrulama ve Geçerleme Planı"];
+    C -.-> P["Konfigürasyon Yönetim Planı"];
+    
+    %% SWSIL seviyeleri için farklı gereksinimler
+    B --> Q["SWSIL 0: Minimum Gereksinimler"];
+    B --> R["SWSIL 1: Temel Gereksinimler"];
+    B --> S["SWSIL 2: Orta Düzey Gereksinimler"];
+    B --> T["SWSIL 3/4: Kapsamlı Gereksinimler"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Yazılım Geliştirme Yaşam Döngüsünü (V-Model) göstermektedir.</p>
+
+                <h3>Yazılım Yaşam Döngüsü Fazları, SWSIL Seviyeleri ve Dokümantasyon İlişkisi</h3>
+                <div class="mermaid">
+graph LR;
+    subgraph "Yazılım Yaşam Döngüsü Fazları"
+    A["Planlama"] --> B["Gereksinim Analizi"];
+    B --> C["Tasarım"];
+    C --> D["Kodlama"];
+    D --> E["Test"];
+    E --> F["Doğrulama ve Geçerleme"];
+    F --> G["Bakım"];
+    end
+    
+    subgraph "SWSIL Seviyeleri"
+    H["SWSIL 0"] --> I["SWSIL 1"];
+    I --> J["SWSIL 2"];
+    J --> K["SWSIL 3/4"];
+    end
+    
+    subgraph "Dokümantasyon"
+    L["Yazılım Geliştirme Planı"] --> M["Gereksinim Spesifikasyonu"];
+    M --> N["Tasarım Dokümanı"];
+    N --> O["Test Planı"];
+    O --> P["Doğrulama Raporu"];
+    P --> Q["Güvenlik Kanıtı"];
+    end
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Yazılım Yaşam Döngüsü Fazları, SWSIL Seviyeleri ve Dokümantasyon İlişkisini göstermektedir.</p>
+
+                <h3>SWSIL Seviyeleri ve Gereklilikler Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SWSIL Seviyesi</th>
+                            <th>Teknikler ve Önlemler</th>
+                            <th>Dokümantasyon</th>
+                            <th>Bağımsız Değerlendirme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SWSIL 0</td>
+                            <td>Temel yazılım geliştirme teknikleri</td>
+                            <td>Minimum dokümantasyon</td>
+                            <td>Gerekli değil</td>
+                        </tr>
+                        <tr>
+                            <td>SWSIL 1</td>
+                            <td>Basit hataya dayanıklı teknikler</td>
+                            <td>Temel dokümantasyon</td>
+                            <td>Kendi kendine değerlendirme</td>
+                        </tr>
+                        <tr>
+                            <td>SWSIL 2</td>
+                            <td>Gelişmiş hataya dayanıklı teknikler, kod incelemeleri</td>
+                            <td>Detaylı dokümantasyon</td>
+                            <td>Bağımsız kişi tarafından değerlendirme</td>
+                        </tr>
+                        <tr>
+                            <td>SWSIL 3/4</td>
+                            <td>Kapsamlı hataya dayanıklı teknikler, biçimsel yöntemler</td>
+                            <td>Kapsamlı dokümantasyon</td>
+                            <td>Bağımsız departman/kuruluş tarafından değerlendirme</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Doküman Türü ve SWSIL Seviyesi Gereksinimleri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doküman Türü</th>
+                            <th>SWSIL 0</th>
+                            <th>SWSIL 1</th>
+                            <th>SWSIL 2</th>
+                            <th>SWSIL 3/4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Yazılım Kalite Planı</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Yazılım Geliştirme Planı</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Gereksinim Spesifikasyonu</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Yazılım Tasarım Dokümanı</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Test Planı</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Doğrulama ve Geçerleme Raporu</td>
+                            <td>İsteğe Bağlı</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Güvenlik Kanıtı</td>
+                            <td>İsteğe Bağlı</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                        <tr>
+                            <td>Değişiklik Yönetim Kayıtları</td>
+                            <td>Önerilir</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                            <td>Gerekli</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
