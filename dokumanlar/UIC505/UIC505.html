@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIC 505 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">UIC 505: Demiryolu Taşıtları - Gabari Standartları</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">UIC 505 standardı, demiryolu araçlarının boyutsal sınırlarını ve gabari (yapı sınırı/taşıt dış hatları) gerekliliklerini belirleyen kapsamlı bir standartlar serisidir.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">1. Standart Kodu ve Adı</h2>
+                <p>UIC 505 - "Demiryolu Taşıtları - Gabari Standartları"</p>
+                <p>Alt bölümler:</p>
+                <ul>
+                    <li>UIC 505-1: Demiryolu Araçları İçin Yapım Gabarisi</li>
+                    <li>UIC 505-2: Kinematik Gabari</li>
+                    <li>UIC 505-3: Standart Gabari - Uygulanması</li>
+                    <li>UIC 505-4: Vagon Tipleri İçin Gabari Kuralları</li>
+                    <li>UIC 505-5: Temel Koşullar - Ortak Kullanım (İnteroperabilite) İçin Araç Temel Kondisyonları</li>
+                    <li>UIC 505-6: Gabari Uygulamaları İçin Kurallar</li>
+                </ul>
+
+                <h2 id="kapsam-ve-amac">2. Kapsam ve Amaç</h2>
+                <p>UIC 505 standardı, demiryolu araçlarının boyutsal sınırlarını ve gabari (yapı sınırı/taşıt dış hatları) gerekliliklerini belirleyen kapsamlı bir standartlar serisidir. Temel amacı, demiryolu araçlarının, hat üzerindeki diğer araçlar, altyapı elemanları ve platformlar ile güvenli bir şekilde etkileşimde bulunmasını sağlamaktır.</p>
+                <p>Bu standart, demiryolu araçlarının tasarım, üretim ve işletme aşamalarında uymaları gereken dış ölçü sınırlarını tanımlar. Böylece tren işletmeciliğinde araçların hat üzerinde güvenli bir şekilde hareket etmesi, farklı ülkelerdeki demiryolu ağlarında sorunsuzca işletilebilmesi (interoperabilite) ve altyapı ile uyumlu çalışması sağlanır.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">3. Tanım ve Teorik Arka Plan</h2>
+                <p><strong>Gabari Kavramı:</strong> Demiryolu araçlarının, hareket halindeyken geçebileceği yollar boyunca tanımlanan sanal bir zarftır. Bu zarf içinde kalan araçlar, altyapı elemanlarına çarpmadan güvenle hareket edebilir.</p>
+                <ul>
+                    <li><strong>Statik Gabari:</strong> Hareketsiz durumdaki bir aracın kaplayabileceği maksimum alan.</li>
+                    <li><strong>Kinematik Gabari:</strong> Hareket halindeki bir aracın, raylardaki düzensizlikler, süspansiyon hareketleri, kurplardaki davranışı gibi dinamik faktörler hesaba katılarak belirlenmiş alan sınırları.</li>
+                    <li><strong>Yapım Gabarisi:</strong> Araç üreticilerinin, araç tasarımında dikkate alması gereken ölçü sınırları.</li>
+                    <li><strong>İşletme Gabarisi:</strong> İşletmecilik açısından aracın hareket edebileceği sınırlar.</li>
+                    <li><strong>Referans Profili:</strong> Tüm gabari hesaplamalarının dayandığı temel referans şekli.</li>
+                </ul>
+
+                <h2 id="uic-505-1">4. UIC 505-1: Demiryolu Araçları İçin Yapım Gabarisi</h2>
+                <h3>Kurumsal ve Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Araç gövdesinin maksimum genişliği: 2.8 m ile 3.15 m arasında (hat tipine göre değişir)</li>
+                    <li>Maksimum yükseklik: 4.28 m (standart hat için)</li>
+                    <li>Boji merkezi arası mesafe kısıtlamaları (uzun araçlar için)</li>
+                    <li>Baş ve kuyruk şekillendirme gereklilikleri</li>
+                    <li>Araç alt kısmı minimum yüksekliği: 0.08 m</li>
+                </ul>
+                <h3>Uygulama Esasları:</h3>
+                <ul>
+                    <li>Araç tasarım aşamasında temel boyutların belirlenmesi</li>
+                    <li>CAD modellemede gabari kontrollerinin yapılması</li>
+                    <li>Prototip araçların fiziksel ölçümlerle doğrulanması</li>
+                    <li>Belirli tolerans değerlerinin göz önünde bulundurulması</li>
+                </ul>
+
+                <h2 id="uic-505-2">5. UIC 505-2: Kinematik Gabari</h2>
+                <h3>Kurumsal ve Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Kurplarda maksimum dış çıkıntı hesaplamaları: E = (a² + d²)/8R formülü ile hesaplanır (a: boji mesafesi, d: boji-araç ucu mesafesi, R: eğri yarıçapı)</li>
+                    <li>Salınım payları: Araç yüksekliğinin %1.5'i kadar lateral salınım payı</li>
+                    <li>Süspansiyon toleransları: ±0.03 m</li>
+                    <li>Ray aşınması kaynaklı yükseklik değişimleri: 0.02 m</li>
+                </ul>
+                <h3>Uygulama Esasları:</h3>
+                <ul>
+                    <li>Dinamik davranış simülasyonlarının yapılması</li>
+                    <li>Farklı hız, yük ve hat koşullarında testlerin gerçekleştirilmesi</li>
+                    <li>Makas geçişlerinde özel hesaplamaların yapılması</li>
+                    <li>Kurp geçişlerinde gabari sınırlaması hesaplamaları</li>
+                </ul>
+
+                <h2 id="uic-505-3">6. UIC 505-3: Standart Gabari - Uygulanması</h2>
+                <h3>Kurumsal ve Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>G1, G2, GA, GB ve GC gibi farklı standart gabari sınıfları ve uygulamaları</li>
+                    <li>Her gabari sınıfı için spesifik ölçü tabloları ve sınır değerleri</li>
+                    <li>Pantograf yüksekliği ve genişliği sınırlamaları (4.5 m - 6.5 m arası yükseklik)</li>
+                    <li>Hat kenarı engel mesafeleri ve serbest alan gereklilikleri</li>
+                </ul>
+                <h3>Uygulama Esasları:</h3>
+                <ul>
+                    <li>Ülke ve hat sınıfına göre uygun gabari tipinin seçilmesi</li>
+                    <li>Sınır değerlerin teknik dokümantasyonda belirtilmesi</li>
+                    <li>Gabari kontrol noktalarının belirlenmesi ve düzenli kontrolü</li>
+                    <li>Hattın gabari sınıflandırmasına göre araç izinlerinin verilmesi</li>
+                </ul>
+
+                <h2 id="uic-505-4">7. UIC 505-4: Vagon Tipleri İçin Gabari Kuralları</h2>
+                <h3>Kurumsal ve Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Yük vagonları için özel gabari kuralları</li>
+                    <li>Yolcu vagonları için özel gabari kuralları</li>
+                    <li>Özel yük taşıyan vagonlar için genişletilmiş gabari uygulamaları</li>
+                    <li>Çift katlı vagonlar için yükseklik limitleri ve üst kat tasarım kısıtlamaları</li>
+                </ul>
+                <h3>Uygulama Esasları:</h3>
+                <ul>
+                    <li>Vagon tipine özel tasarım kriterlerinin belirlenmesi</li>
+                    <li>Özel yük taşıyan vagonlar için rota bazlı izin sisteminin kurulması</li>
+                    <li>Vagon yükleme talimatlarında gabari sınırlarının belirtilmesi</li>
+                    <li>Yük taşıma kapasitesi ve gabari sınırlarının entegre değerlendirilmesi</li>
+                </ul>
+
+                <h2 id="uic-505-5">8. UIC 505-5: Temel Koşullar - Ortak Kullanım İçin Araç Temel Kondisyonları</h2>
+                <h3>Kurumsal ve Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Uluslararası trafikte çalışacak araçların uyması gereken minimum şartlar</li>
+                    <li>Farklı ülke hatlarında çalışabilme koşulları</li>
+                    <li>Farklı ray açıklıklarında kullanım için dönüştürülebilir boji sistemleri gereklilikleri</li>
+                    <li>Sınır geçişlerinde uyulması gereken teknik prosedürler</li>
+                </ul>
+                <h3>Uygulama Esasları:</h3>
+                <ul>
+                    <li>Ülkeler arası uyumluluğun sağlanması için teknik doküman hazırlanması</li>
+                    <li>Uluslararası izin prosedürlerinin takip edilmesi</li>
+                    <li>Farklı sinyalizasyon ve elektrifikasyon sistemlerinde çalışabilme yeteneğinin sağlanması</li>
+                    <li>Çok sistemli araçlar için özel test prosedürlerinin uygulanması</li>
+                </ul>
+
+                <h2 id="uic-505-6">9. UIC 505-6: Gabari Uygulamaları İçin Kurallar</h2>
+                <h3>Kurumsal ve Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>Gabari kontrolü için ölçüm metodolojisi</li>
+                    <li>Gabari ölçüm cihazları ve kalibrasyon gereklilikleri</li>
+                    <li>Gabari ihlalleri durumunda alınması gereken aksiyonlar</li>
+                    <li>İstisnai taşımalar için özel izin prosedürleri</li>
+                </ul>
+                <h3>Uygulama Esasları:</h3>
+                <ul>
+                    <li>Düzenli gabari kontrol programının oluşturulması</li>
+                    <li>Sabit gabari kontrol çerçevelerinin kurulumu ve işletilmesi</li>
+                    <li>Dinamik ölçüm sistemlerinin kullanılması</li>
+                    <li>Gabari ölçüm sonuçlarının dokümantasyonu ve arşivlenmesi</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari-sektorel-orneklerle">10. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>Yüksek Hızlı Tren İşletmeciliği:</h3>
+                <ul>
+                    <li>Aerodinamik gereksinimleri karşılarken gabari sınırlarına uyum sağlama</li>
+                    <li>300 km/s üzeri hızlarda artan salınım paylarının hesaplanması</li>
+                    <li>Özel profil tasarımlarının geliştirilmesi (örn: Alstom AGV, Siemens Velaro)</li>
+                </ul>
+                <h3>Yük Taşımacılığı:</h3>
+                <ul>
+                    <li>Intermodal konteyner taşımacılığında gabari limitlerinin optimizasyonu</li>
+                    <li>Özel taşımalar için rota planlama (örn: SNCF'in büyük transformatör taşıması)</li>
+                    <li>Otomotiv parçaları taşıyan özel vagonların tasarımı (örn: DB Cargo'nun otomobil taşıyıcı vagonları)</li>
+                </ul>
+                <h3>Şehirlerarası Yolcu Taşımacılığı:</h3>
+                <ul>
+                    <li>Çift katlı vagonların Avrupa hatlarında kullanımı (örn: SNCF TGV Duplex)</li>
+                    <li>Uluslararası yolcu trenleri (örn: Eurostar, Thalys, TGV)</li>
+                    <li>Değişken ray açıklığı koşullarında işletme (örn: İspanya-Fransa sınırı geçişleri)</li>
+                </ul>
+                <h3>Şehir İçi Raylı Sistemler:</h3>
+                <ul>
+                    <li>Tramvay ve hafif raylı sistemlerde kent altyapısına uyum (örn: İstanbul Tramvay hattı)</li>
+                    <li>Metro sistemlerinde tünel kesiti optimizasyonu (örn: Londra Derin Tüp hatları)</li>
+                    <li>Mevcut altyapının modernizasyonunda gabari kısıtlamaları (örn: Paris Metro hattı renovasyonları)</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">11. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>Araç Tasarım Mühendisleri:</h3>
+                <ul>
+                    <li>Araç tasarımının gabari sınırları içinde kalmasını sağlama</li>
+                    <li>CAD tabanlı gabari kontrollerinin yapılması</li>
+                    <li>Malzeme seçimi ve deformasyonların gabari limitlerini etkilemeyecek şekilde hesaplanması</li>
+                </ul>
+                <h3>İşletme Mühendisleri:</h3>
+                <ul>
+                    <li>Araçların gabari uyumluluğunu rota bazlı değerlendirme</li>
+                    <li>İşletme planlarının gabari sınırlarına göre hazırlanması</li>
+                    <li>Özel taşımalar için izin prosedürlerinin yönetilmesi</li>
+                <li>Personelin gabari kuralları konusunda eğitilmesi</li>
+                </ul>
+                <h3>Altyapı Mühendisleri:</h3>
+                <ul>
+                    <li>Hat kenarı tesislerin gabari sınırlarına uyumlu olarak konumlandırılması</li>
+                    <li>Tünellerin, köprülerin ve diğer sanat yapılarının gabari gerekliliklerine göre tasarlanması</li>
+                    <li>İstasyon platformlarının doğru yükseklik ve mesafede inşa edilmesi</li>
+                </ul>
+                <h3>Bakım Ekipleri:</h3>
+                <ul>
+                    <li>Araç bakımı sırasında gabari ölçümlerinin kontrolü</li>
+                    <li>Aşınma ve deformasyonların gabari sınırlarını etkilemediğinden emin olunması</li>
+                    <li>Hat kenarı yapıların gabari ihlali yaratmamasının düzenli kontrolü</li>
+                </ul>
+                <h3>Emniyet ve Standart Uzmanları:</h3>
+                <ul>
+                    <li>Gabari standartlarına uyumun belgelendirilmesi</li>
+                    <li>Gabari ölçüm metodolojisinin doğrulanması</li>
+                    <li>Ulusal ve uluslararası standartlar arasındaki farkların yönetilmesi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">12. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>Tasarım Aşaması Doğrulama:</h3>
+                <ul>
+                    <li>3D modeller üzerinden gabari kontrolü</li>
+                    <li>Kinematik davranış simülasyonları</li>
+                    <li>Tasarım dokümantasyonunun oluşturulması</li>
+                    <li>Tasarım risk analizlerinin yapılması</li>
+                </ul>
+                <h3>Üretim Aşaması Doğrulama:</h3>
+                <ul>
+                    <li>Prototip araçlarda fiziksel ölçümlerin yapılması</li>
+                    <li>Statik gabari ölçüm testleri (gabari çerçevesi kontrolü)</li>
+                    <li>Üretim toleranslarının kontrol edilmesi</li>
+                    <li>Malzeme sertifikalarının doğrulanması</li>
+                </ul>
+                <h3>İşletme Öncesi Testler:</h3>
+                <ul>
+                    <li>Dinamik gabari testleri (çeşitli hız, yük ve kurp koşullarında)</li>
+                    <li>Kritik hat kesimlerinde özel testler</li>
+                    <li>Farklı yük koşullarında süspansiyon davranışının incelenmesi</li>
+                    <li>Test sonuçlarının raporlanması ve dokümantasyonu</li>
+                </ul>
+                <h3>İşletme Aşaması İzleme:</h3>
+                <ul>
+                    <li>Periyodik gabari kontrolleri (en az yılda bir)</li>
+                    <li>Otomatik gabari ölçüm sistemleri ile düzenli tarama</li>
+                    <li>Hat kenarı ekipmanlar için düzenli mesafe kontrolleri</li>
+                    <li>Herhangi bir değişiklik (modifikasyon) sonrası yeniden doğrulama</li>
+                </ul>
+                <h3>Belgelendirme:</h3>
+                <ul>
+                    <li>UIC 505 standartlarına uyum belgesinin hazırlanması</li>
+                    <li>Ulusal demiryolu otoritelerinden işletme izni alınması</li>
+                    <li>Özel taşımalar için özel gabari izin sertifikaları</li>
+                    <li>Tüm ölçüm ve test sonuçlarının arşivlenmesi (minimum 10 yıl)</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">13. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Farklı Ülke Standartlarının Entegrasyonu:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Avrupa'daki her ülkenin farklı gabari gereklilikleri olması</li>
+                    <li><strong>Çözüm:</strong> TSI (Teknik Şartname Interoperabilite) ile uyum sağlayarak standartlaştırma; GC gabari gibi ortak kabul görmüş standartların benimsenmesi</li>
+                </ul>
+                <h3>Eski Altyapı ile Uyumluluk:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> 19. yüzyıldan kalma tüneller ve köprülerin daha sınırlı gabari ölçülerine sahip olması</li>
+                    <li><strong>Çözüm:</strong> Kritik noktalarda altyapı iyileştirmeleri; rota bazlı gabari haritalaması ve izin sistemi; düşük gabari bölgelerinde hız kısıtlamaları</li>
+                </ul>
+                <h3>Yüksek Hızlı İşletmecilikte Gabari Zorlukları:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Yüksek hızlarda artan aerodinamik etkiler ve salınım payları</li>
+                    <li><strong>Çözüm:</strong> İleri CFD (Hesaplamalı Akışkanlar Dinamiği) analizleri; özel tasarlanmış süspansiyon sistemleri; aktif salınım kontrol teknolojileri</li>
+                </ul>
+                <h3>İntermodal Taşımacılıkta Gabari Optimizasyonu:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Standart konteyner yüksekliklerinin bazı hat kesimlerinde sorun yaratması</li>
+                    <li><strong>Çözüm:</strong> Alçaltılmış yük vagonu zeminleri (pocket wagons); özel tasarlanmış düşük profilli konteyner taşıyıcılar; gabari haritalaması ve rota optimizasyonu</li>
+                </ul>
+                <h3>Ölçüm ve Doğrulama Zorlukları:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Dinamik koşullarda doğru gabari ölçümü yapmanın zorluğu</li>
+                    <li><strong>Çözüm:</strong> Lazer tarama teknolojileri; demiryolu araçlarına monte edilmiş otomatik ölçüm sistemleri; yapay zeka destekli görüntü işleme sistemleri</li>
+                </ul>
+                <h3>İklim Koşullarının Etkisi:</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Kar, buz ve aşırı sıcaklıkların gabari üzerindeki etkileri</li>
+                    <li><strong>Çözüm:</strong> İklim koşullarına göre ek tolerans payları; özellikle pantograf sistemleri için buzlanmaya karşı koruma sistemleri; termal genleşme hesaplamaları</li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">14. Görseller / Şemalar / Akış Diyagramları</h2>
+                <p>Aşağıda UIC 505 standartlarını açıklayan temel diyagramlar ve şemalar yer almaktadır:</p>
+                <h3>Gabari Değerlendirme Süreci Akış Diyagramı</h3>
+                <div class="mermaid">
+graph TD;
+A["Gabari Değerlendirme Süreci Başlangıç"] --> B["Hat ve Araç Verilerinin Toplanması"];
+B --> C["Referans Gabari Profilinin Seçimi"];
+C --> D["Kinematik Zarf Hesaplaması"];
+D --> E["Altyapı Sınır Çizgilerinin Hesaplanması"];
+E --> F{"Araç ve Altyapı Uyumlu mu?"};
+F -- Evet --> G["Belgelendirme ve Onay"];
+F -- Hayır --> H["Uyumsuzlukların Analizi"];
+H --> I["Çözüm Alternatiflerinin Değerlendirilmesi"];
+I --> J["Seçilen Çözümün Uygulanması"];
+J --> D;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Gabari Değerlendirme Süreci Akış Diyagramını göstermektedir. </p>
+
+                <h3>Statik ve Dinamik Gabari İlişkisi</h3>
+                <div class="mermaid">
+graph LR;
+    A["Statik Gabari"] --> B["Araç Dış Ölçüleri"];
+    A --> C["Sabit Durumdaki Ölçüler"];
+    
+    D["Kinematik Gabari"] --> E["Dinamik Hareketler"];
+    D --> F["Süspansiyon Esneklikleri"];
+    D --> G["Kurplarda Davranış"];
+    
+    H["Toplam Gabari"] --> A;
+    H --> D;
+    H --> I["Ek Toleranslar"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Statik ve Dinamik Gabari İlişkisini göstermektedir.</p>
+
+                <h3>Gabari Sınıfları Karşılaştırması:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gabari Sınıfı</th>
+                            <th>Maksimum Genişlik</th>
+                            <th>Maksimum Yükseklik</th>
+                            <th>Kullanım Alanı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GA</td>
+                            <td>3.15 m</td>
+                            <td>4.18 m</td>
+                            <td>Eski Avrupa hatları</td>
+                        </tr>
+                        <tr>
+                            <td>GB</td>
+                            <td>3.28 m</td>
+                            <td>4.28 m</td>
+                            <td>Çoğu Avrupa hattı</td>
+                        </tr>
+                        <tr>
+                            <td>GC</td>
+                            <td>3.30 m</td>
+                            <td>4.65 m</td>
+                            <td>Modern hatlar, TEN-T koridorları</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Kurp Geçişlerinde Gabari Hesaplama Formülü:</h3>
+                <p>$$ E_{dış} = \frac{a^2 + d^2}{8R} $$</p>
+                <p>Burada:</p>
+                <ul>
+                    <li>Edış: Dış çıkıntı miktarı (metre)</li>
+                    <li>a: Boji merkezi mesafesi (metre)</li>
+                    <li>d: Boji merkezi ile araç ucu arası mesafe (metre)</li>
+                    <li>R: Kurp yarıçapı (metre)</li>
+                </ul>
+
+                <h3>Gabari Kontrol Noktaları:</h3>
+                <div class="mermaid">
+graph TD;
+    A["Araç Üst Yapısı"] --> B["Tavan Ekipmanları \n(Pantograf, HVAC)"];
+    A --> C["Yan Duvarlar \n(Kapılar, Pencereler)"];
+    
+    D["Araç Alt Yapısı"] --> E["Bojiler ve Tekerlek Setleri"];
+    D --> F["Fren Ekipmanları"];
+    D --> G["Tren Kontrol Ekipmanları"];
+    
+    H["Kritik Kontrol Noktaları"] --> A;
+    H --> D;
+    H --> I["Köşe Noktaları \n(En geniş çıkıntılar)"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Gabari Kontrol Noktalarını göstermektedir. </p>
+
+                <h2 id="ilgili-uluslararasi-standartlar-ve-normlar">15. İlgili Uluslararası Standartlar ve Normlar</h2>
+                <p>UIC 505 standardı aşağıdaki diğer uluslararası standartlar ve düzenlemelerle ilişkilidir:</p>
+                <ul>
+                    <li>EN 15273 serisi - "Demiryolları Uygulamaları - Gabariler" (Avrupa Standardı karşılığı)</li>
+                    <li>TSI (Technical Specifications for Interoperability) - Altyapı ve Lokomotif & Yolcu Vagonu bölümleri</li>
+                    <li>ISO 1755 - "Demiryolu Araçları - Tekerlekli Araçlar İçin Gabari Kuralları"</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
