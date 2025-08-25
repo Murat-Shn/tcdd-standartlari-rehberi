@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIC 541 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">UIC 541: Demiryolu Araçları - Fren Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">UIC 541 standardı, demiryolu yük taşımacılığında kullanılan vagonların fren sistemlerinin tasarımı, üretimi, test edilmesi ve bakımı ile ilgili gereklilikleri belirler.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">1. Standart Kodu ve Adı</h2>
+                <p>UIC 541: "Frenler - Yük Trenleri için Fren Düzenlemeleri" (Brakes - Regulations concerning the design of brake components for freight trains)</p>
+                <p>Alt bölümler:</p>
+                <ul>
+                    <li>UIC 541-1: Yük vagonları için fren düzenlemeleri</li>
+                    <li>UIC 541-2: Yük vagonlarında fren ölçümleri ve denemeleri</li>
+                    <li>UIC 541-3: Disk frenleri ve balatalar</li>
+                    <li>UIC 541-4: Frenleme hesaplamaları ve değerlendirme kriterleri</li>
+                    <li>UIC 541-5: Fren ekipmanları güvenilirlik kriterleri</li>
+                </ul>
+
+                <h2 id="kapsam-ve-amac">2. Kapsam ve Amaç</h2>
+                <p>UIC 541 standardı, demiryolu yük taşımacılığında kullanılan vagonların fren sistemlerinin tasarımı, üretimi, test edilmesi ve bakımı ile ilgili gereklilikleri belirler. Bu standart, demiryolu taşımacılığında fren sistemlerinin güvenilirliğini ve birlikte çalışabilirliğini sağlamak amacıyla oluşturulmuştur.</p>
+                <h3>Ana amaçları şunlardır:</h3>
+                <ul>
+                    <li>Demiryolu yük taşımacılığında güvenliği en üst düzeye çıkarmak</li>
+                    <li>Farklı ülkeler ve operatörler arasında birlikte çalışabilirliği sağlamak</li>
+                    <li>Fren sistemlerinin performansını ve güvenilirliğini standartlaştırmak</li>
+                    <li>Fren sistemlerinin tasarım, üretim ve bakım süreçlerinde kaliteyi garanti etmek</li>
+                    <li>Avrupa demiryolu ağında sınır ötesi yük taşımacılığını kolaylaştırmak</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">3. Tanım ve Teorik Arka Plan</h2>
+                <p>UIC 541, Uluslararası Demiryolları Birliği (UIC - Union Internationale des Chemins de fer) tarafından geliştirilmiş bir standarttır. Demiryolu frenleme sistemlerinin fizik prensiplerini, teknik gereksinimlerini ve performans kriterlerini kapsar.</p>
+                <h3>Temel Frenleme Prensipleri:</h3>
+                <p>Demiryolu fren sistemleri genellikle şu prensiplerle çalışır:</p>
+                <ul>
+                    <li><strong>Sürtünme bazlı frenleme:</strong> Disk frenleri veya blok frenleri aracılığıyla hareket enerjisinin ısı enerjisine dönüştürülmesi</li>
+                    <li><strong>Pnömatik kontrol sistemleri:</strong> Basınçlı hava ile fren sistemi kontrolü</li>
+                    <li><strong>Fren kuvveti hesaplamaları:</strong> F = μ × P formülü ile hesaplanır (F: fren kuvveti, μ: sürtünme katsayısı, P: fren pistonu tarafından uygulanan kuvvet)</li>
+                </ul>
+                <h3>Standart Alt Bileşenleri:</h3>
+                <ul>
+                    <li>UIC 541-1 (Yük vagonları için fren düzenlemeleri):
+                        <ul>
+                            <li>Yük vagonlarında kullanılan fren ekipmanlarının tasarım ve kurulum kurallarını belirler</li>
+                            <li>Fren silindirleri, fren pabuçları ve ilgili bağlantı elemanlarının teknik özelliklerini tanımlar</li>
+                        </ul>
+                    </li>
+                    <li>UIC 541-2 (Yük vagonlarında fren ölçümleri ve denemeleri):
+                        <ul>
+                            <li>Fren sistemlerinin test prosedürlerini belirler</li>
+                            <li>Durma mesafesi, fren kuvveti ve tepki süresi gibi parametrelerin ölçüm yöntemlerini tanımlar</li>
+                        </ul>
+                    </li>
+                    <li>UIC 541-3 (Disk frenleri ve balatalar):
+                        <ul>
+                            <li>Disk frenlerinin tasarımı, malzeme özellikleri ve performans kriterleri</li>
+                            <li>Balataların sürtünme özellikleri, termal dayanımı ve aşınma oranları</li>
+                        </ul>
+                    </li>
+                    <li>UIC 541-4 (Frenleme hesaplamaları ve değerlendirme kriterleri):
+                        <ul>
+                            <li>Tren kompozisyonuna göre frenleme gücü hesaplama yöntemleri</li>
+                            <li>Frenleme performansı değerlendirme kriterleri ve kabul edilebilir sınırlar</li>
+                        </ul>
+                    </li>
+                    <li>UIC 541-5 (Fren ekipmanları güvenilirlik kriterleri):
+                        <ul>
+                            <li>Fren bileşenlerinin dayanıklılık ve güvenilirlik gereksinimleri</li>
+                            <li>Arıza modları ve etki analizleri (FMEA) kriterleri</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">4. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Kalite Yönetim Sistemi:</strong> ISO 9001 veya eşdeğeri bir kalite yönetim sisteminin uygulanması</li>
+                    <li><strong>Belgelendirme:</strong> Fren sistemleri ve bileşenleri için gerekli belgelendirme süreçlerinin tamamlanması</li>
+                    <li><strong>Personel Yetkinliği:</strong> Fren sistemlerinin tasarımı, üretimi ve bakımında görev alan personelin yeterli eğitime sahip olması</li>
+                    <li><strong>Risk Değerlendirmesi:</strong> EN 50126 standardına uygun risk değerlendirme süreçlerinin uygulanması</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <h4>UIC 541-1 için Teknik Gereklilikler:</h4>
+                <p><strong>Fren Sistemi Bileşenleri:</strong></p>
+                <ul>
+                    <li>Fren silindirleri: 10" veya 12" (254 mm veya 305 mm) çapında, 8-10 bar çalışma basıncı</li>
+                    <li>Fren düzenekleri: G (yük), P (yolcu) ve R (hızlı) modlarında çalışabilme yeteneği</li>
+                    <li>Fren levhaları: En az 30 mm kalınlığında, minimum sürtünme katsayısı 0.25</li>
+                    <li>Dağıtıcı valf: UIC 540 standartlarına uygun olmalıdır</li>
+                </ul>
+                <p><strong>Boyutsal Toleranslar:</strong></p>
+                <ul>
+                    <li>Fren rod sisteminde maksimum izin verilen boşluk: 5 mm</li>
+                    <li>Fren pabucunun tekerleğe temas açısı: 58° ± 2°</li>
+                    <li>Fren pabucu ve tekerlek arasındaki boşluk (serbest durumda): 5-10 mm</li>
+                </ul>
+                <p><strong>Malzeme Gereksinimleri:</strong></p>
+                <ul>
+                    <li>Fren pabuçları: Dökme demir (P10) veya kompozit malzemeler (K veya LL tipi)</li>
+                    <li>Fren kolları: Minimum akma dayanımı 350 MPa olan çelik</li>
+                    <li>Bağlantı elemanları: ISO 898-1 standardına uygun sınıf 8.8 veya daha yüksek kalitede cıvatalar</li>
+                </ul>
+                <h4>UIC 541-2 için Teknik Gereklilikler:</h4>
+                <p><strong>Test Parametreleri:</strong></p>
+                <ul>
+                    <li>Durma mesafesi: 100 km/h hızdan tam duruş için maksimum 700 m</li>
+                    <li>Fren tepki süresi: İlk fren sinyalinden sonra maksimum 5 saniye</li>
+                    <li>Isıl performans: 45 dakikalık sürekli frenleme sonrası maksimum sıcaklık artışı 350°C</li>
+                </ul>
+                <p><strong>Test Prosedürleri:</strong></p>
+                <ul>
+                    <li>Statik testler: Fren sisteminin basınç, sızdırmazlık ve mekanik dayanım testleri</li>
+                    <li>Dinamik testler: Çeşitli hız ve yük koşullarında frenleme performansı ölçümleri</li>
+                    <li>Dayanıklılık testleri: En az 100,000 frenleme döngüsü tamamlanmalıdır</li>
+                </ul>
+                <p><strong>Veri Toplama ve Analiz:</strong></p>
+                <ul>
+                    <li>Fren kuvveti: En az 10 Hz örnekleme hızıyla kaydedilmelidir</li>
+                    <li>Durma mesafesi: ±5 m hassasiyetle ölçülmelidir</li>
+                    <li>Fren silindir basıncı: ±0.1 bar hassasiyetle ölçülmelidir</li>
+                </ul>
+                <h4>UIC 541-3 için Teknik Gereklilikler:</h4>
+                <p><strong>Disk Fren Özellikleri:</strong></p>
+                <ul>
+                    <li>Disk çapları: 580 mm, 610 mm veya 640 mm (vagon tipine göre)</li>
+                    <li>Disk kalınlığı: Yeni durumda 110 mm, minimum kabul edilebilir kalınlık 90 mm</li>
+                    <li>Malzeme: GG20 sınıfı dökme demir veya daha yüksek kalitede malzeme</li>
+                    <li>Termal kapasite: 950°C'ye kadar işlevselliğini koruyabilme</li>
+                </ul>
+                <p><strong>Balata Özellikleri:</strong></p>
+                <ul>
+                    <li>Sürtünme katsayısı: 0.35 ±0.05 (tüm çalışma sıcaklıklarında)</li>
+                    <li>Çalışma sıcaklığı aralığı: -40°C ile +400°C arası</li>
+                    <li>Aşınma oranı: Maksimum 1 mm / 10,000 km</li>
+                    <li>Boyutlar: 200 mm × 80 mm × 35 mm (standart balata)</li>
+                </ul>
+                <h4>UIC 541-4 için Teknik Gereklilikler:</h4>
+                <p><strong>Frenleme Hesaplamaları:</strong></p>
+                <ul>
+                    <li>Fren yüzdesi (λ): λ = (Fren kuvveti / Vagon ağırlığı) × 100</li>
+                    <li>Minimum fren yüzdesi: Yük trenleri için λ ≥ 50%, tehlikeli madde taşıyan trenler için λ ≥ 65%</li>
+                    <li>Frenleme Mesafesi: s = (V²/2b) + (V×t), burada V=hız (m/s), b=yavaşlama (m/s²), t=tepki süresi (s)</li>
+                </ul>
+                <p><strong>Değerlendirme Kriterleri:</strong></p>
+                <ul>
+                    <li>Normal frenleme: 0.7 m/s² - 1.0 m/s² yavaşlama</li>
+                    <li>Acil frenleme: Minimum 1.2 m/s² yavaşlama</li>
+                    <li>Isıl performans: 20 km eğimli bir yolda sürekli frenleme sonrası maksimum sıcaklık artışı 500°C</li>
+                </ul>
+                <h4>UIC 541-5 için Teknik Gereklilikler:</h4>
+                <p><strong>Güvenilirlik Parametreleri:</strong></p>
+                <ul>
+                    <li>MTBF (Arızalar Arası Ortalama Süre): En az 500,000 km</li>
+                    <li>Servis ömrü: Minimum 15 yıl veya 3 milyon km</li>
+                    <li>Güvenilirlik seviyesi: SIL-2 (EN 50126 standardına göre)</li>
+                </ul>
+                <p><strong>Arıza Modları ve Etkileri:</strong></p>
+                <ul>
+                    <li>Kritik arızalar için maksimum kabul edilebilir oran: 10⁻⁷ arıza/saat</li>
+                    <li>Yedekli sistemler: Fren sisteminin bir bileşeni arızalandığında, trenin güvenli bir şekilde durdurulabilmesini sağlayacak yedekli tasarım</li>
+                    <li>Arıza tespiti: Otomatik arıza tespit mekanizmaları ve göstergeler</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">5. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>Yük Taşımacılığı:</h3>
+                <ul>
+                    <li><strong>Konteyner Taşımacılığı:</strong> Örnek: Maersk ve DB Cargo şirketleri, UIC 541 uyumlu fren sistemlerini 40-foot konteyner taşıyan vagonlarında kullanmaktadır.</li>
+                    <li><strong>Dökme Yük Taşımacılığı:</strong> Örnek: SNCF Fret, kömür ve demir cevheri taşıyan ağır yük trenlerinde UIC 541-4 standardına göre hesaplanmış fren sistemleri kullanmaktadır.</li>
+                    <li><strong>Tehlikeli Madde Taşımacılığı:</strong> Örnek: VTG ve GATX gibi tank vagonu operatörleri, UIC 541-5 standardında belirtilen yüksek güvenilirlik kriterlerini sağlayan fren sistemleri kullanmaktadır.</li>
+                </ul>
+                <h3>Uluslararası Demiryolu Koridorları:</h3>
+                <ul>
+                    <li><strong>Avrupa-Asya Koridoru:</strong> Örnek: PKP Cargo, Polonya-Belarus sınırında farklı ray açıklıklarına rağmen UIC 541 uyumlu fren sistemleri sayesinde kesintisiz operasyon sağlamaktadır.</li>
+                    <li><strong>Alp Geçişleri:</strong> Örnek: SBB Cargo, Gotthard tünelindeki dik eğimlerde UIC 541-3 standartlarına uygun disk fren sistemleri kullanarak güvenli taşımacılık yapmaktadır.</li>
+                </ul>
+                <h3>Özel Uygulamalar:</h3>
+                <ul>
+                    <li><strong>Ağır Yük Taşımacılığı:</strong> Örnek: ArcelorMittal, çelik bobinleri taşıyan 90 ton kapasiteli vagonlarda UIC 541-1 ve 541-4 standartlarını uygulayarak frenleme performansını optimize etmiştir.</li>
+                    <li><strong>Kombine Taşımacılık:</strong> Örnek: HUPAC, karayolu-demiryolu kombine taşımacılık operasyonlarında UIC 541 uyumlu fren sistemleri kullanarak operasyon güvenliğini artırmıştır.</li>
+                    <li><strong>Yüksek Hızlı Yük Taşımacılığı:</strong> Örnek: Mercitalia Fast, 160 km/h hıza ulaşabilen yük trenlerinde UIC 541-3 ve 541-4 standartlarını uygulayarak kısa durma mesafeleri sağlamıştır.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">6. Uygulama Esasları</h2>
+                <h3>Fren Sistemi Tasarımı:</h3>
+                <ul>
+                    <li><strong>Fren hesaplamalarının yapılması:</strong> Vagon ağırlığı, maksimum hız ve işletme koşullarına göre UIC 541-4 standardı kullanılarak fren hesapları yapılmalıdır.</li>
+                    <li><strong>Fren tipi seçimi:</strong> Blok fren (GG/K/LL tipi pabuçlar) veya disk fren sistemleri arasında uygun olanın seçilmesi.</li>
+                    <li><strong>Fren modu belirlenmesi:</strong> G (yük), P (yolcu) veya R (hızlı) fren modlarının belirlenmesi.</li>
+                </ul>
+                <h3>Fren Sistemi Kurulumu:</h3>
+                <ul>
+                    <li><strong>Bileşen montajı:</strong> UIC 541-1 standardında belirtilen toleranslara uygun montaj yapılması.</li>
+                    <li><strong>Pnömatik sistem kurulumu:</strong> Basınçlı hava boru hatları, fren silindirleri ve dağıtıcı valflerin kurulumu.</li>
+                    <li><strong>Mekanik bağlantıların yapılması:</strong> Fren kolları, rod sistemleri ve bağlantı elemanlarının standartlara uygun montajı.</li>
+                </ul>
+                <h3>Test ve Devreye Alma:</h3>
+                <ul>
+                    <li><strong>Statik testler:</strong> Vagonlar hareket etmeden önce fren sisteminin basınç testleri ve sızdırmazlık kontrolleri.</li>
+                    <li><strong>Dinamik testler:</strong> UIC 541-2 standardında belirtilen durma mesafesi ve frenleme kuvveti testleri.</li>
+                    <li><strong>Fren performans ölçümü:</strong> Çeşitli hız ve yük koşullarında frenleme performansının ölçülmesi ve değerlendirilmesi.</li>
+                </ul>
+                <h3>Bakım ve Kontrol:</h3>
+                <ul>
+                    <li><strong>Periyodik kontroller:</strong> EN 15313 standardına uygun olarak fren sisteminin periyodik kontrolleri (günlük, haftalık, aylık ve yıllık).</li>
+                    <li><strong>Aşınma ölçümleri:</strong> Fren pabuçları ve disklerin aşınma miktarının ölçülmesi ve dokümante edilmesi.</li>
+                    <li><strong>Yenileme ve değiştirme:</strong> Belirtilen sınır değerlere ulaşan bileşenlerin yenilenmesi.</li>
+                </ul>
+                <h3>Uygulama Adımları Özeti:</h3>
+                <ol>
+                    <li><strong>Gereksinim Analizi:</strong> Vagon tipi, taşınacak yük ve işletme koşullarına göre fren sistemi gereksinimlerinin belirlenmesi.</li>
+                    <li><strong>Tasarım:</strong> UIC 541 serisi standartlara uygun fren sistemi tasarımının yapılması.</li>
+                    <li><strong>Komponent Seçimi:</strong> Standarda uygun fren bileşenlerinin seçilmesi ve tedarik edilmesi.</li>
+                    <li><strong>Kurulum:</strong> Fren sisteminin vagona standartlara uygun şekilde kurulması.</li>
+                    <li><strong>Test ve Doğrulama:</strong> Statik ve dinamik testlerin yapılması, performans ölçümlerinin gerçekleştirilmesi.</li>
+                    <li><strong>Belgelendirme:</strong> Test sonuçlarının ve uygunluk beyanlarının hazırlanması.</li>
+                    <li><strong>Periyodik Bakım:</strong> İşletme süresince standartlara uygun bakım prosedürlerinin uygulanması.</li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">7. Disiplin Bazlı Sorumluluklar</h2>
+                <h3>Mekanik Mühendisliği:</h3>
+                <ul>
+                    <li>Fren mekanizması tasarımı ve hesaplamaları</li>
+                    <li>Mekanik bileşenlerin malzeme seçimi ve dayanım analizleri</li>
+                    <li>Fren kuvveti hesaplamaları ve optimizasyonu</li>
+                    <li>Mekanik arayüzlerin tasarımı ve tolerans hesaplamaları</li>
+                </ul>
+                <h3>Pnömatik Sistemler:</h3>
+                <ul>
+                    <li>Basınçlı hava sisteminin tasarımı ve boyutlandırılması</li>
+                    <li>Fren silindirleri ve valf sistemlerinin seçimi</li>
+                    <li>Basınç düşümü hesaplamaları ve sistem optimizasyonu</li>
+                    <li>Sızdırmazlık testleri ve sistem performans değerlendirmesi</li>
+                </ul>
+                <h3>Malzeme Mühendisliği:</h3>
+                <ul>
+                    <li>Fren pabuçları ve disk malzemelerinin seçimi ve geliştirilmesi</li>
+                    <li>Sürtünme özelliklerinin analizi ve iyileştirilmesi</li>
+                    <li>Termal dayanıklılık testleri ve malzeme ömür hesaplamaları</li>
+                    <li>Aşınma direnci testleri ve aşınma mekanizmalarının analizi</li>
+                </ul>
+                <h3>Test ve Doğrulama:</h3>
+                <ul>
+                    <li>Test prosedürlerinin hazırlanması ve uygulanması</li>
+                    <li>Ölçüm sistemlerinin kurulumu ve kalibrasyonu</li>
+                    <li>Test verilerinin analizi ve raporlanması</li>
+                    <li>Doğrulama ve onay süreçlerinin yürütülmesi</li>
+                </ul>
+                <h3>Kalite Güvence:</h3>
+                <ul>
+                    <li>Kalite kontrol planlarının hazırlanması ve uygulanması</li>
+                    <li>Üretim süreçlerinin denetlenmesi ve raporlanması</li>
+                    <li>Nonkonformite analizleri ve düzeltici faaliyetlerin belirlenmesi</li>
+                    <li>Tedarikçi denetimleri ve komponent kalite kontrolü</li>
+                </ul>
+                <h3>Bakım ve İşletme:</h3>
+                <ul>
+                    <li>Bakım prosedürlerinin hazırlanması ve uygulanması</li>
+                    <li>Bakım personelinin eğitimi ve sertifikasyonu</li>
+                    <li>Arıza analizi ve kök neden araştırması</li>
+                    <li>İşletme performansının izlenmesi ve raporlanması</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">8. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>Belgelendirme Süreci:</h3>
+                <ol>
+                    <li><strong>Ön Değerlendirme:</strong> Fren sistemi tasarımının UIC 541 serisi standartlara uygunluğunun değerlendirilmesi.</li>
+                    <li><strong>Teknik Dosya Hazırlama:</strong> Tasarım hesaplamaları, teknik çizimler, malzeme özellikleri ve risk analizlerini içeren teknik dosyanın hazırlanması.</li>
+                    <li><strong>Prototip Testleri:</strong> UIC 541-2 standardına uygun statik ve dinamik testlerin gerçekleştirilmesi.</li>
+                    <li><strong>Bağımsız Değerlendirme:</strong> Onaylanmış kuruluş (Notified Body) tarafından tasarım ve test sonuçlarının değerlendirilmesi.</li>
+                    <li><strong>Tip Onayı:</strong> Fren sistemi tipinin UIC 541 standardına uygunluğunun onaylanması.</li>
+                    <li><strong>Üretim Değerlendirmesi:</strong> Üretim süreçlerinin ve kalite yönetim sisteminin değerlendirilmesi.</li>
+                    <li><strong>Sertifikasyon:</strong> UIC 541 uygunluk sertifikasının düzenlenmesi.</li>
+                </ol>
+                <h3>İzleme ve Denetim:</h3>
+                <h4>Periyodik Denetimler:</h4>
+                <ul>
+                    <li>Yıllık denetimler: Onaylanmış kuruluş tarafından yılda bir kez gerçekleştirilen denetimler</li>
+                    <li>Üretim denetimleri: Fren sistemi bileşenlerinin üretim süreçlerinin denetlenmesi</li>
+                    <li>Bakım denetimleri: Bakım prosedürlerinin ve uygulamalarının denetlenmesi</li>
+                </ul>
+                <h4>Performans İzleme:</h4>
+                <ul>
+                    <li>İşletme verilerinin toplanması ve analizi</li>
+                    <li>Arıza raporlarının değerlendirilmesi ve trend analizi</li>
+                    <li>Fren performansının sürekli izlenmesi (ETCS/ERTMS sistemleri ile entegrasyon)</li>
+                </ul>
+                <h3>Gerekli Belgeler:</h3>
+                <ul>
+                    <li><strong>Teknik Dosya:</strong> Tasarım hesaplamaları, teknik çizimler ve spesifikasyonlar</li>
+                    <li><strong>Test Raporları:</strong> Statik ve dinamik test sonuçları, dayanıklılık test raporları</li>
+                    <li><strong>Uygunluk Beyanı:</strong> Üreticinin UIC 541 standardına uygunluk beyanı</li>
+                    <li><strong>Tip Onay Sertifikası:</strong> Onaylanmış kuruluş tarafından düzenlenen tip onay sertifikası</li>
+                    <li><strong>Kalite Sistem Belgeleri:</strong> ISO 9001 veya IRIS (International Railway Industry Standard) sertifikaları</li>
+                    <li><strong>Bakım Dokümanları:</strong> Bakım prosedürleri, kontrol listeleri ve bakım kayıtları</li>
+                </ul>
+                <h3>Belgelendirme Kuruluşları:</h3>
+                <ul>
+                    <li><strong>Onaylanmış Kuruluşlar (Notified Bodies):</strong> TÜV SÜD, Bureau Veritas, Lloyd's Register gibi kuruluşlar</li>
+                    <li><strong>Ulusal Emniyet Otoriteleri:</strong> Her ülkenin kendi demiryolu emniyet otoritesi (ERA, ANSF, EBA vb.)</li>
+                    <li><strong>UIC:</strong> Uluslararası Demiryolları Birliği</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">9. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Tasarım ve Mühendislik Zorlukları:</h3>
+                <ul>
+                    <li>Zorluk: Farklı işletme koşullarına uyum sağlama
+                        <p><strong>Problem:</strong> Fren sistemlerinin farklı iklim koşulları (sıcak, soğuk, nemli) ve coğrafi koşullarda (düz hat, dağlık arazi) tutarlı performans göstermesi gerekmektedir.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>Geniş sıcaklık aralığında çalışabilen fren malzemelerinin kullanılması (-40°C ile +80°C)</li>
+                            <li>İşletme koşullarına göre farklı fren modlarının (G, P, R) otomatik seçimi</li>
+                            <li>Hız ve eğim sensörleri ile frenleme kuvvetinin dinamik olarak ayarlanması</li>
+                        </ul>
+                    </li>
+                    <li>Zorluk: Frenleme performansı ve termal yönetim
+                        <p><strong>Problem:</strong> Yüksek hızlarda veya uzun süreli frenleme durumlarında aşırı ısınma ve termal yorulma sorunları ortaya çıkmaktadır.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>Gelişmiş termal analiz yöntemleri ile fren disklerinin optimizasyonu</li>
+                            <li>Yüksek termal kapasiteye sahip malzemelerin kullanımı</li>
+                            <li>Havalandırma kanalları ve soğutma yüzeylerinin tasarımı</li>
+                            <li>Elektronik kontrol sistemleri ile frenleme gücünün dağıtılması</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Üretim ve Kalite Zorlukları:</h3>
+                <ul>
+                    <li>Zorluk: Komponentler arası tutarsızlıklar
+                        <p><strong>Problem:</strong> Farklı tedarikçilerden sağlanan bileşenlerin birlikte çalışabilirlik sorunları yaşanabilmektedir.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>Detaylı teknik spesifikasyonların hazırlanması</li>
+                            <li>Tedarikçi onay süreçlerinin geliştirilmesi</li>
+                            <li>Kapsamlı giriş kalite kontrol prosedürlerinin uygulanması</li>
+                            <li>Montaj öncesi bileşen uyumluluk testleri</li>
+                        </ul>
+                    </li>
+                    <li>Zorluk: Üretim toleranslarının sağlanması
+                        <p><strong>Problem:</strong> Fren sistemi bileşenlerinin üretiminde dar toleransların sağlanması zorlu olabilmektedir.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>İleri üretim teknolojilerinin kullanımı (CNC, hassas döküm)</li>
+                            <li>Üretim süreçlerinin istatistiksel proses kontrolü (SPC)</li>
+                            <li>Otomatik ölçüm ve kontrol sistemlerinin uygulanması</li>
+                            <li>Kritik ölçüler için %100 boyutsal kontrol</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>İşletme ve Bakım Zorlukları:</h3>
+                <ul>
+                    <li>Zorluk: Farklı bakım rejimleri ve yedek parça yönetimi
+                        <p><strong>Problem:</strong> Uluslararası trafikte vagonların farklı ülkelerde bakım görmesi ve yedek parça uyumluluk sorunları yaşanabilmektedir.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>Standartlaştırılmış bakım prosedürlerinin geliştirilmesi (GCU - General Contract of Use for Wagons)</li>
+                            <li>Modüler fren sistemi tasarımı ve kolay değiştirilebilir bileşenler</li>
+                            <li>Elektronik komponent tanımlama sistemleri (RFID, QR kodları)</li>
+                            <li>Uluslararası yedek parça veri tabanlarının oluşturulması</li>
+                        </ul>
+                    </li>
+                    <li>Zorluk: Arıza tespiti ve tanı
+                        <p><strong>Problem:</strong> Fren sistemlerinde arıza tespiti ve kök neden analizi karmaşık olabilmektedir.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>Uzaktan izleme ve tanı sistemlerinin kurulması</li>
+                            <li>Arıza gösterge sistemlerinin geliştirilmesi</li>
+                            <li>Bakım personeli için detaylı arıza tespit kılavuzları</li>
+                            <li>Mobil uygulama destekli tanı araçları</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Mevzuat ve Sertifikasyon Zorlukları:</h3>
+                <ul>
+                    <li>Zorluk: Farklı ulusal düzenlemeler
+                        <p><strong>Problem:</strong> Ülkeler arası farklı ulusal düzenlemeler ve ek gereksinimler uluslararası trafikte zorluk yaratabilmektedir.</p>
+                        <p><strong>Çözüm:</strong></p>
+                        <ul>
+                            <li>Avrupa Demiryolu Ajansı (ERA) koordinasyonunda uyumlaştırma çalışmaları</li>
+                            <li>Çapraz kabul anlaşmalarının yapılması (cross-acceptance)</li>
+                            <li>TSI (Technical Specifications for Interoperability) gereksinimlerinin UIC 541 standardı ile uyumlaştırılması</li>
+                            <li>Ortak belgelendirme süreçlerinin geliştirilmesi</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">10. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>Fren Sistemi Bileşenleri ve Yerleşimi:</h3>
+                <div class="mermaid">
+graph TB;
+    A["Ana Hava Hattı (10 bar)"] --> B["Dağıtıcı Valf"];
+    B --> C["Yardımcı Hava Deposu"];
+    B --> D["Fren Kontrol Valfi"];
+    D --> E["Fren Silindirleri"];
+    E --> F["Fren Kolları ve Rod Sistemi"];
+    F --> G["Fren Pabuçları/Balataları"];
+    G --> H["Tekerlek/Fren Diski"];
+    
+    I["Boşaltma Valfi"] --> B;
+    J["Manuel Fren"] --> F;
+    K["Yük Sensörü"] --> D;
+    L["Fren Modu Seçici (G/P/R)"] --> D;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Fren Sistemi Bileşenleri ve Yerleşimini göstermektedir.</p>
+
+                <h3>Fren Sistemi Çalışma Prensibi:</h3>
+                <div class="mermaid">
+sequenceDiagram
+    participant LM as Lokomotif
+    participant MH as Ana Hava Hattı
+    participant DV as Dağıtıcı Valf
+    participant FS as Fren Silindirleri
+    participant FR as Fren Rod Sistemi
+    participant FP as Fren Pabuçları
+    
+    Note over LM,FP: Normal Durum (Fren Serbest)
+    LM->>MH: 5 bar basınç sağlar
+    MH->>DV: 5 bar basınç iletilir
+    DV->>FS: Fren silindirleri boşaltılır (0 bar)
+    FS->>FR: Fren kolları serbest pozisyonda
+    FR->>FP: Fren pabuçları tekerlekten uzakta
+    
+    Note over LM,FP: Frenleme Durumu
+    LM->>MH: Basınç düşürülür (3 bar)
+    MH->>DV: Basınç düşüşü algılanır
+    DV->>FS: Yardımcı depodan basınç uygulanır (3.8 bar)
+    FS->>FR: Fren kolları hareket eder
+    FR->>FP: Fren pabuçları tekerleğe bastırılır
+    
+    Note over LM,FP: Acil Frenleme
+    LM->>MH: Basınç tamamen boşaltılır (0 bar)
+    MH->>DV: Acil durum algılanır
+    DV->>FS: Maksimum basınç uygulanır (3.8-4.0 bar)
+    FS->>FR: Fren kolları maksimum hareket
+    FR->>FP: Maksimum frenleme kuvveti
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Fren Sistemi Çalışma Prensibini göstermektedir.</p>
+
+                <h3>Belgelendirme Süreci Akış Şeması:</h3>
+                <div class="mermaid">
+graph TD;
+    A["Başlangıç: Fren Sistemi Tasarımı"] --> B["Teknik Dosya Hazırlama"];
+    B --> C["Ön Değerlendirme (Onaylanmış Kuruluş)"];
+    C --> D{"Tasarım Uygun mu?"};
+    D -- Hayır --> E["Tasarım Revizyonu"];
+    E --> B;
+    D -- Evet --> F["Prototip Üretimi"];
+    F --> G["Prototip Testleri (UIC 541-2)"];
+    G --> H{"Test Sonuçları Uygun mu?"};
+    H -- Hayır --> I["Test Revizyonu / Tasarım Değişiklikleri"];
+    I --> F;
+    H -- Evet --> J["Bağımsız Değerlendirme"];
+    J --> K{"Değerlendirme Olumlu mu?"};
+    K -- Hayır --> L["Düzeltici Faaliyetler"];
+    L --> J;
+    K -- Evet --> M["Tip Onayı"];
+    M --> N["Üretim Değerlendirmesi"];
+    N --> O{"Üretim Süreçleri Uygun mu?"};
+    O -- Hayır --> P["Üretim Süreci İyileştirmeleri"];
+    P --> N;
+    O -- Evet --> Q["UIC 541 Uygunluk Sertifikası"];
+    Q --> R["Periyodik Denetimler ve Gözetim"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Belgelendirme Süreci Akış Şemasını göstermektedir.</p>
+
+                <h3>Fren Kuvveti Hesaplama Şeması:</h3>
+                <div class="mermaid">
+graph LR;
+    A["Vagon Ağırlığı (ton)"] --> E["Fren Yüzdesi Hesaplama"];
+    B["İşletme Hızı (km/h)"] --> E;
+    C["Hat Eğimi (‰)"] --> E;
+    D["Fren Tipi (G/P/R)"] --> E;
+    E --> F["Gerekli Fren Kuvveti (kN)"];
+    F --> G["Fren Bileşenlerinin Boyutlandırılması"];
+    G --> H["Fren Silindir Çapı"];
+    G --> I["Fren Kolu Oranları"];
+    G --> J["Fren Pabucu/Balata Sayısı"];
+    G --> K["Fren Disk Boyutları"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Fren Kuvveti Hesaplama Şemasını göstermektedir.</p>
+
+                <h3>Fren Sistemi Bakım Periyotları:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bakım Türü</th>
+                            <th>Periyot</th>
+                            <th>Yapılacak İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Günlük Kontrol</td>
+                            <td>Her sefer öncesi</td>
+                            <td>Görsel kontrol, hava kaçağı testi, fren pabucu boşluk kontrolü</td>
+                        </tr>
+                        <tr>
+                            <td>Hafif Bakım</td>
+                            <td>3 ay veya 20.000 km</td>
+                            <td>Aşınma ölçümleri, bağlantı elemanları kontrolü, ayar kontrolü</td>
+                        </tr>
+                        <tr>
+                            <td>Orta Bakım</td>
+                            <td>1 yıl veya 100.000 km</td>
+                            <td>Fren pabucu değişimi, valf testleri, sızdırmazlık elemanları kontrolü</td>
+                        </tr>
+                        <tr>
+                            <td>Ağır Bakım</td>
+                            <td>6 yıl veya 600.000 km</td>
+                            <td>Tüm sistemin revizyonu, silindir revizyonu, valflerin revizyonu</td>
+                        </tr>
+                        <tr>
+                            <td>Revizyon</td>
+                            <td>12 yıl veya 1.200.000 km</td>
+                            <td>Tüm sistemin yenilenmesi, temel bileşenlerin değiştirilmesi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
