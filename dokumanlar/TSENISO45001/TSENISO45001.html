@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN ISO 45001:2018 - İş Sağlığı ve Güvenliği Yönetim Sistemleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN ISO 45001:2018 - İş Sağlığı ve Güvenliği Yönetim Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN ISO 45001, iş kazalarını ve meslek hastalıklarını önlemek, güvenli ve sağlıklı çalışma koşulları yaratmak için sistematik bir çerçeve sağlar.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS EN ISO 45001</strong>, İş Sağlığı ve Güvenliği (İSG) performansını iyileştirmek, riskleri azaltmak ve fırsatları değerlendirmek için stratejik bir yaklaşım sağlar. Temel amaçlar:</p>
+                <ul>
+                    <li>İSG tehlikelerinin proaktif tanımlanması ve kontrolü.</li>
+                    <li>Risk ve fırsatların sistematik yönetimi.</li>
+                    <li>Yasal ve diğer şartlara uyum.</li>
+                    <li>İSG performansının sürekli iyileştirilmesi.</li>
+                    <li>Çalışanların ve ilgili tarafların katılımı.</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN ISO 45001, OHSAS 18001’in yerini almış ve ISO’nun Yüksek Seviye Yapı (HLS) çerçevesini kullanır. Teorik temel:</p>
+                <ul>
+                    <li><strong>PUKÖ Döngüsü:</strong> Sürekli iyileştirme için sistematik yaklaşım.</li>
+                    <li><strong>Risk Tabanlı Düşünme:</strong> Proaktif tehlike tanımlama.</li>
+                    <li><strong>Liderlik ve Katılım:</strong> Üst yönetim ve çalışanların aktif rolü.</li>
+                    <li><strong>Süreç Yaklaşımı:</strong> Faaliyetlerin süreç olarak yönetimi.</li>
+                    <li><strong>Bütünsel Yaklaşım:</strong> İSG’nin organizasyon genelinde entegrasyonu.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p>ISO 45001, 10 ana maddeden oluşur:</p>
+                <h3>1. Kapsam</h3>
+                <p>Standardın uygulanabilirliğini ve sınırlarını tanımlar.</p>
+                <h3>2. Atıf Yapılan Standartlar</h3>
+                <p>Referans alınan dokümanları belirtir.</p>
+                <h3>3. Terimler ve Tarifler</h3>
+                <p>Standartta kullanılan terimlerin açıklamaları.</p>
+                <h3>4. Kuruluşun Bağlamı</h3>
+                <ul>
+                    <li>İç ve dış hususlar (4.1).</li>
+                    <li>İlgili tarafların ihtiyaç ve beklentileri (4.2).</li>
+                    <li>İSG yönetim sisteminin kapsamı (4.3).</li>
+                    <li>İSG yönetim sistemi (4.4).</li>
+                </ul>
+                <h3>5. Liderlik ve Çalışan Katılımı</h3>
+                <ul>
+                    <li>Liderlik ve taahhüt (5.1).</li>
+                    <li>İSG politikası (5.2).</li>
+                    <li>Kurumsal görev, yetki ve sorumluluklar (5.3).</li>
+                    <li>Çalışanların danışma ve katılımı (5.4).</li>
+                </ul>
+                <h3>6. Planlama</h3>
+                <ul>
+                    <li>Risk ve fırsatları belirleme (6.1).</li>
+                    <li>İSG tehlikelerinin tanımlanması ve değerlendirilmesi (6.1.2).</li>
+                    <li>Yasal ve diğer şartların belirlenmesi (6.1.3).</li>
+                    <li>Planlama faaliyeti (6.1.4).</li>
+                    <li>İSG hedefleri ve planlama (6.2).</li>
+                </ul>
+                <h3>7. Destek</h3>
+                <ul>
+                    <li>Kaynaklar (7.1).</li>
+                    <li>Yeterlilik (7.2).</li>
+                    <li>Farkındalık (7.3).</li>
+                    <li>İletişim (7.4).</li>
+                    <li>Dokümante edilmiş bilgi (7.5).</li>
+                </ul>
+                <h3>8. Operasyon</h3>
+                <ul>
+                    <li>Operasyonel planlama ve kontrol (8.1).</li>
+                    <li>Acil durumlara hazırlık ve müdahale (8.2).</li>
+                </ul>
+                <h3>9. Performans Değerlendirme</h3>
+                <ul>
+                    <li>İzleme, ölçme, analiz ve performans değerlendirme (9.1).</li>
+                    <li>İç tetkik (9.2).</li>
+                    <li>Yönetimin gözden geçirmesi (9.3).</li>
+                </ul>
+                <h3>10. İyileştirme</h3>
+                <ul>
+                    <li>Uygunsuzluk ve düzeltici faaliyet (10.2).</li>
+                    <li>Sürekli iyileştirme (10.3).</li>
+                </ul>
+                <p><strong>Teknik Gereklilikler:</strong></p>
+                <ul>
+                    <li><strong>Risk Değerlendirme Metodolojisi:</strong> Fine-Kinney, L Tipi Matris, FMEA.</li>
+                    <li><strong>Yasal Mevzuat Takibi:</strong> 6331 sayılı İSG Kanunu ve yönetmelikler.</li>
+                    <li><strong>Acil Durum Planları:</strong> Yangın, deprem, kimyasal sızıntı için planlar.</li>
+                    <li><strong>Performans Göstergeleri:</strong> Kaza sıklık oranı, şiddet oranı, ramak kala olaylar.</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>İmalat Sektörü:</strong>
+                        <ul>
+                            <li>Makine koruyucuları ve güvenlik sistemleri.</li>
+                            <li>Ergonomik iş istasyonları.</li>
+                            <li>Kimyasal madde yönetimi ve KKD kullanımı.</li>
+                            <li>Örnek: Otomotiv fabrikaları, kaza sıklık oranlarını %40 azalttı.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İnşaat Sektörü:</strong>
+                        <ul>
+                            <li>Yüksekte çalışma güvenliği.</li>
+                            <li>İskele ve platform güvenliği.</li>
+                            <li>Ağır ekipman operasyonları.</li>
+                            <li>Örnek: İş kazası oranlarında %60 düşüş.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sağlık Sektörü:</strong>
+                        <ul>
+                            <li>Biyolojik tehlikeler ve enfeksiyon kontrolü.</li>
+                            <li>Hasta taşıma ve ergonomi.</li>
+                            <li>Tıbbi atık yönetimi.</li>
+                            <li>Örnek: Çalışan yaralanmalarında %30 azalma.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Enerji Sektörü:</strong>
+                        <ul>
+                            <li>Elektrik güvenliği.</li>
+                            <li>Yüksek basınçlı sistemler.</li>
+                            <li>Kapalı alanlarda çalışma.</li>
+                            <li>Örnek: Tehlikeli olaylarda %70 artış, kaza oranlarında %45 azalma.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Hizmet Sektörü:</strong>
+                        <ul>
+                            <li>Ofis ergonomisi.</li>
+                            <li>Psikososyal risk faktörleri.</li>
+                            <li>Müşteri etkileşimleri kaynaklı riskler.</li>
+                            <li>Örnek: Kas-iskelet rahatsızlıklarında %35 azalma.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <ol>
+                    <li><strong>Mevcut Durum Analizi:</strong>
+                        <ul>
+                            <li>İSG performansının değerlendirilmesi.</li>
+                            <li>Boşluk analizi.</li>
+                            <li>Dokümantasyon incelemesi.</li>
+                            <li>Yasal uygunluğun değerlendirilmesi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sistem Planlaması:</strong>
+                        <ul>
+                            <li>İSG politikası ve hedeflerin belirlenmesi.</li>
+                            <li>İSG süreçlerinin tasarlanması.</li>
+                            <li>Görev, yetki ve sorumlulukların tanımlanması.</li>
+                            <li>Dokümantasyon yapısının oluşturulması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sistem Dokümantasyonu:</strong>
+                        <ul>
+                            <li>İSG el kitabı.</li>
+                            <li>Prosedürler (6-8 adet).</li>
+                            <li>Talimatlar (15-20 adet).</li>
+                            <li>Formlar ve kayıtlar (30-40 adet).</li>
+                            <li>Risk değerlendirme raporları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Eğitim ve Farkındalık:</strong>
+                        <ul>
+                            <li>Yönetim için İSG liderlik eğitimi (8 saat).</li>
+                            <li>Çalışanlar için farkındalık eğitimi (4 saat).</li>
+                            <li>İç tetkikçi eğitimi (16 saat).</li>
+                            <li>İş bazlı teknik İSG eğitimleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sistemin Uygulanması:</strong>
+                        <ul>
+                            <li>Risk değerlendirmeleri.</li>
+                            <li>Operasyonel kontroller.</li>
+                            <li>Acil durum prosedürlerinin testi.</li>
+                            <li>İletişim kanalları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İç Tetkik:</strong>
+                        <ul>
+                            <li>Tetkik planı.</li>
+                            <li>Tetkiklerin gerçekleştirilmesi (yılda 1 kez).</li>
+                            <li>Bulguların raporlanması.</li>
+                            <li>Düzeltici faaliyetlerin planlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yönetimin Gözden Geçirmesi:</strong>
+                        <ul>
+                            <li>Performans verilerinin analizi.</li>
+                            <li>Sistem etkinliğinin değerlendirilmesi.</li>
+                            <li>İyileştirme fırsatlarının belirlenmesi.</li>
+                            <li>Kaynak ihtiyaçlarının gözden geçirilmesi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sürekli İyileştirme:</strong>
+                        <ul>
+                            <li>Düzeltici faaliyetlerin uygulanması.</li>
+                            <li>İSG performansının izlenmesi.</li>
+                            <li>Geri bildirim mekanizmaları.</li>
+                            <li>İyi uygulamaların paylaşılması.</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Üst Yönetim:</strong>
+                        <ul>
+                            <li>İSG politikasını oluşturmak ve taahhüt etmek.</li>
+                            <li>Kaynakları sağlamak.</li>
+                            <li>İSG hedeflerini belirlemek.</li>
+                            <li>İSG performansını gözden geçirmek.</li>
+                            <li>İSG kültürünü teşvik etmek.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İSG Profesyonelleri:</strong>
+                        <ul>
+                            <li>Risk değerlendirmelerini koordine etmek.</li>
+                            <li>Yasal mevzuatı takip etmek.</li>
+                            <li>Eğitimleri planlamak ve yürütmek.</li>
+                            <li>İSG performansını izlemek.</li>
+                            <li>Dokümantasyonu yönetmek.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Departman Yöneticileri:</strong>
+                        <ul>
+                            <li>İSG uygulamalarını denetlemek.</li>
+                            <li>Kurallara uyumu sağlamak.</li>
+                            <li>Tehlikeleri ve riskleri raporlamak.</li>
+                            <li>Eğitimleri desteklemek.</li>
+                            <li>Acil durum tatbikatlarına katılım.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İnsan Kaynakları:</strong>
+                        <ul>
+                            <li>Eğitimleri kayıt altına almak.</li>
+                            <li>İSG yeterliliklerini değerlendirmek.</li>
+                            <li>Performansı ödüllendirme sistemlerine entegre etmek.</li>
+                            <li>Psikososyal riskleri yönetmek.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Satın Alma:</strong>
+                        <ul>
+                            <li>İSG kriterlerini dikkate almak.</li>
+                            <li>Güvenli ekipman ve malzeme tedariki.</li>
+                            <li>Alt yüklenici İSG performansını değerlendirmek.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bakım ve Teknik Ekip:</strong>
+                        <ul>
+                            <li>Ekipman ve tesislerin güvenliğini sağlamak.</li>
+                            <li>Periyodik kontrolleri yürütmek.</li>
+                            <li>Bakım faaliyetlerinde güvenlik önlemleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çalışanlar:</strong>
+                        <ul>
+                            <li>İSG kurallarına uymak.</li>
+                            <li>Tehlikeleri ve ramak kala olayları raporlamak.</li>
+                            <li>Eğitimlere katılmak.</li>
+                            <li>KKD’leri doğru kullanmak.</li>
+                            <li>İSG süreçlerine katılım.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İzleme ve Ölçme</h3>
+                <p><strong>Proaktif Göstergeler:</strong></p>
+                <ul>
+                    <li>Risk değerlendirme tamamlanma oranı (%95 üzeri).</li>
+                    <li>İSG eğitim saati (çalışan başına 16 saat/yıl).</li>
+                    <li>İSG denetim sayısı (aylık 1 denetim).</li>
+                    <li>Ramak kala bildirimleri (100 çalışan için ayda 10 bildirim).</li>
+                </ul>
+                <p><strong>Reaktif Göstergeler:</strong></p>
+                <ul>
+                    <li>Kaza sıklık oranı (1.000.000 saatte 5’in altında).</li>
+                    <li>Kaza ağırlık oranı (1.000 saatte 0.1’in altında).</li>
+                    <li>İş günü kayıplı kaza sayısı (sıfır hedef).</li>
+                    <li>Meslek hastalığı sayısı (sıfır hedef).</li>
+                </ul>
+                <h3>İç Denetim</h3>
+                <ul>
+                    <li>Yıllık denetim programı.</li>
+                    <li>Eğitimli iç tetkikçiler (2-3 kişi).</li>
+                    <li>Standart kontrol listeleri.</li>
+                    <li>Bulguların sınıflandırılması (majör, minör, gözlem).</li>
+                    <li>Düzeltici faaliyet takibi.</li>
+                </ul>
+                <h3>Belgelendirme Süreci</h3>
+                <ul>
+                    <li>Belgelendirme kuruluşu seçimi (TÜRKAK akrediteli).</li>
+                    <li>Başvuru ve sözleşme.</li>
+                    <li>Dokümantasyon incelemesi (Aşama 1).</li>
+                    <li>Saha denetimi (Aşama 2).</li>
+                    <li>Düzeltici faaliyetler (majör için 3 ay).</li>
+                    <li>Belgelendirme kararı.</li>
+                    <li>Gözetim denetimleri (yıllık).</li>
+                    <li>Yeniden belgelendirme (3 yılda bir).</li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Üst Yönetim Taahhüdü:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> İSG’nin maliyet unsuru görülmesi.</li>
+                            <li><strong>Çözüm:</strong> Maliyet-fayda analizi, kaza maliyetleri, örnek vakalar, yasal yaptırımlar.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çalışan Katılımı:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Düşük katılım.</li>
+                            <li><strong>Çözüm:</strong> Öneri sistemleri, ödüllendirme, İSG kurulları, uygulamalı eğitimler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dokümantasyon Yükü:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Aşırı bürokrasi.</li>
+                            <li><strong>Çözüm:</strong> Elektronik sistemler, sadeleştirme, otomasyon.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Risk Değerlendirme:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Gerçek riskleri yansıtmama.</li>
+                            <li><strong>Çözüm:</strong> Çok disiplinli ekipler, saha gözlemleri, çalışan katılımı, sektörel metodolojiler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Alt Yüklenici Yönetimi:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> İSG performans kontrolü.</li>
+                            <li><strong>Çözüm:</strong> İSG kriterleri, denetimler, ortak eğitimler, sözleşmelere ekleme.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>TS EN ISO 45001 Yönetim Sistemi Modeli</h3>
+                <div class="mermaid">
+graph TD;
+    A[Kuruluşun Bağlamı] --> B[Liderlik ve Çalışan Katılımı];
+    B --> C[Planlama];
+    C --> D[Destek];
+    D --> E[Operasyon];
+    E --> F[Performans Değerlendirme];
+    F --> G[İyileştirme];
+    G --> C;
+    H[İlgili Tarafların Beklentileri] --> A;
+    I[İSG Yönetim Sistemi Çıktıları] --> A;
+                </div>
+                <p class="text-center text-sm text-gray-500">TS EN ISO 45001 yönetim sistemi modelini gösteren şema.</p>
+
+                <h3>PUKÖ (PDCA) Döngüsü</h3>
+                <div class="mermaid">
+graph TD;
+    A[Planla: Risk ve fırsatları belirle, hedefler koy] -->|Planlama| B[Uygula: Süreçleri hayata geçir];
+    B -->|Operasyon| C[Kontrol Et: İzle, ölç, analiz et];
+    C -->|Performans Değerlendirme| D[Önlem Al: İyileştirme faaliyetlerini gerçekleştir];
+    D -->|Sürekli İyileştirme| A;
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 45001’in sürekli iyileştirme için kullandığı PUKÖ döngüsü.</p>
+
+                <h3>İSG Risk Yönetim Süreci</h3>
+                <div class="mermaid">
+graph LR;
+    A[Tehlike Tanımlama] --> B[Risk Değerlendirme];
+    B --> C[Kontrol Önlemlerinin Belirlenmesi];
+    C --> D[Kontrol Önlemlerinin Uygulanması];
+    D --> E[İzleme ve Ölçme];
+    E --> F[Gözden Geçirme];
+    F --> A;
+                </div>
+                <p class="text-center text-sm text-gray-500">İSG risk yönetim sürecinin akış şeması.</p>
+
+                <h3>ISO 45001 Belgelendirme Süreci</h3>
+                <div class="mermaid">
+graph TD;
+    A[Başvuru] --> B[Belgelendirme Sözleşmesi];
+    B --> C[Aşama 1 Denetimi: Dokümantasyon İncelemesi];
+    C --> D[Aşama 2 Denetimi: Saha Denetimi];
+    D --> E{Uygunsuzluk Var mı?};
+    E -->|Evet| F[Düzeltici Faaliyetler];
+    F --> D;
+    E -->|Hayır| G[Belgelendirme Kararı];
+    G --> H[Sertifika Yayınlanması];
+    H --> I[Gözetim Denetimleri];
+    I --> J[Yeniden Belgelendirme];
+    J --> D;
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 45001 belgelendirme sürecinin akış şeması.</p>
+
+                <h3>İSG Performans Ölçüm Piramidi</h3>
+                <div class="mermaid">
+graph TD;
+    A[Ölümcül Kazalar] --> B[İş Günü Kayıplı Kazalar];
+    B --> C[İlk Yardım Gerektiren Kazalar];
+    C --> D[Ramak Kala Olaylar];
+    D --> E[Güvensiz Durum ve Davranışlar];
+    style A fill:#ff0000,stroke:#333,stroke-width:2px,color:#fff
+    style B fill:#ff6600,stroke:#333,stroke-width:2px,color:#fff
+    style C fill:#ffcc00,stroke:#333,stroke-width:2px,color:#000
+    style D fill:#ffff00,stroke:#333,stroke-width:2px,color:#000
+    style E fill:#00cc00,stroke:#333,stroke-width:2px,color:#fff
+                </div>
+                <p class="text-center text-sm text-gray-500">İSG performans ölçüm piramidini gösteren şema.</p>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
