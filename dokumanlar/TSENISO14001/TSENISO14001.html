@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN ISO 14001:2015 - Çevre Yönetim Sistemleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN ISO 14001:2015 - Çevre Yönetim Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN ISO 14001, çevresel performansın artırılması, yasal uyum ve sürdürülebilirlik hedeflerine ulaşılması için sistematik bir çerçeve sağlar.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS EN ISO 14001</strong>, bir kuruluşun çevresel performansını artırmak için sistematik bir çerçeve sağlar. Çevresel sorumlulukların yönetilmesi ve sürdürülebilir kalkınmaya katkı sağlanması amaçlanır. Temel amaçlar:</p>
+                <ul>
+                    <li>Çevresel performansın iyileştirilmesi.</li>
+                    <li>Yasal ve diğer gerekliliklere uyum.</li>
+                    <li>Çevresel hedeflere ulaşılması.</li>
+                    <li>Çevre üzerindeki olumsuz etkilerin azaltılması.</li>
+                    <li>İş süreçlerinin çevresel performansla entegrasyonu.</li>
+                    <li>Yaşam döngüsü yaklaşımının benimsenmesi.</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN ISO 14001, PUKÖ (Planla-Uygula-Kontrol Et-Önlem Al) döngüsünü temel alır ve sürekli iyileştirme sağlar. Temel kavramlar:</p>
+                <ul>
+                    <li><strong>Çevresel Boyutlar ve Etkiler:</strong> Faaliyetlerin çevre ile etkileşimleri.</li>
+                    <li><strong>Yaşam Döngüsü Perspektifi:</strong> Ürün ve hizmetlerin tüm aşamalarının çevresel etkilerinin değerlendirilmesi.</li>
+                    <li><strong>Risk ve Fırsat Tabanlı Düşünce:</strong> Potansiyel tehlikelerin ve fırsatların sistematik değerlendirilmesi.</li>
+                    <li><strong>Sürekli İyileştirme:</strong> Çevresel performansın artırılması.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p>ISO 14001, aşağıdaki bileşenlerden oluşan bir çevre yönetim sistemi gerektirir:</p>
+                <h3>1. Kuruluşun Bağlamı (Madde 4)</h3>
+                <ul>
+                    <li>İç ve dış hususların belirlenmesi.</li>
+                    <li>İlgili tarafların ihtiyaç ve beklentilerinin anlaşılması.</li>
+                    <li>ÇYS kapsamının belirlenmesi.</li>
+                </ul>
+                <h3>2. Liderlik (Madde 5)</h3>
+                <ul>
+                    <li>Üst yönetimin taahhüdü ve liderliği.</li>
+                    <li>Çevre politikasının oluşturulması ve iletilmesi.</li>
+                    <li>Kurumsal rol, sorumluluk ve yetkilerin tanımlanması.</li>
+                </ul>
+                <h3>3. Planlama (Madde 6)</h3>
+                <ul>
+                    <li>Risk ve fırsatların belirlenmesi.</li>
+                    <li>Çevresel boyut ve etkilerin tanımlanması.</li>
+                    <li>Uygunluk yükümlülüklerinin belirlenmesi.</li>
+                    <li>Çevre amaçlarının ve planların oluşturulması.</li>
+                </ul>
+                <h3>4. Destek (Madde 7)</h3>
+                <ul>
+                    <li>Gerekli kaynakların sağlanması.</li>
+                    <li>Yeterlilik ve farkındalığın sağlanması.</li>
+                    <li>İletişim süreçlerinin oluşturulması.</li>
+                    <li>Dokümante edilmiş bilgilerin kontrolü.</li>
+                </ul>
+                <h3>5. Operasyon (Madde 8)</h3>
+                <ul>
+                    <li>Operasyonel planlama ve kontrol.</li>
+                    <li>Acil durum hazırlığı ve müdahalesi.</li>
+                    <li>Tedarikçi ve taşeronların kontrolü.</li>
+                </ul>
+                <h3>6. Performans Değerlendirmesi (Madde 9)</h3>
+                <ul>
+                    <li>İzleme, ölçme, analiz ve değerlendirme.</li>
+                    <li>İç tetkik.</li>
+                    <li>Yönetimin gözden geçirmesi.</li>
+                </ul>
+                <h3>7. İyileştirme (Madde 10)</h3>
+                <ul>
+                    <li>Uygunsuzluk ve düzeltici faaliyetler.</li>
+                    <li>Sürekli iyileştirme.</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>Üretim Sektörü:</strong>
+                        <ul>
+                            <li>Otomotiv: Atık ve emisyon yönetimi, enerji verimliliği.</li>
+                            <li>Kimya: Tehlikeli madde yönetimi, emisyon kontrolü.</li>
+                            <li>Tekstil: Su tüketiminin azaltılması, atık su yönetimi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Hizmet Sektörü:</strong>
+                        <ul>
+                            <li>Bankacılık/Finans: Enerji tüketiminin azaltılması, kağıt kullanımı.</li>
+                            <li>Turizm: Doğal kaynakların korunması, sürdürülebilir turizm.</li>
+                            <li>Lojistik: Emisyon azaltma, yakıt verimliliği.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kamu Sektörü:</strong>
+                        <ul>
+                            <li>Belediyeler: Atık yönetimi, su kaynakları yönetimi.</li>
+                            <li>Eğitim Kurumları: Enerji verimliliği, çevre bilinci eğitimleri.</li>
+                            <li>Sağlık Kurumları: Tıbbi atık yönetimi, tehlikeli madde kontrolü.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <ol>
+                    <li><strong>Hazırlık Aşaması:</strong>
+                        <ul>
+                            <li>Üst yönetim desteğinin sağlanması.</li>
+                            <li>Mevcut durum analizi (Boşluk Analizi).</li>
+                            <li>Proje ekibinin oluşturulması.</li>
+                            <li>Zaman planının hazırlanması.</li>
+                            <li>Kaynakların tahsis edilmesi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Planlama Aşaması:</strong>
+                        <ul>
+                            <li>Çevre politikasının oluşturulması.</li>
+                            <li>Çevresel boyut ve etkilerin belirlenmesi.</li>
+                            <li>Yasal ve diğer gerekliliklerin tanımlanması.</li>
+                            <li>Risk ve fırsatların değerlendirilmesi.</li>
+                            <li>Çevresel amaç ve hedeflerin belirlenmesi.</li>
+                            <li>Çevre yönetim programlarının hazırlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Uygulama Aşaması:</strong>
+                        <ul>
+                            <li>Gerekli dokümantasyonun oluşturulması.</li>
+                            <li>Prosedürlerin ve talimatların hazırlanması.</li>
+                            <li>Çalışanların eğitimi ve farkındalığın artırılması.</li>
+                            <li>İletişim kanallarının oluşturulması.</li>
+                            <li>Acil durum prosedürlerinin hazırlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kontrol ve Değerlendirme Aşaması:</strong>
+                        <ul>
+                            <li>İzleme ve ölçme programlarının uygulanması.</li>
+                            <li>İç tetkiklerin gerçekleştirilmesi.</li>
+                            <li>Uygunsuzlukların tespiti ve düzeltici faaliyetler.</li>
+                            <li>Kayıtların tutulması ve kontrolü.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İyileştirme Aşaması:</strong>
+                        <ul>
+                            <li>Yönetimin gözden geçirmesi.</li>
+                            <li>Sürekli iyileştirme faaliyetlerinin planlanması.</li>
+                            <li>Belgelendirme için başvuru.</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Üst Yönetim:</strong>
+                        <ul>
+                            <li>Gerekli kaynakların sağlanması.</li>
+                            <li>Çevre politikasının taahhüt edilmesi.</li>
+                            <li>ÇYS etkinliğinin sağlanması.</li>
+                            <li>Rol ve sorumlulukların tanımlanması.</li>
+                            <li>Periyodik yönetim gözden geçirmeleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çevre Yönetim Temsilcisi:</strong>
+                        <ul>
+                            <li>ÇYS'nin kurulması, uygulanması ve sürdürülmesi.</li>
+                            <li>Performans raporlaması.</li>
+                            <li>İyileştirme fırsatlarının belirlenmesi.</li>
+                            <li>Dış paydaşlarla iletişim koordinasyonu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bölüm/Departman Yöneticileri:</strong>
+                        <ul>
+                            <li>ÇYS gerekliliklerinin uygulanması.</li>
+                            <li>Eğitim ihtiyaçlarının belirlenmesi.</li>
+                            <li>Çevre performansının izlenmesi.</li>
+                            <li>İyileştirme faaliyetlerinin planlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çalışanlar:</strong>
+                        <ul>
+                            <li>Çevre politikasına uygun çalışma.</li>
+                            <li>Çevresel uygunsuzlukları raporlama.</li>
+                            <li>İyileştirme önerilerinde bulunma.</li>
+                            <li>Eğitimlere katılma.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Satınalma Departmanı:</strong>
+                        <ul>
+                            <li>Tedarikçilerin çevresel performansının değerlendirilmesi.</li>
+                            <li>Çevre dostu ürün ve hizmetlerin tercih edilmesi.</li>
+                            <li>Çevresel gerekliliklerin paylaşılması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İnsan Kaynakları:</strong>
+                        <ul>
+                            <li>Çevre eğitimlerinin organizasyonu.</li>
+                            <li>Çevre bilincinin artırılması.</li>
+                            <li>İş tanımlarına çevre sorumluluklarının eklenmesi.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci</h3>
+                <ul>
+                    <li>Çevresel ölçümler (emisyon, atık, enerji tüketimi).</li>
+                    <li>Uygunluk yükümlülüklerinin değerlendirilmesi (yılda bir).</li>
+                    <li>Amaçlara ulaşma düzeyinin takibi (aylık/üç aylık).</li>
+                    <li>Çevresel göstergelerin takibi ve analizi.</li>
+                </ul>
+                <h3>İç Denetim</h3>
+                <ul>
+                    <li>Denetim programının hazırlanması (yıllık).</li>
+                    <li>Denetçilerin seçilmesi ve eğitimi.</li>
+                    <li>Denetimlerin tarafsız gerçekleştirilmesi.</li>
+                    <li>Denetim sonuçlarının raporlanması.</li>
+                    <li>Düzeltici faaliyetlerin planlanması ve takibi.</li>
+                </ul>
+                <h3>Yönetimin Gözden Geçirmesi</h3>
+                <ul>
+                    <li>Periyot: En az yılda bir.</li>
+                    <li>Girdiler: Denetim sonuçları, yasal uyum, hedeflere ulaşma, düzeltici faaliyetler.</li>
+                    <li>Çıktılar: İyileştirme kararları, kaynak ihtiyaçları, politika değişiklikleri.</li>
+                </ul>
+                <h3>Belgelendirme Süreci</h3>
+                <ul>
+                    <li>Belgelendirme kuruluşu seçimi.</li>
+                    <li>Başvuru.</li>
+                    <li>Doküman incelemesi (Aşama 1).</li>
+                    <li>Yerinde denetim (Aşama 2).</li>
+                    <li>Uygunsuzlukların giderilmesi.</li>
+                    <li>Belgelendirme kararı.</li>
+                    <li>Belgenin verilmesi (3 yıl geçerli).</li>
+                    <li>Gözetim denetimleri (yıllık).</li>
+                    <li>Yeniden belgelendirme (3 yılda bir).</li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Üst Yönetim Desteği:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Yetersiz destek.</li>
+                            <li><strong>Çözüm:</strong> İş vakası sunumu, maliyet tasarrufu ve itibar vurgusu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kaynak Yetersizliği:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Finansal, insan ve teknik kaynak eksikliği.</li>
+                            <li><strong>Çözüm:</strong> Aşamalı uygulama, mevcut kaynak optimizasyonu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dokümantasyon Yükü:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Aşırı bürokrasi.</li>
+                            <li><strong>Çözüm:</strong> Dijital sistemler, sadece gerekli dokümantasyon.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çalışan Katılımı:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> İlgisizlik veya direnç.</li>
+                            <li><strong>Çözüm:</strong> Eğitim, karar alma süreçlerine dahil etme, başarıları ödüllendirme.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yasal Gereklilikler:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Mevzuat takibi.</li>
+                            <li><strong>Çözüm:</strong> Yazılımlar, danışmanlık, periyodik değerlendirmeler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çevresel Boyutlar:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Boyut ve etkilerin belirlenmesi.</li>
+                            <li><strong>Çözüm:</strong> Sektörel kılavuzlar, multidisipliner ekipler, yaşam döngüsü değerlendirmesi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sürekli İyileştirme:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Stagnasyon.</li>
+                            <li><strong>Çözüm:</strong> Öneri sistemleri, benchmark çalışmaları, hedef revizyonları.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>ISO 14001:2015 PUKÖ (PDCA) Döngüsü</h3>
+                <div class="mermaid">
+graph TD;
+    A["PLANLA (PLAN)"] --> B["UYGULA (DO)"];
+    B --> C["KONTROL ET (CHECK)"];
+    C --> D["ÖNLEM AL (ACT)"];
+    D --> A;
+    
+    A1["Kuruluşun bağlamını belirle<br>Risk ve fırsatları tanımla<br>Çevresel boyutları belirle<br>Yasal gereklilikleri tanımla<br>Amaç ve hedefleri belirle"] --> A;
+    B1["Kaynakları sağla<br>Yetkinlikleri belirle<br>Farkındalığı artır<br>İletişimi yönet<br>Dokümantasyonu oluştur<br>Operasyonel kontrolleri uygula"] --> B;
+    C1["İzle ve ölç<br>Uygunluğu değerlendir<br>İç tetkik gerçekleştir<br>Gözden geçir"] --> C;
+    D1["Uygunsuzlukları gider<br>Sürekli iyileştir"] --> D;
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 14001’in sürekli iyileştirme için kullandığı PUKÖ döngüsü.</p>
+
+                <h3>ISO 14001 Uygulama Süreci Akış Şeması</h3>
+                <div class="mermaid">
+graph TD;
+    A["Başlangıç"] --> B["Üst Yönetim Taahhüdünün Alınması"];
+    B --> C["Mevcut Durum Analizi (Gap Analizi)"];
+    C --> D["Proje Ekibinin Oluşturulması"];
+    D --> E["Çevre Politikasının Oluşturulması"];
+    E --> F["Çevresel Boyut ve Etkilerin Belirlenmesi"];
+    F --> G["Yasal ve Diğer Gerekliliklerin Belirlenmesi"];
+    G --> H["Risk ve Fırsatların Değerlendirilmesi"];
+    H --> I["Amaç, Hedef ve Programların Oluşturulması"];
+    I --> J["Dokümantasyonun Hazırlanması"];
+    J --> K["Eğitim ve Farkındalık Çalışmaları"];
+    K --> L["Sistemin Uygulanması"];
+    L --> M["İzleme ve Ölçme"];
+    M --> N["İç Tetkik"];
+    N --> O["Yönetimin Gözden Geçirmesi"];
+    O --> P["Düzeltici Faaliyetler"];
+    P --> Q["Belgelendirme Denetimi"];
+    Q --> R["Sürekli İyileştirme"];
+    R --> M;
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 14001 uygulama sürecinin akış şeması.</p>
+
+                <h3>Çevresel Boyut - Etki İlişkisi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Faaliyet</th>
+                            <th>Çevresel Boyut</th>
+                            <th>Çevresel Etki</th>
+                            <th>Kontrol Önlemleri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üretim</td>
+                            <td>Enerji tüketimi</td>
+                            <td>Doğal kaynakların tükenmesi, sera gazı emisyonu</td>
+                            <td>Enerji verimli ekipmanlar, yenilenebilir enerji kullanımı</td>
+                        </tr>
+                        <tr>
+                            <td>Ulaşım</td>
+                            <td>Yakıt tüketimi, emisyonlar</td>
+                            <td>Hava kirliliği, küresel ısınma</td>
+                            <td>Filo yönetimi, alternatif yakıtlar, rota optimizasyonu</td>
+                        </tr>
+                        <tr>
+                            <td>Atık yönetimi</td>
+                            <td>Katı atık üretimi</td>
+                            <td>Toprak kirliliği, depolama alanı kullanımı</td>
+                            <td>Atık azaltma, yeniden kullanım, geri dönüşüm</td>
+                        </tr>
+                        <tr>
+                            <td>Su kullanımı</td>
+                            <td>Su tüketimi</td>
+                            <td>Su kaynaklarının tükenmesi</td>
+                            <td>Su tasarruf sistemleri, gri su kullanımı</td>
+                        </tr>
+                        <tr>
+                            <td>Kimyasal kullanımı</td>
+                            <td>Kimyasal madde tüketimi, depolama</td>
+                            <td>Toprak ve su kirliliği, toksisite</td>
+                            <td>Alternatif kimyasallar, kimyasal yönetim sistemi</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>ISO 14001 Dokümantasyon Hiyerarşisi</h3>
+                <div class="mermaid">
+graph TD;
+    A["Seviye 1: Çevre El Kitabı<br>(Politika ve Sistem Tanımı)"] --> B["Seviye 2: Prosedürler<br>(Ne, Ne Zaman, Kim, Nerede)"];
+    B --> C["Seviye 3: Talimatlar<br>(Nasıl)"];
+    C --> D["Seviye 4: Formlar, Kayıtlar<br>(İspatlar)"];
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#ddf,stroke:#333,stroke-width:2px
+    style D fill:#eef,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 14001 dokümantasyon hiyerarşisini gösteren şema.</p>
+
+                <h3>Acil Durum Yönetimi Süreci</h3>
+                <div class="mermaid">
+graph LR;
+    A["Potansiyel Acil Durumların Tanımlanması"] --> B["Acil Durum Planlarının Hazırlanması"];
+    B --> C["Ekiplerin ve Ekipmanların Hazırlanması"];
+    C --> D["Tatbikatların Gerçekleştirilmesi"];
+    D --> E["Sonuçların Değerlendirilmesi"];
+    E --> F["Planların Güncellenmesi"];
+    F --> D;
+    
+    style A fill:#ffd,stroke:#333,stroke-width:2px
+    style B fill:#ffd,stroke:#333,stroke-width:2px
+    style C fill:#ffd,stroke:#333,stroke-width:2px
+    style D fill:#ffd,stroke:#333,stroke-width:2px
+    style E fill:#ffd,stroke:#333,stroke-width:2px
+    style F fill:#ffd,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 14001 acil durum yönetimi sürecinin akış şeması.</p>
+
+                <h3>ISO 14001:2015 Entegrasyon Modeli</h3>
+                <div class="mermaid">
+graph TD;
+    A["ISO 14001:2015<br>Çevre Yönetim Sistemi"] --- B["ISO 9001:2015<br>Kalite Yönetim Sistemi"];
+    A --- C["ISO 45001:2018<br>İş Sağlığı ve Güvenliği Yönetim Sistemi"];
+    A --- D["ISO 50001:2018<br>Enerji Yönetim Sistemi"];
+    A --- E["ISO 27001:2013<br>Bilgi Güvenliği Yönetim Sistemi"];
+    
+    F["Ortak Bileşenler:<br>- Yüksek Seviye Yapı (HLS)<br>- Risk Tabanlı Düşünce<br>- Süreç Yaklaşımı<br>- PUKÖ Döngüsü<br>- Dokümante Edilmiş Bilgi<br>- İç Tetkik<br>- Yönetimin Gözden Geçirmesi"] --- A;
+    F --- B;
+    F --- C;
+    F --- D;
+    F --- E;
+    
+    style A fill:#cfc,stroke:#333,stroke-width:2px
+    style B fill:#ccf,stroke:#333,stroke-width:2px
+    style C fill:#fcc,stroke:#333,stroke-width:2px
+    style D fill:#fcf,stroke:#333,stroke-width:2px
+    style E fill:#cff,stroke:#333,stroke-width:2px
+    style F fill:#fff,stroke:#333,stroke-width:2px
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 14001’in diğer yönetim sistemleriyle entegrasyonunu gösteren şema.</p>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
