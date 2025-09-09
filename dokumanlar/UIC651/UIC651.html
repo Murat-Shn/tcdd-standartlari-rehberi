@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIC 651 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">UIC 651: Demiryolu Araçlarının Sürücü Kabinlerinin Tasarımı</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">UIC 651 standardı, modern demiryolu araçlarında sürücü kabinlerinin tasarımına yönelik ergonomik, güvenlik ve fonksiyonel gereksinimleri belirler.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">1. Standart Kodu ve Adı</h2>
+                <p>UIC 651 - "Demiryolu Araçlarının Sürücü Kabinlerinin Tasarımı"</p>
+                <p>Uluslararası Demiryolları Birliği (UIC) tarafından yayınlanan, lokomotif ve diğer demiryolu araçlarının sürücü kabinlerinin tasarımına ilişkin teknik düzenlemeleri içeren standart.</p>
+
+                <h2 id="kapsam-ve-amac">2. Kapsam ve Amaç</h2>
+                <p>UIC 651 standardı, modern demiryolu araçlarında sürücü kabinlerinin tasarımına yönelik ergonomik, güvenlik ve fonksiyonel gereksinimleri belirler. Standardın temel amacı:</p>
+                <ul>
+                    <li>Sürücü kabinlerinde optimum çalışma koşullarını sağlamak</li>
+                    <li>Araç kontrolü ve güvenliği için gerekli tüm ekipmanların doğru konumlandırılmasını sağlamak</li>
+                    <li>Makinist ve diğer personelin sağlık, güvenlik ve konforunu en üst düzeye çıkarmak</li>
+                    <li>Sürüş performansını ve dolayısıyla demiryolu operasyonlarının genel güvenliğini artırmak</li>
+                    <li>Avrupa çapında kabinlerin uyumluluğunu sağlayarak sınır ötesi operasyonları kolaylaştırmak</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">3. Tanım ve Teorik Arka Plan</h2>
+                <p>UIC 651, insan faktörleri mühendisliği (ergonomi) prensiplerini demiryolu araçlarının sürücü kabinlerinin tasarımına uygular. Standart, antropometrik verilere (farklı vücut ölçülerindeki insanların fiziksel özellikleri) dayanarak geliştirilen bir dizi teknik gerekliliği kapsar.</p>
+                <h3>Teorik Temeller:</h3>
+                <ul>
+                    <li><strong>İnsan-Makine Etkileşimi:</strong> Makinistin kontrol panelleri, göstergeler ve diğer arabirimlerle optimum etkileşimini sağlayacak şekilde tasarım.</li>
+                    <li><strong>Antropometri:</strong> Farklı vücut tiplerine (5. persentil kadın, 95. persentil erkek) uygun kabin boyutları, koltuk, pedal ve kontrol elemanlarının ayarlanabilirliği.</li>
+                    <li><strong>Görsel ve İşitsel Ergonomi:</strong> Göstergelerin kolay okunabilir olması, alarmların anlaşılır olması ve dış görüş alanının engelsiz olması.</li>
+                    <li><strong>Güvenlik ve Konfor:</strong> Çarpışma güvenliği, yangın koruması, titreşim ve gürültü seviyelerinin konforlu sınırlar içinde tutulması.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">4. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>Sürücü kabini tasarımı için yetkin bir ekip ve proje yönetimi süreci oluşturmak.</li>
+                    <li>Ergonomi, güvenlik ve insan faktörleri uzmanlarını tasarım sürecine dahil etmek.</li>
+                    <li>Tasarım sürecinin tüm aşamalarını belgelendirmek ve gerekli onayları almak.</li>
+                    <li>Makinistlerden geri bildirim almak ve bu geri bildirimleri tasarım iyileştirmeleri için kullanmak.</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>**Kabin Boyutları:**
+                        <ul>
+                            <li>Minimum kabin genişliği ve yüksekliği, sürücünün hareket serbestliğini kısıtlamamalıdır.</li>
+                            <li>Sürücü koltuğu önünde en az 800 mm diz mesafesi olmalıdır.</li>
+                            <li>Tüm kontrol elemanlarına kolay erişim sağlanmalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Sürücü Koltuğu:**
+                        <ul>
+                            <li>Ergonomik ve ayarlanabilir olmalıdır (yükseklik, derinlik, sırt açısı, yanal destek).</li>
+                            <li>Titreşim sönümleyici özelliklere sahip olmalıdır (EN 45545 standardına uygun).</li>
+                        </ul>
+                    </li>
+                    <li>**Kontrol Paneli ve Göstergeler:**
+                        <ul>
+                            <li>Göstergeler, EN 16186-1 standardında belirtilen görüş açılarına uygun olmalıdır.</li>
+                            <li>Ekranlar parlama yapmamalı, renk körlüğü olanlar için uygun renkler kullanılmalıdır.</li>
+                            <li>Önemli göstergeler (hız, sinyal durumu, basınç) birincil görüş alanında yer almalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Görüş Alanı:**
+                        <ul>
+                            <li>Ön cam, yan camlar ve ayna sistemleri, sinyalizasyon, yol ve trafik koşullarının optimum şekilde görülmesini sağlamalıdır.</li>
+                            <li>Kör noktaları minimize edilmelidir.</li>
+                        </ul>
+                    </li>
+                    <li>**Gürültü ve Titreşim:**
+                        <ul>
+                            <li>Kabin içi gürültü seviyesi, EN ISO 3381 standardına göre belirlenen limitleri aşmamalıdır.</li>
+                            <li>Vagon gövdesinden kaynaklanan titreşimler EN 12299 standardına uygun olmalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**İklimlendirme ve Aydınlatma:**
+                        <ul>
+                            <li>Isıtma, havalandırma ve klima (HVAC) sistemi etkin çalışmalı, UIC 612 standardına uygun olmalıdır.</li>
+                            <li>Aydınlatma seviyesi ayarlanabilir olmalı, ekranlarda yansıma yapmamalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Güvenlik:**
+                        <ul>
+                            <li>Çarpışma anında sürücüyü koruyacak yapısal dayanım (EN 15227).</li>
+                            <li>Yangın durumunda koruma (EN 45545-2).</li>
+                            <li>Acil durum çıkışları ve ekipmanları.</li>
+                            <li>Sürücü uyarı sistemleri (DSD - Driver's Safety Device).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">5. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>Lokomotif Üreticileri:</h3>
+                <p>Türkiye'de TÜLOMSAŞ, yurt dışında ise Siemens, Alstom, Bombardier gibi lokomotif üreticileri, yeni nesil lokomotiflerin sürücü kabinlerini UIC 651 standardına uygun olarak tasarlamaktadır. Bu, makinist konforunu artırırken, uluslararası pazarda rekabet gücünü artırır.</p>
+                <h3>Tren Üreticileri:</h3>
+                <p>Yüksek hızlı tren (YHT), metro ve banliyö treni üreticileri, sürücü kabinlerini ergonomic kriterlere göre tasarlayarak operasyonel verimliliği ve güvenliği maksimize etmektedir. Örneğin, TCDD'nin YHT setlerindeki kabinler bu standarda göre tasarlanmıştır.</p>
+                <h3>Metro ve Tramvay İşletmecileri:</h3>
+                <p>İstanbul Metro ve İZBAN gibi şehir içi raylı sistem işletmecileri, yeni araç tedariklerinde kabin tasarımını UIC 651 standardına göre şartnameye eklemektedir. Bu, şehir içi yoğun trafikte çalışan makinistlerin ergonomik bir ortamda güvenle çalışmasını sağlar.</p>
+                <h3>Tasarım ve Danışmanlık Firmaları:</h3>
+                <p>Demiryolu projelerinde uzmanlaşmış mühendislik ve tasarım firmaları, yeni projelerde sürücü kabini tasarımı için UIC 651 standardına uygunluk değerlendirme ve danışmanlık hizmetleri sunmaktadır.</p>
+
+                <h2 id="uygulama-esaslari">6. Uygulama Esasları</h2>
+                <p>UIC 651 standardına uygun bir sürücü kabini tasarlamak için izlenmesi gereken temel adımlar:</p>
+                <h3>1. Tasarım Gereksinimlerinin Belirlenmesi:</h3>
+                <ul>
+                    <li>Proje kapsamına göre kabin tipi ve kullanılacak ekipmanların listesi çıkarılmalıdır.</li>
+                    <li>Makinistlerden ve operatörlerden geri bildirim alınmalıdır.</li>
+                    <li>Antropometrik veriler (örn. 5. persentil kadın, 95. persentil erkek) göz önünde bulundurulmalıdır.</li>
+                </ul>
+                <h3>2. Konsept Tasarım ve Modelleme:</h3>
+                <ul>
+                    <li>3D modelleme yazılımları (CAD) kullanılarak kabin ve ekipman yerleşimi tasarlanmalıdır.</li>
+                    <li>Ergonomik analizler ve simülasyonlar yapılmalıdır (örn. görüş açıları, erişim mesafeleri).</li>
+                </ul>
+                <h3>3. Prototip Üretimi ve Değerlendirme:</h3>
+                <ul>
+                    <li>Prototip kabin üretimi ve fiziksel ergonomi testleri gerçekleştirilmelidir.</li>
+                    <li>Sürücü koltuğu ve kontrol paneli ayarlanabilirliği test edilmelidir.</li>
+                    <li>Gürültü, titreşim ve aydınlatma ölçümleri yapılmalıdır.</li>
+                </ul>
+                <h3>4. Belgelendirme ve Onay:</h3>
+                <ul>
+                    <li>Tasarım dokümantasyonu, test raporları ve uygunluk beyanları hazırlanmalıdır.</li>
+                    <li>Ulusal ve uluslararası onay mercilerinden (NoBo) onay alınmalıdır.</li>
+                </ul>
+                <h3>5. Üretim ve Kalite Kontrol:</h3>
+                <ul>
+                    <li>Seri üretimde, tasarıma uygunluğun sağlanması için kalite kontrol süreçleri uygulanmalıdır.</li>
+                    <li>Malzeme ve bileşenlerin sertifikaları kontrol edilmelidir.</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">7. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Endüstriyel Tasarımcılar:</strong> Kabinin görsel ve ergonomik tasarımı, malzeme seçimi</li>
+                    <li><strong>Mekanik Mühendisleri:</strong> Kabin yapısının statik ve dinamik analizleri, titreşim sönümleme sistemleri</li>
+                    <li><strong>Elektrik/Elektronik Mühendisleri:</strong> Kontrol paneli tasarımı, gösterge ekranları, aydınlatma ve güç sistemleri</li>
+                    <li><strong>Yazılım Mühendisleri:</strong> Gösterge ekranları ve kontrol sistemleri için kullanıcı arayüzü (HMI) yazılımı</li>
+                    <li><strong>İnsan Faktörleri Uzmanları:</strong> Antropometrik analizler, ergonomik testler, kullanıcı deneyimi değerlendirmesi</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">8. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>Belgelendirme:</h3>
+                <ul>
+                    <li><strong>Teknik Dosya:</strong> Kabin tasarımını, kullanılan malzemeleri, güvenlik test raporlarını ve ergonomik analizleri içeren teknik dosya.</li>
+                    <li><strong>Onay Kurumları:</strong> ERA (Avrupa Demiryolu Ajansı), TCDD gibi ulusal otoritelerden onay alınması.</li>
+                    <li><strong>Sertifikasyon İşaretleri:</strong> EN ve TSI (Karşılıklı İşletilebilirlik Teknik Şartları) uyumluluk işaretlerinin alınması.</li>
+                </ul>
+                <h3>İzleme ve Denetim:</h3>
+                <ul>
+                    <li><strong>İşletme Geri Bildirimi:</strong> Makinelerden alınan düzenli geri bildirimlerle kabin ergonomisinin değerlendirilmesi.</li>
+                    <li><strong>Periyodik Kontroller:</strong> Sürücü koltuğu, göstergeler, aydınlatma ve diğer ekipmanların periyodik kontrolleri.</li>
+                    <li><strong>Kazı İncelemeleri:</strong> Kaza veya olay durumunda kabin tasarımının güvenlik yönünden incelenmesi.</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">9. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk: Maliyet ve Tasarım Karmaşıklığı</h3>
+                <p>Ergonomik ve güvenlik açısından yüksek standartlar, tasarım ve üretim maliyetlerini artırabilir.</p>
+                <p><strong>Çözüm:</strong> Modüler tasarım yaklaşımları, standarda uygun bileşenlerin tedariki ve 3D simülasyon araçları ile maliyetlerin optimize edilmesi.</p>
+                <h3>Zorluk: Geriye Dönük Uyumluluk</h3>
+                <p>Mevcut demiryolu araçlarının modern standartlara uygun hale getirilmesi.</p>
+                <p><strong>Çözüm:</strong> Gerekli durumlarda retrofit kitleri ve modifikasyonlar ile kabinlerin yenilenmesi, yeni standartlar için aşamalı bir geçiş planının oluşturulması.</p>
+                <h3>Zorluk: Personel Kabulü</h3>
+                <p>Yeni bir kabin tasarımının makinistler tarafından kabul görmesi.</p>
+                <p><strong>Çözüm:</strong> Tasarım sürecine makinistlerin dahil edilmesi, prototipler üzerinde deneme sürüşleri yapılması ve geri bildirimlerin dikkate alınması.</p>
+                
+                <h2 id="gorseller-semalar-akis-diyagramlari">10. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>Sürücü Kabini Tasarım Süreci Akış Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A[Gereksinim Analizi] --> B[Konsept Tasarımı]
+    B --> C[3D Modelleme ve Simülasyon]
+    C --> D[Prototip Üretimi]
+    D --> E[Fiziksel Testler ve Değerlendirme]
+    E --> F{"Onay Alındı mı?"}
+    F -- Evet --> G[Belgelendirme ve Seri Üretim]
+    F -- Hayır --> A
+    G --> H[İşletme ve Geri Bildirim]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Sürücü Kabini Tasarım Süreci Akış Şemasını göstermektedir.</p>
+                
+                <h3>Antropometrik Veri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Antropometrik Ölçü</th>
+                            <th>5. Persentil Kadın</th>
+                            <th>50. Persentil Erkek</th>
+                            <th>95. Persentil Erkek</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Boy</td>
+                            <td>1520 mm</td>
+                            <td>1750 mm</td>
+                            <td>1880 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Oturma Yüksekliği</td>
+                            <td>790 mm</td>
+                            <td>910 mm</td>
+                            <td>970 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Omuz Genişliği</td>
+                            <td>340 mm</td>
+                            <td>460 mm</td>
+                            <td>520 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Oturma Pozisyonunda Diz Yüksekliği</td>
+                            <td>450 mm</td>
+                            <td>550 mm</td>
+                            <td>610 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Dirsek-Parmak Ucu Mesafesi</td>
+                            <td>390 mm</td>
+                            <td>470 mm</td>
+                            <td>530 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Kol Erişim Mesafesi (Öne)</td>
+                            <td>650 mm</td>
+                            <td>750 mm</td>
+                            <td>850 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Oturma Pozisyonunda Göz Yüksekliği</td>
+                            <td>680 mm</td>
+                            <td>780 mm</td>
+                            <td>840 mm</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki tablo, sürücü kabini tasarımında dikkate alınması gereken antropometrik verileri göstermektedir. Bu veriler, farklı vücut tiplerine uygun ergonomik bir tasarım için referans oluşturur.</p>
+
+                <h3>Standart Uyum Kontrol Listesi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gereksinim Kategorisi</th>
+                            <th>Kontrol Edilecek Hususlar</th>
+                            <th>Referans Bölüm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kabin Boyutları</td>
+                            <td>Minimum genişlik, yükseklik ve zemin alanı</td>
+                            <td>UIC 651 Bölüm 2.1</td>
+                        </tr>
+                        <tr>
+                            <td>Sürücü Koltuğu</td>
+                            <td>Ayarlanabilirlik, ergonomi, malzeme özellikleri</td>
+                            <td>UIC 651 Bölüm 2.3</td>
+                        </tr>
+                        <tr>
+                            <td>Görüş Açıları</td>
+                            <td>Yatay ve dikey görüş açıları, kör noktalar</td>
+                            <td>UIC 651 Bölüm 2.2</td>
+                        </tr>
+                        <tr>
+                            <td>Kontrol Paneli</td>
+                            <td>Göstergelerin yerleşimi, erişilebilirlik, aydınlatma</td>
+                            <td>UIC 651 Bölüm 3.1</td>
+                        </tr>
+                        <tr>
+                            <td>Gürültü ve Titreşim</td>
+                            <td>Kabin içi gürültü seviyesi (db), titreşim sönümleme</td>
+                            <td>UIC 651 Bölüm 4.1</td>
+                        </tr>
+                        <tr>
+                            <td>İklimlendirme</td>
+                            <td>Sıcaklık, nem ve hava sirkülasyonu</td>
+                            <td>UIC 651 Bölüm 4.2</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki tablo, kabin tasarımının UIC 651 standardına uygunluğunu kontrol etmek için kullanılabilecek temel bir kontrol listesidir.</p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
