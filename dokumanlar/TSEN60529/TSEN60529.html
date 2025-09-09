@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 60529 - IP Kodu Detayları</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 60529: Mahfazalarla Sağlanan Koruma Dereceleri (IP Kodu)</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 60529 standardı, elektrikli cihazların mahfazalarının sağladığı koruma derecesini tanımlayan bir sınıflandırma sistemi sunar.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS EN 60529</strong> standardı, elektrikli cihazların mahfazalarının (dış kabuklarının) sağladığı koruma derecesini tanımlayan bir sınıflandırma sistemi sunar. Uluslararası karşılığı IEC 60529 olan bu standart, aşağıdaki hususları kapsar:</p>
+                <ul>
+                    <li>Mahfazaların içindeki ekipmanın, harici katı cisimlerin ve tozun girişine karşı korunması.</li>
+                    <li>Mahfazaların içindeki ekipmanın, su girişine karşı korunması.</li>
+                    <li>Mahfazaların, insanların tehlikeli parçalara erişimine karşı korunması.</li>
+                </ul>
+                <p>Standart, üreticilere, tasarımcılara ve son kullanıcılara, ürünlerin çevresel koşullara karşı dayanıklılığını anlamaları için tutarlı bir IP (Ingress Protection/Koruma Derecesi) kodlama sistemi sağlar.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>IP Kodlama Sistemi, "IP" harflerini ve iki rakamı içeren bir format kullanır: <strong>IP XY</strong>.</p>
+                <ul>
+                    <li><strong>X (Birinci Karakteristik Rakam):</strong> Katı cisimlere karşı koruma derecesini belirtir (0-6 arası).</li>
+                    <li><strong>Y (İkinci Karakteristik Rakam):</strong> Sıvılara karşı koruma derecesini belirtir (0-9 arası).</li>
+                </ul>
+                <p>Ek olarak, isteğe bağlı ek harfler (A, B, C, D) ve tamamlayıcı harfler (H, M, S, W) kullanılabilir.</p>
+
+                <h3>Birinci Karakteristik Rakam (Katı Cisim Koruması)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Değer</th>
+                            <th>Korunan</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>Koruma yok</td>
+                            <td>Özel koruma sağlanmamıştır.</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>≥ 50 mm</td>
+                            <td>Büyük vücut yüzeyleri (el sırtı gibi), 50 mm'den büyük katı cisimler.</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>≥ 12.5 mm</td>
+                            <td>Parmaklar, 12.5 mm'den büyük cisimler.</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>≥ 2.5 mm</td>
+                            <td>Aletler, kablolar, 2.5 mm'den büyük cisimler.</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>≥ 1.0 mm</td>
+                            <td>Çoğu kablo, ince aletler, 1.0 mm'den büyük cisimler.</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Toz korumalı</td>
+                            <td>Toz girişi tamamen önlenemez, ancak cihaz işleyişini etkileyecek miktarda girmez.</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Toz geçirmez</td>
+                            <td>Hiç toz girmez.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>İkinci Karakteristik Rakam (Sıvı Koruması)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Değer</th>
+                            <th>Korunan</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>Koruma yok</td>
+                            <td>Özel koruma sağlanmamıştır.</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Damlayan su</td>
+                            <td>Dikey düşen su damlalarının zararlı etkisi olmamalı.</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>15° eğimli damlayan su</td>
+                            <td>Muhafaza 15° eğimli iken dikey düşen damlalar zararlı etki yaratmamalı.</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Püskürtme suyu</td>
+                            <td>60° açıya kadar düşen su zararlı etki yaratmamalı.</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Sıçrayan su</td>
+                            <td>Her yönden sıçrayan su zararlı etki yaratmamalı.</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Su jeti</td>
+                            <td>Her yönden gelen düşük basınçlı su jeti zararlı etki yaratmamalı.</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Güçlü su jeti</td>
+                            <td>Her yönden gelen güçlü su jetleri zararlı etki yaratmamalı.</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Geçici daldırma</td>
+                            <td>Belirli süre ve basınç altında su altında kalırken su girişi zararlı etki yaratmamalı (30 dk, 1m).</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Sürekli daldırma</td>
+                            <td>Belirtilen koşullar altında sürekli su altında kalabilir (üretici tarafından belirtilen koşullar, 1m'den derin).</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Yüksek basınçlı/sıcak su jetleri</td>
+                            <td>Yüksek basınçlı ve yüksek sıcaklıktaki su jetleri zararlı etki yaratmamalı.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Ek Harfler (İnsanların Tehlikeli Parçalara Erişimi)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Harf</th>
+                            <th>Korunan</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td>El sırtı</td>
+                            <td>50 mm çapındaki sonda erişemez.</td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td>Parmak</td>
+                            <td>12 mm çapındaki eklemli sonda erişemez.</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td>Alet</td>
+                            <td>2.5 mm çapında, 100 mm uzunluğunda sonda erişemez.</td>
+                        </tr>
+                        <tr>
+                            <td>D</td>
+                            <td>Tel</td>
+                            <td>1 mm çapında, 100 mm uzunluğunda sonda erişemez.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Tamamlayıcı Harfler</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Harf</th>
+                            <th>Anlamı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>H</td>
+                            <td>Yüksek gerilim ekipmanı</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>Su testi sırasında cihaz çalışır durumda</td>
+                        </tr>
+                        <tr>
+                            <td>S</td>
+                            <td>Su testi sırasında cihaz durağan</td>
+                        </tr>
+                        <tr>
+                            <td>W</td>
+                            <td>Belirli hava koşullarına uygun</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p>TS EN 60529 standardına uyum sağlamak için organizasyonlar aşağıdaki gereklilikleri yerine getirmelidir:</p>
+                <h3>Organizasyonel Gereklilikler</h3>
+                <ul>
+                    <li>Standardın güncel versiyonunu temin etmek (TSE veya ilgili kuruluşlardan).</li>
+                    <li>Ürün tasarım ve test departmanlarında IP kodlama sistemi hakkında bilgi sahibi personel bulundurmak.</li>
+                    <li>Test laboratuvarı kurmak veya akredite laboratuvarlarla çalışmak.</li>
+                    <li>Ürün teknik dokümanlarında IP koruma derecesini belirtmek.</li>
+                    <li>IP testlerini doğru şekilde dokümante etmek ve kayıtları tutmak.</li>
+                </ul>
+                <h3>Teknik Gereklilikler</h3>
+                <ul>
+                    <li>Mahfaza tasarımının istenilen IP derecesine uygun olması.</li>
+                    <li>Uygun contalar, sızdırmazlık elemanları ve koruyucu kapakların kullanımı.</li>
+                    <li>Mahfaza malzemelerinin dayanıklılık özelliklerinin belirlenmesi.</li>
+                    <li>Kablo girişleri, contalar ve bağlantı noktalarının IP derecesine uygun şekilde tasarlanması.</li>
+                    <li>Standardın gerektirdiği test ekipmanlarının bulundurulması veya test hizmetinin alınması.</li>
+                </ul>
+                <h3>Test Gereklilikleri</h3>
+                <p>Standart, her IP koruma seviyesi için spesifik test prosedürleri tanımlar:</p>
+                <ul>
+                    <li><strong>Katı cisim testleri:</strong> Standart sondalar ve test parmakları kullanılarak erişim testi.</li>
+                    <li><strong>Toz testi:</strong> Toz odasında (talk pudra) belirli süre ve basınç altında test.</li>
+                    <li><strong>Su testleri:</strong> IP derecesine göre değişen, damlama, püskürtme, jet veya daldırma testleri.</li>
+                </ul>
+                <p>Örnek: IPX7 testi için cihaz 30 dakika boyunca 1 metre derinliğindeki suya daldırılmalıdır.</p>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <p>TS EN 60529 standardı çeşitli sektörlerde yaygın olarak kullanılmaktadır:</p>
+                <ul>
+                    <li><strong>Elektrik ve Elektronik:</strong> Dış mekân aydınlatma armatürleri (IP65 veya üzeri), endüstriyel kontrol panelleri (IP54-IP65), sokak aydınlatma kontrol sistemleri (IP54-IP66), elektrik prizleri ve şalterler (IP44-IP56).</li>
+                    <li><strong>Otomotiv:</strong> Araç dış aydınlatma sistemleri (IP67), motor kontrol üniteleri (IP67-IP69), araç içi elektronik kontrol birimleri (IP40-IP54), elektrikli araç şarj ekipmanları (IP54-IP66).</li>
+                    <li><strong>Endüstriyel Otomasyon:</strong> PLC ve kontrol sistemleri (IP20-IP65), sensörler ve algılayıcılar (IP67), HMI ekranlar ve operatör panelleri (IP65-IP69), endüstriyel robotlar ve bileşenleri (IP54-IP65).</li>
+                    <li><strong>Askeri ve Savunma:</strong> Saha haberleşme ekipmanları (IP67-IP68), mobil komuta kontrol sistemleri (IP65-IP68), taktik ekipman muhafazaları (IP67-IP69).</li>
+                    <li><strong>Tüketici Elektroniği:</strong> Su geçirmez akıllı telefonlar (IP67-IP68), dayanıklı taşınabilir bilgisayarlar (IP52-IP65), suya dayanıklı kameralar (IP67-IP68), Bluetooth hoparlörler (IP54-IP67).</li>
+                    <li><strong>Denizcilik ve Açık Deniz:</strong> Marine elektronik ekipmanlar (IP56-IP68), güverte aydınlatma sistemleri (IP66-IP68), navigasyon ekipmanları (IP56-IP67).</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <p>TS EN 60529 standardını uygulamak için izlenecek adımlar:</p>
+                <ol>
+                    <li><strong>Koruma Derecesi Gereksinimleri Belirleme:</strong> Ürünün kullanılacağı ortamı değerlendirin (iç mekan, dış mekan, tozlu, nemli vb.) ve minimum gerekli IP koruma derecesini belirleyin.</li>
+                    <li><strong>Tasarım Aşaması:</strong> Mahfaza, malzeme, conta ve kablo girişlerini seçilen IP derecesine uygun şekilde tasarlayın.</li>
+                    <li><strong>Prototip Üretimi ve İlk Testler:</strong> Tasarıma uygun prototip üretin ve ön testlerle IP derecesini doğrulayın.</li>
+                    <li><strong>Resmi IP Testleri:</strong> Akredite laboratuvarda veya iç test laboratuvarında standarda uygun testler gerçekleştirin.</li>
+                    <li><strong>Seri Üretim ve Kalite Kontrol:</strong> Üretim sürecinde IP koruma derecesini etkileyecek parametreleri kontrol edin ve düzenli testlerle doğrulayın.</li>
+                    <li><strong>Belgelendirme ve İşaretleme:</strong> Ürün üzerinde ve teknik dokümanlarda IP kodunu doğru şekilde belirtin.</li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Tasarım Mühendisliği:</strong> IP koruma derecesine uygun mahfaza tasarımı, malzeme seçimi, termal yönetim entegrasyonu.</li>
+                    <li><strong>Üretim Mühendisliği:</strong> IP gereksinimlerini karşılayan üretim süreçlerinin planlanması, conta montajı, montaj talimatları.</li>
+                    <li><strong>Test ve Kalite Kontrol:</strong> Test planlarının hazırlanması, IP testlerinin gerçekleştirilmesi, uygunsuzlukların takibi.</li>
+                    <li><strong>Satın Alma:</strong> IP gereksinimlerini karşılayan malzeme ve bileşenlerin tedariki.</li>
+                    <li><strong>Dokümantasyon ve Sertifikasyon:</strong> Test raporlarının hazırlanması, teknik dosyanın güncellenmesi.</li>
+                    <li><strong>Satış ve Pazarlama:</strong> IP derecesinin doğru şekilde pazarlama materyallerinde kullanılması.</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <p>TS EN 60529 standardı doğrudan bir belgelendirme standardı olmamakla birlikte, ürünlerin IP koruma derecesini belgelemek için şu adımlar izlenir:</p>
+                <ul>
+                    <li><strong>İç Denetim:</strong> Düzenli kontrollerle IP gereksinimlerinin karşılanması.</li>
+                    <li><strong>Belgelendirme Süreci:</strong> Akredite laboratuvarlarda IP testleri, test raporlarının teknik dosyaya eklenmesi.</li>
+                    <li><strong>Tip Testleri:</strong> Yeni ürün veya tasarım değişikliğinde tam IP testleri.</li>
+                    <li><strong>Rutin Testler:</strong> Üretim hattında basit sızdırmazlık ve görsel kontroller.</li>
+                    <li><strong>Periyodik Doğrulama Testleri:</strong> Yıllık tam IP testleri ve uzun süreli dayanıklılık testleri.</li>
+                    <li><strong>Teknik Dosya İçeriği:</strong> IP test raporları, mahfaza çizimleri, malzeme özellikleri, montaj talimatları.</li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Tasarım Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Yüksek IP derecesi ile termal yönetim çelişkisi.</li>
+                            <li><strong>Çözüm:</strong> Özel havalandırma filtreleri, ısı emiciler, pasif soğutma teknikleri.</li>
+                            <li><strong>Zorluk:</strong> Hareketli parçalarda sızdırmazlık.</li>
+                            <li><strong>Çözüm:</strong> Dinamik sızdırmazlık elemanları, labirent contalar.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Üretim Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Conta montajında tekrarlanabilirlik.</li>
+                            <li><strong>Çözüm:</strong> Kendinden yapışkanlı contalar, montaj kalıpları.</li>
+                            <li><strong>Zorluk:</strong> Üretim toleranslarının etkisi.</li>
+                            <li><strong>Çözüm:</strong> Sıkı toleranslar, 100% kontrol.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Büyük boyutlu ürünlerin test edilmesi.</li>
+                            <li><strong>Çözüm:</strong> Modüler test düzenekleri, kritik bölgelerin ayrı test edilmesi.</li>
+                            <li><strong>Zorluk:</strong> Yüksek basınçlı su testlerinde hasar riski.</li>
+                            <li><strong>Çözüm:</strong> Kademeli test yaklaşımı, düşük basınçlı ön testler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Maliyet Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Yüksek IP derecelerinin maliyeti.</li>
+                            <li><strong>Çözüm:</strong> Maliyet-etkin sızdırmazlık çözümleri, farklılaştırılmış IP dereceleri.</li>
+                            <li><strong>Zorluk:</strong> Test maliyetleri.</li>
+                            <li><strong>Çözüm:</strong> İç test kapasitesi, test ailesi oluşturma.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>IP Kodunun Açıklaması</h3>
+                <div class="mermaid">
+graph TD;
+    A["IP Kodu"] --> B["Ingress Protection/Koruma Derecesi"];
+    B --> C["IP XY"];
+    C --> D["X: Katı Cisim Koruması (0-6)"];
+    C --> E["Y: Sıvı Koruması (0-9)"];
+    C --> F["Ek Harfler (Opsiyonel: A,B,C,D)"];
+    C --> G["Tamamlayıcı Harfler (Opsiyonel: H,M,S,W)"];
+                </div>
+                <p class="text-center text-sm text-gray-500">IP kodlama sisteminin yapısını gösteren akış şeması.</p>
+
+                <h3>IP Test Süreci Akış Şeması</h3>
+                <div class="mermaid">
+flowchart TD
+    A[Başlangıç] --> B[Ürün Gereksinimlerini Belirle]
+    B --> C[IP Koruma Derecesi Seç]
+    C --> D[Mahfaza Tasarla]
+    D --> E[Prototip Üret]
+    E --> F[Ön Testler Yap]
+    F --> G{Ön Testler Başarılı mı?}
+    G -- Hayır --> H[Tasarımı Revize Et]
+    H --> D
+    G -- Evet --> I[Resmi IP Testleri Yap]
+    I --> J{Testler Başarılı mı?}
+    J -- Hayır --> H
+    J -- Evet --> K[Test Raporları Hazırla]
+    K --> L[Seri Üretime Geç]
+    L --> M[Periyodik Doğrulama Testleri]
+    M --> N{Doğrulama Başarılı mı?}
+    N -- Hayır --> O[Düzeltici Faaliyet]
+    O --> L
+    N -- Evet --> P[Dokümantasyon Güncelle]
+    P --> M
+                </div>
+                <p class="text-center text-sm text-gray-500">IP test sürecinin adım adım akış diyagramı.</p>
+
+                <h3>IP Test Tiplerinin Görsel Gösterimi</h3>
+                <div class="mermaid">
+graph LR
+    A[IP Testleri] --> B[Katı Cisim Testleri]
+    A --> C[Sıvı Testleri]
+    
+    B --> B1[Sonda Testleri]
+    B --> B2[Toz Testleri]
+    
+    C --> C1[Damlama Testleri]
+    C --> C2[Püskürtme Testleri]
+    C --> C3[Jet Testleri]
+    C --> C4[Daldırma Testleri]
+    C --> C5[Yüksek Basınç/Sıcaklık Testleri]
+    
+    B1 --> B1a[Erişim Sondaları]
+    B1 --> B1b[Eklemli Test Parmağı]
+    
+    B2 --> B2a[Toz Odası]
+    B2 --> B2b[Vakum Uygulaması]
+    
+    C1 --> C1a[Dikey Damlatma]
+    C1 --> C1b[Eğimli Damlatma]
+    
+    C2 --> C2a[Belirli Açılardan Püskürtme]
+    C2 --> C2b[Çoklu Yönden Püskürtme]
+    
+    C3 --> C3a[Düşük Basınçlı Jet]
+    C3 --> C3b[Yüksek Basınçlı Jet]
+    
+    C4 --> C4a[Geçici Daldırma]
+    C4 --> C4b[Sürekli Daldırma]
+    
+    C5 --> C5a[80°C Su]
+    C5 --> C5b[8-10 MPa Basınç]
+                </div>
+                <p class="text-center text-sm text-gray-500">Farklı IP test türlerini ve alt kategorilerini gösteren şema.</p>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
