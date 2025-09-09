@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50163 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50163: Demiryolu Uygulamaları - Çekiş Sistemleri İçin Besleme Gerilimleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50163 standardı, demiryolu çekiş sistemlerinde kullanılan elektrik besleme gerilimlerini ve ilgili teknik parametreleri belirleyen bir Avrupa standardıdır. Bu standart, elektrikli çekiş sistemlerinin güvenli ve verimli çalışmasını sağlamak amacıyla besleme gerilimleri için minimum, normal, maksimum ve geçici değerleri tanımlar.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">1. Standart Kodu ve Adı</h2>
+                <p>TS EN 50163: "Demiryolu Uygulamaları - Çekiş Sistemleri İçin Besleme Gerilimleri"</p>
+
+                <h2 id="kapsam-ve-amac">2. Kapsam ve Amaç</h2>
+                <p>TS EN 50163 standardı, demiryolu çekiş sistemlerinde kullanılan elektrik besleme gerilimlerini ve ilgili teknik parametreleri belirleyen bir Avrupa standardıdır. Bu standart, elektrikli çekiş sistemlerinin güvenli ve verimli çalışmasını sağlamak amacıyla besleme gerilimleri için minimum, normal, maksimum ve geçici değerleri tanımlar.</p>
+                <p>Standart, aşağıdaki demiryolu çekiş sistemlerini kapsar:</p>
+                <ul>
+                    <li>AC (alternatif akım) sistemleri: 15 kV 16.7 Hz, 25 kV 50 Hz</li>
+                    <li>DC (doğru akım) sistemleri: 600 V, 750 V, 1.5 kV, 3 kV</li>
+                </ul>
+                <p>Standardın temel amacı, farklı ülkeler ve bölgeler arasında demiryolu sistemlerinin uyumlu çalışmasını sağlamak ve besleme gerilimi açısından ortak bir çerçeve oluşturmaktır.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">3. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 50163 standardı, demiryolu çekiş sistemlerinde kullanılan besleme gerilimlerini dört temel kategoride sınıflandırır:</p>
+                <ul>
+                    <li><strong>Kalıcı minimum gerilim (Umin1):</strong> Sistemin sürekli olarak çalışabileceği en düşük gerilim seviyesi</li>
+                    <li><strong>Normal gerilim (Un):</strong> Sistemin tasarlandığı nominal çalışma gerilimi</li>
+                    <li><strong>Kalıcı maksimum gerilim (Umax1):</strong> Sistemin sürekli olarak çalışabileceği maksimum gerilim seviyesi</li>
+                    <li><strong>Geçici maksimum gerilim (Umax2):</strong> Sistemin kısa bir süre için maruz kalabileceği en yüksek gerilim seviyesi</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">4. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>Çekiş sistemleri projelerinde, EN 50163 standardına uygun bir gerilim yönetim planının oluşturulması</li>
+                    <li>Tasarım, üretim ve test süreçlerinin akredite edilmiş bir kalite yönetim sistemine (ISO 9001) uygun olması</li>
+                    <li>Personelin ilgili eğitim ve yetkinliğe sahip olması</li>
+                    <li>Tüm teknik dokümanların ve test raporlarının hazırlanması</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <p>Standart, farklı besleme sistemleri için gerilim değerleri ve toleransları tanımlar:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nominal Gerilim (Un)</th>
+                            <th>Umin1 (Kalıcı Min.)</th>
+                            <th>Umax1 (Kalıcı Maks.)</th>
+                            <th>Umax2 (Geçici Maks.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1.5 kV DC</td>
+                            <td>1.0 kV</td>
+                            <td>1.8 kV</td>
+                            <td>2.0 kV</td>
+                        </tr>
+                        <tr>
+                            <td>3.0 kV DC</td>
+                            <td>2.0 kV</td>
+                            <td>3.6 kV</td>
+                            <td>4.0 kV</td>
+                        </tr>
+                        <tr>
+                            <td>15 kV AC</td>
+                            <td>12.0 kV</td>
+                            <td>17.25 kV</td>
+                            <td>18.0 kV</td>
+                        </tr>
+                        <tr>
+                            <td>25 kV AC</td>
+                            <td>19.0 kV</td>
+                            <td>27.5 kV</td>
+                            <td>30.0 kV</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Bu değerler, hem sabit tesisler (katener, trafo merkezleri) hem de demiryolu araçları (pantograf, çekiş ekipmanları) için bağlayıcıdır.</p>
+
+                <h2 id="kullanim-alanlari">5. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>1. Yüksek Hızlı Demiryolu Hatları:</h3>
+                <ul>
+                    <li>Ankara-İstanbul YHT hattı gibi projelerde 25 kV AC sistemler için gerilim regülasyonu ve harmonik kontrolü</li>
+                    <li>Yüksek hızlı trenlerin farklı besleme gerilimlerine sahip hatlar arasında sorunsuz geçişi</li>
+                </ul>
+                <h3>2. Konvansiyonel Demiryolu Hatları:</h3>
+                <ul>
+                    <li>25 kV AC veya 3 kV DC gibi sistemlerin bulunduğu hatlarda gerilim kalitesinin izlenmesi</li>
+                    <li>Elektrifikasyon sistemlerinin modernizasyon projeleri</li>
+                </ul>
+                <h3>3. Metro ve Hafif Raylı Sistemler:</h3>
+                <ul>
+                    <li>İstanbul Metro'sunda kullanılan 750 V DC sistemler için gerilim seviyesi ve dalgalanma kontrolü</li>
+                    <li>Rejeneratif frenleme enerjisinin besleme sistemine güvenli bir şekilde geri verilmesi</li>
+                </ul>
+                <h3>4. Demiryolu Ekipman Üreticileri:</h3>
+                <ul>
+                    <li>Lokomotif ve EMU (elektrikli tren setleri) üreticileri, çekiş sistemlerini TS EN 50163'te belirtilen gerilim toleranslarına uygun olarak tasarlarlar.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">6. Uygulama Esasları</h2>
+                <p>TS EN 50163 standardının uygulanması, aşağıdaki temel adımları içerir:</p>
+                <h3>1. Sistem Analizi ve Tasarımı:</h3>
+                <ul>
+                    <li>Demiryolu hattının güç besleme sisteminin nominal gerilim ve frekans değerlerinin belirlenmesi</li>
+                    <li>Güç kalitesi ve gerilim regülasyonu için teknik hedeflerin tanımlanması</li>
+                    <li>Trafo merkezlerinin, besleme hatlarının ve katener sisteminin tasarımı</li>
+                </ul>
+                <h3>2. Ekipman Seçimi ve Kurulumu:</h3>
+                <ul>
+                    <li>Demiryolu araçlarının çekiş ekipmanlarının (motorlar, konvertörler) standarda uygun gerilim toleranslarını sağlayacak şekilde seçilmesi</li>
+                    <li>Güç besleme altyapısının standarda uygun şekilde kurulması</li>
+                    <li>İzleme ve ölçüm sistemlerinin kurulumu</li>
+                </ul>
+                <h3>3. Test ve Devreye Alma:</h3>
+                <ul>
+                    <li>Yüksüz ve yüklü durumda hat boyunca gerilim ölçümleri yapılması</li>
+                    <li>Gerilim dalgalanmaları ve düşümleri testlerinin gerçekleştirilmesi</li>
+                    <li>Geçici durum testleri (kısa devre, yük atma vb.)</li>
+                    <li>Ölçüm sonuçlarının standart limitleriyle karşılaştırılması</li>
+                </ul>
+                <h3>4. İzleme ve Bakım:</h3>
+                <ul>
+                    <li>Sürekli gerilim izleme sistemlerinin kullanılması (SCADA)</li>
+                    <li>Periyodik hat bakımı ve gerilim ölçümleri</li>
+                    <li>Gerilim kalitesini etkileyen unsurların (harmonikler, dalgalanma) düzenli olarak izlenmesi</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">7. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Elektrik Mühendisliği:</strong> Güç besleme sistemi tasarımı, gerilim regülasyonu hesaplamaları, test programlarının hazırlanması</li>
+                    <li><strong>Proje Yönetimi:</strong> Standardın gerekliliklerinin tüm proje paydaşlarına iletilmesi, test ve belgelendirme süreçlerinin koordinasyonu</li>
+                    <li><strong>Kalite Kontrol:</strong> Ekipmanların teknik şartname ve standarda uygunluğunun denetimi</li>
+                    <li><strong>İşletme ve Bakım:</strong> Gerilim kalitesinin sürekli izlenmesi, bakım prosedürlerinin uygulanması</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">8. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>1. İzleme Süreci:</h3>
+                <ul>
+                    <li>**Sürekli İzleme:** Trafo merkezleri ve kritik noktalarda gerilim ve akım değerleri SCADA sistemleri ile sürekli izlenir.</li>
+                    <li>**Periyodik İzleme:** Hat boyunca gerilim seviyeleri periyodik olarak ölçülür.</li>
+                    <li>**Arıza Analizi:** Gerilim düşümleri ve kesintileri arıza kayıtları incelenerek analiz edilir.</li>
+                </ul>
+                <h3>2. Denetim Süreci:</h3>
+                <ul>
+                    <li>**İç Denetimler:** Kurum içi uzmanlar tarafından yapılan denetimler.</li>
+                    <li>**Dış Denetimler:** Akredite kuruluşlar tarafından gerçekleştirilen denetimler.</li>
+                    <li>**Denetim Kapsamı:** Gerilim ölçüm raporları, test kayıtları, bakım prosedürleri ve personel yetkinlikleri.</li>
+                </ul>
+                <h3>3. Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>**Öz Değerlendirme Raporu:** Sistemin TS EN 50163'e uygunluğunu gösteren rapor hazırlanır.</li>
+                    <li>**Test Raporları:** Laboratuvar ve saha testlerinin raporları sunulur.</li>
+                    <li>**Sertifika:** Belgelendirme kuruluşu tarafından uygunluk sertifikası düzenlenir.</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">9. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk: Gerilim Düşümleri ve Dalgalanmalar</h3>
+                <p><strong>Problem:</strong> Özellikle yüksek hızlı trenlerde ani hızlanma veya birden fazla trenin aynı bölgede olması gerilim düşümlerine neden olabilir.</p>
+                <p><strong>Çözüm:</strong> Trafo merkezleri arasındaki mesafeyi kısaltma, ek besleme noktaları oluşturma veya aktif gerilim regülatörleri kullanma.</p>
+                <h3>Zorluk: Rejeneratif Frenleme Etkisi</h3>
+                <p><strong>Problem:</strong> Frenleme sırasında üretilen elektrik enerjisi, hat geriliminde ani artışlara neden olabilir.</p>
+                <p><strong>Çözüm:</strong> Besleme sisteminde enerjiyi kullanabilecek diğer trenlerin olması, enerji depolama sistemleri veya geri besleme dirençleri kullanma.</p>
+                <h3>Zorluk: Harmonik Bozulmalar</h3>
+                <p><strong>Problem:</strong> Modern trenlerin güç elektroniği sistemleri şebekede harmonik bozulmalara yol açabilir.</p>
+                <p><strong>Çözüm:</strong> Harmonik filtreler, harmonik ölçüm sistemleri ve güç elektroniği sistemlerinde daha gelişmiş modülasyon teknikleri kullanma.</p>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">10. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>Gerilim Limitleri Diyagramı</h3>
+                <div class="mermaid">
+graph TD
+    A[Gerilim Değerleri] --> B[Umin1]
+    A --> C[Un]
+    A --> D[Umax1]
+    A --> E[Umax2]
+    
+    B --> F["Minimum Kalıcı (Sınırlı İşletme)"]
+    
+    C --> G["Nominal Gerilim (Normal İşletme)"]
+    
+    D --> H["Maksimum Kalıcı (Sürekli İşletme)"]
+    
+    E --> I["Maksimum Geçici (< 5 dakika)"]
+
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50163 standardına göre gerilim limitlerini göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>Standarda Uyum Süreci</h3>
+                <div class="mermaid">
+flowchart TD
+    A[Başlangıç] --> B[Sistem Analizi]
+    B --> C[Tasarım ve Hesaplamalar]
+    C --> D[Ekipman Seçimi ve Kurulumu]
+    D --> E[İzleme Sistemleri Kurulumu]
+    E --> F[Test ve Devreye Alma]
+    F --> G[Dokümantasyon]
+    G --> H[Denetim ve Belgelendirme]
+    H --> I[Periyodik İzleme]
+    I --> J{Uyumsuzluk?}
+    J -- Evet --> K[Düzeltici Faaliyet]
+    K --> I
+    J -- Hayır --> L[Sürekli İyileştirme]
+    L --> I
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, TS EN 50163 standardına uyum sürecini göstermektedir.</p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backTo topBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
