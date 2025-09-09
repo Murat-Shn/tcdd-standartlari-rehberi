@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 61010 - Ölçme, Kontrol ve Laboratuvar Ekipmanları Güvenlik Gereklilikleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 61010: Ölçme, Kontrol ve Laboratuvar Ekipmanları Güvenlik Gereklilikleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 61010 standardı, ölçme, kontrol ve laboratuvar kullanımına yönelik elektrikli donanımın güvenliğini sağlamak için tasarlanmış kapsamlı bir standarttır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS EN 61010</strong>, ölçme, kontrol ve laboratuvar kullanımına yönelik elektrikli donanımın güvenliğini sağlamak için tasarlanmıştır. Standart, 0-1000V AC ve 0-1500V DC aralığında çalışan aşağıdaki ekipmanlar için geçerlidir:</p>
+                <ul>
+                    <li>Elektrikli test ve ölçüm ekipmanları.</li>
+                    <li>Elektrikli endüstriyel proses kontrol ekipmanları.</li>
+                    <li>Elektrikli laboratuvar ekipmanları.</li>
+                </ul>
+                <p>Standart, şu tehlikelere karşı koruma sağlar:</p>
+                <ul>
+                    <li>Elektrik çarpması ve yanık tehlikeleri.</li>
+                    <li>Mekanik tehlikeler.</li>
+                    <li>Aşırı sıcaklıklar.</li>
+                    <li>Ateş yayılması.</li>
+                    <li>Sıvı ve basınçlı gaz tehlikeleri.</li>
+                    <li>Kimyasal tehlikeler.</li>
+                    <li>Radyasyon tehlikeleri.</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 61010, IEC 61010 standardının TSE tarafından benimsenmiş ve Türkçe’ye çevrilmiş versiyonudur. Ekipmanların güvenlik riski açısından sınıflandırılmasını ve her sınıf için gerekli güvenlik önlemlerini belirler. Temel prensipler:</p>
+                <ul>
+                    <li><strong>Risk Değerlendirmesi:</strong> Tüm potansiyel tehlikelerin tanımlanması ve analizi.</li>
+                    <li><strong>Güvenlik Entegrasyonu:</strong> Tasarım aşamasında güvenliğin önceliklendirilmesi.</li>
+                    <li><strong>Koruma Seviyeleri:</strong> Birincil koruma (temel izolasyon), ikincil koruma (çift izolasyon, koruyucu topraklama) ve ek güvenlik önlemleri.</li>
+                </ul>
+                <h3>Standardın Alt Bölümleri</h3>
+                <ul>
+                    <li><strong>TS EN 61010-1:</strong> Genel gereklilikler.</li>
+                    <li><strong>TS EN 61010-2-010:</strong> Laboratuvar malzemelerinin ısıtılması için gereklilikler.</li>
+                    <li><strong>TS EN 61010-2-020:</strong> Laboratuvar santrifüjleri için gereklilikler.</li>
+                    <li><strong>TS EN 61010-2-030:</strong> Test ve ölçüm devresi fonksiyonları için gereklilikler.</li>
+                    <li><strong>TS EN 61010-2-040:</strong> Laboratuvar sterilizatörleri ve dezenfeksiyon için gereklilikler.</li>
+                    <li><strong>TS EN 61010-2-051:</strong> Karıştırma ve çalkalama için laboratuvar ekipmanları.</li>
+                    <li><strong>TS EN 61010-2-061:</strong> Spektrometreler için gereklilikler.</li>
+                    <li><strong>TS EN 61010-2-081:</strong> Otomatik ve yarı otomatik laboratuvar ekipmanları.</li>
+                    <li><strong>TS EN 61010-2-101:</strong> In vitro tanı (IVD) tıbbi ekipmanları.</li>
+                    <li><strong>TS EN 61010-031:</strong> El tipi problar için güvenlik gereklilikleri.</li>
+                    <li><strong>TS EN 61010-032:</strong> Akım sensörleri için gereklilikler.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler</h3>
+                <ul>
+                    <li>Dokümantasyon sistemi: Standardın gerekliliklerine uygunluğun sağlanması.</li>
+                    <li>Personel yetkinliği: Standart uygulama konusunda eğitim.</li>
+                    <li>Sorumlulukların belirlenmesi: Güvenlik yönetimi için açık tanımlar.</li>
+                    <li>Risk yönetim süreci: Formal risk değerlendirme süreci.</li>
+                    <li>İç denetim sistemi: Uyumluluğun düzenli değerlendirilmesi.</li>
+                </ul>
+                <h3>Teknik Gereklilikler</h3>
+                <h4>Koruma Sınıflandırması</h4>
+                <ul>
+                    <li><strong>Sınıf I:</strong> Temel izolasyon ve koruyucu topraklama.</li>
+                    <li><strong>Sınıf II:</strong> Çift izolasyon.</li>
+                    <li><strong>Sınıf III:</strong> Güvenli ekstra düşük gerilim (SELV).</li>
+                </ul>
+                <h4>Elektriksel Güvenlik Gereklilikleri</h4>
+                <ul>
+                    <li>Giriş koruması: AC gerilim dalgalanmalarına karşı koruma (\(\pm 10\%\)).</li>
+                    <li>İzolasyon dirençleri: \(\geq 10 \, \text{M}\Omega\) (500 V DC’de).</li>
+                    <li>Yüksek gerilim dayanım testi: \(1000 \, \text{V} + 2 \times \text{çalışma gerilimi}\) (en az 1 dakika).</li>
+                    <li>Kaçak akım limitleri: Normal koşullarda \(\leq 3.5 \, \text{mA}\), tek hata durumunda \(\leq 5 \, \text{mA}\).</li>
+                    <li>Topraklama empedansı: \(\leq 0.1 \, \Omega\).</li>
+                    <li>Aşırı gerilim kategorileri (CAT I, II, III, IV) ve kirlilik dereceleri (1, 2, 3, 4).</li>
+                </ul>
+                <h4>Mekanik Güvenlik Gereklilikleri</h4>
+                <ul>
+                    <li>Muhafaza sağlamlığı ve dayanıklılığı.</li>
+                    <li>Keskin kenarların olmaması.</li>
+                    <li>Hareketli parçaların korunması.</li>
+                    <li>Stabilite ve mekanik tehlikelere karşı koruma.</li>
+                    <li>Güvenlik kilitleri ve koruyucu cihazlar.</li>
+                </ul>
+                <h4>Termal Güvenlik Gereklilikleri</h4>
+                <ul>
+                    <li>Maksimum yüzey sıcaklıkları: Kullanıcı erişiminde \(\leq 60^\circ \text{C}\) (metal), \(\leq 85^\circ \text{C}\) (yalıtkan).</li>
+                    <li>Aşırı ısınma koruması.</li>
+                    <li>Sıcaklık test prosedürleri.</li>
+                </ul>
+                <h4>İşaretleme ve Belgelendirme Gereklilikleri</h4>
+                <ul>
+                    <li>Ekipman üzerinde üretici, model, seri numarası, elektriksel değerler.</li>
+                    <li>Güvenlik sembolleri ve uyarılar.</li>
+                    <li>Detaylı kullanım kılavuzu.</li>
+                    <li>Teknik dokümantasyon.</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>Araştırma ve Geliştirme Laboratuvarları:</strong> Üniversite laboratuvarları, ilaç AR-GE, elektronik geliştirme (ör. spektrometreler, santrifüjler).</li>
+                    <li><strong>Tıbbi ve Klinik Laboratuvarlar:</strong> Hastane laboratuvarları, tıbbi tanı merkezleri (ör. kan analizi cihazları, sterilizatörler).</li>
+                    <li><strong>Endüstriyel Test ve Ölçüm:</strong> Kalite kontrol laboratuvarları, üretim hatları, metroloji laboratuvarları (ör. otomotiv test cihazları).</li>
+                    <li><strong>Enerji Sektörü:</strong> Elektrik dağıtım şirketleri, enerji santralleri (ör. CAT III/IV ölçüm cihazları).</li>
+                    <li><strong>Elektronik Üretim ve Test:</strong> PCB test istasyonları, bileşen test laboratuvarları (ör. osiloskoplar).</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <ol>
+                    <li><strong>Başlangıç Değerlendirmesi:</strong> Mevcut durumun ve gerekliliklerin belirlenmesi.</li>
+                    <li><strong>Boşluk Analizi:</strong> Mevcut durum ile standart arasındaki farkların tespiti.</li>
+                    <li><strong>Eylem Planı:</strong> Boşlukları kapatmak için plan hazırlanması.</li>
+                    <li><strong>Dokümantasyon:</strong> Prosedür, talimat ve formların hazırlanması.</li>
+                    <li><strong>Eğitim:</strong> Personelin bilgilendirilmesi ve eğitilmesi.</li>
+                    <li><strong>Uygulama:</strong> Planın hayata geçirilmesi.</li>
+                    <li><strong>Doğrulama:</strong> Önlemlerin etkinliğinin değerlendirilmesi.</li>
+                    <li><strong>Sürekli İyileştirme:</strong> Periyodik gözden geçirmeler.</li>
+                </ol>
+                <h3>Teknik Uygulamalar</h3>
+                <ul>
+                    <li>Ürün tasarımı: Güvenlik gerekliliklerinin entegrasyonu.</li>
+                    <li>Prototip testleri: İlk örneklerin güvenlik testleri.</li>
+                    <li>Rutin testler: Üretim sırasında güvenlik testleri.</li>
+                    <li>Tip testleri: Tasarım değişikliklerinde kapsamlı testler.</li>
+                    <li>Dokümantasyon: Test sonuçlarının ve teknik dosyanın hazırlanması.</li>
+                </ul>
+                <h3>Risk Değerlendirme Prosesi</h3>
+                <ul>
+                    <li>Tehlike tanımlama: Tüm potansiyel tehlikelerin belirlenmesi.</li>
+                    <li>Risk değerlendirme: Tehlikelerin şiddet ve olasılık açısından analizi.</li>
+                    <li>Risk azaltma: Kabul edilemez riskler için önlemler.</li>
+                    <li>Doğrulama: Önlemlerin etkinliğinin kontrolü.</li>
+                    <li>Dokümantasyon: Risk değerlendirme sürecinin belgelendirilmesi.</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Üst Yönetim:</strong> Kaynak tahsisi, güvenlik politikası, yasal uyumluluk.</li>
+                    <li><strong>Kalite Yönetimi:</strong> Gerekliliklerin takibi, iç denetimler, düzeltici faaliyetler.</li>
+                    <li><strong>Tasarım Mühendisliği:</strong> Güvenli ürün tasarımı, risk değerlendirmeleri, teknik dosya.</li>
+                    <li><strong>Üretim:</strong> Güvenlik gerekliliklerinin uygulanması, rutin testler.</li>
+                    <li><strong>Test ve Kalibrasyon:</strong> Test ekipmanlarının kalibrasyonu, test sonuçlarının belgelendirilmesi.</li>
+                    <li><strong>Satış ve Pazarlama:</strong> Güvenlik bilgilerinin müşterilere aktarılması.</li>
+                    <li><strong>Satın Alma:</strong> Tedarikçilerin standartlara uygunluğunun değerlendirilmesi.</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İç Denetim Süreci</h3>
+                <ul>
+                    <li>Planlama: Yıllık denetim planı hazırlanması.</li>
+                    <li>Denetçi seçimi: Yetkin ve bağımsız denetçiler.</li>
+                    <li>Denetim hazırlığı: Kontrol listeleri ve kriterler.</li>
+                    <li>Denetim: Dokümantasyon incelemesi, süreç denetimi.</li>
+                    <li>Raporlama: Bulgular ve uygunsuzlukların raporlanması.</li>
+                    <li>Düzeltici faaliyetler: Uygunsuzlukların giderilmesi.</li>
+                    <li>Takip denetimi: Faaliyetlerin etkinliğinin doğrulanması.</li>
+                </ul>
+                <h3>Dış Denetim ve Belgelendirme</h3>
+                <ul>
+                    <li>Belgelendirme kuruluşu seçimi: Akredite kuruluşların değerlendirilmesi.</li>
+                    <li>Ön değerlendirme: Hazırlık durumunun kontrolü.</li>
+                    <li>Belgelendirme denetimi: Standarda uyumluluğun değerlendirilmesi.</li>
+                    <li>Belgelendirme: Sertifika düzenlenmesi.</li>
+                    <li>Gözetim denetimleri: Yıllık denetimler.</li>
+                    <li>Yeniden belgelendirme: 3 yılda bir tam denetim.</li>
+                </ul>
+                <h3>Gerekli Dokümantasyon</h3>
+                <ul>
+                    <li>Teknik dosya: Ürün özellikleri, çizimler, devre şemaları.</li>
+                    <li>Risk analizi: Tanımlanan tehlikeler ve önlemler.</li>
+                    <li>Test raporları: Tip, rutin ve doğrulama testleri.</li>
+                    <li>Kullanıcı dokümantasyonu: Kullanım kılavuzu, servis talimatları.</li>
+                    <li>Kalite sistemi dokümantasyonu: Prosedürler, formlar.</li>
+                    <li>Uygunluk beyanı: Üreticinin standarda uygunluk beyanı.</li>
+                </ul>
+                <h3>İzleme Metrikleri</h3>
+                <ul>
+                    <li>Uygunsuzluk sayısı ve türleri.</li>
+                    <li>Düzeltici faaliyet etkinliği.</li>
+                    <li>Risk azaltma etkinliği.</li>
+                    <li>Eğitim göstergeleri.</li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Teknik Zorluklar:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> İzolasyon mesafelerinin sağlanması.</li>
+                            <li><strong>Çözüm:</strong> CAD ile kontrol, fiziksel bariyerler.</li>
+                            <li><strong>Zorluk:</strong> Yüksek sıcaklık üreten bileşenlerin entegrasyonu.</li>
+                            <li><strong>Çözüm:</strong> Termal analiz, özel tasarımlar.</li>
+                            <li><strong>Zorluk:</strong> EMC gereklilikleri.</li>
+                            <li><strong>Çözüm:</strong> Erken EMC testleri, filtreleme teknikleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dokümantasyon Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Teknik dosyanın hazırlanması.</li>
+                            <li><strong>Çözüm:</strong> Dokümantasyon yönetim sistemi, periyodik gözden geçirmeler.</li>
+                            <li><strong>Zorluk:</strong> Risk analizi yönetimi.</li>
+                            <li><strong>Çözüm:</strong> FMEA, FTA gibi metodolojiler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Organizasyonel Zorluklar:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Departmanlar arası koordinasyon.</li>
+                            <li><strong>Çözüm:</strong> Çapraz fonksiyonel ekipler, koordinasyon toplantıları.</li>
+                            <li><strong>Zorluk:</strong> Üst yönetim desteği.</li>
+                            <li><strong>Çözüm:</strong> Maliyet-fayda analizleri, yasal gerekliliklerin vurgulanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kaynak Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Test ekipmanlarının maliyeti.</li>
+                            <li><strong>Çözüm:</strong> Test laboratuvarları ile işbirliği, ekipman paylaşımı.</li>
+                            <li><strong>Zorluk:</strong> Yetkin personel eksikliği.</li>
+                            <li><strong>Çözüm:</strong> Eğitim programları, danışmanlık hizmetleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tedarik Zinciri Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Tedarikçilerin standartlara uyumu.</li>
+                            <li><strong>Çözüm:</strong> Tedarikçi değerlendirme sistemi, denetimler.</li>
+                            <li><strong>Zorluk:</strong> Kritik bileşenlerin belgelendirme gereklilikleri.</li>
+                            <li><strong>Çözüm:</strong> Sertifika ve test raporlarının alınması, alternatif tedarikçiler.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>TS EN 61010 Standardı Yapısı</h3>
+                <div class="mermaid">
+graph TD;
+A["TS EN 61010 Standardı"] --> B["Teknik Gereklilikler"];
+A --> C["Yönetim Gereklilikleri"];
+B --> D["Elektriksel Güvenlik"];
+B --> E["Mekanik Güvenlik"];
+B --> F["Termal Güvenlik"];
+B --> G["Radyasyon Güvenliği"];
+B --> H["Kimyasal Güvenlik"];
+C --> I["Dokümantasyon"];
+C --> J["Risk Yönetimi"];
+C --> K["Personel Yetkinliği"];
+C --> L["İzleme ve Ölçme"];
+                </div>
+                <p class="text-center text-sm text-gray-500">TS EN 61010 standardının temel bileşenlerini gösteren şema.</p>
+
+                <h3>TS EN 61010 Güvenlik Test Akışı</h3>
+                <div class="mermaid">
+graph TD;
+A["Başlangıç: Ürün Tasarımı"] --> B["Risk Değerlendirmesi"];
+B --> C["Prototip Üretimi"];
+C --> D["Ön Güvenlik Testleri"];
+D --> E{"Ön Testler Başarılı mı?"};
+E -- Hayır --> F["Tasarım Revizyonu"] --> B;
+E -- Evet --> G["Tam Güvenlik Testleri"];
+G --> H["Toprak Bağlantısı Testi (≤ 0.1 Ω)"];
+G --> I["Yüksek Gerilim Testi (1000V + 2×çalışma gerilimi)"];
+G --> J["İzolasyon Direnci Testi (≥ 10 MΩ)"];
+G --> K["Kaçak Akım Testi (≤ 3.5 mA)"];
+G --> L["Aşırı Sıcaklık Testi"];
+G --> M["Mekanik Dayanım Testleri"];
+H & I & J & K & L & M --> N["Test Sonuçlarının Değerlendirilmesi"];
+N --> O{"Tüm Testler Başarılı mı?"};
+O -- Hayır --> P["Düzeltici Faaliyetler"] --> G;
+O -- Evet --> Q["Teknik Dosya Hazırlama"];
+Q --> R["Uygunluk Beyanı"];
+R --> S["Ürünün Piyasaya Sunulması"];
+                </div>
+                <p class="text-center text-sm text-gray-500">TS EN 61010 güvenlik test sürecinin akış şeması.</p>
+
+                <h3>Aşırı Gerilim Kategorileri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aşırı Gerilim Kategorisi</th>
+                            <th>Tanım</th>
+                            <th>Örnek Uygulama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CAT I</td>
+                            <td>Özel koruma sağlanmış veya düşük enerji seviyeli ekipman</td>
+                            <td>Laboratuvar cihazları, test ekipmanları</td>
+                        </tr>
+                        <tr>
+                            <td>CAT II</td>
+                            <td>Ev ve ofis ekipmanları, taşınabilir cihazlar</td>
+                            <td>Ev aletleri, kişisel bilgisayarlar</td>
+                        </tr>
+                        <tr>
+                            <td>CAT III</td>
+                            <td>Sabit tesisat ekipmanları</td>
+                            <td>Dağıtım panoları, kontrol panelleri</td>
+                        </tr>
+                        <tr>
+                            <td>CAT IV</td>
+                            <td>Birincil besleme seviyesindeki ekipman</td>
+                            <td>Elektrik sayaçları, şebeke koruma cihazları</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Kirlilik Dereceleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kirlilik Derecesi</th>
+                            <th>Tanım</th>
+                            <th>Örnek Ortam</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Kirlilik yok veya sadece kuru, iletken olmayan kirlilik</td>
+                            <td>Hermetic ortamlar, temiz odalar</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Normalde sadece iletken olmayan kirlilik, bazen geçici iletkenlik</td>
+                            <td>Ofis, laboratuvar ortamları</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>İletken kirlilik veya yoğuşma nedeniyle iletken hale gelen kuru kirlilik</td>
+                            <td>Endüstriyel ortamlar, dış mekanlar</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Sürekli iletkenliğe neden olan kirlilik</td>
+                            <td>Açık hava uygulamaları, aşırı nemli ortamlar</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>TS EN 61010 Belgelendirme Süreci</h3>
+                <div class="mermaid">
+graph LR;
+A["Başvuru"] --> B["Doküman İncelemesi"];
+B --> C["Ön Değerlendirme (Opsiyonel)"];
+C --> D["Belgelendirme Denetimi"];
+D --> E{"Uygunsuzluk Var mı?"};
+E -- Evet --> F["Düzeltici Faaliyetler"] --> G["Takip Denetimi"] --> E;
+E -- Hayır --> H["Belgelendirme Kararı"];
+H --> I["Sertifika Düzenlenmesi"];
+I --> J["Gözetim Denetimleri (Yıllık)"];
+J --> K["Yeniden Belgelendirme (3 Yıllık)"];
+                </div>
+                <p class="text-center text-sm text-gray-500">TS EN 61010 belgelendirme sürecinin akış şeması.</p>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
