@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIC 612 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">UIC 612: Demiryolu Araçlarının Sürücü Kabinlerinin Tasarımı</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">UIC 612 standardı, lokomotif ve tren setlerinin sürücü kabinlerinin ergonomik tasarımı, kontrollerinin düzeni ve insan-makine arayüzlerinin standartlaştırılması için bir dizi teknik öneri ve gerekliliği içerir.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">1. Standart Kodu ve Adı</h2>
+                <p>UIC 612 - "Sürücü Kabinlerinin Tasarımı ve Arayüzleri ile İlgili Teknik Öneriler" (Driver's Cabs Layout and Interfaces Technical Recommendations)</p>
+                <p>UIC 612 standardı, 6 ana alt bölümden oluşmaktadır:</p>
+                <ul>
+                    <li>UIC 612-0: Genel Prensipler ve Varsayımlar</li>
+                    <li>UIC 612-1: Sürücü Kabini Düzeni</li>
+                    <li>UIC 612-2: Göstergeler ve Ekranlar</li>
+                    <li>UIC 612-3: Kontroller (Kumandalar)</li>
+                    <li>UIC 612-4: İlave Cihazlar</li>
+                    <li>UIC 612-5: Görünürlük</li>
+                </ul>
+
+                <h2 id="kapsam-ve-amac">2. Kapsam ve Amaç</h2>
+                <p>UIC 612 standardı, lokomotif ve tren setlerinin sürücü kabinlerinin ergonomik tasarımı, kontrollerinin düzeni ve insan-makine arayüzlerinin standartlaştırılması için bir dizi teknik öneri ve gerekliliği içerir. Bu standart serisi, Avrupa çapında demiryolu araçlarının birlikte çalışabilirliğini sağlamak ve farklı ülke ve üreticiler arasında uyumlu sürücü kabinlerinin oluşturulmasını hedefler.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">3. Tanım ve Teorik Arka Plan</h2>
+                <p>UIC 612, Uluslararası Demiryolları Birliği (International Union of Railways) tarafından geliştirilen ve tren sürücü kabinlerinin tasarımında kullanılan ergonomik prensipleri ve teknik gereklilikleri tanımlayan bir standarttır. Bu standart, demiryolu araçlarının işletimi sırasında insan hatalarını en aza indirmeyi ve sürücü verimliliğini artırmayı amaçlar.</p>
+                <p>Teorik olarak standart, aşağıdaki temel prensipler üzerine kurulmuştur:</p>
+                <ul>
+                    <li><strong>İnsan-Makine Etkileşimi:</strong> Makinistin kontrol panelleri, göstergeler ve diğer arabirimlerle optimum etkileşimini sağlayacak şekilde tasarım.</li>
+                    <li><strong>Ergonomi:</strong> Fiziksel ve bilişsel ergonomi prensiplerinin uygulanması.</li>
+                    <li><strong>Güvenlik ve Konfor:</strong> Güvenli ve konforlu bir çalışma ortamı sağlamak.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">4. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li>Sürücü kabini tasarımı için yetkin bir ekip ve proje yönetimi süreci oluşturmak.</li>
+                    <li>Ergonomi, güvenlik ve insan faktörleri uzmanlarını tasarım sürecine dahil etmek.</li>
+                    <li>Tasarım sürecinin tüm aşamalarını belgelendirmek ve gerekli onayları almak.</li>
+                    <li>Makinistlerden geri bildirim almak ve bu geri bildirimleri tasarım iyileştirmeleri için kullanmak.</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li>**Yerleşim ve Alan:**
+                        <ul>
+                            <li>Kabin içi yerleşim, sürücüye engelsiz hareket alanı sağlamalıdır.</li>
+                            <li>Kontrollerin gruplandırılması ve mantıksal bir sırayla yerleştirilmesi.</li>
+                            <li>Sürücü koltuğu önünde yeterli diz mesafesi olmalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Sürücü Koltuğu:**
+                        <ul>
+                            <li>Ayarlanabilir olmalı (yükseklik, derinlik, sırt açısı).</li>
+                            <li>Titreşim sönümleme özelliklerine sahip olmalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Göstergeler ve Ekranlar (UIC 612-2):**
+                        <ul>
+                            <li>Görsel göstergeler, makinistin göz hizasına uygun yerleştirilmelidir.</li>
+                            <li>Ekranlar parlama yapmamalı, okunabilirliği yüksek olmalıdır.</li>
+                            <li>Görsel ve işitsel alarmlar net ve anlaşılır olmalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Kontroller (UIC 612-3):**
+                        <ul>
+                            <li>Kontrollerin ergonomik tasarımı, kolay erişilebilirlik ve yanlış kullanımı önleyecek şekilde olmalıdır.</li>
+                            <li>Sürücüye güç, fren, sinyal ve haberleşme gibi kritik fonksiyonlar için uygun kontroller sağlanmalıdır.</li>
+                            <li>Pedal ve el kumandalarının boyutları ve kuvvetleri standardize edilmelidir.</li>
+                        </ul>
+                    </li>
+                    <li>**Görüş Alanı (UIC 612-5):**
+                        <ul>
+                            <li>Ön camın boyutları, sinyalizasyon, yol ve trafik işaretlerini net bir şekilde görmesini sağlamalıdır.</li>
+                            <li>Ayna ve kamera sistemleri ile kör noktalar minimize edilmelidir.</li>
+                        </ul>
+                    </li>
+                    <li>**İklimlendirme ve Aydınlatma:**
+                        <ul>
+                            <li>Sıcaklık, nem ve hava kalitesi kontrolü sağlanmalıdır.</li>
+                            <li>Aydınlatma seviyesi ayarlanabilir olmalı ve ekranlarda yansıma yapmamalıdır.</li>
+                        </ul>
+                    </li>
+                    <li>**Gürültü ve Titreşim:**
+                        <ul>
+                            <li>Kabin içi gürültü seviyeleri, yasal limitler içinde kalmalı ve makinistin konforunu sağlamalıdır.</li>
+                            <li>Titreşim sönümleme mekanizmaları ile makinistin maruz kaldığı titreşim seviyeleri azaltılmalıdır.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">5. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <h3>Tren Üreticileri:</h3>
+                <p>Alstom, Siemens, Bombardier gibi uluslararası tren üreticileri, yeni nesil tren setlerinin sürücü kabinlerini UIC 612 standardına uygun olarak tasarlamaktadır. Türkiye'de TÜLOMSAŞ ve diğer üreticiler de yerli üretim lokomotif ve tren setlerinde bu standardı referans almaktadır.</p>
+                <h3>Demiryolu İşletmecileri:</h3>
+                <p>TCDD Taşımacılık, Metro İstanbul, İZBAN gibi işletmeler, yeni araç alımlarında ve mevcut araçların revizyonlarında sürücü kabini ergonomisini UIC 612'ye göre şartnameye eklemektedir.</p>
+                <h3>Tasarım ve Mühendislik Firmaları:</h3>
+                <p>Demiryolu projelerinde uzmanlaşmış tasarım firmaları, UIC 612'ye uygun kabin ve kontrol paneli tasarımları için danışmanlık hizmeti vermektedir.</p>
+
+                <h2 id="uygulama-esaslari">6. Uygulama Esasları</h2>
+                <p>UIC 612 standardına uygun bir sürücü kabini tasarlamak için izlenmesi gereken temel adımlar:</p>
+                <h3>1. Tasarım Gereksinimleri ve Planlama:</h3>
+                <ul>
+                    <li>UIC 612'nin ilgili alt bölümlerine göre gereksinimler belirlenmeli ve dokümante edilmelidir.</li>
+                    <li>Proje ekibi (mühendisler, endüstriyel tasarımcılar, insan faktörleri uzmanları) oluşturulmalıdır.</li>
+                    <li>Antropometrik veriler ve makinist geri bildirimleri toplanmalıdır.</li>
+                </ul>
+                <h3>2. Modelleme ve Simülasyon:</h3>
+                <ul>
+                    <li>3D modelleme yazılımları (CAD) ile kabin içi yerleşim planı oluşturulmalıdır.</li>
+                    <li>Sanal gerçeklik (VR) veya fiziksel mockup'lar kullanılarak ergonomik testler yapılmalıdır.</li>
+                </ul>
+                <h3>3. Prototip Üretimi ve Test:</h3>
+                <ul>
+                    <li>Prototip kabin üzerinde fonksiyonel ve ergonomik testler gerçekleştirilmelidir.</li>
+                    <li>Gürültü, titreşim ve aydınlatma ölçümleri yapılmalıdır.</li>
+                    <li>Kontrol panellerinin kullanılabilirliği test edilmelidir.</li>
+                </ul>
+                <h3>4. Belgelendirme ve Onay:</h3>
+                <ul>
+                    <li>Tasarım ve test sonuçlarını içeren teknik dosya hazırlanmalıdır.</li>
+                    <li>Ulusal ve uluslararası onay mercilerinden (NoBo) onay alınmalıdır.</li>
+                    <li>UIC uygunluk beyanı düzenlenmelidir.</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">7. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Endüstriyel Tasarımcılar:</strong> Görsel tasarım ve ergonomi</li>
+                    <li><strong>Mekanik Mühendisleri:</strong> Kabin yapısı, koltuk ve titreşim sönümleme sistemleri</li>
+                    <li><strong>Elektrik/Elektronik Mühendisleri:</strong> Kontrol panelleri, göstergeler, aydınlatma sistemleri</li>
+                    <li><strong>Yazılım Mühendisleri:</strong> HMI (İnsan-Makine Arayüzü) yazılımı ve kullanıcı deneyimi</li>
+                    <li><strong>İnsan Faktörleri Uzmanları:</strong> Ergonomik analiz ve değerlendirme</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">8. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>Belgelendirme:</h3>
+                <ul>
+                    <li><strong>Teknik Dosya:</strong> Kabin tasarımını, test raporlarını ve ergonomik analizleri içeren dokümanlar.</li>
+                    <li><strong>Onay Kurumları:</strong> TCDD, ERA gibi ulusal ve uluslararası onay mercileri.</li>
+                </ul>
+                <h3>İzleme:</h3>
+                <ul>
+                    <li><strong>İşletme Geri Bildirimi:</strong> Makinelerden alınan düzenli geri bildirimlerle tasarımın etkinliğinin izlenmesi.</li>
+                    <li><strong>Periyodik Kontroller:</strong> Bakım süreçlerinde ergonomik ve fonksiyonel kontrollerin yapılması.</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">9. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluk: Farklı Vücut Tiplerine Uygunluk</h3>
+                <p>Farklı vücut ölçülerindeki (boy, kilo vb.) makinistlere uygun evrensel bir kabin tasarlamak zor olabilir.</p>
+                <p><strong>Çözüm:</strong> Ayarlanabilir sürücü koltuğu, ayarlanabilir pedallar ve kontrol paneli yükseklikleri ile ergonomik esneklik sağlanmalıdır.</p>
+                <h3>Zorluk: Görüş Alanı Kısıtlamaları</h3>
+                <p>Sinyalizasyon ve yol kenarı işaretlerinin, farklı hava koşullarında ve hızlarda net görülmesi gerekmektedir.</p>
+                <p><strong>Çözüm:</strong> Ayna ve kamera sistemleri ile kör noktalar azaltılmalı, ekranlar parlama yapmamalıdır.</p>
+                <h3>Zorluk: Eski Araçların Modernizasyonu</h3>
+                <p>Mevcut araçların kabinlerini UIC 612 standardına uygun hale getirmek zor olabilir.</p>
+                <p><strong>Çözüm:</strong> Gerekli durumlarda retrofit kitleri ve modifikasyonlar ile kabinler yenilenmeli, aşamalı bir modernizasyon planı oluşturulmalıdır.</p>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">10. Görseller / Şemalar / Akış Diyagramları</h2>
+
+                <h3>Sürücü Kabini Yerleşim Örneği</h3>
+                <div class="mermaid">
+graph TD;
+    A["Sürücü Kabini"] --> B["Birincil Çalışma Alanı (UIC 612-1)"]
+    A --> C["İkincil Çalışma Alanı (UIC 612-1)"]
+    A --> D["Yardımcı Alan (UIC 612-1)"]
+    
+    B --> E["Kontrol Paneli (UIC 612-3)"]
+    B --> F["Ana Göstergeler (UIC 612-2)"]
+    B --> G["Sürücü Koltuğu"]
+    
+    E --> H["Traksiyon/Fren Kontrolü"]
+    E --> I["Acil Durum Freni"]
+    E --> J["Kapı Kontrolleri"]
+    
+    F --> K["Hız Göstergesi"]
+    F --> L["Ana Ekran"]
+    F --> M["Durum Göstergeleri"]
+    
+    C --> N["İkincil Göstergeler"]
+    C --> O["İlave Kontroller"]
+    
+    D --> P["İlave Cihazlar (UIC 612-4)"]
+    D --> Q["Bakım Paneli"]
+    
+    P --> R["Telsiz"]
+    P --> S["Seyir Planlayıcı"]
+    P --> T["Güvenlik Sistemleri"]
+
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Sürücü Kabini Yerleşim Örneğini göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: </p>
+
+                <h3>Ergonomik Değerlendirme Süreci</h3>
+                <div class="mermaid">
+graph TD
+    A[Tasarım Gereksinimleri] --> B[Antropometrik Analiz]
+    B --> C[3D Modelleme]
+    C --> D[Mockup/Prototip Testi]
+    D --> E[Makinist Geri Bildirimi]
+    E --> F{"Uygun mu?"}
+    F -- Evet --> G[Seri Üretim Onayı]
+    F -- Hayır --> B
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Ergonomik Değerlendirme Sürecini göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: </p>
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backTo topBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
