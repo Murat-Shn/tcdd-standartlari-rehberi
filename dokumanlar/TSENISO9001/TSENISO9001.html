@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN ISO 9001:2015 - Kalite Yönetim Sistemleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN ISO 9001:2015 - Kalite Yönetim Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN ISO 9001, müşteri memnuniyetini artırmak için kalite yönetim sistemlerini oluşturma, uygulama, sürdürme ve sürekli iyileştirme konusunda rehberlik eden uluslararası bir standarttır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS EN ISO 9001</strong>, kuruluşların müşteri memnuniyetini artırmak için kalite yönetim sistemlerini oluşturma, uygulama, sürdürme ve sürekli iyileştirme konusunda rehberlik eden uluslararası bir standarttır. Her tür organizasyona uygulanabilir. Amaçları:</p>
+                <ul>
+                    <li>Müşteri beklentilerini karşılayan ürün ve hizmetlerin tutarlı sunumu.</li>
+                    <li>Müşteri memnuniyetinin artırılması.</li>
+                    <li>Süreçlerin sistematik yönetimi ve iyileştirilmesi.</li>
+                    <li>Risk temelli düşünce yaklaşımının benimsenmesi.</li>
+                    <li>Performans ve etkinliğin sürekli iyileştirilmesi.</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>ISO 9001, Uluslararası Standardizasyon Örgütü (ISO) tarafından geliştirilmiş olup, kalite yönetim sistemleri için şartları belirler. İlk olarak 1987’de yayınlanmış, en son 2015’te güncellenmiştir. Temel prensipler:</p>
+                <ol>
+                    <li><strong>Müşteri odaklılık:</strong> Müşteri ihtiyaç ve beklentilerini karşılamak.</li>
+                    <li><strong>Liderlik:</strong> Amaç ve yön birliği oluşturmak.</li>
+                    <li><strong>İnsanların katılımı:</strong> Çalışanların yetkinliklerini kullanmak.</li>
+                    <li><strong>Süreç yaklaşımı:</strong> Süreçlerin sistematik yönetimi.</li>
+                    <li><strong>İyileştirme:</strong> Sürekli iyileştirme odaklanması.</li>
+                    <li><strong>Kanıta dayalı karar verme:</strong> Verilere dayalı kararlar.</li>
+                    <li><strong>İlişki yönetimi:</strong> Tedarikçilerle etkili ilişkiler.</li>
+                </ol>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p>ISO 9001:2015 standardı 10 ana maddeden oluşur:</p>
+                <h3>4. Kuruluşun Bağlamı</h3>
+                <ul>
+                    <li>İç ve dış hususların belirlenmesi.</li>
+                    <li>İlgili tarafların ihtiyaç ve beklentilerinin anlaşılması.</li>
+                    <li>Kalite yönetim sisteminin kapsamının belirlenmesi.</li>
+                    <li>Kalite yönetim sistemi ve süreçleri.</li>
+                </ul>
+                <h3>5. Liderlik</h3>
+                <ul>
+                    <li>Liderlik ve taahhüt.</li>
+                    <li>Müşteri odaklılık.</li>
+                    <li>Kalite politikasının oluşturulması ve iletilmesi.</li>
+                    <li>Organizasyonel görev, sorumluluk ve yetkilerin tanımlanması.</li>
+                </ul>
+                <h3>6. Planlama</h3>
+                <ul>
+                    <li>Risk ve fırsatları belirlemek için önlemler.</li>
+                    <li>Kalite hedeflerinin belirlenmesi ve planlanması.</li>
+                    <li>Değişiklik planlaması.</li>
+                </ul>
+                <h3>7. Destek</h3>
+                <ul>
+                    <li>Kaynaklar (insan, altyapı, süreç ortamı, izleme ve ölçme, organizasyonel bilgi).</li>
+                    <li>Yetkinlik.</li>
+                    <li>Farkındalık.</li>
+                    <li>İletişim.</li>
+                    <li>Dokümante edilmiş bilgi (oluşturma, güncelleme, kontrol).</li>
+                </ul>
+                <h3>8. Operasyon</h3>
+                <ul>
+                    <li>Operasyonel planlama ve kontrol.</li>
+                    <li>Ürün ve hizmet şartlarının belirlenmesi.</li>
+                    <li>Ürün ve hizmetlerin tasarımı ve geliştirilmesi.</li>
+                    <li>Dışarıdan sağlanan süreç, ürün ve hizmetlerin kontrolü.</li>
+                    <li>Üretim ve hizmet sağlama.</li>
+                    <li>Ürün ve hizmetlerin serbest bırakılması.</li>
+                    <li>Uygun olmayan çıktıların kontrolü.</li>
+                </ul>
+                <h3>9. Performans Değerlendirme</h3>
+                <ul>
+                    <li>İzleme, ölçme, analiz ve değerlendirme.</li>
+                    <li>İç tetkik.</li>
+                    <li>Yönetimin gözden geçirmesi.</li>
+                </ul>
+                <h3>10. İyileştirme</h3>
+                <ul>
+                    <li>Uygunsuzluk ve düzeltici faaliyet.</li>
+                    <li>Sürekli iyileştirme.</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>Üretim Sektörü:</strong>
+                        <ul>
+                            <li>Otomotiv: Üretim hatalarının azaltılması, ürün güvenilirliği.</li>
+                            <li>Elektronik: Ürün kalitesinin tutarlılığı, süreç standardizasyonu.</li>
+                            <li>Tekstil: Kalite kontrol süreçleri, müşteri şikayetlerinin azaltılması.</li>
+                            <li>Gıda: Güvenli gıda üretimi, tedarik zinciri kontrolü (genellikle ISO 22000 ile).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Hizmet Sektörü:</strong>
+                        <ul>
+                            <li>Eğitim: Eğitim kalitesinin artırılması, öğrenci memnuniyeti.</li>
+                            <li>Sağlık: Hasta güvenliği, hizmet kalitesinin artırılması.</li>
+                            <li>Turizm: Müşteri memnuniyeti, hizmet standardizasyonu.</li>
+                            <li>Finans: İşlem güvenilirliği, müşteri bilgilerinin yönetimi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kamu Sektörü:</strong>
+                        <ul>
+                            <li>Belediyeler: Vatandaş memnuniyeti, hizmet kalitesinin artırılması.</li>
+                            <li>Devlet kurumları: Süreç verimliliği, şeffaflık.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bilişim Sektörü:</strong>
+                        <ul>
+                            <li>Yazılım geliştirme: Yazılım kalitesinin sağlanması.</li>
+                            <li>Veri merkezleri: Hizmet sürekliliği, veri güvenliği.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <ol>
+                    <li><strong>Hazırlık Aşaması:</strong>
+                        <ul>
+                            <li>Üst yönetimin taahhüdünün sağlanması.</li>
+                            <li>Kalite ekibinin oluşturulması ve kalite yöneticisi atanması.</li>
+                            <li>Mevcut durum analizi (Boşluk Analizi).</li>
+                            <li>İç ve dış hususların belirlenmesi.</li>
+                            <li>İlgili tarafların beklentilerinin belirlenmesi.</li>
+                            <li>Risk ve fırsatların tanımlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Planlama Aşaması:</strong>
+                        <ul>
+                            <li>Kalite politikasının oluşturulması.</li>
+                            <li>Kalite hedeflerinin belirlenmesi.</li>
+                            <li>Süreçlerin tanımlanması ve etkileşimlerinin belirlenmesi.</li>
+                            <li>Görev, yetki ve sorumlulukların tanımlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dokümantasyon Aşaması:</strong>
+                        <ul>
+                            <li>Kalite el kitabının oluşturulması (tavsiye edilir).</li>
+                            <li>Prosedürlerin oluşturulması.</li>
+                            <li>İş talimatlarının hazırlanması.</li>
+                            <li>Formların ve kayıtların tasarlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Uygulama Aşaması:</strong>
+                        <ul>
+                            <li>Personelin eğitilmesi.</li>
+                            <li>Dokümante edilmiş sistemin hayata geçirilmesi.</li>
+                            <li>Süreçlerin izlenmesi ve ölçülmesi.</li>
+                            <li>İç tetkiklerin gerçekleştirilmesi.</li>
+                            <li>Düzeltici faaliyetlerin uygulanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Belgelendirme Aşaması:</strong>
+                        <ul>
+                            <li>Belgelendirme kuruluşunun seçilmesi.</li>
+                            <li>Belgelendirme başvurusunun yapılması.</li>
+                            <li>Belgelendirme tetkikinin gerçekleştirilmesi.</li>
+                            <li>Uygunsuzlukların giderilmesi.</li>
+                            <li>Belgenin alınması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sürdürme ve İyileştirme Aşaması:</strong>
+                        <ul>
+                            <li>Periyodik iç tetkiklerin gerçekleştirilmesi.</li>
+                            <li>Yönetimin gözden geçirmesi toplantıları.</li>
+                            <li>Sürekli iyileştirme faaliyetleri.</li>
+                            <li>Gözetim tetkikleri.</li>
+                            <li>Belgenin yenilenmesi (3 yılda bir).</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Üst Yönetim:</strong>
+                        <ul>
+                            <li>Sistemin etkinliği için hesap verebilirlik.</li>
+                            <li>Kalite politikası ve hedeflerinin oluşturulması.</li>
+                            <li>İş süreçleriyle entegrasyon.</li>
+                            <li>Risk temelli düşünce yaklaşımının teşviki.</li>
+                            <li>Kaynakların sağlanması.</li>
+                            <li>Sistemin düzenli gözden geçirilmesi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kalite Yöneticisi / Temsilcisi:</strong>
+                        <ul>
+                            <li>Sistemin kurulması, uygulanması ve sürdürülmesi.</li>
+                            <li>Performans raporlaması.</li>
+                            <li>İç tetkiklerin planlanması ve gerçekleştirilmesi.</li>
+                            <li>Dokümantasyon yönetimi.</li>
+                            <li>Düzeltici faaliyetlerin koordinasyonu.</li>
+                            <li>Dış tetkiklerin koordinasyonu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Departman Yöneticileri:</strong>
+                        <ul>
+                            <li>Süreçlerin tanımlanması ve iyileştirilmesi.</li>
+                            <li>Performans izleme ve ölçme.</li>
+                            <li>Personel eğitimi.</li>
+                            <li>Risk ve fırsat yönetimi.</li>
+                            <li>Dokümantasyon kontrolü.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tüm Çalışanlar:</strong>
+                        <ul>
+                            <li>Prosedür ve talimatların uygulanması.</li>
+                            <li>Kalite hedeflerine katkı.</li>
+                            <li>İyileştirme önerileri.</li>
+                            <li>Uygunsuzlukların raporlanması.</li>
+                            <li>Düzeltici faaliyetlere katılım.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İç Tetkikçiler:</strong>
+                        <ul>
+                            <li>Tarafsız iç tetkikler.</li>
+                            <li>Uygunsuzlukların raporlanması.</li>
+                            <li>Tetkik sonuçlarının raporlanması.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İzleme</h3>
+                <ul>
+                    <li>Süreç performans göstergelerinin takibi.</li>
+                    <li>Müşteri memnuniyetinin ölçülmesi (anketler, şikayetler).</li>
+                    <li>Ürün/hizmet kalitesinin izlenmesi.</li>
+                    <li>Tedarikçi performansının değerlendirilmesi.</li>
+                    <li>Düzeltici faaliyetlerin etkinliğinin izlenmesi.</li>
+                </ul>
+                <h3>İç Denetim (Tetkik)</h3>
+                <ul>
+                    <li>Yıllık iç tetkik planı.</li>
+                    <li>İç tetkikçilerin seçilmesi ve eğitimi.</li>
+                    <li>Tetkik programının oluşturulması.</li>
+                    <li>Tetkiklerin gerçekleştirilmesi.</li>
+                    <li>Bulguların raporlanması.</li>
+                    <li>Uygunsuzlukların giderilmesi.</li>
+                    <li>Düzeltici faaliyetlerin takibi.</li>
+                </ul>
+                <h3>Yönetimin Gözden Geçirmesi</h3>
+                <ul>
+                    <li>En az yılda bir (ideal olarak 6 ayda bir).</li>
+                    <li>Önceki gözden geçirme kararlarının değerlendirilmesi.</li>
+                    <li>İç ve dış hususlardaki değişikliklerin incelenmesi.</li>
+                    <li>Performans verilerinin değerlendirilmesi.</li>
+                    <li>İyileştirme fırsatlarının belirlenmesi.</li>
+                    <li>Kaynak ihtiyaçlarının değerlendirilmesi.</li>
+                    <li>Sistemde değişikliklerin planlanması.</li>
+                </ul>
+                <h3>Belgelendirme Süreci</h3>
+                <ol>
+                    <li>Belgelendirme kuruluşunun seçilmesi.</li>
+                    <li>Başvuru ve sözleşme.</li>
+                    <li>Dokümantasyon incelemesi.</li>
+                    <li>Aşama 1 tetkiki (sistemin genel değerlendirilmesi).</li>
+                    <li>Aşama 2 tetkiki (sistemin detaylı değerlendirilmesi).</li>
+                    <li>Uygunsuzlukların giderilmesi.</li>
+                    <li>Belgelendirme kararı.</li>
+                    <li>Gözetim tetkikleri (yılda bir).</li>
+                    <li>Yeniden belgelendirme (3 yılda bir).</li>
+                </ol>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Üst Yönetim Taahhüdü:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Sistemin sadece belge olarak görülmesi.</li>
+                            <li><strong>Çözüm:</strong> Finansal/operasyonel faydaların gösterilmesi, üst yönetimin aktif katılımı, düzenli raporlamalar.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dokümantasyon Yükü:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Aşırı dokümantasyonun sistemi ağırlaştırması.</li>
+                            <li><strong>Çözüm:</strong> Gerekli dokümanların oluşturulması, elektronik yönetim sistemleri, iş süreçleriyle entegrasyon.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Çalışan Direnci:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Yeni sistemlere direnç.</li>
+                            <li><strong>Çözüm:</strong> Eğitim programları, çalışanların sürece dahil edilmesi, faydaların anlatılması, başarıların kutlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Süreç Odaklı Yaklaşım:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Fonksiyonel yapıdan süreç odaklı yapıya geçiş.</li>
+                            <li><strong>Çözüm:</strong> Süreç sahiplerinin belirlenmesi, performans göstergeleri, süreç haritalandırması, çapraz fonksiyonel ekipler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Risk Temelli Düşünce:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Risk ve fırsatların sistematik yönetimi.</li>
+                            <li><strong>Çözüm:</strong> Basit risk değerlendirme metodolojileri, eğitimler, düzenli gözden geçirmeler.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sürekli İyileştirme:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> İyileştirme kültürünün oluşturulması.</li>
+                            <li><strong>Çözüm:</strong> Önerilerin teşviki, PUKÖ döngüsü, düzenli toplantılar, başarıların paylaşılması.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>ISO 9001:2015 Standart Yapısı</h3>
+                <div class="mermaid">
+graph TD;
+A["ISO 9001:2015"] --> B["4. Kuruluşun Bağlamı"];
+A --> C["5. Liderlik"];
+A --> D["6. Planlama"];
+A --> E["7. Destek"];
+A --> F["8. Operasyon"];
+A --> G["9. Performans Değerlendirme"];
+A --> H["10. İyileştirme"];
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 9001:2015 standardının temel maddelerini gösteren şema.</p>
+
+                <h3>PUKÖ (PDCA) Döngüsü</h3>
+                <div class="mermaid">
+graph TD;
+A["Planla (Plan)"] --> B["Uygula (Do)"];
+B --> C["Kontrol Et (Check)"];
+C --> D["Önlem Al (Act)"];
+D --> A;
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 9001’in sürekli iyileştirme için kullandığı PUKÖ döngüsü.</p>
+
+                <h3>Kalite Yönetim Sistemi Süreç Etkileşimi Örneği</h3>
+                <div class="mermaid">
+graph LR;
+A["Müşteri İhtiyaçları"] --> B["Satış Süreci"];
+B --> C["Tasarım ve Geliştirme"];
+C --> D["Satın Alma"];
+D --> E["Üretim/Hizmet Sunumu"];
+E --> F["Teslimat"];
+F --> G["Müşteri Memnuniyeti"];
+G --> A;
+H["Destek Süreçleri"] --> B;
+H --> C;
+H --> D;
+H --> E;
+H --> F;
+                </div>
+                <p class="text-center text-sm text-gray-500">Kalite yönetim sisteminde süreç etkileşimini gösteren şema.</p>
+
+                <h3>ISO 9001 Belgelendirme Süreci</h3>
+                <div class="mermaid">
+graph TD;
+A["Belgelendirme Kuruluşu Seçimi"] --> B["Başvuru ve Sözleşme"];
+B --> C["Dokümantasyon İncelemesi"];
+C --> D["Aşama 1 Tetkiki"];
+D --> E["Aşama 2 Tetkiki"];
+E --> F["Uygunsuzlukların Giderilmesi"];
+F --> G["Belgelendirme Kararı"];
+G --> H["Belgenin Yayınlanması"];
+H --> I["Gözetim Tetkikleri (Yılda 1)"];
+I --> J["Yeniden Belgelendirme (3 Yılda 1)"];
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 9001 belgelendirme sürecinin akış şeması.</p>
+
+                <h3>Risk Değerlendirme Matrisi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Olasılık/Etki</th>
+                            <th>Düşük (1)</th>
+                            <th>Orta (2)</th>
+                            <th>Yüksek (3)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Düşük (1)</td>
+                            <td>Düşük Risk (1)</td>
+                            <td>Düşük Risk (2)</td>
+                            <td>Orta Risk (3)</td>
+                        </tr>
+                        <tr>
+                            <td>Orta (2)</td>
+                            <td>Düşük Risk (2)</td>
+                            <td>Orta Risk (4)</td>
+                            <td>Yüksek Risk (6)</td>
+                        </tr>
+                        <tr>
+                            <td>Yüksek (3)</td>
+                            <td>Orta Risk (3)</td>
+                            <td>Yüksek Risk (6)</td>
+                            <td>Yüksek Risk (9)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Dokümantasyon Hiyerarşisi</h3>
+                <div class="mermaid">
+graph TD;
+A["Seviye 1: Kalite El Kitabı"] --> B["Seviye 2: Prosedürler"];
+B --> C["Seviye 3: İş Talimatları"];
+C --> D["Seviye 4: Formlar ve Kayıtlar"];
+                </div>
+                <p class="text-center text-sm text-gray-500">ISO 9001 dokümantasyon hiyerarşisini gösteren şema.</p>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
