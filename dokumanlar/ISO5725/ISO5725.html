@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISO 5725 Detayları - TCDD Standartları Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto; /* Diyagram genişse yatay kaydırma */
+            font-family: 'monospace', sans-serif; /* Kod fontu */
+            color: #374151;
+        }
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap; /* Uzun satırları sar */
+        }
+        aside {
+            background-color: #fffbeb; /* Light yellow for warnings/notes */
+            border-left: 4px solid #f59e0b; /* Orange border */
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f; /* Darker text for readability */
+        }
+        /* Table of Contents (ToC) styles */
+        #toc-sidebar {
+            position: sticky;
+            top: 20px; /* Adjust as needed */
+            align-self: flex-start; /* Stick to the top of the flex container */
+            width: 250px; /* Fixed width for the sidebar */
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px); /* Adjust to viewport height */
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563; /* text-gray-600 */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe; /* hover:bg-blue-50 */
+            color: #1e40af; /* hover:text-blue-800 */
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe; /* bg-blue-200 */
+            color: #1e40af; /* text-blue-800 */
+            font-weight: 600;
+        }
+
+        /* Back to Top Button */
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive adjustments for layout */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) { /* On smaller screens, hide sidebar */
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">ISO 5725: Ölçüm Metotlarının ve Sonuçlarının Doğruluğu (Gerçeklik ve Kesinlik)</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">ISO 5725 standardı, ölçüm metotlarının ve sonuçlarının doğruluğunu değerlendirmek için gerekli terminolojiyi, prensipleri ve metodolojileri tanımlar.</p>
+
+        <div class="main-content-grid">
+            <!-- Table of Contents Sidebar -->
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list">
+                    <!-- ToC items will be dynamically inserted here by JavaScript -->
+                </ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">1. Standart Kodu ve Adı</h2>
+                <p>ISO 5725: "Ölçüm Metotlarının ve Sonuçlarının Doğruluğu (Gerçeklik ve Kesinlik)"</p>
+                <p>Resmi Başlık: "Accuracy (trueness and precision) of measurement methods and results"</p>
+                <p>ISO 5725 standardı 6 ana bölümden oluşur:</p>
+                <ul>
+                    <li>ISO 5725-1: Genel Prensipler ve Tanımlar</li>
+                    <li>ISO 5725-2: Standart Ölçüm Metotlarının Tekrarlanabilirlik ve Yeniden Üretilebilirliğinin Belirlenmesi için Temel Metot</li>
+                    <li>ISO 5725-3: Standart Ölçüm Metodunun Kesinliği için Ara Ölçümler</li>
+                    <li>ISO 5725-4: Standart Ölçüm Metodunun Gerçekliğinin Belirlenmesi için Temel Metotlar</li>
+                    <li>ISO 5725-5: Standart Ölçüm Metodunun Kesinliğinin Belirlenmesi için Alternatif Metotlar</li>
+                    <li>ISO 5725-6: Uygulamada Gerçeklik ve Kesinlik Değerlerinin Kullanımı</li>
+                </ul>
+
+                <h2 id="kapsam-ve-amac">2. Kapsam ve Amaç</h2>
+                <p>ISO 5725 standardı, ölçüm sonuçlarının doğruluğunu değerlendirmek için bir çerçeve sağlar. Standart, ölçüm sürecinin iki önemli bileşenine odaklanır: gerçeklik (trueness) ve kesinlik (precision).</p>
+                <ul>
+                    <li><strong>Gerçeklik (Trueness):</strong> Çok sayıda test sonucunun ortalaması ile kabul edilen referans değer arasındaki uyum derecesidir. Sapma (bias) ile karakterize edilir.</li>
+                    <li><strong>Kesinlik (Precision):</strong> Belirtilen koşullar altında, bağımsız test sonuçları arasındaki uyum derecesidir. Tekrarlanabilirlik (repeatability) ve yeniden üretilebilirlik (reproducibility) olarak ikiye ayrılır.</li>
+                </ul>
+                <h3>Amaçları:</h3>
+                <ul>
+                    <li>Ölçüm metodolojisinin gerçeklik ve kesinliğini değerlendirmek</li>
+                    <li>Laboratuvarlar arası karşılaştırılabilirliği sağlamak</li>
+                    <li>Ölçüm sonuçlarının güvenilirliğini artırmak</li>
+                    <li>Ölçüm kalitesini standartlaştırmak</li>
+                    <li>Laboratuvar performanslarını değerlendirmek</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">3. Tanım ve Teorik Arka Plan</h2>
+                <p>ISO 5725, ölçüm sistemlerinin performansını değerlendirmek için istatistiksel yöntemler kullanır. Anahtar terimler ve ilişkileri aşağıda verilmiştir:</p>
+                <ul>
+                    <li><strong>Tekrarlanabilirlik (Repeatability):</strong> Aynı test metodunun, aynı laboratuvarda, aynı operatör tarafından, aynı ekipman kullanılarak kısa bir zaman aralığında elde edilen test sonuçlarının yakınlığı.</li>
+                    <li><strong>Yeniden Üretilebilirlik (Reproducibility):</strong> Aynı test metodunun, farklı laboratuvarlarda, farklı operatörler ve farklı ekipmanlar kullanılarak elde edilen test sonuçlarının yakınlığı.</li>
+                </ul>
+                <p>Bu standardın uygulanması, bir test metodunun performansı hakkında güvenilir veri elde etmeye yardımcı olur. Laboratuvarlar, bu verileri kullanarak kendi iç süreçlerini iyileştirebilir, müşterilerine daha güvenilir sonuçlar sunabilir ve akreditasyon süreçlerinde kanıt sunabilir.</p>
+
+                <h2 id="iso-5725-serisi-alt-bolumler">4. ISO 5725 Serisi Alt Bölümler</h2>
+                <h3>ISO 5725-1: Genel Prensipler ve Tanımlar</h3>
+                <p>Standardın temel kavramlarını, terminolojisini ve istatistiksel prensiplerini açıklar. Gerçeklik ve kesinlik arasındaki farkları ve bu kavramların nasıl uygulanacağını tanımlar. Ölçüm kalitesi için temel bir çerçeve sunar.</p>
+                <h3>ISO 5725-2: Tekrarlanabilirlik ve Yeniden Üretilebilirliğin Belirlenmesi için Temel Metot</h3>
+                <p>Bu bölüm, bir laboratuvarlar arası çalışma (interlaboratory study) aracılığıyla tekrarlanabilirlik ve yeniden üretilebilirlik standart sapmalarının (r ve R) belirlenmesi için temel metodolojiyi sunar. Çok sayıda laboratuvarın katılımıyla gerçekleştirilen bu çalışma, bir test metodunun genel performansını belirlemek için kritik öneme sahiptir.</p>
+                <ul>
+                    <li><strong>Tekrarlanabilirlik Standard Sapması (σr):</strong> Aynı laboratuvar içindeki rastgele hataları temsil eder.</li>
+                    <li><strong>Yeniden Üretilebilirlik Standard Sapması (σR):</strong> Farklı laboratuvarlardaki rastgele hataları temsil eder (laboratuvarlar arası farklılıkları da içerir).</li>
+                </ul>
+                <h3>ISO 5725-3: Kesinliğin Ara Ölçümleri</h3>
+                <p>Bu bölüm, tekrarlanabilirlik ve yeniden üretilebilirlik koşulları arasında kalan "ara koşullar" altında elde edilen test sonuçlarının kesinliğinin belirlenmesi için metotlar sunar. Örneğin, farklı günlerde veya farklı ekipmanlarla yapılan ölçümlerin değerlendirilmesini sağlar.</p>
+                <h3>ISO 5725-4: Gerçekliğin Belirlenmesi için Temel Metotlar</h3>
+                <p>Bu bölüm, bir test metodunun gerçekliğini değerlendirmek için yöntemler sunar. Sapma (bias) ve sistematik hatanın tespit edilmesi ve nicelleştirilmesi için detaylı prosedürler içerir.</p>
+                <p><strong>Uygulama Adımları:</strong></p>
+                <ul>
+                    <li>Referans değerin belirlenmesi (sertifikalı referans malzeme veya kabul edilmiş referans metot)</li>
+                    <li>Laboratuvar sapmasının (biasL) hesaplanması</li>
+                    <li>Metot sapmasının (biasM) hesaplanması</li>
+                    <li>Sapmanın istatistiksel anlamlılığının değerlendirilmesi (t-testi)</li>
+                    <li>Geri kazanım oranının hesaplanması ve değerlendirilmesi</li>
+                </ul>
+                <h3>ISO 5725-5: Kesinliğin Belirlenmesi için Alternatif Metotlar</h3>
+                <p>Bu bölüm, ISO 5725-2'de tanımlanan temel metoda alternatif olarak kullanılabilecek metotları açıklar. Özellikle, tam kapsamlı laboratuvarlar arası çalışmaların yapılamadığı durumlarda kullanılacak yaklaşımları içerir.</p>
+                <p><strong>Alternatif Yöntemler:</strong></p>
+                <ul>
+                    <li>Robustluk değerlendirmesi</li>
+                    <li>Ardışık testler yaklaşımı</li>
+                    <li>Bölünmüş seviye tasarımı</li>
+                    <li>Kısmi replikasyon yaklaşımı</li>
+                </ul>
+                <h3>ISO 5725-6: Uygulamada Gerçeklik ve Kesinlik Değerlerinin Kullanımı</h3>
+                <p>Bu bölüm, gerçeklik ve kesinlik verilerinin pratik uygulamada nasıl kullanılacağını açıklar. Rutin kalite kontrol, test sonuçlarının kabul edilebilirliğinin değerlendirilmesi ve metotların karşılaştırılması için rehberlik sağlar.</p>
+
+                <h2 id="kullanim-alanlari">5. Kullanım Alanları (Sektörel örneklerle)</h2>
+                <ul>
+                    <li><strong>Kalibrasyon ve Akreditasyon:</strong> Laboratuvarlar, ISO 17025 akreditasyonu almak için ISO 5725 standardına göre metotlarını doğrulamalıdır.</li>
+                    <li><strong>Kalite Kontrol:</strong> Üretim süreçlerinde kullanılan ölçüm ve test metotlarının güvenilirliğini sağlamak.</li>
+                    <li><strong>Ürün Geliştirme:</strong> Yeni bir ürünün performansını doğrulamak için kullanılan test metotlarının geçerliliğini kontrol etmek.</li>
+                    <li><strong>Demiryolu Uygulamaları:</strong> Gabari ölçüm sistemlerinin, ray geometrisi ölçüm cihazlarının ve diğer kritik ölçüm ekipmanlarının doğruluğunu ve hassasiyetini belirlemek.</li>
+                    <li><strong>Hukuki ve Düzenleyici Süreçler:</strong> Ticari anlaşmazlıklarda veya düzenleyici kurallar için yapılan ölçümlerin güvenilirliğini kanıtlamak.</li>
+                </ul>
+                <h3>Sektörel Örnek:</h3>
+                <p><strong>Elektronik Gabari Projesi:</strong> Lazer tabanlı gabari ölçüm sistemlerinin, ray geometrisi ve araç boyutlarını ±2mm hassasiyetle ölçtüğünü kanıtlamak için ISO 5725 standardına göre testler yapılır. Bu testler sonucunda sistemin ölçüm belirsizliği hesaplanır ve güvenilirliği doğrulanır.</p>
+
+                <h2 id="uygulama-esaslari">6. Uygulama Esasları</h2>
+                <p>ISO 5725 standardı, aşağıdaki ana adımları içeren bir süreç önerir:</p>
+                <ol>
+                    <li><strong>Çalışma Planının Hazırlanması:</strong> Test metodunun amacı, kapsamı, katılımcı laboratuvarlar, numuneler ve istatistiksel yöntemlerin belirlenmesi.</li>
+                    <li><strong>Testin Gerçekleştirilmesi:</strong> Belirlenen plana göre laboratuvarlar arası veya laboratuvar içi testlerin yapılması.</li>
+                    <li><strong>Ham Verilerin Analizi:</strong> Test sonuçlarının toplanması, aykırı değerlerin tespiti ve istatistiksel analizlere hazırlanması.</li>
+                    <li><strong>Kesinlik ve Gerçeklik Değerlerinin Hesaplanması:</strong> Tekrarlanabilirlik, yeniden üretilebilirlik ve sapma değerlerinin hesaplanması.</li>
+                    <li><strong>Sonuçların Yorumlanması ve Raporlanması:</strong> Hesaplanan değerlerin standart limitler veya beklentilerle karşılaştırılması ve raporlanması.</li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">7. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Laboratuvar Yönetimi:</strong> Çalışmanın organizasyonu, kaynak tahsisi ve raporun onaylanması.</li>
+                    <li><strong>Teknik Personel:</strong> Ölçümlerin doğru bir şekilde yapılması, verilerin toplanması ve değerlendirilmesi.</li>
+                    <li><strong>Kalite Mühendisleri:</strong> Kalite kontrol süreçlerinin standarda uygunluğunun denetlenmesi.</li>
+                    <li><strong>İstatistik Uzmanları:</strong> Veri analizi ve istatistiksel hesaplamaların yapılması.</li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">8. İzleme / Denetim / Belgelendirme Süreci</h2>
+                <ul>
+                    <li><strong>Akreditasyon:</strong> Test ve kalibrasyon laboratuvarları için ISO/IEC 17025 standardına göre akreditasyon.</li>
+                    <li><strong>Denetim:</strong> Akreditasyon kuruluşları tarafından periyodik denetimler.</li>
+                    <li><strong>Belgelendirme:</strong> Ölçüm metodunun ISO 5725'e uygunluğunun belgelendirilmesi.</li>
+                </ul>
+
+                <h2 id="uygulamada-karsilasilan-zorluklar">9. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Zorluk:</strong> Laboratuvarlar arası çalışmaların maliyet ve zaman yoğunluğu.
+                        <p><strong>Çözüm:</strong> Standardın alternatif metotlarını (ISO 5725-5) kullanarak maliyeti düşürmek veya daha küçük ölçekli çalışmalar yapmak.</p>
+                    </li>
+                    <li><strong>Zorluk:</strong> Ölçüm belirsizliğinin doğru hesaplanması.
+                        <p><strong>Çözüm:</strong> GUM (Guide to the Expression of Uncertainty in Measurement) kılavuzlarına başvurmak ve uzman desteği almak.</p>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar-akis-diyagramlari">10. Görseller / Şemalar / Akış Diyagramları</h2>
+                
+                <h3>Kesinlik ve Gerçeklik İlişkisi Diyagramı</h3>
+                <div class="mermaid">
+graph TD;
+    A["Ölçüm Sonuçları"] --> B["Kesinlik"];
+    A --> C["Gerçeklik"];
+    
+    B --> D["Tekrarlanabilirlik (Repeatability)"];
+    B --> E["Yeniden Üretilebilirlik (Reproducibility)"];
+    
+    C --> F["Sapma (Bias)"];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px;
+    style B fill:#bbf,stroke:#333,stroke-width:2px;
+    style C fill:#bbf,stroke:#333,stroke-width:2px;
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Kesinlik ve Gerçeklik İlişkisini göstermektedir. Bu diyagramı <a href="https://mermaid.live/" target="_blank" class="text-blue-600 hover:underline">Mermaid Live Editor</a> gibi bir araç kullanarak görsel olarak oluşturup PNG veya SVG olarak kaydedebilir ve buraya bir görsel olarak ekleyebilirsiniz. Örneğin: [Kesinlik ve Gerçeklik İlişkisi Diyagramı Görseli]</p>
+
+                <h3>ISO 5725 Uygulama Süreci</h3>
+                <div class="mermaid">
+graph TD;
+    A["1. Test Metodu Belirleme"] --> B["2. Laboratuvarlar Arası Çalışma Planlama"];
+    B --> C["3. Veri Toplama"];
+    C --> D["4. İstatistiksel Analiz"];
+    D --> E["5. Sonuçların Değerlendirilmesi"];
+    E --> F["6. Raporlama ve Dokümantasyon"];
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, ISO 5725 standardına göre uygulama sürecini göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: [ISO 5725 Uygulama Süreci Görseli]</p>
+                
+                <h3>Varyans Bileşenleri</h3>
+                <div class="mermaid">
+graph TD
+    A["Toplam Varyans"] --> B["Laboratuvarlar Arası Varyans"]
+    A --> C["Laboratuvar İçi Varyans"]
+    B --> D["Sistematik Laboratuvar Etkileri"]
+    C --> E["Tekrarlanabilirlik Varyansı"]
+    D --> F["Laboratuvar Yanlılığı"]
+    D --> G["Laboratuvar x Numune Etkileşimi"]
+    E --> H["Analiz Cihazı Varyansı"]
+    E --> I["Operatör Varyansı"]
+    E --> J["Diğer Rastgele Faktörler"]
+                </div>
+                <p class="text-center text-sm text-gray-500">Yukarıdaki kod bloğu, Varyans Bileşenlerini göstermektedir. Bu diyagramı da görsel olarak dönüştürüp ekleyebilirsiniz. Örneğin: [Varyans Bileşenleri Görseli]</p>
+
+            </div>
+
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            // Generate Table of Contents
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`; // Ensure heading has an ID
+                heading.id = id; // Assign ID if missing
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                // Add smooth scroll behavior
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    // Update URL hash without jumping
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // Highlight active section in ToC on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Highlight when 50% of the heading is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => {
+                observer.observe(heading);
+            });
+
+            // Back to Top Button logic
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backTo topBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
