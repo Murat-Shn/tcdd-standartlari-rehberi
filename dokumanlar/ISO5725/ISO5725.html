@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISO 5725: Ölçüm Metotlarının ve Sonuçlarının Doğruluğu (Gerçeklik ve Kesinlik)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
      <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true });
@@ -280,8 +283,8 @@ flowchart TB
                 <h3>Tekrarlanabilirlik ve Yeniden Üretilebilirlik Varyansları</h3>
                 <div class="mermaid">
 graph TD;
-    A["Toplam Varyans ($s_R^2$)"] --> B["Laboratuvarlar Arası Varyans ($s_L^2$)"];
-    A --> C["Laboratuvar İçi Varyans ($s_r^2$)"];
+    A["Toplam Varyans ($$s_R^2$$)"] --> B["Laboratuvarlar Arası Varyans ($$s_L^2$$)"];
+    A --> C["Laboratuvar İçi Varyans ($$s_r^2$$)"];
     B --> D["Yöntem ve Laboratuvar Farklılıkları"];
     C --> E["Tekrarlanabilirlik Varyansı"];
                 </div>
@@ -345,33 +348,33 @@ graph TD;
                     <tbody>
                         <tr>
                             <td>Tekrarlanabilirlik Standart Sapması</td>
-                            <td>$s_r$</td>
+                            <td>$$s_r$$</td>
                             <td>ANOVA'dan laboratuvar içi varyansın karekökü</td>
                             <td>CV% ≤ 2% (analit seviyesine bağlı)</td>
                         </tr>
                         <tr>
                             <td>Tekrarlanabilirlik Limiti</td>
-                            <td>$r$</td>
-                            <td>$2.8 \times s_r$</td>
-                            <td>İki sonuç arasındaki fark ≤ $r$</td>
+                            <td>$$r$$</td>
+                            <td>$$2.8 \times s_r$$</td>
+                            <td>İki sonuç arasındaki fark $$ \le r $$</td>
                         </tr>
                         <tr>
                             <td>Yeniden Üretilebilirlik Standart Sapması</td>
-                            <td>$s_R$</td>
-                            <td>$\sqrt{s_r^2 + s_L^2}$</td>
+                            <td>$$s_R$$</td>
+                            <td>$$\sqrt{s_r^2 + s_L^2}$$</td>
                             <td>CV% ≤ 5% (analit seviyesine bağlı)</td>
                         </tr>
                         <tr>
                             <td>Yeniden Üretilebilirlik Limiti</td>
-                            <td>$R$</td>
-                            <td>$2.8 \times s_R$</td>
-                            <td>İki laboratuvar arasındaki fark ≤ $R$</td>
+                            <td>$$R$$</td>
+                            <td>$$2.8 \times s_R$$</td>
+                            <td>İki laboratuvar arasındaki fark $$ \le R $$</td>
                         </tr>
                         <tr>
                             <td>Sapma (Bias)</td>
-                            <td>$\delta$</td>
-                            <td>$\bar{y} - \mu$</td>
-                            <td>$|\delta|$ ≤ 2% (analit seviyesine bağlı)</td>
+                            <td>$$\delta$$</td>
+                            <td>$$\bar{y} - \mu$$</td>
+                            <td>$$|\delta| \le 2\%$$ (analit seviyesine bağlı)</td>
                         </tr>
                     </tbody>
                 </table>
