@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS 13149 - Toplu Taşıma Araçları - Erişilebilirlik - Araç İçi Bilgi ve İletişim Sistemleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS 13149 - Toplu Taşıma Araçları - Erişilebilirlik - Araç İçi Bilgi ve İletişim Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS 13149, toplu taşıma araçlarında kullanılan bilgi ve iletişim sistemlerinin teknik özelliklerini, entegrasyonunu ve veri alışverişini düzenler.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS 13149</strong>, toplu taşıma araçlarında kullanılan bilgi ve iletişim sistemlerinin teknik özelliklerini, entegrasyonunu ve veri alışverişini düzenleyen bir standarttır. Bu standart:</p>
+                <ul>
+                    <li>Bilgi sistemleri arasında veri alışverişini sağlamak için açık mimari protokoller tanımlar.</li>
+                    <li>Araç içi ve dış bilgi sistemlerinin entegrasyonunu sağlar.</li>
+                    <li>Yolcu bilgilendirme, sürücü destek sistemleri ve filo yönetimi gibi uygulamaları kapsar.</li>
+                    <li>Çeşitli toplu taşıma sistemleri arasında birlikte çalışabilirliği artırmayı amaçlar.</li>
+                </ul>
+                <p>Amaç, toplu taşıma sistemlerinin teknolojik altyapısını standartlaştırarak verimliliği artırmak, kullanıcı deneyimini iyileştirmek ve sistemler arası uyumluluğu sağlamaktır.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>TS 13149, EN 13149 serisinin Türkiye'deki uyarlamasıdır. Temel kavramlar:</p>
+                <ul>
+                    <li><strong>IP-Tabanlı Ağ Mimarisi:</strong> Modern araçlarda Ethernet/IP tabanlı ağ mimarisi.</li>
+                    <li><strong>Veri Modellemesi:</strong> Standartize edilmiş veri yapıları.</li>
+                    <li><strong>Protokol Katmanları:</strong> Fiziksel, veri bağlantı, ağ ve uygulama katmanları.</li>
+                    <li><strong>Servis Odaklı Mimari (SOA):</strong> Sistemlerin servisler aracılığıyla haberleşmesi.</li>
+                </ul>
+                <p>Teorik temeller:</p>
+                <ul>
+                    <li>Bilgi sistemlerinin modüler tasarımı ve esnekliği.</li>
+                    <li>Açık standartlar ve protokollerin kullanımı.</li>
+                    <li>Farklı üreticilerin sistemleri arasında birlikte çalışabilirlik.</li>
+                    <li>Gerçek zamanlı veri alışverişi ve sistem durumu izleme.</li>
+                    <li>Güvenli ve güvenilir iletişim altyapısı.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler</h3>
+                <ul>
+                    <li><strong>Belgelendirme:</strong> TSE veya yetkilendirilmiş kuruluşlardan uygunluk belgesi alınması.</li>
+                    <li><strong>Yönetim Sistemi:</strong> Bilgi teknolojileri yönetim sisteminin dokümantasyonu.</li>
+                    <li><strong>Personel Yetkinliği:</strong> Teknik personelin eğitim ve belgelendirilmesi.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> TS 13149 uyumlu bileşenler için süreçler.</li>
+                </ul>
+                <h3>Teknik Gereklilikler</h3>
+                <ul>
+                    <li><strong>Ağ Altyapısı:</strong> 100BASE-T veya 1000BASE-T Ethernet, CAT5e kablolama.</li>
+                    <li><strong>IP Adreslemesi:</strong> IPv4 veya IPv6, statik IP veya DHCP.</li>
+                    <li><strong>Veri Aktarım Protokolleri:</strong> HTTP, MQTT, WebSocket.</li>
+                    <li><strong>Veri Formatları:</strong> XML veya JSON.</li>
+                    <li><strong>Güvenlik:</strong> TLS/SSL şifreleme, kimlik doğrulama.</li>
+                    <li><strong>Donanım:</strong> -40°C ila +85°C sıcaklık aralığı, titreşim dayanıklılığı.</li>
+                    <li><strong>Enerji Verimliliği:</strong> Düşük güç tüketimi, bekleme modları.</li>
+                    <li><strong>Yedeklilik:</strong> Kritik sistemler için yedekli tasarım ve otomatik geçiş.</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>Şehir İçi Toplu Taşıma:</strong>
+                        <ul>
+                            <li><strong>Otobüsler:</strong> Ankara EGO ve İstanbul İETT otobüslerinde gerçek zamanlı konum takibi, dijital ekranlar ve anons sistemleri.</li>
+                            <li><strong>Tramvaylar:</strong> İzmir ESHOT tramvaylarında yolcu bilgilendirme, kamera ve güvenlik sistemleri.</li>
+                            <li><strong>Metrobüs:</strong> İstanbul metrobüsünde araç içi bilgilendirme, akıllı durak göstergeleri ve trafik sinyalizasyon entegrasyonu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Şehirlerarası Taşımacılık:</strong>
+                        <ul>
+                            <li><strong>Yüksek Hızlı Trenler:</strong> TCDD trenlerinde yolcu bilgilendirme, eğlence üniteleri ve internet erişimi.</li>
+                            <li><strong>Otobüs İşletmeleri:</strong> Filolarda araç takip, yakıt tüketimi optimizasyonu ve bakım planlama.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Özel Uygulamalar:</strong>
+                        <ul>
+                            <li><strong>Havaalanı Servis Araçları:</strong> İstanbul Havalimanı’nda bagaj takip ve terminal bilgi entegrasyonu.</li>
+                            <li><strong>Turizm Taşımacılığı:</strong> Turistik bölgelerde çok dilli bilgilendirme ve rota ekranları.</li>
+                            <li><strong>Akıllı Şehir Uygulamaları:</strong> Belediyelerde toplu taşıma araçlarının trafik entegrasyonu.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>Proje Hazırlık Aşaması</h3>
+                <ul>
+                    <li>İhtiyaç analizi: Mevcut sistemlerin envanteri ve ihtiyaç belirleme.</li>
+                    <li>Sistem mimarisi tasarımı: Tüm bileşenlerin ve arabirimlerin tanımlanması.</li>
+                    <li>Bütçe ve zaman planlaması: Detaylı bütçe ve uygulama takvimi.</li>
+                </ul>
+                <h3>Uygulama Aşaması</h3>
+                <ul>
+                    <li>Ağ altyapısının kurulumu: Ethernet anahtarları, yönlendiriciler ve kablolama.</li>
+                    <li>Donanım entegrasyonu: Araç bilgisayarları, ekranlar, sensörler montajı.</li>
+                    <li>Yazılım kurulumu: İşletim sistemleri, middleware ve uygulama yazılımları.</li>
+                    <li>Veri modeli uygulaması: Veri yapıları ve protokollerin uygulanması.</li>
+                    <li>Sistem entegrasyonu: Araç içi sistemlerin entegrasyonu.</li>
+                </ul>
+                <h3>Test ve Doğrulama</h3>
+                <ul>
+                    <li>Birim testleri: Her bileşenin tek başına testi.</li>
+                    <li>Entegrasyon testleri: Bileşenlerin uyumlu çalışması.</li>
+                    <li>Performans testleri: Yük altında ve farklı koşullarda performans.</li>
+                    <li>Güvenlik testleri: Sistem güvenliğinin doğrulanması.</li>
+                </ul>
+                <h3>İşletme ve Bakım</h3>
+                <ul>
+                    <li>Periyodik bakım: Sistem bileşenlerinin düzenli bakımı.</li>
+                    <li>Performans izleme: Gerçek zamanlı izleme ve raporlama.</li>
+                    <li>Güncellemeler: Yazılım ve firmware güncellemeleri.</li>
+                    <li>Dokümantasyon güncellemesi: Sistem değişikliklerinin dokümantasyonu.</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Yazılım Mühendisleri:</strong>
+                        <ul>
+                            <li>Veri modeli ve protokollerin geliştirilmesi.</li>
+                            <li>Yazılım bileşenlerinin tasarımı ve kodlaması.</li>
+                            <li>Sistem entegrasyon yazılımlarının geliştirilmesi.</li>
+                            <li>Güvenlik yazılımlarının uygulanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Donanım Mühendisleri:</strong>
+                        <ul>
+                            <li>Ağ ve iletişim donanımlarının seçimi.</li>
+                            <li>Araç içi cihazların tasarımı ve entegrasyonu.</li>
+                            <li>Güç ve çevre koşullarına dayanıklılık testleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ağ Uzmanları:</strong>
+                        <ul>
+                            <li>Ağ mimarisinin tasarımı.</li>
+                            <li>Kablosuz ve kablolu iletişim altyapısının kurulumu.</li>
+                            <li>Performans optimizasyonu ve güvenlik konfigürasyonları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Proje Yöneticileri:</strong>
+                        <ul>
+                            <li>Proje planlaması ve koordinasyonu.</li>
+                            <li>Bütçe ve zaman yönetimi.</li>
+                            <li>Paydaş yönetimi ve raporlama.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kalite Güvence Uzmanları:</strong>
+                        <ul>
+                            <li>Test stratejilerinin oluşturulması.</li>
+                            <li>Standart uygunluk denetimleri.</li>
+                            <li>Sürekli iyileştirme süreçleri.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci</h3>
+                <ul>
+                    <li>Gerçek zamanlı sistem izleme (uptime, performans metrikleri).</li>
+                    <li>Log kaydı ve analiz (hata logları, erişim logları).</li>
+                    <li>Performans raporlaması (haftalık/aylık raporlar).</li>
+                    <li>Kullanıcı geri bildirim toplama.</li>
+                </ul>
+                <h3>Denetim Süreci</h3>
+                <h4>İç Denetim</h4>
+                <ul>
+                    <li>Periyodik denetimler (6 ayda bir).</li>
+                    <li>Performans izleme ve raporlama.</li>
+                    <li>Olay kayıtları (arızalar, güvenlik olayları).</li>
+                    <li>Düzeltici faaliyetler.</li>
+                </ul>
+                <h4>Dış Denetim ve Belgelendirme</h4>
+                <ul>
+                    <li>Belgelendirme başvurusu (TSE veya yetkilendirilmiş kuruluş).</li>
+                    <li>Ön değerlendirme.</li>
+                    <li>Saha denetimi.</li>
+                    <li>Uygunsuzlukların giderilmesi.</li>
+                    <li>Belgelendirme (3 yıl geçerli).</li>
+                    <li>Gözetim denetimleri (yıllık).</li>
+                    <li>Yeniden belgelendirme (3 yılda bir).</li>
+                </ul>
+                <h3>Belgelendirme Kriterleri</h3>
+                <ul>
+                    <li><strong>Dokümantasyon Uygunluğu:</strong> Mimari, veri modeli, protokoller dokümante edilmiş olmalı.</li>
+                    <li><strong>Teknik Gereklilikler:</strong> Ağ, donanım ve yazılım standartlara uygun olmalı.</li>
+                    <li><strong>Fonksiyonel Testler:</strong> Tüm fonksiyonlar belirtilen şekilde çalışmalı.</li>
+                    <li><strong>Güvenlik Gereklilikleri:</strong> Veri ve siber güvenlik önlemleri uygulanmış olmalı.</li>
+                    <li><strong>Yönetim Sistemi:</strong> Yönetim, bakım ve iyileştirme süreçleri oluşturulmuş olmalı.</li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Teknik Zorluklar:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Farklı üreticilerin uyumluluk sorunları.</li>
+                            <li><strong>Çözüm:</strong> Açık standartlara bağlı kalma, test edilmiş kombinasyonlar.</li>
+                            <li><strong>Zorluk:</strong> Zorlu araç koşulları (titreşim, sıcaklık).</li>
+                            <li><strong>Çözüm:</strong> Sertifikalı endüstriyel donanımlar, titreşim sönümleme, termal yönetim.</li>
+                            <li><strong>Zorluk:</strong> Güç kesintileri.</li>
+                            <li><strong>Çözüm:</strong> UPS, güç filtreleri, koruma devreleri.</li>
+                            <li><strong>Zorluk:</strong> Kablosuz iletişim kesintileri.</li>
+                            <li><strong>Çözüm:</strong> Yedekli kanallar, veri önbellekleme, otomatik yeniden bağlanma.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Operasyonel Zorluklar:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Sistem karmaşıklığı nedeniyle işletme zorluğu.</li>
+                            <li><strong>Çözüm:</strong> Kullanıcı dostu arayüzler, dokümantasyon, eğitim programları.</li>
+                            <li><strong>Zorluk:</strong> Güncellemelerin operasyonları etkilemesi.</li>
+                            <li><strong>Çözüm:</strong> Saat dışı güncelleme, kademeli strateji, geri dönüş planları.</li>
+                            <li><strong>Zorluk:</strong> Yetişmiş personel eksikliği.</li>
+                            <li><strong>Çözüm:</strong> Eğitim programları, sertifikasyon teşvikleri, bilgi transferi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Maliyet Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Yüksek başlangıç maliyetleri.</li>
+                            <li><strong>Çözüm:</strong> Aşamalı uygulama, öncelikli sistemler, maliyet-fayda analizi.</li>
+                            <li><strong>Zorluk:</strong> Bakım ve güncelleme maliyetleri.</li>
+                            <li><strong>Çözüm:</strong> Servis anlaşmaları, önleyici bakım, kaynak optimizasyonu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Uyumluluk Zorlukları:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Eski sistemlerle entegrasyon.</li>
+                            <li><strong>Çözüm:</strong> Geçiş adaptörleri, protokol dönüştürücüler, köprü yazılımları.</li>
+                            <li><strong>Zorluk:</strong> Standart yorumlamasında farklılıklar.</li>
+                            <li><strong>Çözüm:</strong> TSE veya danışman görüşleri, sektör işbirliği platformları.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>TS 13149 Sistem Mimarisi</h3>
+                <div class="mermaid">
+graph TD;
+    A["Araç İçi IP Ağı"] --> B["Araç Bilgisayarı"];
+    A --> C["Yolcu Bilgilendirme Sistemi"];
+    A --> D["Ücret Toplama Sistemi"];
+    A --> E["Kamera ve Güvenlik Sistemleri"];
+    A --> F["Araç Sensörleri"];
+    
+    B --> G["Merkezi Yönetim Sistemi"];
+    
+    subgraph "Araç Dışı Sistemler"
+    G --> H["Durak Göstergeleri"];
+    G --> I["Mobil Uygulamalar"];
+    G --> J["Trafik Yönetim Merkezi"];
+    end
+                </div>
+                <p class="text-center text-sm text-gray-500">TS 13149 sistem mimarisini gösteren şema.</p>
+
+                <h3>TS 13149 Uygulama Akış Şeması</h3>
+                <div class="mermaid">
+flowchart TD;
+    A["İhtiyaç Analizi"] --> B["Sistem Tasarımı"];
+    B --> C["Donanım ve Yazılım Tedariki"];
+    C --> D["Kurulum ve Entegrasyon"];
+    D --> E["Test ve Doğrulama"];
+    E --> F{"Testler Başarılı mı?"};
+    F -- Hayır --> D;
+    F -- Evet --> G["Pilot Uygulama"];
+    G --> H["Personel Eğitimi"];
+    H --> I["Tam Kapsamlı Geçiş"];
+    I --> J["İşletme ve Bakım"];
+    J --> K["Periyodik Denetim"];
+    K --> L{"Uygunluk Devam Ediyor mu?"};
+    L -- Hayır --> M["Düzeltici Faaliyetler"];
+    M --> K;
+    L -- Evet --> J;
+                </div>
+                <p class="text-center text-sm text-gray-500">TS 13149 uygulama akış şemasını gösteren diyagram.</p>
+
+                <h3>TS 13149 Veri Akış Şeması</h3>
+                <div class="mermaid">
+flowchart LR;
+    A["Araç Sensörleri"] --> B["Veri Toplama Modülü"];
+    B --> C["Araç Bilgisayarı"];
+    C --> D["Yerel Veri İşleme"];
+    C --> E["Kablosuz İletişim Modülü"];
+    E --> F["Merkezi Sunucu"];
+    F --> G["Veri Ambarı"];
+    G --> H["Analitik İşlemler"];
+    G --> I["Raporlama"];
+    F --> J["Durak Göstergeleri"];
+    F --> K["Mobil Uygulamalar"];
+    C --> L["Yolcu Bilgilendirme Ekranları"];
+    C --> M["Anons Sistemi"];
+                </div>
+                <p class="text-center text-sm text-gray-500">TS 13149 veri akış şemasını gösteren diyagram.</p>
+
+                <h3>TS 13149 Belgelendirme Süreci</h3>
+                <div class="mermaid">
+flowchart TD;
+    A["Belgelendirme Başvurusu"] --> B["Dokümantasyon İncelemesi"];
+    B --> C{"Dokümantasyon Yeterli mi?"};
+    C -- Hayır --> D["Dokümantasyon Revizyonu"];
+    D --> B;
+    C -- Evet --> E["Saha Denetimi Planlanması"];
+    E --> F["Saha Denetimi"];
+    F --> G{"Uygunsuzluk Var mı?"};
+    G -- Evet --> H["Düzeltici Faaliyetler"];
+    H --> I["Düzeltici Faaliyetlerin Doğrulanması"];
+    I --> G;
+    G -- Hayır --> J["Belgelendirme Kararı"];
+    J --> K["TS 13149 Uygunluk Belgesi"];
+    K --> L["Yıllık Gözetim Denetimleri"];
+    L --> M{"Gözetim Denetimi Başarılı mı?"};
+    M -- Hayır --> N["Düzeltici Faaliyetler"];
+    N --> O["Takip Denetimi"];
+    O --> M;
+    M -- Evet --> P["Belge Geçerliliğinin Devamı"];
+    P --> Q["3 Yıl Sonra Yeniden Belgelendirme"];
+                </div>
+                <p class="text-center text-sm text-gray-500">TS 13149 belgelendirme sürecinin akış şeması.</p>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
