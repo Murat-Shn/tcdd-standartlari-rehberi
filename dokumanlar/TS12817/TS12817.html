@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS 12817 - Yangın Söndürme Sistemleri - Sprinkler Sistemleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS 12817 - Yangın Söndürme Sistemleri - Sprinkler Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS 12817, otomatik sprinkler sistemlerinin tasarım, hesaplama ve uygulama esaslarını düzenler, yangın güvenliğini artırmak için can ve mal güvenliğini korur.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>TS 12817</strong>, binalarda yangın güvenliğini sağlamak için otomatik sprinkler sistemlerinin tasarım, hesaplama ve uygulama esaslarını kapsar. Amaçlar:</p>
+                <ul>
+                    <li>Erken müdahale sistemlerinin doğru tasarımı.</li>
+                    <li>Yangın hasarını en aza indirmek.</li>
+                    <li>Can kayıplarını önlemek.</li>
+                    <li>Bina ve işletme sürekliliğini korumak.</li>
+                    <li>Standart uygulama metodolojisi oluşturmak.</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>Sprinkler sistemleri, yangının başlangıcında otomatik olarak su püskürterek yangını kontrol eder veya söndürür. TS 12817, NFPA 13 ve EN 12845’ten faydalanır. Temel kavramlar:</p>
+                <ul>
+                    <li><strong>Sprinkler:</strong> Sıcaklıkla aktive olan püskürtme elemanı.</li>
+                    <li><strong>Tehlike Sınıfları:</strong> Düşük, Orta, Yüksek Tehlike.</li>
+                    <li><strong>Tasarım Yoğunluğu:</strong> Birim alana püskürtülmesi gereken su miktarı (mm/dk).</li>
+                    <li><strong>Operasyon Alanı:</strong> Eşzamanlı çalışan sprinklerlerin koruduğu alan (m²).</li>
+                    <li><strong>K-Faktörü:</strong> Sprinkler debisini hesaplayan katsayı.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <p><strong>Kurumsal Gereklilikler:</strong></p>
+                <ul>
+                    <li>Tasarım ve uygulama yetkin mühendislerce yapılmalı.</li>
+                    <li>Kurulum firmaları TSE Hizmet Yeterlilik Belgesi’ne sahip olmalı.</li>
+                    <li>Kurulum sonrası yetkili kuruluş onayı.</li>
+                    <li>Periyodik bakım ve kontroller belgelendirilmeli.</li>
+                </ul>
+                <p><strong>Teknik Gereklilikler:</strong></p>
+                <ul>
+                    <li><strong>Su Kaynağı:</strong>
+                        <ul>
+                            <li>60 dakika süreyle hesaplanan debi.</li>
+                            <li>Su deposu kapasitesi tehlike sınıfına göre.</li>
+                            <li>Basınç: 1-12 bar.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sprinkler Sistemleri:</strong>
+                        <ul>
+                            <li>Islak (su dolu).</li>
+                            <li>Kuru (basınçlı hava).</li>
+                            <li>Ön Tepkili (Pre-action).</li>
+                            <li>Baskın (Deluge).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tasarım Kriterleri:</strong>
+                        <ul>
+                            <li>Düşük Tehlike: 2,25 mm/dk, 84 m².</li>
+                            <li>Orta Tehlike Grup 1: 5 mm/dk, 72 m².</li>
+                            <li>Orta Tehlike Grup 2: 5 mm/dk, 144 m².</li>
+                            <li>Orta Tehlike Grup 3: 5 mm/dk, 216 m².</li>
+                            <li>Yüksek Tehlike: 7,5-12,5 mm/dk, 260 m².</li>
+                        </ul>
+                    </li>
+                    <li><strong>Boru Tesisatı:</strong>
+                        <ul>
+                            <li>Islak sistem: Galvanizli/siyah çelik boru.</li>
+                            <li>Kuru sistem: Galvanizli boru.</li>
+                            <li>Minimum çaplar: Branch (25mm), dağıtım (32mm), ana dağıtım (50mm).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>Ticari Yapılar:</strong>
+                        <ul>
+                            <li>AVM’ler (Orta Tehlike Grup 2).</li>
+                            <li>Ofis binaları (Düşük/Orta Tehlike Grup 1).</li>
+                            <li>Oteller (Odalar Düşük, mutfaklar Orta Tehlike).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Endüstriyel Tesisler:</strong>
+                        <ul>
+                            <li>Üretim tesisleri (Orta/Yüksek Tehlike).</li>
+                            <li>Depolar (Malzeme ve istiflemeye göre Orta-Yüksek).</li>
+                            <li>Petrokimya tesisleri (Yüksek Tehlike).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kamusal Yapılar:</strong>
+                        <ul>
+                            <li>Hastaneler (Genel alanlar Düşük, teknik alanlar Orta).</li>
+                            <li>Eğitim kurumları (Düşük Tehlike).</li>
+                            <li>Kültürel yapılar (Kullanım amacına göre).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yüksek Yapılar:</strong>
+                        <ul>
+                            <li>Konut/ofis kuleleri (Yüksekliğe bağlı ek gereksinimler).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <h3>Tasarım Aşaması</h3>
+                <ol>
+                    <li>Tehlike sınıfının belirlenmesi.</li>
+                    <li>Su ihtiyacının hesaplanması (Tasarım yoğunluğu × Operasyon alanı).</li>
+                    <li>Hidrolik hesaplamalar (Hazen-Williams formülü, basınç gereksinimleri).</li>
+                    <li>Sprinkler tipi ve yerleşim planı:
+                        <ul>
+                            <li>Maksimum koruma alanı: Düşük (21 m²), Orta (12 m²), Yüksek (9 m²).</li>
+                            <li>Sprinklerler arası mesafe: Maksimum 4,6 m.</li>
+                            <li>Duvardan mesafe: Maksimum 2,3 m.</li>
+                        </ul>
+                    </li>
+                    <li>Boru çaplarının belirlenmesi (Hidrolik hesap/çizelge yöntemi).</li>
+                </ol>
+                <h3>Montaj Aşaması</h3>
+                <ol>
+                    <li>Boruların montajı:
+                        <ul>
+                            <li>Askı/mesnetler (maksimum 4 m aralık).</li>
+                            <li>Boru eğimi: %0,2 (kuru sistemlerde drenaj).</li>
+                        </ul>
+                    </li>
+                    <li>Sprinklerlerin yerleştirilmesi:
+                        <ul>
+                            <li>Tavandan mesafe: 75-150 mm.</li>
+                            <li>Engellere dikkat (kiriş, aydınlatma).</li>
+                        </ul>
+                    </li>
+                    <li>Kontrol vanaları ve alarm cihazları montajı:
+                        <ul>
+                            <li>Zon başına kontrol vanası.</li>
+                            <li>Su akış sensörleri, basınç anahtarları.</li>
+                        </ul>
+                    </li>
+                    <li>Test drenaj ve alarm test vanaları:
+                        <ul>
+                            <li>Zon başına test vanası.</li>
+                            <li>Ana drenaj vanası.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h3>Test ve Devreye Alma</h3>
+                <ol>
+                    <li>Hidrostatik basınç testi (13,8 bar veya çalışma basıncının 1,5 katı, 2 saat).</li>
+                    <li>Drenaj testi.</li>
+                    <li>Alarm cihazları testi.</li>
+                    <li>Vana izleme ve akış testleri.</li>
+                    <li>Devreye alma dokümanları.</li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Makine Mühendisleri:</strong>
+                        <ul>
+                            <li>Hidrolik hesaplamalar.</li>
+                            <li>Su deposu ve pompa tasarımı.</li>
+                            <li>Boru çapları ve sprinkler yerleşimi.</li>
+                            <li>Komponent seçimi.</li>
+                            <li>Test ve devreye alma.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Elektrik Mühendisleri:</strong>
+                        <ul>
+                            <li>Alarm ve izleme sistemleri tasarımı.</li>
+                            <li>Yangın pompaları için elektrik beslemesi.</li>
+                            <li>Acil durum güç sistemleri entegrasyonu.</li>
+                            <li>Bina yönetim sistemleri entegrasyonu.</li>
+                        </ul>
+                    </li>
+                    <li><strong>İnşaat Mühendisleri:</strong>
+                        <ul>
+                            <li>Su deposu yapısal tasarımı.</li>
+                            <li>Boru geçiş noktalarının değerlendirilmesi.</li>
+                            <li>Asma sistemleri hesaplamaları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Mimarlar:</strong>
+                        <ul>
+                            <li>Yangın bölgelerine ayırma.</li>
+                            <li>Estetik sprinkler entegrasyonu.</li>
+                            <li>Tavan ve aydınlatma tasarımı.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yangın Güvenliği Danışmanları:</strong>
+                        <ul>
+                            <li>Tehlike sınıflarının belirlenmesi.</li>
+                            <li>Diğer yangın sistemleriyle koordinasyon.</li>
+                            <li>Yangın senaryoları oluşturma.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İzleme</h3>
+                <ul>
+                    <li>Haftalık: Görsel kontroller (vana, basınç göstergeleri).</li>
+                    <li>Aylık:
+                        <ul>
+                            <li>Alarm vanaları, su akış detektörleri.</li>
+                            <li>Vana konumlarının doğrulanması.</li>
+                        </ul>
+                    </li>
+                    <li>3 Aylık:
+                        <ul>
+                            <li>Alarm cihazları testi.</li>
+                            <li>Su beslemesi ve basınç kontrolü.</li>
+                        </ul>
+                    </li>
+                    <li>Yıllık:
+                        <ul>
+                            <li>Hidrolik performans testi.</li>
+                            <li>Tam sistem fonksiyon testi.</li>
+                            <li>Sprinkler kafaların görsel kontrolü.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Denetim</h3>
+                <ul>
+                    <li>İlk denetim (kurulum sonrası):
+                        <ul>
+                            <li>Tasarımın TS 12817’ye uygunluğu.</li>
+                            <li>Montajın proje dokümanlarına uygunluğu.</li>
+                            <li>Test sonuçlarının değerlendirilmesi.</li>
+                        </ul>
+                    </li>
+                    <li>Periyodik denetimler (yıllık):
+                        <ul>
+                            <li>Fonksiyonel kontrol.</li>
+                            <li>Bakım kayıtlarının incelenmesi.</li>
+                            <li>Bileşenlerin durumu.</li>
+                        </ul>
+                    </li>
+                    <li>Olağanüstü denetimler:
+                        <ul>
+                            <li>Sistem müdahale sonrası.</li>
+                            <li>Bina kullanımı değişikliği sonrası.</li>
+                            <li>Yangın sonrası.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Belgelendirme</h3>
+                <ul>
+                    <li><strong>Gerekli belgeler:</strong>
+                        <ul>
+                            <li>Tasarım hesaplamaları ve çizimler.</li>
+                            <li>Malzeme onay belgeleri ve sertifikaları.</li>
+                            <li>Test raporları.</li>
+                            <li>Montaj tamamlama raporları.</li>
+                            <li>Kullanıcı eğitim kayıtları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Süreç:</strong>
+                        <ul>
+                            <li>Belgelerin yetkili kuruma sunulması.</li>
+                            <li>Saha denetimi.</li>
+                            <li>Uygunluk değerlendirmesi.</li>
+                            <li>Belge düzenlenmesi (2 yıl geçerli).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <ul>
+                    <li><strong>Mevcut Binalarda Uygulama:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Asma tavan tesisat çakışmaları.</li>
+                            <li><strong>Çözüm:</strong> BIM kullanımı, koordinasyon toplantıları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Su Kaynağı Yetersizliği:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Şebeke suyunun yetersizliği.</li>
+                            <li><strong>Çözüm:</strong> Depo ve pompa tasarımı, zon bölümlendirme.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Estetik Kaygılar:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Sprinkler görünürlüğü.</li>
+                            <li><strong>Çözüm:</strong> Gizli/dekoratif sprinkler, mimari entegrasyon.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Donma Riski:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Soğuk ortamlarda donma.</li>
+                            <li><strong>Çözüm:</strong> Kuru/ön tepkili sistem, antifriz.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Yüksek Basınç:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Çok katlı binalarda aşırı basınç.</li>
+                            <li><strong>Çözüm:</strong> Basınç düşürücü vanalar, zon ayırma.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bakım ve Test:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Aktif binalarda test zorluğu.</li>
+                            <li><strong>Çözüm:</strong> Gece testleri, bölgesel izolasyon vanaları.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tehlike Sınıfı Değişimleri:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Bina kullanım değişikliği.</li>
+                            <li><strong>Çözüm:</strong> Üst tehlike sınıfına tasarım, periyodik risk değerlendirmesi.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>Sprinkler Sistemi Tasarım ve Uygulama Süreci</h3>
+                <div class="mermaid">
+graph TD;
+A["Proje Başlangıcı"] --> B["Tehlike Sınıfının Belirlenmesi"];
+B --> C["Tasarım Parametrelerinin Tespiti"];
+C --> D["Hidrolik Hesaplamalar"];
+D --> E["Boru Çaplarının Belirlenmesi"];
+E --> F["Sprinkler Yerleşim Planı"];
+F --> G["Komponent Seçimi"];
+G --> H["Uygulama Projesi Hazırlanması"];
+H --> I["Onay Süreci"];
+I --> J["Malzeme Temini"];
+J --> K["Montaj"];
+K --> L["Test ve Devreye Alma"];
+L --> M["Belgelendirme"];
+M --> N["Periyodik Bakım ve Kontroller"];
+
+style A fill:#f9d5e5,stroke:#333,stroke-width:1px
+style B fill:#eeac99,stroke:#333,stroke-width:1px
+style C fill:#eeac99,stroke:#333,stroke-width:1px
+style D fill:#eeac99,stroke:#333,stroke-width:1px
+style E fill:#eeac99,stroke:#333,stroke-width:1px
+style F fill:#eeac99,stroke:#333,stroke-width:1px
+style G fill:#eeac99,stroke:#333,stroke-width:1px
+style H fill:#e06377,stroke:#333,stroke-width:1px
+style I fill:#e06377,stroke:#333,stroke-width:1px
+style J fill:#c83349,stroke:#333,stroke-width:1px
+style K fill:#c83349,stroke:#333,stroke-width:1px
+style L fill:#5b9aa0,stroke:#333,stroke-width:1px
+style M fill:#5b9aa0,stroke:#333,stroke-width:1px
+style N fill:#d6e5fa,stroke:#333,stroke-width:1px
+                </div>
+                <p class="text-center text-sm text-gray-500">Sprinkler sistemi tasarım ve uygulama sürecini gösteren akış diyagramı.</p>
+
+                <h3>Sprinkler Sistemi Temel Bileşenleri</h3>
+                <div class="mermaid">
+graph LR;
+A["Su Kaynağı"] --> B["Ana Kontrol Vanası"];
+B --> C["Alarm Vanası"];
+C --> D["Sistem Kontrol Vanası"];
+D --> E["Ana Dağıtım Borusu"];
+E --> F["Dağıtım Borusu"];
+F --> G["Branch Hatları"];
+G --> H["Sprinkler Kafalar"];
+A --> I["Yangın Pompaları"];
+I --> B;
+C --> J["Alarm ve İzleme Sistemleri"];
+D --> K["Test ve Drenaj Vanaları"];
+
+style A fill:#bbdefb,stroke:#333,stroke-width:1px
+style B fill:#90caf9,stroke:#333,stroke-width:1px
+style C fill:#64b5f6,stroke:#333,stroke-width:1px
+style D fill:#42a5f5,stroke:#333,stroke-width:1px
+style E fill:#2196f3,stroke:#333,stroke-width:1px
+style F fill:#1e88e5,stroke:#333,stroke-width:1px
+style G fill:#1976d2,stroke:#333,stroke-width:1px
+style H fill:#1565c0,stroke:#333,stroke-width:1px
+style I fill:#bbdefb,stroke:#333,stroke-width:1px
+style J fill:#64b5f6,stroke:#333,stroke-width:1px
+style K fill:#42a5f5,stroke:#333,stroke-width:1px
+                </div>
+                <p class="text-center text-sm text-gray-500">Sprinkler sisteminin temel bileşenlerini gösteren şema.</p>
+
+                <h3>Tehlike Sınıflarına Göre Tasarım Parametreleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tehlike Sınıfı</th>
+                            <th>Tasarım Yoğunluğu (mm/dk)</th>
+                            <th>Operasyon Alanı (m²)</th>
+                            <th>Minimum Çalışma Süresi (dk)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Düşük Tehlike</td>
+                            <td>2,25</td>
+                            <td>84</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>Orta Tehlike Grup 1</td>
+                            <td>5,0</td>
+                            <td>72</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>Orta Tehlike Grup 2</td>
+                            <td>5,0</td>
+                            <td>144</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>Orta Tehlike Grup 3</td>
+                            <td>5,0</td>
+                            <td>216</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>Yüksek Tehlike Grup 1</td>
+                            <td>7,5</td>
+                            <td>260</td>
+                            <td>90</td>
+                        </tr>
+                        <tr>
+                            <td>Yüksek Tehlike Grup 2</td>
+                            <td>10,0</td>
+                            <td>260</td>
+                            <td>90</td>
+                        </tr>
+                        <tr>
+                            <td>Yüksek Tehlike Grup 3</td>
+                            <td>12,5</td>
+                            <td>260</td>
+                            <td>90</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
