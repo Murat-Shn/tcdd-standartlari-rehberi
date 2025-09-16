@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EN 50367 - Demiryolu Uygulamaları - Sabit Tesisler ve Araçlar Arasındaki Arayüz Sistemleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">EN 50367 - Demiryolu Uygulamaları - Sabit Tesisler ve Araçlar Arasındaki Arayüz Sistemleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">EN 50367, demiryolu sistemlerinde pantograflar ile havai hat arasındaki elektriksel iletişimin teknik kriterlerini belirleyen Avrupa standardıdır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
+                <p><strong>EN 50367</strong>, demiryolu sistemlerinde pantograflar ile havai hat (katener sistemi) arasındaki elektriksel iletişimin teknik kriterlerini belirleyen Avrupa standardıdır. Bu standart şunları kapsar:</p>
+                <ul>
+                    <li>Pantograf ve havai hat arasındaki elektriksel arayüz gerekliliklerini.</li>
+                    <li>Elektriksel iletişimin kalitesini etkileyen parametreleri.</li>
+                    <li>Pantograf ve havai hat etkileşiminin dinamik davranışını.</li>
+                    <li>Farklı demiryolu sistemleri arasında karşılıklı çalışabilirliği.</li>
+                </ul>
+                <p>Bu standardın temel amacı, demiryolu araçları ile sabit elektriksel altyapı arasında güvenli, verimli ve uyumlu bir elektriksel iletişim sağlamaktır. Böylece demiryolu sistemlerinin güvenilirliği ve performansı artırılmaktadır.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
+                <p>EN 50367 standardı, demiryolu elektrifikasyon sistemlerinin temel bileşenleri arasındaki etkileşimi düzenler. Temel kavramlar:</p>
+                <h3>Pantograf</h3>
+                <p>Demiryolu aracının üzerinde bulunan, yukarı doğru uzanabilen ve havai hattan elektrik akımını toplayan mekanizmadır. Pantograflar, trenin elektrik sistemine güç sağlamak için havai hat ile temas halinde çalışır.</p>
+                <h3>Havai Hat (Katener Sistemi)</h3>
+                <p>Demiryolu boyunca uzanan ve elektrik enerjisini taşıyan iletken tellerin oluşturduğu sistemdir. Havai hat, taşıyıcı tel (messenger wire) ve temas teli (contact wire) olmak üzere iki ana bileşenden oluşur.</p>
+                <h3>Temas Kuvveti</h3>
+                <p>Pantograf ile temas teli arasındaki basınç kuvvetidir. Bu kuvvet, elektriksel iletimin kalitesini doğrudan etkiler ve EN 50367 standardında detaylı olarak tanımlanmıştır.</p>
+                <h3>Kaldırma Kuvveti</h3>
+                <p>Pantografın havai hata doğru uyguladığı kuvvettir. EN 50367'ye göre bu kuvvetin belirli değer aralıklarında olması gerekir:</p>
+                <ul>
+                    <li>Statik kuvvet: 60-90 N (Genellikle)</li>
+                    <li>Dinamik kuvvet: Hıza bağlı olarak değişir, ancak 200-350 N aralığında olmalıdır</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler</h3>
+                <ul>
+                    <li>Organizasyonlar EN 50367 standardına uygunluk için belgelendirilmiş bir yönetim sistemi kurmalıdır.</li>
+                    <li>Personel yetkinliği: Pantograf-havai hat sistemlerinin tasarımı, kurulumu ve bakımı için kalifiye personel bulundurulmalıdır.</li>
+                    <li>Düzenli eğitim programları uygulanmalıdır.</li>
+                    <li>Kalite kontrol süreçleri ve düzenli denetimler gerçekleştirilmelidir.</li>
+                    <li>Tüm test ve ölçüm ekipmanları kalibre edilmeli ve sertifikalandırılmalıdır.</li>
+                </ul>
+                <h3>Teknik Gereklilikler</h3>
+                <h4>Pantograf Teknik Gereklilikleri</h4>
+                <ul>
+                    <li>Pantograf temas şeridinin genişliği: Minimum 30 mm olmalıdır.</li>
+                    <li>Pantograf başı uzunluğu: Sistemin türüne göre 1600-1950 mm arasında olmalıdır.</li>
+                    <li>Pantograf statik kaldırma kuvveti: 60-90 N aralığında olmalıdır.</li>
+                    <li>Pantograf dinamik kaldırma kuvveti: Hıza bağlı olarak maksimum 350 N'yi geçmemelidir.</li>
+                    <li>Pantograf temas şeridinin malzemesi: Bakır, karbon veya karbon-bakır kompozit olabilir (sistemin özelliklerine göre).</li>
+                </ul>
+                <h4>Havai Hat Teknik Gereklilikleri</h4>
+                <ul>
+                    <li>Temas teli kesit alanı: Minimum 100 mm² olmalıdır.</li>
+                    <li>Temas teli yüksekliği: Nominal değeri 5000-5750 mm arasında olmalıdır.</li>
+                    <li>Temas teli yükseklik toleransı: ±20 mm.</li>
+                    <li>Lateral sapma (zigzag): ±200-400 mm arasında olmalıdır.</li>
+                    <li>Temas teli eğimi: Maksimum 2‰ (binde iki).</li>
+                    <li>Temas teli gerilimi: 10-15 kN arasında olmalıdır.</li>
+                </ul>
+                <h4>Elektriksel Gereklilikler</h4>
+                <ul>
+                    <li><strong>Nominal Gerilim Seviyeleri:</strong>
+                        <ul>
+                            <li>AC sistemler: 15 kV/16.7 Hz, 25 kV/50 Hz</li>
+                            <li>DC sistemler: 750 V, 1.5 kV, 3 kV</li>
+                        </ul>
+                    </li>
+                    <li>Gerilim dalgalanmaları: Nominal değerin ±10% içinde kalmalıdır.</li>
+                    <li>Maksimum akım iletimi: Temas teli kesitine bağlı olarak 600-1200 A arasında değişebilir.</li>
+                    <li>Elektriksel kesintiler: 10 ms'den uzun kesintiler kaydedilmeli ve analiz edilmelidir.</li>
+                    <li>Ark oluşumu: Minimum seviyede tutulmalıdır (hızlı hat geçişlerinde maksimum 50 ms).</li>
+                </ul>
+
+                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <ul>
+                    <li><strong>Konvansiyonel Demiryolları:</strong> Şehirler arası ve bölgesel trenlerde EN 50367 standardı, farklı elektriksel altyapılara sahip bölgeler arasında kesintisiz işletim sağlar. Örneğin, Türkiye'deki Ankara-İstanbul Yüksek Hızlı Tren hattında bu standart uygulanmaktadır.</li>
+                    <li><strong>Yüksek Hızlı Tren Hatları:</strong> 300 km/s ve üzeri hızlarda çalışan yüksek hızlı trenlerde, pantograf-havai hat etkileşimi kritik önem taşır. EN 50367, TGV (Fransa) veya Shinkansen (Japonya) gibi sistemlerde kullanılır.</li>
+                    <li><strong>Hafif Raylı Sistemler:</strong> Tramvay ve metro sistemlerinde, şehir içi havai hatlarla pantograf etkileşimi için standart uygulanır. Örneğin, İstanbul Tramvay hatlarında EN 50367 gereklilikleri dikkate alınır.</li>
+                    <li><strong>Karma Sistemler:</strong> Farklı gerilim sistemlerine sahip hatlarda (örneğin, AC/DC geçiş bölgeleri) EN 50367, pantograf geçişlerini düzenler. Örnek: Belçika demiryolu ağında 3 kV DC ve 25 kV AC sistemleri arasında uyum sağlar.</li>
+                    <li><strong>Yük Taşımacılığı:</strong> Elektrikli lokomotiflerde ağır yük taşımacılığında, yüksek akım gereksinimleri için EN 50367 kriterleri uygulanır. Örnek: Avrupa yük koridorlarında kullanılan lokomotifler.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
+                <ol>
+                    <li><strong>Tehlike ve Risk Analizi:</strong> Pantograf-havai hat etkileşimindeki potansiyel risklerin belirlenmesi.</li>
+                    <li><strong>Sistem Tasarımı:</strong> Pantograf ve havai hat bileşenlerinin EN 50367 kriterlerine göre tasarlanması.</li>
+                    <li><strong>Laboratuvar Testleri:</strong> Statik ve dinamik temas kuvveti testleri, elektrik iletim testleri.</li>
+                    <li><strong>Saha Testleri:</strong> Gerçek hat koşullarında etkileşim testleri.</li>
+                    <li><strong>Simülasyon Analizleri:</strong> Bilgisayar tabanlı modellerle performans simülasyonu.</li>
+                    <li><strong>Kurulum ve Kalibrasyon:</strong> Sistemlerin kurulumu ve kalibrasyonu.</li>
+                    <li><strong>İşletme ve Bakım:</strong> Periyodik kontroller ve bakım planları.</li>
+                </ol>
+
+                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <ul>
+                    <li><strong>Tasarım Mühendisleri:</strong>
+                        <ul>
+                            <li>Pantograf ve havai hat sistemlerinin tasarımı.</li>
+                            <li>Elektriksel ve mekanik hesaplamalar.</li>
+                            <li>Simülasyon modellerinin oluşturulması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Mühendisleri:</strong>
+                        <ul>
+                            <li>Laboratuvar ve saha testlerinin gerçekleştirilmesi.</li>
+                            <li>Test sonuçlarının analizi ve raporlanması.</li>
+                            <li>Uygunsuzlukların tespiti ve düzeltilmesi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kalite Güvence Uzmanları:</strong>
+                        <ul>
+                            <li>Standart gerekliliklerinin denetimi.</li>
+                            <li>Belgelendirme süreçlerinin yönetimi.</li>
+                            <li>Kalite kontrol planlarının hazırlanması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bakım Ekipleri:</strong>
+                        <ul>
+                            <li>Periyodik bakım ve kontrollerin yapılması.</li>
+                            <li>Arıza tespiti ve onarımı.</li>
+                            <li>Bakım kayıtlarının tutulması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Proje Yöneticileri:</strong>
+                        <ul>
+                            <li>Proje planlaması ve koordinasyonu.</li>
+                            <li>Bütçe ve zaman yönetimi.</li>
+                            <li>Paydaşlar arası iletişim.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci</h3>
+                <ul>
+                    <li>Gerçek zamanlı pantograf-havai hat etkileşim izleme sistemleri.</li>
+                    <li>Temas kuvveti sensörleri ile sürekli ölçüm.</li>
+                    <li>Ark oluşumu detektörleri.</li>
+                    <li>Periyodik veri analizi (aylık raporlar).</li>
+                </ul>
+                <h3>Denetim Süreci</h3>
+                <ul>
+                    <li><strong>İç Denetimler:</strong> Yıllık sistem denetimleri.</li>
+                    <li><strong>Dış Denetimler:</strong> Yetkilendirilmiş kuruluşlar tarafından 2 yılda bir.</li>
+                    <li><strong>Olağanüstü Denetimler:</strong> Arıza veya kaza sonrası.</li>
+                    <li><strong>Performans Denetimleri:</strong> Yüksek hız testleri sırasında.</li>
+                </ul>
+                <h3>Belgelendirme Süreci</h3>
+                <ul>
+                    <li>Başvuru ve teknik dokümantasyon hazırlığı.</li>
+                    <li>Ön değerlendirme ve test planlaması.</li>
+                    <li>Laboratuvar ve saha testleri.</li>
+                    <li>Test sonuçlarının değerlendirilmesi.</li>
+                    <li>Uygunluk beyanı ve sertifikasyon.</li>
+                    <li>Periyodik yeniden belgelendirme (3-5 yılda bir).</li>
+                </ul>
+
+                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Teknik Zorluklar</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Yüksek hızlarda dinamik etkileşim sorunları.</li>
+                    <li><strong>Çözüm:</strong> Aktif pantograf kontrol sistemleri ve aerodinamik optimizasyonlar.</li>
+                    <li><strong>Zorluk:</strong> Farklı gerilim sistemleri arasındaki geçişlerde sorunlar.</li>
+                    <li><strong>Çözüm:</strong> Çift sistem pantograflar ve adaptif havai hat geçiş bölgeleri.</li>
+                    <li><strong>Zorluk:</strong> İklim koşullarının etkileri.</li>
+                    <li><strong>Çözüm:</strong> Temas teli ısıtma sistemleri, rüzgar stabilizeleri.</li>
+                </ul>
+                <h3>Operasyonel Zorluklar</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Yoğun trafik olan hatlarda bakım için yeterli süre bulmak.</li>
+                    <li><strong>Çözüm:</strong> Öngörücü bakım sistemleri ve gerçek zamanlı izleme teknolojileri.</li>
+                    <li><strong>Zorluk:</strong> Havai hat arızalarının hızlı tespiti.</li>
+                    <li><strong>Çözüm:</strong> Havai hat izleme sistemleri, drone ile denetim.</li>
+                </ul>
+                <h3>Regülasyon ve Uyum Zorlukları</h3>
+                <ul>
+                    <li><strong>Zorluk:</strong> Standartların değişimi.</li>
+                    <li><strong>Çözüm:</strong> Modüler tasarım yaklaşımları.</li>
+                    <li><strong>Zorluk:</strong> Ulusal farklar.</li>
+                    <li><strong>Çözüm:</strong> Karşılaştırmalı analiz ve ulusal otoritelerle koordinasyon.</li>
+                </ul>
+
+                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
+                <h3>Pantograf-Havai Hat Etkileşim Şeması</h3>
+                <div class="mermaid">
+graph TD;
+A["Pantograf Sistemi"] --> B["Temas Kuvveti"];
+C["Havai Hat Sistemi"] --> B;
+B --> D["Elektriksel İletişim"];
+D --> E["Güç İletimi"];
+B --> F["Mekanik Etkileşim"];
+F --> G["Aşınma ve Yorulma"];
+F --> H["Dinamik Davranış"];
+I["Çevresel Faktörler"] --> F;
+I --> D;
+                </div>
+                <p class="text-center text-sm text-gray-500">Pantograf-Havai Hat etkileşim şemasını gösteren diyagram.</p>
+
+                <h3>EN 50367 Uygunluk Değerlendirme Süreci</h3>
+                <div class="mermaid">
+graph TD;
+A["Başlangıç"] --> B["Teknik Dokümantasyon Hazırlama"];
+B --> C["Ön Değerlendirme"];
+C --> D{"Gereklilikler Karşılanıyor mu?"};
+D -- Evet --> E["Laboratuvar Testleri"];
+D -- Hayır --> F["Tasarım Revizyonu"];
+F --> B;
+E --> G{"Test Sonuçları Uygun mu?"};
+G -- Evet --> H["Saha Testleri"];
+G -- Hayır --> F;
+H --> I{"Saha Testleri Başarılı mı?"};
+I -- Evet --> J["Belgelendirme"];
+I -- Hayır --> K["Düzeltici Faaliyetler"];
+K --> H;
+J --> L["Periyodik Denetimler"];
+L --> M{"Uygunluk Devam Ediyor mu?"};
+M -- Evet --> L;
+M -- Hayır --> K;
+                </div>
+                <p class="text-center text-sm text-gray-500">EN 50367 uygunluk değerlendirme sürecinin akış şeması.</p>
+
+                <h3>Pantograf-Havai Hat Teknik Parametreleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parametre</th>
+                            <th>AC Sistemleri</th>
+                            <th>DC Sistemleri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nominal Gerilim</td>
+                            <td>15 kV/16.7 Hz, 25 kV/50 Hz</td>
+                            <td>750 V, 1.5 kV, 3 kV</td>
+                        </tr>
+                        <tr>
+                            <td>Temas Teli Yüksekliği</td>
+                            <td>5000-5750 mm</td>
+                            <td>4000-6000 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Statik Temas Kuvveti</td>
+                            <td>70-90 N</td>
+                            <td>60-80 N</td>
+                        </tr>
+                        <tr>
+                            <td>Dinamik Temas Kuvveti</td>
+                            <td>150-350 N</td>
+                            <td>110-300 N</td>
+                        </tr>
+                        <tr>
+                            <td>Pantograf Başı Genişliği</td>
+                            <td>1600-1950 mm</td>
+                            <td>1600-1800 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Maksimum Hız</td>
+                            <td>350 km/s</td>
+                            <td>200 km/s</td>
+                        </tr>
+                        <tr>
+                            <td>Temas Teli Zigzag</td>
+                            <td>±300-400 mm</td>
+                            <td>±200-300 mm</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Havai Hat Bileşenleri ve Yerleşimi</h3>
+                <div class="mermaid">
+graph TB;
+A["Direk"] --> B["Konsol"];
+B --> C["Taşıyıcı Tel (Messenger Wire)"];
+C --> D["Askı (Dropper)"];
+D --> E["Temas Teli (Contact Wire)"];
+E --> F["Pantograf Temas Şeridi"];
+F --> G["Araç Elektriksel Sistemleri"];
+A --> H["Temel"];
+I["Gergi Sistemi"] --> C;
+I --> E;
+J["Yalıtkanlar"] --> B;
+K["Topraklama Sistemi"] --> A;
+                </div>
+                <p class="text-center text-sm text-gray-500">Havai hat bileşenleri ve yerleşimini gösteren şema.</p>
+
+                <h3>Pantograf Bakım Kontrol Listesi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kontrol Noktası</th>
+                            <th>Periyot</th>
+                            <th>Kabul Kriteri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Temas Şeridi Aşınması</td>
+                            <td>5.000 km veya 1 ay</td>
+                            <td>< %30 aşınma</td>
+                        </tr>
+                        <tr>
+                            <td>Kaldırma Mekanizması</td>
+                            <td>10.000 km veya 3 ay</td>
+                            <td>Düzgün hareket, yağlama durumu</td>
+                        </tr>
+                        <tr>
+                            <td>Yay Sistemi</td>
+                            <td>30.000 km veya 6 ay</td>
+                            <td>Statik kuvvet 60-90 N aralığında</td>
+                        </tr>
+                        <tr>
+                            <td>Elektriksel İzolasyon</td>
+                            <td>50.000 km veya 1 yıl</td>
+                            <td>Min. 10 MΩ izolasyon direnci</td>
+                        </tr>
+                        <tr>
+                            <td>Tam Revizyon</td>
+                            <td>500.000 km veya 5 yıl</td>
+                            <td>Tüm bileşenlerin kontrolü ve yenilenmesi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
