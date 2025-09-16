@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TS 13149 - Toplu Taşıma Araçları - Erişilebilirlik - Araç İçi Bilgi ve İletişim Sistemleri</title>
+    <title>EN 50206 - Demiryolu Uygulamaları - Pantograflar: Özellikler ve Testler</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
@@ -139,8 +139,8 @@
             </a>
         </nav>
 
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS 13149 - Toplu Taşıma Araçları - Erişilebilirlik - Araç İçi Bilgi ve İletişim Sistemleri</h1>
-        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS 13149, toplu taşıma araçlarında kullanılan bilgi ve iletişim sistemlerinin teknik özelliklerini, entegrasyonunu ve veri alışverişini düzenleyen bir standarttır.</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">EN 50206 - Demiryolu Uygulamaları - Pantograflar: Özellikler ve Testler</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">EN 50206, demiryolu araçlarında kullanılan pantografların tasarım, üretim, test ve işletim koşullarını düzenler.</p>
 
         <div class="main-content-grid">
             <nav id="toc-sidebar">
@@ -150,143 +150,164 @@
 
             <div class="prose max-w-none text-gray-700">
                 <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
-                <p><strong>TS 13149</strong>, toplu taşıma araçlarında kullanılan bilgi ve iletişim sistemlerinin teknik özelliklerini, entegrasyonunu ve veri alışverişini düzenleyen bir standarttır. Bu standart:</p>
+                <p><strong>EN 50206</strong>, demiryolu araçlarında kullanılan pantografların tasarım, üretim, test ve işletim koşullarını düzenleyen bir standarttır. Standart iki bölüme ayrılır:</p>
                 <ul>
-                    <li>Bilgi sistemleri arasında veri alışverişini sağlamak için açık mimari protokoller tanımlar.</li>
-                    <li>Araç içi ve dış bilgi sistemlerinin entegrasyonunu sağlar.</li>
-                    <li>Yolcu bilgilendirme, sürücü destek sistemleri ve filo yönetimi gibi uygulamaları kapsar.</li>
-                    <li>Çeşitli toplu taşıma sistemleri arasında birlikte çalışabilirliği artırmayı amaçlar.</li>
+                    <li>EN 50206-1: Ana hat araçları için pantograflar</li>
+                    <li>EN 50206-2: Hafif raylı sistemler için pantograflar</li>
                 </ul>
-                <p>Standardın temel amacı, toplu taşıma sistemlerinin teknolojik altyapısını standartlaştırarak verimliliği artırmak, kullanıcı deneyimini iyileştirmek ve sistemler arası uyumluluğu sağlamaktır.</p>
+                <p>Standardın temel amacı:</p>
+                <ul>
+                    <li>Pantografların güvenli ve verimli çalışmasını sağlamak.</li>
+                    <li>Farklı demiryolu sistemleri arasında uyumluluğu garanti etmek.</li>
+                    <li>Pantograf-katener etkileşiminde optimum performansı elde etmek.</li>
+                    <li>Bakım ve servis gereksinimlerini standartlaştırmak.</li>
+                    <li>Elektriksel ve mekanik güvenlik şartlarını belirlemek.</li>
+                </ul>
 
                 <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
-                <p>TS 13149, Avrupa standardı olan EN 13149 serisinin Türkiye'deki uyarlamasıdır. Standart, toplu taşıma araçlarında bilgi ve iletişim sistemleri için gerekli olan aşağıdaki temel kavramları içerir:</p>
-                <h3>Temel Kavramlar</h3>
+                <p>Pantograf, demiryolu elektrikli taşıtlarının havai hat üzerinden elektrik enerjisi almasını sağlayan mekanik bir ekipmandır. Temel bileşenleri:</p>
                 <ul>
-                    <li><strong>IP-Tabanlı Ağ Mimarisi:</strong> Standart, modern toplu taşıma araçlarında Ethernet/IP tabanlı ağ mimarisini temel alır.</li>
-                    <li><strong>Veri Modellemesi:</strong> Araç içi ve dışı sistemler arasında standardize edilmiş veri yapıları tanımlar.</li>
-                    <li><strong>Protokol Katmanları:</strong> Fiziksel, veri bağlantı, ağ ve uygulama katmanlarını kapsayan bir yapı sunar.</li>
-                    <li><strong>Servis Odaklı Mimari (SOA):</strong> Farklı sistemlerin birbirleriyle servisler aracılığıyla haberleşmesini sağlayan mimari yaklaşım benimsenir.</li>
+                    <li><strong>Taban Çerçevesi:</strong> Araca montaj noktası.</li>
+                    <li><strong>Alt ve Üst Kollar:</strong> Pantografın kaldırma mekanizması.</li>
+                    <li><strong>Başlık (Collector):</strong> Havai hat ile temas eden karbon veya metal alaşımlı kısım.</li>
+                    <li><strong>Pnömatik veya Hidrolik Kaldırma Sistemi:</strong> Pantografın hareketini sağlayan sistem.</li>
+                    <li><strong>Yaylar ve Sönümleyiciler:</strong> Temas basıncını düzenleyen ve titreşimleri azaltan bileşenler.</li>
                 </ul>
-                <p>TS 13149 standardı, aşağıdaki teorik temellere dayanır:</p>
+                <p>Pantograflar iki tip olarak sınıflandırılır:</p>
                 <ul>
-                    <li>Bilgi sistemlerinin modüler tasarımı ve esnekliği.</li>
-                    <li>Açık standartlar ve protokollerin kullanımı.</li>
-                    <li>Farklı üreticilerin sistemleri arasında birlikte çalışabilirlik.</li>
-                    <li>Gerçek zamanlı veri alışverişi ve sistem durumu izleme.</li>
-                    <li>Güvenli ve güvenilir iletişim altyapısı.</li>
+                    <li><strong>Tek Kollu Pantograflar (Single-arm):</strong> Modern yüksek hız hatlarında tercih edilir.</li>
+                    <li><strong>Çift Kollu Pantograflar (Diamond-shaped):</strong> Daha eski sistemlerde yaygın olarak kullanılır.</li>
                 </ul>
 
                 <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
-                <h3>Kurumsal Gereklilikler</h3>
+                <p>EN 50206 standardına uygunluk için karşılanması gereken temel gereklilikler:</p>
+                <h3>Yapısal Gereklilikler</h3>
                 <ul>
-                    <li><strong>Belgelendirme:</strong> Kuruluşlar, TS 13149 standardına uygunluk belgesini Türk Standardları Enstitüsü (TSE) veya yetkilendirilmiş belgelendirme kuruluşlarından almalıdır.</li>
-                    <li><strong>Yönetim Sistemi:</strong> Kuruluşlar, bilgi teknolojileri yönetim sistemini standarda uygun şekilde dokümante etmelidir.</li>
-                    <li><strong>Personel Yetkinliği:</strong> Teknik personelin standardın gereklilikleri konusunda eğitim alması ve yetkinliğinin belgelendirilmesi gerekir.</li>
-                    <li><strong>Tedarikçi Yönetimi:</strong> Tedarikçilerin TS 13149 uyumlu bileşenler sağlaması için gerekli süreçler oluşturulmalıdır.</li>
+                    <li>Montaj yüksekliği: Minimum 400 mm, maksimum 3000 mm (EN 50206-1 için).</li>
+                    <li>Çalışma yüksekliği: EN 50206-1 için 5600 mm'ye kadar, EN 50206-2 için ilgili hat gereksinimlerine göre.</li>
+                    <li>Statik temas kuvveti: 70N - 200N aralığında olmalı (hat tipine bağlı olarak).</li>
+                    <li>Başlık (karbon şerit) genişliği: 1600-1950 mm (EN 50206-1 için).</li>
+                    <li>Eksen sapması toleransı: ±400 mm (≤160 km/h hızlar için).</li>
                 </ul>
-                <h3>Teknik Gereklilikler</h3>
+                <h3>Elektriksel Gereklilikler</h3>
                 <ul>
-                    <li><strong>Ağ Altyapısı:</strong> 100BASE-T veya 1000BASE-T Ethernet standardında, en az CAT5e kategori kablolama kullanılmalıdır.</li>
-                    <li><strong>IP Adreslemesi:</strong> IPv4 veya IPv6 protokolü kullanılmalı, statik IP adresleme veya DHCP desteği sağlanmalıdır.</li>
-                    <li><strong>Veri Aktarım Protokolleri:</strong> HTTP, MQTT, WebSocket gibi standart protokoller kullanılmalıdır.</li>
-                    <li><strong>Veri Formatları:</strong> XML veya JSON formatında standardize edilmiş veri yapıları kullanılmalıdır.</li>
-                    <li><strong>Güvenlik Gereksinimleri:</strong> TLS/SSL şifreleme, kimlik doğrulama ve yetkilendirme mekanizmaları uygulanmalıdır.</li>
-                    <li><strong>Donanım Gereksinimleri:</strong> -40°C ile +85°C sıcaklık aralığında çalışabilen, titreşim ve darbelere dayanıklı bileşenler kullanılmalıdır.</li>
-                    <li><strong>Enerji Verimliliği:</strong> Düşük güç tüketimi ve bekleme modları desteklenmelidir.</li>
-                    <li><strong>Yedeklilik:</strong> Kritik sistemler için yedekli tasarım ve otomatik geçiş mekanizmaları bulunmalıdır.</li>
+                    <li>İzolasyon direnci: ≥ 10 MΩ (EN 50124-1'e göre).</li>
+                    <li>Gerilim dayanımı: İlgili nominal gerilimin 1.5 katına dayanıklı olmalı.</li>
+                    <li>Akım taşıma kapasitesi: Ana hatlarda 2500A'e kadar dayanıklı.</li>
+                    <li>Topraklama: Araç gövdesi ile elektriksel süreklilik sağlanmalı.</li>
+                </ul>
+                <h3>Mekanik Gereklilikler</h3>
+                <ul>
+                    <li>Dinamik temas kuvveti: Hıza bağlı olarak EN 50367'ye göre belirlenmiş limitlere uymalı.</li>
+                    <li>Aerodinamik davranış: 320 km/h'e kadar test edilmiş olmalı (yüksek hız hatları için).</li>
+                    <li>Titreşim ve şok dayanımı: EN 61373'e göre test edilmiş olmalı.</li>
+                    <li>Kaldırma/indirme süresi: Maksimum 10 saniye.</li>
+                    <li>Aşınma direnci: Karbon şeritlerin minimum ömrü 30.000 km.</li>
+                </ul>
+                <h3>Çevresel Gereklilikler</h3>
+                <ul>
+                    <li>Çalışma sıcaklığı aralığı: -30°C ile +70°C arası.</li>
+                    <li>Nem: %95 bağıl neme kadar dayanıklı.</li>
+                    <li>Toz ve su koruması: EN 60529 standardına göre minimum IP54 koruma sınıfı.</li>
+                    <li>Buz ve kar koşullarında performans: Özel testlerle doğrulanmalı.</li>
                 </ul>
 
                 <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
                 <ul>
-                    <li><strong>Şehir İçi Toplu Taşıma:</strong>
+                    <li><strong>Ana Hat Uygulamaları (EN 50206-1):</strong>
                         <ul>
-                            <li><strong>Otobüsler:</strong> Ankara EGO ve İstanbul İETT otobüslerinde gerçek zamanlı konum takibi, dijital gösterge ekranları ve anons sistemleri TS 13149 standardına göre entegre edilmiştir.</li>
-                            <li><strong>Tramvaylar:</strong> İzmir ESHOT tramvay sisteminde yolcu bilgilendirme, kamera ve güvenlik sistemleri bu standart kapsamında birlikte çalışmaktadır.</li>
-                            <li><strong>Metrobüs:</strong> İstanbul metrobüs sisteminde araç içi bilgilendirme sistemleri, akıllı durak göstergeleri ve trafik sinyalizasyon sistemleriyle entegrasyon sağlanmıştır.</li>
+                            <li>Yüksek Hızlı Trenler: TGV, ICE, AVE gibi 250 km/h üzeri hızlarda çalışan trenler.</li>
+                            <li>Konvansiyonel Yolcu Trenleri: Şehirlerarası ve bölgesel elektrikli trenler.</li>
+                            <li>Yük Lokomotifleri: Elektrikli yük taşımacılığında kullanılan lokomotifler.</li>
+                            <li>Örnek: Türkiye'de YHT hatlarında kullanılan pantograflar EN 50206-1'e göre sertifikalandırılır.</li>
                         </ul>
                     </li>
-                    <li><strong>Şehirlerarası Taşımacılık:</strong>
+                    <li><strong>Hafif Raylı Sistem Uygulamaları (EN 50206-2):</strong>
                         <ul>
-                            <li><strong>Yüksek Hızlı Trenler:</strong> TCDD yüksek hızlı trenlerinde yolcu bilgilendirme sistemleri, eğlence üniteleri ve internet erişimi TS 13149 uyumlu olarak yapılandırılmıştır.</li>
-                            <li><strong>Otobüs İşletmeleri:</strong> Büyük otobüs firmalarının filolarında araç takip, yakıt tüketimi optimizasyonu ve bakım planlama sistemleri bu standart kapsamında entegre edilmiştir.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Özel Uygulamalar:</strong>
-                        <ul>
-                            <li><strong>Havaalanı Servis Araçları:</strong> İstanbul Havalimanı'nda yolcu taşıyan servis araçlarında bagaj takip sistemleri ve terminal bilgi sistemleriyle entegrasyon sağlanmıştır.</li>
-                            <li><strong>Turizm Taşımacılığı:</strong> Turistik bölgelerdeki taşıma araçlarında çok dilli bilgilendirme sistemleri ve rota bilgilendirme ekranları standarda uygun olarak kurulmuştur.</li>
-                            <li><strong>Akıllı Şehir Uygulamaları:</strong> Belediyelerin akıllı şehir projelerinde toplu taşıma araçlarının trafik yönetim merkezleri ve mobil uygulamalarla entegrasyonu sağlanmıştır.</li>
+                            <li>Tramvaylar: Kent içi raylı sistemler.</li>
+                            <li>Metro Sistemleri: Havai hat kullanan metro hatları.</li>
+                            <li>Banliyö Trenleri: Kent içi ve çevre yerleşim bölgeleri arasında çalışan trenler.</li>
+                            <li>Örnek: İstanbul Tramvay ve Metro sistemlerinde kullanılan pantograflar EN 50206-2 gerekliliklerine uygun olmalıdır.</li>
                         </ul>
                     </li>
                 </ul>
 
                 <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
-                <h3>Proje Hazırlık Aşaması</h3>
+                <h3>Tasarım Aşaması</h3>
                 <ul>
-                    <li><strong>İhtiyaç Analizi:</strong> Mevcut sistemlerin envanteri çıkarılmalı ve ihtiyaçlar detaylı olarak belirlenmelidir.</li>
-                    <li><strong>Sistem Mimarisi Tasarımı:</strong> TS 13149 uyumlu bir sistem mimarisi tasarlanmalı, tüm bileşenler ve arabirimler tanımlanmalıdır.</li>
-                    <li><strong>Bütçe ve Zaman Planlaması:</strong> Detaylı bir bütçe ve uygulama takvimi oluşturulmalıdır.</li>
+                    <li>Çalışma ortamı ve operasyonel gereksinimlerin belirlenmesi (hat tipi, gerilim, hız).</li>
+                    <li>Pantograf tipinin seçimi (tek kol/çift kol) ve temel parametrelerin belirlenmesi.</li>
+                    <li>EN 50206'ya uygun boyutlandırma ve malzeme seçimi.</li>
+                    <li>Aerodinamik analiz ve titreşim davranışının simülasyonu.</li>
+                    <li>Elektriksel yalıtım ve topraklama tasarımı.</li>
+                    <li>Aşınma hesapları ve karbon şerit seçimi.</li>
                 </ul>
-                <h3>Uygulama Aşaması</h3>
+                <h3>Üretim Aşaması</h3>
                 <ul>
-                    <li><strong>Ağ Altyapısının Kurulumu:</strong> Ethernet anahtarları, yönlendiriciler ve kablolama kurulmalıdır.</li>
-                    <li><strong>Donanım Entegrasyonu:</strong> Araç bilgisayarları, ekranlar, sensörler gibi donanımlar montaj edilmelidir.</li>
-                    <li><strong>Yazılım Kurulumu:</strong> İşletim sistemleri, middleware ve uygulama yazılımları yüklenmelidir.</li>
-                    <li><strong>Veri Modeli Uygulaması:</strong> Veri yapıları ve protokoller uygulanmalıdır.</li>
-                    <li><strong>Sistem Entegrasyonu:</strong> Araç içi sistemler entegre edilmelidir.</li>
+                    <li>Kalite kontrol planının oluşturulması ve belgelenmesi.</li>
+                    <li>Malzeme sertifikalarının kontrolü ve doğrulanması.</li>
+                    <li>Kaynak ve montaj prosedürlerinin EN 15085’e uygun belgelenmesi.</li>
+                    <li>Kritik bileşenlerin izlenebilirliğinin sağlanması.</li>
+                    <li>Üretim sürecinde ara kontrollerin gerçekleştirilmesi.</li>
                 </ul>
-                <h3>Test ve Doğrulama</h3>
+                <h3>Test Aşaması</h3>
                 <ul>
-                    <li><strong>Birim Testleri:</strong> Her bileşenin tek başına testi.</li>
-                    <li><strong>Entegrasyon Testleri:</strong> Bileşenlerin uyumlu çalışması.</li>
-                    <li><strong>Performans Testleri:</strong> Yük altında ve farklı koşullarda performans.</li>
-                    <li><strong>Güvenlik Testleri:</strong> Sistem güvenliğinin doğrulanması.</li>
+                    <li>Statik testler (izolasyon, gerilim dayanımı, kaldırma kuvveti).</li>
+                    <li>Dinamik testler (laboratuvar ve saha testleri).</li>
+                    <li>Aerodinamik testler (rüzgar tüneli testleri).</li>
+                    <li>Titreşim ve şok testleri (EN 61373).</li>
+                    <li>Çevresel testler (sıcaklık, nem, toz, su).</li>
+                    <li>Dayanıklılık testleri (en az 100.000 çalışma döngüsü).</li>
                 </ul>
-                <h3>İşletme ve Bakım</h3>
+                <h3>Belgelendirme Aşaması</h3>
                 <ul>
-                    <li><strong>Periyodik Bakım:</strong> Sistem bileşenlerinin düzenli bakımı.</li>
-                    <li><strong>Performans İzleme:</strong> Gerçek zamanlı izleme ve raporlama.</li>
-                    <li><strong>Güncellemeler:</strong> Yazılım ve firmware güncellemeleri.</li>
-                    <li><strong>Dokümantasyon Güncellemesi:</strong> Sistem değişikliklerinin dokümantasyonu.</li>
+                    <li>Test raporlarının hazırlanması ve değerlendirilmesi.</li>
+                    <li>Teknik dosyanın onaylanmış kuruluşa sunulması.</li>
+                    <li>Tip testlerinin gerçekleştirilmesi.</li>
+                    <li>İmalat kalite sistem denetimi (ISO 9001 veya IRIS).</li>
+                    <li>Uygunluk değerlendirme raporu.</li>
+                    <li>CE işaretlemesi ve uygunluk beyanı.</li>
+                    <li>Periyodik yeniden değerlendirme (2-3 yılda bir).</li>
                 </ul>
 
                 <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
                 <ul>
-                    <li><strong>Yazılım Mühendisleri:</strong>
+                    <li><strong>Tasarım Ekibi:</strong>
                         <ul>
-                            <li>Veri modeli ve protokollerin geliştirilmesi.</li>
-                            <li>Yazılım bileşenlerinin tasarımı ve kodlaması.</li>
-                            <li>Sistem entegrasyon yazılımlarının geliştirilmesi.</li>
-                            <li>Güvenlik yazılımlarının uygulanması.</li>
+                            <li>Pantografın mekanik ve elektriksel tasarımının yapılması.</li>
+                            <li>Simülasyon ve analizlerin gerçekleştirilmesi.</li>
+                            <li>Malzeme ve bileşen seçimi.</li>
                         </ul>
                     </li>
-                    <li><strong>Donanım Mühendisleri:</strong>
+                    <li><strong>Üretim Ekibi:</strong>
                         <ul>
-                            <li>Ağ ve iletişim donanımlarının seçimi.</li>
-                            <li>Araç içi cihazların tasarımı ve entegrasyonu.</li>
-                            <li>Güç ve çevre koşullarına dayanıklılık testleri.</li>
+                            <li>Pantograf bileşenlerinin üretimi ve montajı.</li>
+                            <li>Kalite kontrol süreçlerinin uygulanması.</li>
+                            <li>İzlenebilirlik ve dokümantasyon.</li>
                         </ul>
                     </li>
-                    <li><strong>Ağ Uzmanları:</strong>
+                    <li><strong>Test Ekibi:</strong>
                         <ul>
-                            <li>Ağ mimarisinin tasarımı.</li>
-                            <li>Kablosuz ve kablolu iletişim altyapısının kurulumu.</li>
-                            <li>Performans optimizasyonu ve güvenlik konfigürasyonları.</li>
+                            <li>Test prosedürlerinin geliştirilmesi ve uygulanması.</li>
+                            <li>Test sonuçlarının raporlanması.</li>
+                            <li>Uygunsuzlukların analizi ve düzeltilmesi.</li>
                         </ul>
                     </li>
-                    <li><strong>Proje Yöneticileri:</strong>
+                    <li><strong>Kalite Güvence Ekibi:</strong>
                         <ul>
-                            <li>Proje planlaması ve koordinasyonu.</li>
-                            <li>Bütçe ve zaman yönetimi.</li>
-                            <li>Paydaş yönetimi ve raporlama.</li>
+                            <li>Kalite kontrol planının hazırlanması ve uygulanması.</li>
+                            <li>Malzeme ve bileşen kabul testleri.</li>
+                            <li>Üretim süreçlerinin denetimi.</li>
+                            <li>Belgelendirme süreçlerinin yönetimi.</li>
+                            <li>İzlenebilirlik sisteminin kurulması.</li>
                         </ul>
                     </li>
-                    <li><strong>Kalite Güvence Uzmanları:</strong>
+                    <li><strong>Bakım Ekibi:</strong>
                         <ul>
-                            <li>Test stratejilerinin oluşturulması.</li>
-                            <li>Standart uygunluk denetimleri.</li>
-                            <li>Sürekli iyileştirme süreçleri.</li>
+                            <li>Bakım planlarının hazırlanması.</li>
+                            <li>Rutin kontrol prosedürlerinin belirlenmesi.</li>
+                            <li>Arıza teşhis ve giderme prosedürleri.</li>
+                            <li>Yedek parça yönetimi.</li>
                         </ul>
                     </li>
                 </ul>
@@ -294,162 +315,231 @@
                 <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
                 <h3>İzleme Süreci</h3>
                 <ul>
-                    <li>Gerçek zamanlı sistem izleme (uptime, performans metrikleri).</li>
-                    <li>Log kaydı ve analiz (hata logları, erişim logları).</li>
-                    <li>Performans raporlaması (haftalık/aylık raporlar).</li>
-                    <li>Kullanıcı geri bildirim toplama.</li>
+                    <li>Pantograf performansının düzenli izlenmesi (her 10.000 km’de bir).</li>
+                    <li>Karbon şeritlerin aşınma kontrolü (haftalık görsel kontrol).</li>
+                    <li>Kaldırma mekanizması ve yayların kontrolü (aylık).</li>
+                    <li>Elektriksel izolasyon direnci ölçümleri (3 ayda bir).</li>
+                    <li>Veri kayıt sistemleri ile gerçek zamanlı performans izleme (modern sistemlerde).</li>
                 </ul>
-                <h3>İç Denetim</h3>
+                <h3>Denetim Süreci</h3>
                 <ul>
-                    <li>Periyodik denetimler (6 ayda bir).</li>
-                    <li>Performans izleme ve raporlama.</li>
-                    <li>Olay kayıtları (arızalar, güvenlik olayları).</li>
-                    <li>Düzeltici faaliyetler.</li>
+                    <li><strong>İç Denetimler:</strong> Üretici tarafından 6 ayda bir yapılmalı.</li>
+                    <li><strong>Dış Denetimler:</strong> Onaylanmış kuruluşlar tarafından yılda bir gerçekleştirilmeli.</li>
+                    <li><strong>Bakım Sonrası Denetimler:</strong> Her büyük bakım sonrası.</li>
+                    <li><strong>Olağanüstü Denetimler:</strong> Kaza veya anormal davranış sonrası.</li>
                 </ul>
-                <h3>Dış Denetim ve Belgelendirme</h3>
+                <h3>Belgelendirme Süreci</h3>
                 <ul>
-                    <li>Belgelendirme başvurusu (TSE veya yetkilendirilmiş kuruluş).</li>
-                    <li>Ön değerlendirme.</li>
-                    <li>Saha denetimi.</li>
-                    <li>Uygunsuzlukların giderilmesi.</li>
-                    <li>Belgelendirme (3 yıl geçerli).</li>
-                    <li>Gözetim denetimleri (yıllık).</li>
-                    <li>Yeniden belgelendirme (3 yılda bir).</li>
-                </ul>
-                <h3>Belgelendirme Kriterleri</h3>
-                <ul>
-                    <li><strong>Dokümantasyon Uygunluğu:</strong> Sistem mimarisi, veri modeli, protokoller dokümante edilmiş olmalı.</li>
-                    <li><strong>Teknik Gereklilikler:</strong> Ağ, donanım ve yazılım standartlara uygun olmalı.</li>
-                    <li><strong>Fonksiyonel Testler:</strong> Tüm fonksiyonlar belirtilen şekilde çalışmalı.</li>
-                    <li><strong>Güvenlik Gereklilikleri:</strong> Veri ve siber güvenlik önlemleri uygulanmış olmalı.</li>
-                    <li><strong>Yönetim Sistemi:</strong> Yönetim, bakım ve iyileştirme süreçleri oluşturulmuş olmalı.</li>
+                    <li>Ürün sertifikasyonu için başvuru.</li>
+                    <li>Teknik dosyanın onaylanmış kuruluşa sunulması.</li>
+                    <li>Tip testlerinin gerçekleştirilmesi (EN 50206'ya göre).</li>
+                    <li>İmalat kalite sistemi denetimi (ISO 9001 veya IRIS sertifikasyonu gerekli).</li>
+                    <li>Uygunluk değerlendirme raporu.</li>
+                    <li>CE işaretlemesi ve uygunluk beyanının düzenlenmesi.</li>
+                    <li>Periyodik yeniden değerlendirme (2-3 yılda bir).</li>
                 </ul>
 
                 <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
                 <ul>
-                    <li><strong>Teknik Zorluklar:</strong>
+                    <li><strong>Farklı Hat Sistemleri ile Uyumluluk:</strong>
                         <ul>
-                            <li><strong>Zorluk:</strong> Farklı üreticilerin sistemleri arasında uyumluluk sorunları.</li>
-                            <li><strong>Çözüm:</strong> Açık standartlara ve arabirim tanımlarına bağlı kalınmalı, test edilmiş ürün kombinasyonları tercih edilmelidir.</li>
-                            <li><strong>Zorluk:</strong> Araç ortamının zorlu koşulları (titreşim, sıcaklık, nem).</li>
-                            <li><strong>Çözüm:</strong> Özel olarak sertifikalandırılmış endüstriyel donanımlar kullanılmalı, titreşim sönümleme ve termal yönetim önlemleri alınmalıdır.</li>
-                            <li><strong>Zorluk:</strong> Güç kesintileri ve voltaj dalgalanmaları.</li>
-                            <li><strong>Çözüm:</strong> UPS sistemleri, güç filtreleri ve koruma devreleri kullanılmalıdır.</li>
-                            <li><strong>Zorluk:</strong> Kablosuz iletişimde kesintiler.</li>
-                            <li><strong>Çözüm:</strong> Yedekli iletişim kanalları, veri önbellekleme ve otomatik yeniden bağlanma mekanizmaları uygulanmalıdır.</li>
+                            <li><strong>Zorluk:</strong> Avrupa'da farklı ülkelerde farklı katener sistemleri.</li>
+                            <li><strong>Çözüm:</strong> Aktif kontrol sistemleri, gelişmiş malzeme teknolojileri, aerodinamik optimizasyon, çift pantograf kullanımı, otomatik izleme sistemleri, bakım optimizasyonu, soğuk hava paketi.</li>
                         </ul>
                     </li>
-                    <li><strong>Operasyonel Zorluklar:</strong>
+                    <li><strong>Yüksek Hızlarda Aerodinamik Davranış:</strong>
                         <ul>
-                            <li><strong>Zorluk:</strong> Sistemin karmaşıklığı nedeniyle işletme zorluğu.</li>
-                            <li><strong>Çözüm:</strong> Kullanıcı dostu arayüzler, detaylı dokümantasyon ve kapsamlı eğitim programları hazırlanmalıdır.</li>
-                            <li><strong>Zorluk:</strong> Sistem güncellemelerinin operasyonları etkilemesi.</li>
-                            <li><strong>Çözüm:</strong> Çalışma saatleri dışında güncelleme planlaması, kademeli güncelleme stratejisi ve geri dönüş planları oluşturulmalıdır.</li>
-                            <li><strong>Zorluk:</strong> Yetişmiş personel eksikliği.</li>
-                            <li><strong>Çözüm:</strong> Düzenli eğitim programları, sertifikasyon teşvikleri ve bilgi transferi mekanizmaları uygulanmalıdır.</li>
+                            <li><strong>Zorluk:</strong> 300 km/h üzeri hızlarda pantograf-katener etkileşimi zorlaşır.</li>
+                            <li><strong>Çözüm:</strong> CFD analizleri ile optimize edilmiş pantograf yapıları.</li>
                         </ul>
                     </li>
-                    <li><strong>Maliyet Zorlukları:</strong>
+                    <li><strong>Ekstrem Çevre Koşulları:</strong>
                         <ul>
-                            <li><strong>Zorluk:</strong> Yüksek başlangıç maliyetleri.</li>
-                            <li><strong>Çözüm:</strong> Aşamalı uygulama planı, öncelikli sistemlerden başlama ve maliyet-fayda analizi yapılmalıdır.</li>
-                            <li><strong>Zorluk:</strong> Bakım ve güncelleme maliyetleri.</li>
-                            <li><strong>Çözüm:</strong> Uzun vadeli servis anlaşmaları, önleyici bakım programları ve kaynakların optimize edilmesi sağlanmalıdır.</li>
+                            <li><strong>Zorluk:</strong> Buzlanma, şiddetli rüzgar ve yüksek sıcaklıklar pantograf performansını etkiler.</li>
+                            <li><strong>Çözüm:</strong> Özel ısıtma sistemleri, yüksek performanslı karbon-bakır alaşımlı şeritler.</li>
                         </ul>
                     </li>
-                    <li><strong>Uyumluluk Zorlukları:</strong>
+                    <li><strong>Aşınma ve Bakım Maliyetleri:</strong>
                         <ul>
-                            <li><strong>Zorluk:</strong> Mevcut eski sistemlerle entegrasyon.</li>
-                            <li><strong>Çözüm:</strong> Geçiş adaptörleri, protokol dönüştürücüler ve köprü yazılımları kullanılmalıdır.</li>
-                            <li><strong>Zorluk:</strong> Standart yorumlamasında farklılıklar.</li>
-                            <li><strong>Çözüm:</strong> TSE veya uzman danışmanlardan teknik görüş alınmalı, sektör içi işbirliği platformları kurulmalıdır.</li>
+                            <li><strong>Zorluk:</strong> Karbon şeritlerin sık değiştirilmesi.</li>
+                            <li><strong>Çözüm:</strong> Durum bazlı bakım yaklaşımı ile maliyetlerin azaltılması.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Titreşim ve Gürültü:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Pantograf-katener etkileşimi sonucu oluşan titreşim ve gürültü.</li>
+                            <li><strong>Çözüm:</strong> Aktif kontrol sistemleri.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ark Oluşumu:</strong>
+                        <ul>
+                            <li><strong>Zorluk:</strong> Temas kesintileri sırasında elektriksel arklar.</li>
+                            <li><strong>Çözüm:</strong> Aktif kontrol sistemleri.</li>
                         </ul>
                     </li>
                 </ul>
 
                 <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
-                <h3>TS 13149 Sistem Mimarisi</h3>
+                <h3>Pantograf Temel Bileşenleri</h3>
                 <div class="mermaid">
 graph TD;
-    A["Araç İçi IP Ağı"] --> B["Araç Bilgisayarı"];
-    A --> C["Yolcu Bilgilendirme Sistemi"];
-    A --> D["Ücret Toplama Sistemi"];
-    A --> E["Kamera ve Güvenlik Sistemleri"];
-    A --> F["Araç Sensörleri"];
+    A["Pantograf"] --> B["Taban Çerçevesi"];
+    A --> C["Alt ve Üst Kollar"];
+    A --> D["Başlık/Collector"];
+    A --> E["Kaldırma Sistemi"];
+    A --> F["Yay ve Sönümleyiciler"];
     
-    B --> G["Merkezi Yönetim Sistemi"];
+    D --> D1["Karbon Şerit"];
+    D --> D2["Başlık Çerçevesi"];
     
-    subgraph "Araç Dışı Sistemler"
-    G --> H["Durak Göstergeleri"];
-    G --> I["Mobil Uygulamalar"];
-    G --> J["Trafik Yönetim Merkezi"];
-    end
+    E --> E1["Pnömatik Silindir"];
+    E --> E2["Kontrol Valfleri"];
+    
+    F --> F1["Ana Yay"];
+    F --> F2["Damper Sistemi"];
                 </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 sistem mimarisini gösteren şema.</p>
+                <p class="text-center text-sm text-gray-500">Pantografın temel bileşenlerini gösteren şema.</p>
 
-                <h3>TS 13149 Uygulama Akış Şeması</h3>
+                <h3>Pantograf Belgelendirme Süreci</h3>
                 <div class="mermaid">
 flowchart TD;
-    A["İhtiyaç Analizi"] --> B["Sistem Tasarımı"];
-    B --> C["Donanım ve Yazılım Tedariki"];
-    C --> D["Kurulum ve Entegrasyon"];
-    D --> E["Test ve Doğrulama"];
-    E --> F{"Testler Başarılı mı?"};
-    F -- Hayır --> D;
-    F -- Evet --> G["Pilot Uygulama"];
-    G --> H["Personel Eğitimi"];
-    H --> I["Tam Kapsamlı Geçiş"];
-    I --> J["İşletme ve Bakım"];
-    J --> K["Periyodik Denetim"];
-    K --> L{"Uygunluk Devam Ediyor mu?"};
-    L -- Hayır --> M["Düzeltici Faaliyetler"];
-    M --> K;
-    L -- Evet --> J;
+    A["Başlangıç: Pantograf Tasarımı"] --> B["Teknik Dosya Hazırlığı"];
+    B --> C{"İlk Değerlendirme"};
+    C -- "Uygun" --> D["Tip Testleri"];
+    C -- "Uygun Değil" --> B;
+    D --> E{"Test Sonuçları"};
+    E -- "Başarılı" --> F["Uygunluk Değerlendirmesi"];
+    E -- "Başarısız" --> G["Düzeltici Faaliyetler"];
+    G --> D;
+    F --> H["Sertifikasyon"];
+    H --> I["Periyodik Denetimler"];
+    I --> J{"Denetim Sonuçları"};
+    J -- "Uygun" --> K["Sertifikasyon Devamı"];
+    J -- "Uygun Değil" --> L["Düzeltici Faaliyetler"];
+    L --> I;
                 </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 uygulama akış şemasını gösteren diyagram.</p>
+                <p class="text-center text-sm text-gray-500">Pantograf belgelendirme sürecinin akış şeması.</p>
 
-                <h3>TS 13149 Veri Akış Şeması</h3>
+                <h3>Pantograf Bakım Döngüsü</h3>
                 <div class="mermaid">
-flowchart LR;
-    A["Araç Sensörleri"] --> B["Veri Toplama Modülü"];
-    B --> C["Araç Bilgisayarı"];
-    C --> D["Yerel Veri İşleme"];
-    C --> E["Kablosuz İletişim Modülü"];
-    E --> F["Merkezi Sunucu"];
-    F --> G["Veri Ambarı"];
-    G --> H["Analitik İşlemler"];
-    G --> I["Raporlama"];
-    F --> J["Durak Göstergeleri"];
-    F --> K["Mobil Uygulamalar"];
-    C --> L["Yolcu Bilgilendirme Ekranları"];
-    C --> M["Anons Sistemi"];
+graph LR;
+    A["Günlük Görsel Kontrol"] --> B["Haftalık Aşınma Kontrolü"];
+    B --> C["Aylık Mekanik Kontrol"];
+    C --> D["3 Aylık Elektriksel Test"];
+    D --> E["6 Aylık Detaylı İnceleme"];
+    E --> F["Yıllık Büyük Bakım"];
+    F --> A;
                 </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 veri akış şemasını gösteren diyagram.</p>
+                <p class="text-center text-sm text-gray-500">Pantograf bakım döngüsünü gösteren şema.</p>
 
-                <h3>TS 13149 Belgelendirme Süreci</h3>
-                <div class="mermaid">
-flowchart TD;
-    A["Belgelendirme Başvurusu"] --> B["Dokümantasyon İncelemesi"];
-    B --> C{"Dokümantasyon Yeterli mi?"};
-    C -- Hayır --> D["Dokümantasyon Revizyonu"];
-    D --> B;
-    C -- Evet --> E["Saha Denetimi Planlanması"];
-    E --> F["Saha Denetimi"];
-    F --> G{"Uygunsuzluk Var mı?"};
-    G -- Evet --> H["Düzeltici Faaliyetler"];
-    H --> I["Düzeltici Faaliyetlerin Doğrulanması"];
-    I --> G;
-    G -- Hayır --> J["Belgelendirme Kararı"];
-    J --> K["TS 13149 Uygunluk Belgesi"];
-    K --> L["Yıllık Gözetim Denetimleri"];
-    L --> M{"Gözetim Denetimi Başarılı mı?"};
-    M -- Hayır --> N["Düzeltici Faaliyetler"];
-    N --> O["Takip Denetimi"];
-    O --> M;
-    M -- Evet --> P["Belge Geçerliliğinin Devamı"];
-    P --> Q["3 Yıl Sonra Yeniden Belgelendirme"];
-                </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 belgelendirme sürecinin akış şeması.</p>
+                <h3>EN 50206 Test Gereksinimleri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test Tipi</th>
+                            <th>Standart Referansı</th>
+                            <th>Ana Hat (EN 50206-1)</th>
+                            <th>Hafif Raylı (EN 50206-2)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Statik Temas Kuvveti</td>
+                            <td>EN 50206 6.3.1</td>
+                            <td>70N-200N</td>
+                            <td>40N-120N</td>
+                        </tr>
+                        <tr>
+                            <td>Kaldırma/İndirme Süresi</td>
+                            <td>EN 50206 6.2.3</td>
+                            <td>Maks. 10 saniye</td>
+                            <td>Maks. 10 saniye</td>
+                        </tr>
+                        <tr>
+                            <td>İzolasyon Direnci</td>
+                            <td>EN 50206 6.5.2</td>
+                            <td>≥ 10 MΩ</td>
+                            <td>≥ 10 MΩ</td>
+                        </tr>
+                        <tr>
+                            <td>Dinamik Testler</td>
+                            <td>EN 50206 6.3.2</td>
+                            <td>320 km/h'e kadar</td>
+                            <td>120 km/h'e kadar</td>
+                        </tr>
+                        <tr>
+                            <td>Dayanıklılık Testi</td>
+                            <td>EN 50206 6.4</td>
+                            <td>100.000 döngü</td>
+                            <td>50.000 döngü</td>
+                        </tr>
+                        <tr>
+                            <td>Titreşim Testi</td>
+                            <td>EN 61373</td>
+                            <td>Kategori 1, Sınıf B</td>
+                            <td>Kategori 1, Sınıf A</td>
+                        </tr>
+                        <tr>
+                            <td>Çevresel Testler</td>
+                            <td>EN 60068-2</td>
+                            <td>-30°C ile +70°C</td>
+                            <td>-25°C ile +70°C</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Ana Hat ve Hafif Raylı Pantograf Karşılaştırması</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Özellik</th>
+                            <th>EN 50206-1 (Ana Hat)</th>
+                            <th>EN 50206-2 (Hafif Raylı)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Maksimum Hız</td>
+                            <td>320 km/h</td>
+                            <td>120 km/h</td>
+                        </tr>
+                        <tr>
+                            <td>Temas Kuvveti</td>
+                            <td>70N-200N</td>
+                            <td>40N-120N</td>
+                        </tr>
+                        <tr>
+                            <td>Akım Kapasitesi</td>
+                            <td>2500A</td>
+                            <td>1500A</td>
+                        </tr>
+                        <tr>
+                            <td>Dayanıklılık Testi</td>
+                            <td>100.000 döngü</td>
+                            <td>50.000 döngü</td>
+                        </tr>
+                        <tr>
+                            <td>Çalışma Yüksekliği</td>
+                            <td>4700mm-6500mm</td>
+                            <td>3800mm-6000mm</td>
+                        </tr>
+                        <tr>
+                            <td>Yanal Sapma</td>
+                            <td>±400mm</td>
+                            <td>±300mm</td>
+                        </tr>
+                        <tr>
+                            <td>Temel Kullanım</td>
+                            <td>Yüksek hızlı ve uzun mesafe</td>
+                            <td>Şehir içi ve banliyö</td>
+                        </tr>
+                        <tr>
+                            <td>Bakım Aralığı</td>
+                            <td>500.000 km / 3 yıl</td>
+                            <td>300.000 km / 2 yıl</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
