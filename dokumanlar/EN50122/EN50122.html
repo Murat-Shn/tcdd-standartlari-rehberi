@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 50122 - Demiryolu Uygulamaları - Sabit Tesisler - Elektriksel Güvenlik, Topraklama ve Dönüş Devresi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 50122 - Demiryolu Uygulamaları - Sabit Tesisler - Elektriksel Güvenlik, Topraklama ve Dönüş Devresi</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 50122, demiryolu sabit tesislerinde elektriksel güvenlik, topraklama ve dönüş devresi gerekliliklerini belirleyen Avrupa standardıdır. Elektrik çarpması, kaçak akım ve sistem etkileşimlerini yönetir.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>EN 50122 - "Demiryolu Uygulamaları - Sabit Tesisler - Elektriksel Güvenlik, Topraklama ve Dönüş Devresi"</p>
+                <p>Bu standart, Avrupa Elektroteknik Standardizasyon Komitesi (CENELEC) tarafından geliştirilen bir seri standarttır. Seri, üç ana bölümden oluşur ve son revizyonları 2022'de yayınlanmıştır (EN 50122-1:2022, EN 50122-2:2022, EN 50122-3:2022). 2025'te A1 ekleri ile güncellenmiştir (örneğin, EN 50122-1:2022+A1:2025). Türkiye'de TS EN 50122 olarak TSE tarafından uyarlanmıştır ve TCDD Taşımacılık ile raylı sistem projelerinde zorunlu referans belgedir. Standart, TSI ENE (Energy) ve TSI SRT (Safety in Railway Tunnels) ile entegredir.</p>
+                <h3>Alt Bölümler:</h3>
+                <ul>
+                    <li><strong>EN 50122-1:</strong> Elektrik çarpmasına karşı koruyucu önlemler.</li>
+                    <li><strong>EN 50122-2:</strong> DC çekiş sistemlerinden kaynaklanan kaçak akımların etkilerine karşı önlemler.</li>
+                    <li><strong>EN 50122-3:</strong> AC ve DC çekiş sistemlerinin karşılıklı etkileşimi.</li>
+                </ul>
+
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>EN 50122 serisi, demiryolu sabit tesislerinde (katener, dönüş devresi, topraklama sistemleri) elektriksel güvenlik, topraklama ve dönüş devresi gerekliliklerini kapsar. Kapsam, AC (15/25 kV) ve DC (750 V/1.5 kV/3 kV) elektrifikasyon sistemlerini, tüneller, köprüler ve istasyonlar dahil altyapıyı içerir; araçlar (pantograf) kapsam dışıdır.</p>
+                <p>Temel amaçlar:</p>
+                <ul>
+                    <li>Elektrik çarpması, kaçak akım korozyonu ve sistem etkileşimlerinden kaynaklanan riskleri minimize etmek (örneğin, dokunma gerilimi <120 V AC hedefi).</li>
+                    <li>Demiryolu altyapısının güvenilirliğini artırmak ve bakım maliyetlerini %15-25 azaltmak (etkili topraklama ile).</li>
+                    <li>TSI uyumunu sağlamak ve uluslararası interoperabiliteyi desteklemek.</li>
+                    <li>Çevre ve personel güvenliğini garanti etmek (örneğin, kaçak akım <1 A/m hedefi).</li>
+                    <li>Risk temelli yaklaşım ile kazaları önlemek (yıllık elektrik kaynaklı olay oranı <0.01/100 km).</li>
+                </ul>
+                <p>Standart, IEC 62128 (demiryolu emniyet) ve EN 50367 (arayüz) ile uyumludur.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                <p>EN 50122, demiryolu elektrifikasyonunda elektriksel riskleri yöneten bir standart serisidir. Temel tanımlar:</p>
+                <ul>
+                    <li><strong>Topraklama (Earthing):</strong> Sistem bileşenlerini toprağa bağlayarak potansiyel farkı sınırlama (direnç <1 Ω).</li>
+                    <li><strong>Dönüş Devresi (Return Circuit):</strong> Akımın döndüğü yol (raylar veya kablolar; direnç <0.1 Ω/km).</li>
+                    <li><strong>Dokunma Gerilimi (Touch Voltage):</strong> Erişilebilir noktalardaki potansiyel fark (AC için <120 V, DC için <60 V, 1 sn maruziyet).</li>
+                    <li><strong>Adım Gerilimi (Step Voltage):</strong> Ayaklar arası fark (<42 V AC, <18 V DC).</li>
+                    <li><strong>Kaçak Akım (Stray Current):</strong> DC sistemlerden toprağa sızan akım (korozyon riski).</li>
+                </ul>
+                <p>Teorik arka plan: Ohm kanunu, topraklama direnci hesaplamaları (R = ρL/A, ρ: toprak özdirenci 100-1000 Ωm) ve IEC 60479 (elektrik şoku etkileri) prensiplerine dayanır. Risk analizi (HAZOP, FMEA) ile THR (Tolerable Hazard Rate) <10^{-9}/saat hedeflenir. Seri, AC/DC etkileşiminde elektromanyetik indüksiyonu (indüklenmiş gerilim <65 V) dikkate alır.</p>
+                <h3>Alt Bölümler Detayı:</h3>
+                <ul>
+                    <li><strong>EN 50122-1:</strong> Elektrik çarpması risklerini tanımlar; izolasyon, engelleme ve topraklama ile koruma.</li>
+                    <li><strong>EN 50122-2:</strong> DC kaçak akımlarını (elektroliz korozyonu) ele alır; yalıtım ve drenaj sistemleri.</li>
+                    <li><strong>EN 50122-3:</strong> AC/DC paralelliğinde (örneğin, 25 kV AC ile 3 kV DC) indüksiyon ve harmonik etkileri yönetir.</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Yönetim Sistemi:</strong> ISO 9001 ve ISO 45001 entegre elektriksel güvenlik politikası; yıllık risk değerlendirme (en az 2 atölye).</li>
+                    <li><strong>Personel Yetkinliği:</strong> Elektrik mühendisleri için IEC 60364 sertifikası; eğitim (yıllık 24 saat/kişi).</li>
+                    <li><strong>Dokümantasyon:</strong> Topraklama planı (50+ sayfa), kaçak akım izleme raporu; veri saklama 10 yıl.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> Sözleşmelerde EN 50122 uyumu zorunlu (%100 audit).</li>
+                    <li><strong>Risk Yönetimi:</strong> Tehlike kaydı (minimum 50 giriş/proje); bütçe (%3-5 altyapı maliyeti).</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Topraklama:</strong> Direnç <1 Ω (ölçüm IEC 62305); elektrot derinliği >3 m.</li>
+                    <li><strong>Dönüş Devresi:</strong> Akım kapasitesi >600 A/mm²; izolasyon direnci >1 MΩ.</li>
+                    <li><strong>Gerilim Limitleri:</strong> Dokunma <120 V AC/60 V DC; adım <42 V AC/18 V DC (1 sn).</li>
+                    <li><strong>Kaçak Akım (EN 50122-2):</strong> <1 A/m; yalıtım >10 kΩ·km; drenaj matları (bakır, 100 A kapasite).</li>
+                    <li><strong>AC/DC Etkileşimi (EN 50122-3):</strong> İndüklenmiş gerilim <65 V (50 Hz); harmonik <5% THD.</li>
+                    <li><strong>Testler:</strong> Yıllık topraklama testi (3 nokta yöntemi); kaçak akım monitörleri (gerçek zamanlı, hassasiyet 0.1 A).</li>
+                </ul>
+                <p>Standart, Notified Body (NoBo) sertifikasyonu gerektirir; Hizmet yeterlilik belgesi: Elektrik test laboratuvarları için ISO 17025 + EN 50122 kapsamı (3 yıl süreli).</p>
+
+                <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>EN 50122, elektrifiye demiryolu altyapısında uygulanır:</p>
+                <ul>
+                    <li><strong>Yüksek Hızlı Trenler:</strong> TCDD Ankara-İstanbul YHT hattında topraklama optimizasyonu ile dokunma gerilimi <50 V; ETCS entegrasyonu.</li>
+                    <li><strong>Şehir İçi Sistemler:</strong> İstanbul Metrosu'nda DC kaçak akım drenajı ile korozyon %40 azaltıldı; 1.2 milyon yolcu/gün.</li>
+                    <li><strong>Yük Taşımacılığı:</strong> BTK hattında AC/DC geçişinde indüksiyon kontrolü; 25.000 ton/gün yük güvenliği.</li>
+                    <li><strong>Tünel Projeleri:</strong> Marmaray'da EN 50122-1 ile adım gerilimi <20 V; 75 km kesintisiz hat.</li>
+                    <li><strong>Altyapı Bakımı:</strong> TCDD bakım depolarında yıllık topraklama denetimleri; olay oranı <0.005/100 km.</li>
+                </ul>
+                <p>Diğer: Tramvay hatları (Ankara), metro genişletmeleri.</p>
+
+                <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                <p>EN 50122'yi uygulamak için pratik adımlar (yaşam döngüsü bazlı):</p>
+                <h3>1. Hazırlık Aşaması:</h3>
+                <ul>
+                    <li>Risk değerlendirmesi yapın (FMEA, 1-2 ay; 20+ tehlike); toprak özdirenç ölçümü (ρ <500 Ωm hedefi).</li>
+                    <li>Tasarım planı oluşturun (AutoCAD ile topraklama şeması, maliyet 20.000-50.000 TL).</li>
+                </ul>
+                <h3>2. Tasarım ve Kurulum Aşaması:</h3>
+                <ul>
+                    <li>Topraklama ağı tasarlayın (mesh boyutu 10x10 m, direnç <0.5 Ω).</li>
+                    <li>Yalıtım uygula (EN 50122-2: ray yalıtımı >5 kΩ·m); drenaj kabloları (bakır, 50 mm²).</li>
+                    <li>AC/DC için indüksiyon hesaplaması (FEM simülasyonu, <50 V hedefi).</li>
+                </ul>
+                <h3>3. Test ve Devreye Alma Aşaması:</h3>
+                <ul>
+                    <li>Kurulum testi (topraklama direnci ölçümü, 4 kutup yöntemi; <1 Ω).</li>
+                    <li>Kaçak akım testi (DC yük altında, <0.5 A/m); indüksiyon testi (50 Hz, <65 V).</li>
+                    <li>Sertifikasyon (NoBo denetimi, 2-4 hafta).</li>
+                </ul>
+                <h3>4. İşletme ve Bakım Aşaması:</h3>
+                <ul>
+                    <li>İzleme kurun (SCADA ile gerçek zamanlı, aylık rapor); bakım (yıllık topraklama testi).</li>
+                    <li>Modifikasyon yönetimi (değişiklik onayı <1 ay).</li>
+                </ul>
+                <p>Uygulama maliyeti: Küçük hat için 100.000-500.000 TL/km, büyük için 1-5 milyon TL (test+ekipman). Süre: 6-12 ay.</p>
+                <h3>Alt Bölümler Uygulama Detayı:</h3>
+                <ul>
+                    <li><strong>EN 50122-1:</strong> İzolasyon tasarımı (U0 <1 kV); engelleme (fence yüksekliği >2 m).</li>
+                    <li><strong>EN 50122-2:</strong> Kaçak akım modelleme (simülasyon, <1 A/m); drenaj kapasitesi 200 A.</li>
+                    <li><strong>EN 50122-3:</strong> Paralel hat ayrımı (>10 m); ekranlama (alüminyum, %90 etkinlik).</li>
+                </ul>
+
+                <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disiplin</th>
+                            <th>Sorumluluklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üst Yönetim</td>
+                            <td>Politika onayı ve bütçe (%3-5); yıllık güvenlik raporu.</td>
+                        </tr>
+                        <tr>
+                            <td>Elektrik Mühendisliği</td>
+                            <td>Topraklama tasarımı (direnç hesaplaması); test koordinasyonu.</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet Mühendisliği</td>
+                            <td>Risk analizi (dokunma gerilimi simülasyonu); EN 50122-1 uyumu.</td>
+                        </tr>
+                        <tr>
+                            <td>Altyapı Mühendisliği</td>
+                            <td>Dönüş devresi kurulum (EN 50122-2 drenaj); bakım planı.</td>
+                        </tr>
+                        <tr>
+                            <td>Bakım Mühendisliği</td>
+                            <td>Yıllık testler (kaçak akım ölçümü); RCA (kök neden analizi).</td>
+                        </tr>
+                        <tr>
+                            <td>Kalite ve Denetim</td>
+                            <td>İç audit (yılda 2); NoBo koordinasyonu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Gerçek zamanlı monitöring (toprak direnci sensörleri, aylık veri); kaçak akım <0.1 A alarmı.</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç: Yılda 2 kez (toprak testi, %100 kapsama).</li>
+                    <li>Dış: NoBo (2 yılda bir, 3-5 gün); TCDD denetimi (yıllık).</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Başvuru: Teknik dosya (100+ sayfa).</li>
+                    <li>İnceleme: 1-2 ay; saha testi 1 hafta.</li>
+                    <li>Sertifika: 5 yıl geçerli, yıllık gözetim; yeniden tam denetim.</li>
+                </ul>
+                <p>Hizmet Yeterlilik Belgesi: Elektrik test laboratuvarları için ISO 17025 + EN 50122 kapsamı (3 yıl süreli).</p>
+
+                <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
+                <ul>
+                    <li>Toprak direnci varyasyonu (kuru zemin >5 Ω).</li>
+                    <li>Kaçak akım korozyonu (boru hatları, %20 etki).</li>
+                    <li>AC/DC indüksiyonu (paralel hatlarda >100 V).</li>
+                    <li>Maliyet (topraklama ağı 200.000 TL/km).</li>
+                    <li>Eski altyapı retrofit (%30 ek iş).</li>
+                </ul>
+                <h3>Çözümler:</h3>
+                <ul>
+                    <li>Kimyasal topraklama (bentanit, direnç <0.5 Ω).</li>
+                    <li>Drenaj mat optimizasyonu (periyodik ölçüm, %50 azaltma).</li>
+                    <li>Ekran kabloları (alüminyum, <50 V indüksiyon).</li>
+                    <li>Aşamalı uygulama (pilot km, 3 ay).</li>
+                    <li>Danışmanlık (TÜBİTAK, %15 maliyet düşüşü).</li>
+                </ul>
+                <p>İpuçları: Simülasyon yazılımları (ETAP) kullanın; yıllık eğitim.</p>
+
+                <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                <h3>EN 50122 Seri Yapısı Şeması</h3>
+                <div class="mermaid">
+graph TD;
+A["EN 50122 Serisi"] --> B["EN 50122-1: Elektrik Çarpması"];
+A --> C["EN 50122-2: Kaçak Akımlar"];
+A --> D["EN 50122-3: AC/DC Etkileşimi"];
+B --> E["Topraklama & İzolasyon"];
+C --> F["Drenaj & Yalıtım"];
+D --> G["İndüksiyon Kontrolü"];
+                </div>
+                <p class="text-center text-sm text-gray-500">EN 50122 serisinin yapısını gösteren şema.</p>
+
+                <h3>Uygulama Akış Diyagramı</h3>
+                <div class="mermaid">
+flowchart TD
+A[Risk Değerlendirme] --> B[Tasarım (Topraklama/Drenaj)];
+B --> C[Kurulum & Test];
+C --> D{Direnç <1 Ω?};
+D -->|Hayır| E[Düzeltici];
+E --> C;
+D -->|Evet| F[NoBo Onayı];
+F --> G[İşletme İzleme];
+G --> H[Yıllık Denetim];
+                </div>
+                <p class="text-center text-sm text-gray-500">Uygulama sürecinin akış şeması.</p>
+
+                <h3>Topraklama Parametreleri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parametre</th>
+                            <th>AC Sistem</th>
+                            <th>DC Sistem</th>
+                            <th>Hedef Değer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Toprak Direnci</td>
+                            <td><1 Ω</td>
+                            <td><0.5 Ω</td>
+                            <td>IEC 62305</td>
+                        </tr>
+                        <tr>
+                            <td>Dokunma Gerilimi</td>
+                            <td><120 V</td>
+                            <td><60 V</td>
+                            <td>1 sn maruziyet</td>
+                        </tr>
+                        <tr>
+                            <td>Adım Gerilimi</td>
+                            <td><42 V</td>
+                            <td><18 V</td>
+                            <td>3 sn maruziyet</td>
+                        </tr>
+                        <tr>
+                            <td>Kaçak Akım</td>
+                            <td>N/A</td>
+                            <td><1 A/m</td>
+                            <td>EN 50122-2</td>
+                        </tr>
+                        <tr>
+                            <td>İndüklenmiş Gerilim</td>
+                            <td><65 V</td>
+                            <td>N/A</td>
+                            <td>EN 50122-3</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Risk Matrisi Örneği</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Olasılık</th>
+                            <th>Yüksek Etki</th>
+                            <th>Orta Etki</th>
+                            <th>Düşük Etki</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Yüksek</td>
+                            <td>Kaçak Akım Korozyonu</td>
+                            <td>Elektrik Çarpması</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Orta</td>
+                            <td>AC/DC İndüksiyonu</td>
+                            <td>Toprak Arızası</td>
+                            <td>Adım Gerilimi</td>
+                        </tr>
+                        <tr>
+                            <td>Düşük</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>İzolasyon Bozukluğu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
