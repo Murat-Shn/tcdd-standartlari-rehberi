@@ -34,6 +34,18 @@
         "detayli_aciklama": "TS EN 50121-5 standardı, demiryolu altyapısındaki traksiyon güç besleme sistemleri, sinyalizasyon ve kontrol ekipmanları, güç dağıtım sistemleri gibi sabit tesisatların elektromanyetik uyumluluğunu (EMU) düzenler. Hem elektromanyetik emisyon limitlerini hem de dış girişimlere karşı bağışıklık kriterlerini tanımlar. Kurumsal olarak EMU yönetim planı ve yetkin personel gerektirirken, teknik olarak belirli frekans aralıklarında emisyon ve bağışıklık seviyeleri belirler. Uygulama esasları planlama, tasarım, kurulum, test ve periyodik değerlendirme aşamalarını kapsar. Elektrik, elektronik, sistem, kalite, inşaat ve işletme/bakım disiplinleri sorumluluk sahibidir. Topraklama sorunları, harmonik bozulmalar ve entegrasyon zorlukları gibi yaygın problemler ve çözümleri de standartta ele alınır."
     },
     {
+    "id": "EN50122",
+    "standart": "TS EN 50122",
+    "baslik": "Demiryolu Uygulamaları - Sabit Tesisler - Elektriksel Güvenlik, Topraklama ve Dönüş Devresi",
+    "kapsam": "Demiryolu elektrifikasyon sistemlerinde (AC 25 kV / DC 3 kV, 1.5 kV, 750 V) elektrik çarpmasına karşı koruma, topraklama, dönüş devresi tasarımı, kaçak akım kontrolü ve AC/DC sistemlerin karşılıklı etkileşimine karşı önlemleri kapsar.",
+    "disiplinler": "Elektrik/Elektrifikasyon, Altyapı, Emniyet, Proje Yönetimi",
+    "kritiklik": "Yasal Zorunlu / Hayati Kritik",
+    "uygulama_alani": "YHT Hatları, Konvansiyonel Hat Elektrifikasyonu, Metro ve Tramvay Hatları, Marmaray, Halkalı-Gebze Banliyö Hattı, Tünel Projeleri",
+    "ilgili_diger": "EN 50122-1, EN 50122-2, EN 50122-3, TSI ENE, TSI SRT, EN 50367, EN 50163",
+    "notlar": "Elektrik çarpması, adım/dokunma gerilimi, kaçak akım korozyonu ve indüklenmiş gerilim risklerini yönetir. TSI uyumluluğu için NoBo onayı zorunludur.",
+    "detayli_aciklama": "TS EN 50122 serisi (EN 50122-1, -2, -3), demiryolu sabit tesislerinde personel ve halkın elektrik çarpmasına karşı korunması, topraklama sistemlerinin tasarımı, dönüş devresinin düzenlenmesi, DC kaçak akımların korozyon etkisi ve AC/DC paralel hatlarda indüklenmiş gerilimlerin kontrolü için zorunlu teknik kriterleri belirler. Dokunma gerilimi (AC <120 V, DC <60 V), adım gerilimi (AC <42 V, DC <18 V) ve topraklama direnci (<1 Ω) gibi hayati limitleri tanımlar. Yüksek hızlı tren hatları, metro sistemleri, tüneller ve elektrifikasyon projelerinde uygulanması zorunludur. Uygulama, risk analizi, tasarım, kurulum, test, NoBo denetimi ve sürekli izleme aşamalarını içerir. Elektrik, altyapı ve emniyet mühendislerinin ana sorumluluğundadır. Türkiye’de TCDD Taşımacılık ve tüm elektrifikasyon projelerinde TSI gereği olarak kabul edilir."
+},
+    {
         "id": "TS12817",
         "standart": "TS 12817",
         "baslik": "Demiryolu uygulamaları - Raylı taşıtlar - Tekerlek profillerinin ve rayların aşınma ölçümü için genel kurallar",
