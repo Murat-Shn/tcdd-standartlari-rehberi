@@ -44,7 +44,7 @@
     "ilgili_diger": "EN 50122-1, EN 50122-2, EN 50122-3, TSI ENE, TSI SRT, EN 50367, EN 50163",
     "notlar": "Elektrik çarpması, adım/dokunma gerilimi, kaçak akım korozyonu ve indüklenmiş gerilim risklerini yönetir. TSI uyumluluğu için NoBo onayı zorunludur.",
     "detayli_aciklama": "TS EN 50122 serisi (EN 50122-1, -2, -3), demiryolu sabit tesislerinde personel ve halkın elektrik çarpmasına karşı korunması, topraklama sistemlerinin tasarımı, dönüş devresinin düzenlenmesi, DC kaçak akımların korozyon etkisi ve AC/DC paralel hatlarda indüklenmiş gerilimlerin kontrolü için zorunlu teknik kriterleri belirler. Dokunma gerilimi (AC <120 V, DC <60 V), adım gerilimi (AC <42 V, DC <18 V) ve topraklama direnci (<1 Ω) gibi hayati limitleri tanımlar. Yüksek hızlı tren hatları, metro sistemleri, tüneller ve elektrifikasyon projelerinde uygulanması zorunludur. Uygulama, risk analizi, tasarım, kurulum, test, NoBo denetimi ve sürekli izleme aşamalarını içerir. Elektrik, altyapı ve emniyet mühendislerinin ana sorumluluğundadır. Türkiye’de TCDD Taşımacılık ve tüm elektrifikasyon projelerinde TSI gereği olarak kabul edilir."
-},
+    },
     {
         "id": "TS12817",
         "standart": "TS 12817",
