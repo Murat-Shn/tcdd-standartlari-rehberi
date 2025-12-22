@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIC 518 - Demiryolu Araçları - Bojiler ve Yürüyen Aksam - Dinamik Davranış Deneyleri ve Kabul Kriterleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">UIC 518 - Demiryolu Araçları - Bojiler ve Yürüyen Aksam - Dinamik Davranış Deneyleri ve Kabul Kriterleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">UIC 518, demiryolu araçlarının dinamik davranışını (güvenlik, ray yorgunluğu, sürüş kalitesi) test etmek ve onaylamak için yöntemler ve kriterler belirleyen uluslararası standarttır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>UIC 518 - "Demiryolu Araçları - Bojiler ve Yürüyen Aksam - Dinamik Davranış Deneyleri ve Kabul Kriterleri" (Testing and approval of railway vehicles from the point of view of their dynamic behaviour - Safety - Track fatigue - Ride quality)</p>
+                <p>Bu standart, Uluslararası Demiryolları Birliği (UIC) tarafından geliştirilmiştir. İlk yayın tarihi 1995 olup, son revizyonu 2009'dadır (4. baskı). 2013'te ekler ile güncellenmiştir. Türkiye'de TS UIC 518 olarak TSE tarafından uyarlanmıştır ve TCDD projelerinde zorunlu referans belgedir. Standart, EN 14363 ile büyük ölçüde uyumlu olup TSI LOC&PAS ve TSI HST ile entegredir. Alt kırılımlar içermez; tek bir standarttır ancak üç ana odak alanı vardır: Güvenlik, Ray yorgunluğu, Sürüş kalitesi.</p>
+
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>UIC 518 standardı, demiryolu araçlarının (lokomotif, yolcu vagonu, yük vagonu, yüksek hızlı tren) bojilerinin ve yürüyen aksamının dinamik davranışını test etmek için yöntemler, koşullar ve kabul kriterlerini kapsar. Kapsam, ray üzerinde gerçek koşullar altında testleri içerir; laboratuvar simülasyonları kapsam dışıdır.</p>
+                <p>Temel amaçlar:</p>
+                <ul>
+                    <li>Araç dinamik davranışını standartlaştırarak güvenlik (derayman riski <1.2), ray yorgunluğu (kuvvetler <170 kN) ve sürüş kalitesini (Wz <3.0) sağlamak.</li>
+                    <li>Tip onay ve kabul süreçlerini optimize etmek, araç ömrünü uzatmak (500.000-1.000.000 km).</li>
+                    <li>Uluslararası interoperabiliteyi artırmak (TSI uyumu ile).</li>
+                    <li>Test maliyetlerini düşürmek (%20-30 tasarruf).</li>
+                    <li>Kazaları önlemek (yıllık dinamik arıza oranı <0.01/araç).</li>
+                </ul>
+                <p>Standart, EN 14363 ve UIC 517 ile uyumludur.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                <p>UIC 518, araç dinamik testlerini tanımlayan bir rehberdir. Temel tanımlar:</p>
+                <ul>
+                    <li><strong>Derayman İndeksi (Y/Q):</strong> Tekerlek-ray yanal/dikey kuvvet oranı (<0.8 güvenlik sınırı).</li>
+                    <li><strong>Avlanma (Hunting):</strong> Araç salınımı (frekans <10 Hz, genlik <10 mm).</li>
+                    <li><strong>Ray Yorgunluğu:</strong> Maksimum ray yükü (Q <225 kN, Y <170 kN).</li>
+                    <li><strong>Sürüş Kalitesi:</strong> Sperling indeksi (Wz <3.0 konfor sınırı).</li>
+                    <li><strong>Kritik Hız:</strong> Avlanma başlangıç hızı (Vkrit >1.1*Vmax).</li>
+                </ul>
+                <p>Teorik arka plan: Çok cisimli dinamik (MBD), Hertz temas ve Nadal kriteri prensiplerine dayanır. Risk analizi ile THR <10^{-9}/saat hedeflenir. Standart, UIC/ERRI araştırmalarına dayanır ve simülasyonları teşvik eder (VAMPIRE yazılımı).</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Yönetim Sistemi:</strong> ISO 9001 entegre test planı; yıllık dinamik denetim (en az 2 kez).</li>
+                    <li><strong>Personel Yetkinliği:</strong> Test mühendisleri için UIC 518 eğitimi; bağımsız sertifika.</li>
+                    <li><strong>Dokümantasyon:</strong> Test raporu (100+ sayfa), veri saklama 10 yıl.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> Boji tedarikçileri için UIC 518 uyum (%100).</li>
+                    <li><strong>Risk Yönetimi:</strong> Tehlike kaydı (50+ giriş); bütçe (%5 araç maliyeti).</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Test Koşulları:</strong> Ray radyusu >150 m, hız Vmax*1.1; en az 10 km test.</li>
+                    <li><strong>Ölçüm Ekipmanı:</strong> Akselerometre (hassasiyet 0.01 g), kuvvet tekerleği (Y/Q ölçümü).</li>
+                    <li><strong>Güvenlik Kriterleri:</strong> Y/Q <0.8, ΣY <170 kN.</li>
+                    <li><strong>Ray Yorgunluğu:</strong> Q <225 kN, ΔQ <100 kN.</li>
+                    <li><strong>Sürüş Kalitesi:</strong> Wz <3.0, a* <2.5 m/s².</li>
+                    <li><strong>Testler:</strong> Boş/yüklü, düz/virajlı ray; veri filtreleme (10 Hz low-pass).</li>
+                </ul>
+                <p>Standart, NoBo sertifikasyonu gerektirir; Hizmet yeterlilik belgesi: Test pistleri için ISO 17025 + UIC 518 kapsamı (3 yıl).</p>
+
+                <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>UIC 518, araç dinamik testlerinde kullanılır:</p>
+                <ul>
+                    <li><strong>Yüksek Hızlı Trenler:</strong> TCDD YHT'lerde Vmax 350 km/h test; derayman indeksi <1.2.</li>
+                    <li><strong>Metro Araçları:</strong> İstanbul Metrosu'nda konfor testi (Wz <2.5); günlük 1 milyon yolcu.</li>
+                    <li><strong>Yük Taşımacılığı:</strong> TCDD yük vagonlarında ray yükü testi (Q <200 kN); 20.000 ton/gün.</li>
+                    <li><strong>Tramvay Sistemleri:</strong> Ankara Tramvayı'nda avlanma testi; viraj stabilitesi.</li>
+                    <li><strong>Tip Onay Projeleri:</strong> Yeni boji kabulünde; yıllık 100 araç testi.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                <p>UIC 518'i uygulamak için adımlar:</p>
+                <h3>1. Hazırlık Aşaması:</h3>
+                <ul>
+                    <li>Test pisti seçimi (radyus >150 m); risk analizi (1-2 ay).</li>
+                    <li>Enstrümantasyon (akselerometre kurulum, maliyet 50.000-100.000 TL).</li>
+                </ul>
+                <h3>2. Test Aşaması:</h3>
+                <ul>
+                    <li>Düz ray testi (hız rampası, 10-350 km/h; 5 deneme).</li>
+                    <li>Viraj testi (radyus 150-600 m; yanal ivme <0.4 g).</li>
+                    <li>Veri toplama (100 Hz örnekleme).</li>
+                </ul>
+                <h3>3. Analiz Aşaması:</h3>
+                <ul>
+                    <li>Filtreleme (10 Hz); kriter hesabı (Y/Q <0.8).</li>
+                    <li>Raporlama (TSI formatı, 100+ sayfa).</li>
+                </ul>
+                <h3>4. Onay Aşaması:</h3>
+                <ul>
+                    <li>NoBo denetimi (1-3 hafta); kabul (tüm kriterler geçerse).</li>
+                </ul>
+                <p>Maliyet: Tam test 200.000-500.000 TL, süre 1-3 ay.</p>
+
+                <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disiplin</th>
+                            <th>Sorumluluklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üst Yönetim</td>
+                            <td>Test onayı ve bütçe (%5); yıllık rapor.</td>
+                        </tr>
+                        <tr>
+                            <td>Mekanik Mühendisliği</td>
+                            <td>Test tasarımı (hız rampası); veri analizi.</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet Mühendisliği</td>
+                            <td>Risk hesabı (Y/Q <0.8); UIC 518 uyumu.</td>
+                        </tr>
+                        <tr>
+                            <td>Test Mühendisliği</td>
+                            <td>Enstrümantasyon; saha testi.</td>
+                        </tr>
+                        <tr>
+                            <td>Kalite ve Denetim</td>
+                            <td>İç audit (yılda 2); NoBo koordinasyonu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Gerçek zamanlı sensörler (ivme, aylık veri).</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç: Yılda 2 kez (%100 kapsama).</li>
+                    <li>Dış: NoBo (2 yılda bir); TCDD (yıllık).</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Başvuru: Test raporu (100+ sayfa).</li>
+                    <li>İnceleme: 1-2 ay; saha doğrulaması.</li>
+                    <li>Sertifika: 5 yıl, yıllık gözetim.</li>
+                </ul>
+                <p>Hizmet Yeterlilik Belgesi: Test pistleri için ISO 17025 + UIC 518 (3 yıl).</p>
+
+                <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
+                <ul>
+                    <li>Test pisti erişimi (maliyet yüksek).</li>
+                    <li>Veri gürültüsü (%10 hata).</li>
+                    <li>Yüksek hız güvenliği (>300 km/h).</li>
+                    <li>Farklı yük koşulları.</li>
+                    <li>Maliyet (500.000 TL/test).</li>
+                </ul>
+                <h3>Çözümler:</h3>
+                <ul>
+                    <li>Ortak pistler (paylaşımlı, %30 düşüş).</li>
+                    <li>Dijital filtreleme (10 Hz, %50 doğruluk).</li>
+                    <li>Güvenlik protokolleri (uzaktan kontrol).</li>
+                    <li>Simülasyon entegrasyonu (VAMPIRE).</li>
+                    <li>Aşamalı test (pilot araç).</li>
+                </ul>
+
+                <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                <h3>Dinamik Test Yapısı Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A["UIC 518"] --> B["Güvenlik (Y/Q <0.8)"]
+    A --> C["Ray Yorgunluğu (Q <225 kN)"]
+    A --> D["Sürüş Kalitesi (Wz <3.0)"]
+    B --> E["Derayman İndeksi"]
+    C --> F["Kuvvet Limitleri"]
+    D --> G["İvme Ölçümü"]
+                </div>
+
+                <h3>Test Akış Diyagramı</h3>
+                <div class="mermaid">
+flowchart TD
+    A[Test Pisti Hazırlık] --> B[Enstrümantasyon]
+    B --> C[Hız Rampası Testi]
+    C --> D{Veri Geçerli mi?}
+    D -->|Hayır| E[Düzeltici]
+    E --> C
+    D -->|Evet| F[Analiz & Rapor]
+    F --> G[NoBo Onayı]
+    G --> H[Tip Kabul]
+                </div>
+
+                <h3>Test Parametreleri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parametre</th>
+                            <th>Limit</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Y/Q</td>
+                            <td><0.8</td>
+                            <td>Güvenlik</td>
+                        </tr>
+                        <tr>
+                            <td>Q</td>
+                            <td><225 kN</td>
+                            <td>Ray Yorgunluğu</td>
+                        </tr>
+                        <tr>
+                            <td>Wz</td>
+                            <td><3.0</td>
+                            <td>Konfor</td>
+                        </tr>
+                        <tr>
+                            <td>Avlanma Frekans</td>
+                            <td><10 Hz</td>
+                            <td>Stabilite</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Risk Matrisi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Risk</th>
+                            <th>Olasılık</th>
+                            <th>Etki</th>
+                            <th>Önlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Avlanma</td>
+                            <td>Yüksek</td>
+                            <td>Yüksek</td>
+                            <td>Hız Testi</td>
+                        </tr>
+                        <tr>
+                            <td>Ray Aşınması</td>
+                            <td>Orta</td>
+                            <td>Orta</td>
+                            <td>Kuvvet Ölçümü</td>
+                        </tr>
+                        <tr>
+                            <td>Konfor Düşüklüğü</td>
+                            <td>Düşük</td>
+                            <td>Orta</td>
+                            <td>İvme Analizi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
