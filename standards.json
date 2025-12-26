@@ -211,7 +211,7 @@
     },
     { "id": "TSEN13979-1", "standart": "TS EN 13979-1", "baslik": "Demiryolu Uygulamaları - Tekerlek Takımları - Tekerlekler - Tahribatsız Muayene Yöntemleri - Bölüm 1: Ultrasonik Muayene", "kapsam": "Demiryolu tekerleklerinin ultrasonik muayenesi için yöntemleri belirler.", "disiplinler": "Mekanik", "kritiklik": "Kritik", "uygulama_alani": "Test Treni Projesi (Bakım/Muayene)", "ilgili_diger": "TS EN 13262", "notlar": "Tekerleklerdeki iç kusurların tespiti için.", "detayli_aciklama": "TS EN 13979-1, demiryolu uygulamalarında kullanılan tekerleklerin tahribatsız muayene yöntemlerinden ultrasonik muayene için gereksinimleri belirleyen bir standarttır. Bu standart, tekerleklerin iç yapısındaki çatlaklar, segregasyonlar veya diğer kusurları tespit etmek amacıyla ultrasonik dalgaların nasıl kullanılacağını tanımlar. Muayene prosedürleri, ekipman gereksinimleri, kalibrasyon ve sonuçların yorumlanması gibi konuları kapsar. Test treni projelerinde veya demiryolu bakım operasyonlarında, tekerleklerin güvenliğini ve bütünlüğünü sağlamak için bu standarda uygun ultrasonik muayeneler yapılır." },
     {
-    "id": "EN14067",
+    "id": "TSEN14067",
     "standart": "TS EN 14067",
     "baslik": "Demiryolu Uygulamaları - Aerodinamik",
     "kapsam": "Demiryolu araçlarının aerodinamik etkilerini (açık hat slipstream, tünel basınç dalgaları, yan rüzgar stabilitesi) değerlendirir. Yüksek hızlı trenlerde güvenlik, yolcu konforu ve enerji verimliliği için zorunlu gereklilikleri ve test prosedürlerini tanımlar.",
