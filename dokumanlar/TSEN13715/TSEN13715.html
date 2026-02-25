@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 13715 - Demiryolu Uygulamaları - Tekerlek Setleri ve Bojiler - Tekerlekler - Sırt Profili</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 13715 - Demiryolu Uygulamaları - Tekerlek Setleri ve Bojiler - Tekerlekler - Sırt Profili</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 13715, demiryolu araçlarının tekerlek sırt profillerini tanımlayan Avrupa standardıdır. Tekerlek-ray etkileşimini optimize ederek güvenlik ve performansı artırır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>EN 13715 - "Demiryolu Uygulamaları - Tekerlek Setleri ve Bojiler - Tekerlekler - Sırt Profili" (Railway applications - Wheelsets and bogies - Wheels - Tread profile)</p>
+                <p>Bu standart, Avrupa Elektroteknik Standardizasyon Komitesi (CENELEC) ve CEN/TC 256 tarafından geliştirilmiştir. İlk yayın tarihi 2006 olup, son revizyonu 2020'dedir (EN 13715:2020). 2022'de A1 ekleri ile güncellenmiştir (EN 13715:2020+A1:2022). Türkiye'de TS EN 13715 olarak TSE tarafından uyarlanmıştır ve TCDD ile raylı sistem projelerinde zorunlu referans belgedir. Standart, TSI RST (Rolling Stock) ve TSI WAG (Wagons) ile entegredir. Alt kırılımlar içermez; tek bir standarttır ancak tekerlek profillerini farklı araç tiplerine göre sınıflandırır (örneğin, S1002, 1/40).</p>
+
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>EN 13715 standardı, demiryolu araçlarında kullanılan tekerleklerin (çap ≥330 mm) sırt profillerini (tread profile) tanımlar. Standart, Avrupa standart ray genişliği (1435 mm) için geçerlidir ve tekerlek-ray etkileşimini kapsar; flanş geometrisi, sırt eğimi ve toleranslar dahil. Kapsam dışı: Küçük çaplı tekerlekler (<330 mm), özel ray genişlikleri ve aşınma sonrası profiller.</p>
+                <p>Temel amaçlar:</p>
+                <ul>
+                    <li>Tekerlek profillerini standartlaştırarak ray aşınmasını minimize etmek ve araç stabilitesini artırmak (örneğin, derayman riskini %20-30 azaltmak).</li>
+                    <li>Uluslararası interoperabiliteyi sağlamak (TSI uyumu ile sınır ötesi operasyonlar).</li>
+                    <li>Tasarım ve bakım süreçlerini optimize etmek, tekerlek ömrünü uzatmak (ortalama 500.000-1.000.000 km).</li>
+                    <li>Güvenlik ve performans kriterlerini tanımlamak (örneğin, sırt eğimi 1/20-1/40 aralığı).</li>
+                    <li>Maliyetleri düşürmek (standart profillerle bakım frekansını %15 azaltma).</li>
+                </ul>
+                <p>Standart, EN 13262 (tekerlekler) ve UIC 510-2 (tekerlek setleri) ile uyumludur.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                <p>EN 13715, demiryolu tekerleklerinin sırt profillerini geometrik olarak tanımlayan bir rehberdir. Temel tanımlar:</p>
+                <ul>
+                    <li><strong>Sırt Profili (Tread Profile):</strong> Tekerleğin rayla temas eden yüzeyi; flanş, sırt ve geçiş bölgeleri.</li>
+                    <li><strong>Flanş (Flange):</strong> Raydan çıkmayı önleyen kenar (yükseklik 28-33 mm, açı 67-72°).</li>
+                    <li><strong>Sırt Eğimi (Tread Conicity):</strong> Ray temasındaki koniklik (1/20, 1/25, 1/40 oranları; eşdeğer koniklik 0.05-0.4).</li>
+                    <li><strong>qR Faktörü:</strong> Flanş kök kalınlığı (6.5-7.5 mm).</li>
+                    <li><strong>Referans Profil:</strong> S1002 (standart), EPS (düşük aşınma), 1/40 (yüksek hız).</li>
+                </ul>
+                <p>Teorik arka plan: Tekerlek-ray dinamiği, Hertz temas teorisi ve yorulma analizi (EN 13979) prensiplerine dayanır. Profil, araç hızı, yük ve ray eğimine göre optimize edilir (örneğin, yüksek hızda düşük koniklik için stabilite). Risk analizi ile derayman indeksi (Nadal kriteri <1.2) hesaplanır. Standart, UIC araştırmalarına (ERRI) dayanır ve aşınma simülasyonlarını (Archard modeli) teşvik eder.</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Yönetim Sistemi:</strong> ISO 9001 entegre tekerlek yönetim planı; yıllık profil denetimi (en az 4 kez).</li>
+                    <li><strong>Personel Yetkinliği:</strong> Tasarımcılar için EN 13715 eğitimi (IRIS sertifikalı); ölçüm personeli için kalibrasyon sertifikası.</li>
+                    <li><strong>Dokümantasyon:</strong> Profil çizimleri (CAD, 20+ sayfa), ölçüm raporları; veri saklama 5 yıl.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> Tekerlek tedarikçileri için EN 13715 uyum denetimi (%100).</li>
+                    <li><strong>Risk Yönetimi:</strong> Aşınma risk matrisi (tehlike kaydı, 30+ giriş); bütçe (%2-4 araç maliyeti).</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Profil Geometrisi:</strong> S1002: Flanş yüksekliği 28 mm, qR 6.5 mm; tolerans ±0.1 mm.</li>
+                    <li><strong>Ölçüm Yöntemleri:</strong> Optik profilometre (hassasiyet 0.01 mm); MiniProf cihazı (yıllık kalibrasyon).</li>
+                    <li><strong>Eşdeğer Koniklik:</strong> Hız <160 km/h için 0.05-0.15; >200 km/h için 0.025-0.05.</li>
+                    <li><strong>Aşınma Limitleri:</strong> Flanş kalınlığı <22 mm'de değişim; sırt genişliği 135-145 mm.</li>
+                    <li><strong>Testler:</strong> Yeni tekerlek için %100 ölçüm; işletmede 50.000 km'de denetim.</li>
+                    <li><strong>Malzeme Uyumu:</strong> ER7/ER8 çelik (EN 13262); sertlik 240-280 HB.</li>
+                </ul>
+                <p>Standart, IRIS sertifikasyonu gerektirir; Hizmet yeterlilik belgesi: Tekerlek ölçüm laboratuvarları için ISO 17025 + EN 13715 kapsamı (3 yıl süreli).</p>
+
+                <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>EN 13715, demiryolu araç tekerlek tasarım ve bakımında kullanılır:</p>
+                <ul>
+                    <li><strong>Yüksek Hızlı Trenler:</strong> TCDD YHT'lerde S1002 profili ile stabilite; 350 km/h hızda derayman riski <1.0.</li>
+                    <li><strong>Yolcu Araçları:</strong> İstanbul Metrosu'nda 1/40 eğim ile aşınma %25 azaltıldı; günlük 1 milyon yolcu.</li>
+                    <li><strong>Yük Taşımacılığı:</strong> TCDD yük vagonlarında EPS profili; 20.000 ton/gün yükte ömür 800.000 km.</li>
+                    <li><strong>Tramvay Sistemleri:</strong> Ankara Tramvayı'nda düşük koniklik profilleri; viraj stabilitesi.</li>
+                    <li><strong>Bakım Projeleri:</strong> Tekerlek torna atölyelerinde profil yenileme; yıllık 500 tekerlek denetimi.</li>
+                </ul>
+                <p>Diğer: Özel araçlar (bakım trenleri), uluslararası hatlar.</p>
+
+                <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                <p>EN 13715'i uygulamak için pratik adımlar:</p>
+                <h3>1. Hazırlık Aşaması:</h3>
+                <ul>
+                    <li>Araç tipine göre profil seçimi (S1002 için yüksek hız; 1/40 yük için); risk analizi (1-2 ay).</li>
+                    <li>Tasarım yazılımı (CATIA, tolerans ±0.05 mm); maliyet 10.000-30.000 TL/tekerlek seti.</li>
+                </ul>
+                <h3>2. Tasarım ve Üretim Aşaması:</h3>
+                <ul>
+                    <li>Profil çizimi (flanş açı 70°, qR 7 mm); simülasyon (Multibody dynamics, aşınma <0.5 mm/100.000 km).</li>
+                    <li>Üretim toleransı kontrolü (CNC torna, %100 ölçüm).</li>
+                </ul>
+                <h3>3. Test ve Devreye Alma Aşaması:</h3>
+                <ul>
+                    <li>Ölçüm (MiniProf, hassasiyet 0.01 mm; 3 nokta testi).</li>
+                    <li>Onay (IRIS denetimi, 1-3 hafta); eşdeğer koniklik hesabı (<0.4 hedef).</li>
+                </ul>
+                <h3>4. İşletme ve Bakım Aşaması:</h3>
+                <ul>
+                    <li>Periyodik ölçüm (50.000 km'de, lazer cihazı); aşınma düzeltme (torna, <22 mm flanşta değişim).</li>
+                    <li>Modifikasyon (profil değişimi onayı <2 hafta).</li>
+                </ul>
+                <p>Uygulama maliyeti: Tekerlek seti için 50.000-200.000 TL, süre 3-6 ay.</p>
+
+                <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disiplin</th>
+                            <th>Sorumluluklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üst Yönetim</td>
+                            <td>Politika onayı ve bütçe (%2-4); yıllık profil raporu.</td>
+                        </tr>
+                        <tr>
+                            <td>Mekanik Mühendisliği</td>
+                            <td>Profil tasarımı (eşdeğer koniklik hesabı); test koordinasyonu.</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet Mühendisliği</td>
+                            <td>Risk analizi (derayman indeksi <1.2); EN 13715 uyumu.</td>
+                        </tr>
+                        <tr>
+                            <td>Bakım Mühendisliği</td>
+                            <td>Periyodik ölçüm (EN 13715 tolerans); aşınma yönetimi.</td>
+                        </tr>
+                        <tr>
+                            <td>Üretim Mühendisliği</td>
+                            <td>CNC üretim (tolerans ±0.1 mm); kalite kontrol.</td>
+                        </tr>
+                        <tr>
+                            <td>Kalite ve Denetim</td>
+                            <td>İç audit (yılda 4); IRIS koordinasyonu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Gerçek zamanlı aşınma sensörleri (aylık veri); profil sapması alarmı (<0.2 mm).</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç: Yılda 4 kez (ölçüm, %100 kapsama).</li>
+                    <li>Dış: NoBo/IRIS (2 yılda bir, 2-4 gün); TCDD denetimi (yıllık).</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Başvuru: Teknik dosya (50+ sayfa).</li>
+                    <li>İnceleme: 1-2 ay; saha ölçümü 1 hafta.</li>
+                    <li>Sertifika: 5 yıl geçerli, yıllık gözetim; yeniden tam denetim.</li>
+                </ul>
+                <p>Hizmet Yeterlilik Belgesi: Ölçüm laboratuvarları için ISO 17025 + EN 13715 kapsamı (3 yıl).</p>
+
+                <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
+                <ul>
+                    <li>Aşınma varyasyonu (virajlarda >1 mm/100.000 km).</li>
+                    <li>Ölçüm hassasiyeti (manuel hatalar %5).</li>
+                    <li>Farklı ray profilleriyle uyum (UIC 60 vs. RI 60).</li>
+                    <li>Maliyet (ölçüm cihazı 50.000 TL).</li>
+                    <li>Eski tekerlek retrofit (%20 ek iş).</li>
+                </ul>
+                <h3>Çözümler:</h3>
+                <ul>
+                    <li>Lazer ölçüm (hassasiyet 0.01 mm, %30 zaman tasarrufu).</li>
+                    <li>Simülasyon yazılımları (VAMPIRE, aşınma %15 azaltma).</li>
+                    <li>Standart profil seçimi (S1002, uyum matrisi).</li>
+                    <li>Otomatik torna (CNC, maliyet %10 düşüş).</li>
+                    <li>Eğitim programları (yıllık, IRIS danışmanlık).</li>
+                </ul>
+                <p>İpuçları: Dijital ikiz modeller kullanın; yıllık kalibrasyon.</p>
+
+                <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                <h3>Tekerlek Profil Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A["Tekerlek"] --> B["Flanş (Yükseklik 28-33 mm)"]
+    A --> C["Sırt (Eğim 1/20-1/40)"]
+    A --> D["Geçiş Bölgesi (qR 6.5-7.5 mm)"]
+    B --> E["Açı 67-72°"]
+    C --> F["Eşdeğer Koniklik 0.05-0.4"]
+                </div>
+                <p class="text-center text-sm text-gray-500">Tekerlek profilinin bileşenlerini gösteren şema.</p>
+
+                <h3>Uygulama Akış Diyagramı</h3>
+                <div class="mermaid">
+flowchart TD
+    A[Profil Seçimi] --> B[Tasarım & Simülasyon]
+    B --> C[Üretim & Ölçüm]
+    C --> D{Aşınma <0.5 mm?}
+    D -->|Hayır| E[Düzeltici Torna]
+    E --> C
+    D -->|Evet| F[IRIS Onayı]
+    F --> G[İşletme İzleme]
+    G --> H[Yıllık Denetim]
+                </div>
+                <p class="text-center text-sm text-gray-500">Uygulama sürecinin akış şeması.</p>
+
+                <h3>Profil Parametreleri Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parametre</th>
+                            <th>Değer</th>
+                            <th>Tolerans</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Flanş Yüksekliği</td>
+                            <td>28-33 mm</td>
+                            <td>±0.5 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Flanş Kalınlığı</td>
+                            <td>27-33 mm</td>
+                            <td>±0.3 mm</td>
+                        </tr>
+                        <tr>
+                            <td>qR Faktörü</td>
+                            <td>6.5-7.5 mm</td>
+                            <td>±0.2 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Sırt Eğimi</td>
+                            <td>1/20-1/40</td>
+                            <td>±1/200</td>
+                        </tr>
+                        <tr>
+                            <td>Sırt Genişliği</td>
+                            <td>135-145 mm</td>
+                            <td>±1 mm</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Risk Matrisi Örneği</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Risk</th>
+                            <th>Olasılık</th>
+                            <th>Etki</th>
+                            <th>Önlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Aşınma</td>
+                            <td>Yüksek</td>
+                            <td>Orta</td>
+                            <td>Periyodik Ölçüm</td>
+                        </tr>
+                        <tr>
+                            <td>Derayman</td>
+                            <td>Orta</td>
+                            <td>Yüksek</td>
+                            <td>Koniklik Kontrolü</td>
+                        </tr>
+                        <tr>
+                            <td>Uyumsuzluk</td>
+                            <td>Düşük</td>
+                            <td>Orta</td>
+                            <td>Standart Profil</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

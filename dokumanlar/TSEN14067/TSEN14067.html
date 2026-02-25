@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 14067 - Demiryolu Uygulamaları - Aerodinamik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      window.MathJax.typesetPromise().then(() => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
+        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
+        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
+        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
+        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
+        .prose ul, .prose ol { padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose a { color: #2563eb; text-decoration: none; }
+        .prose a:hover { text-decoration: underline; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
+        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f3f4f6; font-weight: 600; }
+        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+        .diagram pre { margin: 0; white-space: pre-wrap; }
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+        #toc-sidebar ul { list-style: none; padding: 0; }
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            #toc-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 14067 - Demiryolu Uygulamaları - Aerodinamik</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 14067, demiryolu araçlarının aerodinamik etkilerini yöneten bir seri standarttır. Yüksek hızlı trenlerde güvenlik, konfor ve verimliliği artırır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>TS EN 14067 - "Demiryolu Uygulamaları - Aerodinamik" (Railway applications - Aerodynamics)</p>
+                <p>Bu standart serisi, Avrupa Standartlar Komitesi (CEN/TC 256) tarafından geliştirilmiştir. Seri, birden fazla bölümden oluşur ve son revizyonları 2013-2018 arasındadır (örneğin, EN 14067-4:2013+A1:2018, EN 14067-5:2006+A1:2010). 2022'de bazı bölümlere A1 ekleri eklenmiştir. Türkiye'de TS EN 14067 olarak TSE tarafından uyarlanmıştır ve TCDD yüksek hızlı tren projeleri ile raylı sistemlerde zorunlu referans belgedir. Standart, TSI HST (High Speed Trains) ve TSI RST (Rolling Stock) ile doğrudan entegredir.</p>
+                <h3>Alt Bölümler:</h3>
+                <ul>
+                    <li><strong>EN 14067-1:</strong> Semboller ve birimler (genel referans).</li>
+                    <li><strong>EN 14067-2:</strong> Açık hat aerodinamiği (temel prensipler).</li>
+                    <li><strong>EN 14067-3:</strong> Tünel aerodinamiği (basınç dalgaları).</li>
+                    <li><strong>EN 14067-4:</strong> Açık hat aerodinamik gereklilikleri ve test prosedürleri (slipstream, yükler).</li>
+                    <li><strong>EN 14067-5:</strong> Tünel aerodinamik gereklilikleri ve değerlendirme prosedürleri.</li>
+                    <li><strong>EN 14067-6:</strong> Yan rüzgar (cross wind) değerlendirmesi için gereklilikler ve test prosedürleri.</li>
+                </ul>
+
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>TS EN 14067 serisi, demiryolu araçlarının aerodinamik etkilerini (açık hat, tünel geçişi, yan rüzgar, tren geçiş basıncı) kapsar. Kapsam, yüksek hızlı trenler (≥250 km/h), konvansiyonel araçlar ve yük vagonlarını içerir; altyapı (ray, tünel) etkileşimleri dahil. Kapsam dışı: Düşük hızlı araçlar (<100 km/h) ve statik aerodinamik testleri.</p>
+                <p>Temel amaçlar:</p>
+                <ul>
+                    <li>Araçların aerodinamik performansını standartlaştırarak güvenlik (derayman riskini %30 azaltma), konfor (basınç değişimi <3 kPa) ve enerji verimliliğini sağlamak (Cd katsayısı <0.3).</li>
+                    <li>Yan rüzgar stabilitesini garanti etmek (kritik rüzgar hızı >1.2*Vmax).</li>
+                    <li>Tünel geçiş basınç dalgalarını sınırlamak (ΔP <10 kPa, yolcu konforu için).</li>
+                    <li>Tren geçişi slipstream etkisini minimize etmek (platformda hız <20 m/s).</li>
+                    <li>TSI uyumunu belgelemek ve işletme maliyetlerini düşürmek (%10-15 enerji tasarrufu).</li>
+                </ul>
+                <p>Standart, EN 14363 (dinamik davranış) ve EN 15273 (gabari) ile uyumludur.</p>
+
+                <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 14067, demiryolu aerodinamiğini yöneten bir seri standarttır. Temel tanımlar:</p>
+                <ul>
+                    <li><strong>Slipstream:</strong> Tren geçişi sırasında oluşan hava akımı (hız <15-20 m/s platformda).</li>
+                    <li><strong>Basınç Dalga (Pressure Wave):</strong> Tünel giriş/çıkışında oluşan ΔP (maks <3 kPa kısa süreli).</li>
+                    <li><strong>Yan Rüzgar (Cross Wind):</strong> Rüzgarın araç üzerindeki yanal kuvveti (CWC - Characteristic Wind Curve).</li>
+                    <li><strong>Aerodinamik Sürükleme (Drag):</strong> Cd katsayısı (0.1-0.3 aralığı yüksek hızda).</li>
+                    <li><strong>Tünel Piston Etkisi:</strong> Tren tünelde hava sıkıştırması (alan oranı >0.2).</li>
+                </ul>
+                <p>Teorik arka plan: Bernoulli, Navier-Stokes denklemleri ve CFD (Computational Fluid Dynamics) simülasyonlarına dayanır. Yan rüzgar için Lee-Wake modeli, tünel için 1D akış modeli kullanılır. Risk analizi ile derayman indeksi (CWC <1.0) hesaplanır. Standart, rüzgar tüneli testleri ve saha ölçümleri teşvik eder (Re >10^6).</p>
+                <h3>Alt Bölümler Detayı:</h3>
+                <ul>
+                    <li><strong>EN 14067-1:</strong> Semboller ve birimler (örneğin, ΔP, Cd).</li>
+                    <li><strong>EN 14067-2:</strong> Açık hat aerodinamiği (temel prensipler, yükler).</li>
+                    <li><strong>EN 14067-3:</strong> Tünel aerodinamiği (basınç dalgaları, mikro basınç).</li>
+                    <li><strong>EN 14067-4:</strong> Açık hat gereklilikleri ve testleri (slipstream, direnç).</li>
+                    <li><strong>EN 14067-5:</strong> Tünel gereklilikleri ve değerlendirme (piston etkisi).</li>
+                    <li><strong>EN 14067-6:</strong> Yan rüzgar gereklilikleri ve testler (CWC, indüksiyon).</li>
+                </ul>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Yönetim Sistemi:</strong> ISO 9001 entegre aerodinamik planı; yıllık risk değerlendirme (en az 2 atölye).</li>
+                    <li><strong>Personel Yetkinliği:</strong> Aerodinamik mühendisleri için CFD eğitimi (ANSYS); test personeli sertifikalı (ISO 17025).</li>
+                    <li><strong>Dokümantasyon:</strong> CWC raporu (50+ sayfa), test verileri saklama 10 yıl.</li>
+                    <li><strong>Tedarikçi Yönetimi:</strong> Araç tedarikçileri için EN 14067 uyum denetimi (%100).</li>
+                    <li><strong>Risk Yönetimi:</strong> Tehlike kaydı (yan rüzgar, tünel basıncı; 40+ giriş); bütçe (%5 araç maliyeti).</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Yan Rüzgar (EN 14067-6):</strong> Kritik rüzgar hızı >25-35 m/s; CWC eğrisi (yanal ivme <0.4 g).</li>
+                    <li><strong>Tünel Basıncı (EN 14067-5):</strong> ΔPmax <10 kPa; mikro basınç dalgası <1 kPa.</li>
+                    <li><strong>Slipstream (EN 14067-4):</strong> Platformda u <20 m/s (2 m yükseklik); tren geçişi yükü <5 kN.</li>
+                    <li><strong>Testler:</strong> Rüzgar tüneli (1:20 ölçek, Re >10^6), CFD (mesh >10 milyon hücre), saha testi (hız >300 km/h).</li>
+                    <li><strong>Araç Tasarımı:</strong> Burun şekli Cd <0.2; tünel alanı oranı >0.2; yan rüzgar açısı 0-90°.</li>
+                </ul>
+                <p>Standart, NoBo sertifikasyonu gerektirir; Hizmet yeterlilik belgesi: Aerodinamik test laboratuvarları için ISO 17025 + EN 14067 kapsamı (3 yıl süreli).</p>
+
+                <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TS EN 14067, yüksek hızlı ve konvansiyonel demiryolu projelerinde kullanılır:</p>
+                <ul>
+                    <li><strong>Yüksek Hızlı Trenler:</strong> TCDD YHT'lerde yan rüzgar testi (EN 14067-6); 300 km/h stabilite, derayman riski <0.5.</li>
+                    <li><strong>Tünel Projeleri:</strong> Marmaray'da basınç dalgası optimizasyonu (EN 14067-5); ΔP <3 kPa, yolcu konforu %95.</li>
+                    <li><strong>Metro Araçları:</strong> İstanbul Metrosu'nda slipstream kontrolü (EN 14067-4); platform güvenliği, hız <18 m/s.</li>
+                    <li><strong>Yük Taşımacılığı:</strong> TCDD yük trenlerinde aerodinamik sürükleme azaltma; Cd <0.25, enerji %12 tasarruf.</li>
+                    <li><strong>Tip Onay Projeleri:</strong> Yeni araçlarda TSI gereği; yıllık 50 test, CWC onayı.</li>
+                </ul>
+                <p>Diğer: Tramvay hatları, tünel genişletmeleri.</p>
+
+                <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                <p>TS EN 14067'yi uygulamak için pratik adımlar (yaşam döngüsü bazlı):</p>
+                <h3>1. Hazırlık Aşaması:</h3>
+                <ul>
+                    <li>Araç tipine göre bölüm seçimi (EN 14067-6 yüksek hız için); risk analizi (FMEA, 1-2 ay; 20+ tehlike).</li>
+                    <li>CFD modeli kurun (ANSYS Fluent, mesh >10 milyon hücre; maliyet 50.000-100.000 TL).</li>
+                </ul>
+                <h3>2. Tasarım ve Simülasyon Aşaması:</h3>
+                <ul>
+                    <li>Yan rüzgar CWC hesabı (rüzgar 0-90°, V >250 km/h); tünel 1D model (ΔP <10 kPa hedef).</li>
+                    <li>Tasarım optimizasyonu (burun uzunluğu >10 m, Cd <0.2).</li>
+                </ul>
+                <h3>3. Test ve Devreye Alma Aşaması:</h3>
+                <ul>
+                    <li>Rüzgar tüneli testi (ölçek 1:20, Re eşleşme; 5 senaryo).</li>
+                    <li>Saha testi (basınç sensörü, anemometre; en az 10 km/hız).</li>
+                    <li>Sertifikasyon (NoBo denetimi, 2-4 hafta).</li>
+                </ul>
+                <h3>4. İşletme ve Bakım Aşaması:</h3>
+                <ul>
+                    <li>İzleme kurun (rüzgar sensörü, aylık rapor); modifikasyon yönetimi (değişiklik onayı <1 ay).</li>
+                </ul>
+                <p>Uygulama maliyeti: Küçük proje için 200.000-500.000 TL, büyük için 1-2 milyon TL (test+ekipman). Süre: 6-12 ay.</p>
+
+                <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disiplin</th>
+                            <th>Sorumluluklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üst Yönetim</td>
+                            <td>Politika onayı ve bütçe (%5); yıllık aerodinamik raporu.</td>
+                        </tr>
+                        <tr>
+                            <td>Aerodinamik Mühendisliği</td>
+                            <td>CFD simülasyonu (CWC hesabı); test koordinasyonu.</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet Mühendisliği</td>
+                            <td>Risk analizi (yan rüzgar derayman); EN 14067-6 uyumu.</td>
+                        </tr>
+                        <tr>
+                            <td>Altyapı Mühendisliği</td>
+                            <td>Tünel tasarımı (EN 14067-5 piston etkisi); bakım planı.</td>
+                        </tr>
+                        <tr>
+                            <td>Test Mühendisliği</td>
+                            <td>Rüzgar tüneli/saha testleri; veri analizi.</td>
+                        </tr>
+                        <tr>
+                            <td>Kalite ve Denetim</td>
+                            <td>İç denetimler (yılda 2); NoBo koordinasyonu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Gerçek zamanlı sensörler (basınç, rüzgar; aylık veri); alarm (ΔP >5 kPa).</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç: Yılda 2 kez (test ekipmanı, %100 kapsama).</li>
+                    <li>Dış: NoBo (2 yılda bir, 3-5 gün); TCDD denetimi (yıllık).</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Başvuru: Teknik dosya (100+ sayfa).</li>
+                    <li>İnceleme: 1-2 ay; saha testi 1 hafta.</li>
+                    <li>Sertifika: 5 yıl geçerli, yıllık gözetim; yeniden tam denetim.</li>
+                </ul>
+                <p>Hizmet Yeterlilik Belgesi: Test laboratuvarları için ISO 17025 + EN 14067 akreditasyonu (3 yıl süreli).</p>
+
+                <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
+                <ul>
+                    <li>Yüksek hız testi güvenliği (V >300 km/h).</li>
+                    <li>CFD doğrulama (%10 hata).</li>
+                    <li>Yan rüzgar veri eksikliği (meteoroloji).</li>
+                    <li>Maliyet (rüzgar tüneli 300.000 TL).</li>
+                    <li>Tünel simülasyon karmaşıklığı (%20 hesaplama hatası).</li>
+                </ul>
+                <h3>Çözümler:</h3>
+                <ul>
+                    <li>Ölçekli rüzgar tüneli (%50 tasarruf, ölçek 1:20).</li>
+                    <li>Hibrit CFD-saha entegrasyonu (doğruluk %95).</li>
+                    <li>Meteoroloji veri entegrasyonu (yerel istasyonlar).</li>
+                    <li>Ortak test merkezleri (AB projeleri, %30 düşüş).</li>
+                    <li>Yazılım optimizasyonu (OpenFOAM, %40 hız artışı).</li>
+                </ul>
+                <p>Pratik İpuçları: TSI şablonları kullanın; pilot testlerle başlayın.</p>
+
+                <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                <h3>EN 14067 Seri Yapısı Şeması</h3>
+                <div class="mermaid">
+graph TD
+    A["TS EN 14067 Serisi"] --> B["EN 14067-1: Semboller"]
+    A --> C["EN 14067-2: Açık Hat"]
+    A --> D["EN 14067-3: Tünel"]
+    A --> E["EN 14067-4: Açık Hat Test"]
+    A --> F["EN 14067-5: Tünel Test"]
+    A --> G["EN 14067-6: Yan Rüzgar"]
+    B --> H["Birimler"]
+    C --> I["Temel Prensipler"]
+    D --> J["Basınç Dalga"]
+    E --> K["Slipstream"]
+    F --> L["Piston Etkisi"]
+    G --> M["CWC"]
+                </div>
+                <p class="text-center text-sm text-gray-500">EN 14067 serisinin yapısını gösteren şema.</p>
+
+                <h3>Uygulama Akış Diyagramı</h3>
+                <div class="mermaid">
+flowchart TD
+    A[Risk Analizi] --> B[CFD Simülasyon]
+    B --> C[Rüzgar Tüneli Test]
+    C --> D{Slipstream <20 m/s?}
+    D -->|Hayır| E[Tasarım Revizyon]
+    E --> B
+    D -->|Evet| F[Saha Test]
+    F --> G[NoBo Onayı]
+    G --> H[TSI Sertifika]
+                </div>
+                <p class="text-center text-sm text-gray-500">Uygulama sürecinin akış şeması.</p>
+
+                <h3>Aerodinamik Parametre Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bölüm</th>
+                            <th>Parametre</th>
+                            <th>Limit</th>
+                            <th>Test Yöntemi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EN 14067-4</td>
+                            <td>Slipstream Hızı</td>
+                            <td><20 m/s</td>
+                            <td>Anemometre</td>
+                        </tr>
+                        <tr>
+                            <td>EN 14067-5</td>
+                            <td>Tünel ΔP</td>
+                            <td><10 kPa</td>
+                            <td>Basınç Sensörü</td>
+                        </tr>
+                        <tr>
+                            <td>EN 14067-6</td>
+                            <td>Yan Rüzgar Hızı</td>
+                            <td>>30 m/s</td>
+                            <td>CWC Eğrisi</td>
+                        </tr>
+                        <tr>
+                            <td>Genel</td>
+                            <td>Sürükleme Cd</td>
+                            <td><0.3</td>
+                            <td>CFD</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Risk Matrisi Örneği</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Risk</th>
+                            <th>Olasılık</th>
+                            <th>Etki</th>
+                            <th>Önlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Yan Rüzgar Derayman</td>
+                            <td>Orta</td>
+                            <td>Yüksek</td>
+                            <td>CWC Testi</td>
+                        </tr>
+                        <tr>
+                            <td>Tünel Basınç</td>
+                            <td>Yüksek</td>
+                            <td>Orta</td>
+                            <td>Hermetik Kapı</td>
+                        </tr>
+                        <tr>
+                            <td>Slipstream</td>
+                            <td>Düşük</td>
+                            <td>Orta</td>
+                            <td>Platform Bariyer</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
