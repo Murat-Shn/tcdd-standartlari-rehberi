@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN 15313 - Demiryolu Uygulamaları - Raylı Taşıtlar - Dinamik Test Yöntemleri - Genel Gereklilikler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .prose h2 {
+            font-size: 1.75rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .prose h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .prose h4 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .prose p,
+        .prose ul,
+        .prose ol,
+        .prose table {
+            margin-bottom: 1.25rem;
+        }
+
+        .prose ul,
+        .prose ol {
+            padding-left: 1.5rem;
+        }
+
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+
+        .prose a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .prose a:hover {
+            text-decoration: underline;
+        }
+
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .prose th,
+        .prose td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .prose th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .prose img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z"
+                        clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN 15313 - Demiryolu
+            Uygulamaları - Raylı Taşıtlar - Tekerlek Seti Bakım Gereklilikleri</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN 15313, demiryolu araçlarının tekerlek
+            setlerinin hizmet içi bakımını düzenleyen kapsamlı bir Avrupa standardıdır. Tekerlek seti bileşenlerinin
+            muayene, değerlendirme ve yeniden işleme gerekliliklerini tanımlayarak güvenlik ve interoperabiliteyi
+            güvence altına alır.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>EN 15313 - "Demiryolu Uygulamaları - Raylı Taşıtlar - Hizmet İçi Tekerlek Seti Gereklilikleri"
+                    (Railway applications - Rolling stock - In-service wheelset operation requirements)</p>
+                <p>Bu standart, Avrupa Standardizasyon Komitesi (CEN) bünyesindeki CEN/TC 256 teknik komitesi tarafından
+                    geliştirilmiştir. İlk yayın tarihi 2006 olup en güncel versiyonu <strong>EN 15313:2016</strong>'dır.
+                    Türkiye'de <strong>TS EN 15313</strong> olarak TSE (Türk Standartları Enstitüsü) tarafından
+                    benimsenerek uyarlanmıştır. TCDD ve raylı sistem projelerinde zorunlu referans belgedir. Standart,
+                    TSI WAG (Yük Vagonu) ve TSI LOC&PAS (Lokomotif ve Yolcu Araçları) ile entegredir. Alt kırılımlara
+                    sahip değildir; tek bütünleşik bir standarttır. Tekerlek setlerinin tüm bileşenlerini (aks, göbek,
+                    tekerlek, rulman) kapsar.</p>
+
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>TS EN 15313, operasyonel kullanım sırasında demiryolu araçlarının tekerlek setlerine ilişkin bakım ve
+                    yeniden işleme gerekliliklerini tanımlar. Standart; tekerlek seti bileşenlerinin (aks, göbek,
+                    tekerlek tabanı, lastik, rulman ve diğer bileşenler) muayenesi, değerlendirilmesi, onarımı ve
+                    yeniden montajını kapsamaktadır.</p>
+                <p>Kapsam dahilindeki alanlar:</p>
+                <ul>
+                    <li>Hizmet içi tekerlek seti muayene yöntemleri ve periyotları.</li>
+                    <li>Bileşen sınır değerleri (aşınma limitleri, boyutsal toleranslar).</li>
+                    <li>Yeniden işleme (torna, değiştirme) şartları.</li>
+                    <li>Tekerlek seti montajı ve sökümü için teknik gereklilikler.</li>
+                    <li>Belgelendirme ve izlenebilirlik şartları.</li>
+                </ul>
+                <p>Kapsam dışı alanlar: Yeni tekerlek seti üretimi (EN 13260), ray altyapısı bakımı ve tekerlek seti
+                    tasarım kriterleri.</p>
+                <p>Temel amaçlar:</p>
+                <ul>
+                    <li>Tekerlek seti güvenliğini ve operasyonel emniyetini hizmet boyunca sağlamak.</li>
+                    <li>Avrupa çapında interoperabilite ve standart uyum sağlamak (sınır ötesi operasyonlar).</li>
+                    <li>Bakım süreçlerini standartlaştırarak tekerlek seti ömrünü uzatmak ve toplam yaşam döngüsü
+                        maliyetini düşürmek.</li>
+                    <li>Tekerlek ömrünü optimize etmek ve erken değişim kaynaklı maliyetleri azaltmak.</li>
+                    <li>Derayman ve aks kırılması gibi kritik arıza risklerini minimize etmek.</li>
+                </ul>
+
+                <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                <p>TS EN 15313, demiryolu tekerlek setlerinin hizmet içi davranışlarını ve bozunma mekanizmalarını
+                    anlayarak bakım gerekliliklerini bilimsel temelde ortaya koyan bir standarttır. Temel kavramlar:</p>
+                <ul>
+                    <li><strong>Tekerlek Seti (Wheelset):</strong> İki tekerlekten, bir akstan ve varsa dişli veya fren
+                        disklerinden oluşan montaj bütünü.</li>
+                    <li><strong>Sırt Aşınması (Tread Wear):</strong> Tekerlek ile ray teması nedeniyle oluşan malzeme
+                        kaybı; flanş aşınması ve sırt düzleşmesi olarak sınıflandırılır.</li>
+                    <li><strong>Thermomechanical Damage (Termodinamik Hasar):</strong> Frenleme sırasında oluşan ısıl
+                        gerilmeler nedeniyle tekerlek yüzeyinde meydana gelen çatlaklar veya düzleşmeler.</li>
+                    <li><strong>Rolling Contact Fatigue (RCF - Yuvarlanma Teması Yorulması):</strong> Tekrarlı
+                        tekerlek-ray temas kuvvetlerinden kaynaklanan yüzey veya yüzey altı çatlaklar.</li>
+                    <li><strong>Boyutsal Limitler:</strong> Flanş kalınlığı, flanş yüksekliği ve tekerlek çapı için
+                        tanımlanmış minimum/maksimum değerler.</li>
+                    <li><strong>Lastik Basıncı / Geçme Kuvveti:</strong> Tekerleğin aksa montajında uygulanan zorunlu
+                        geçme kuvveti aralıkları.</li>
+                </ul>
+                <p>Teorik arka plan: Standart, Hertz temas mekaniği, aşınma modelleri (Archard ve USFD modelleri) ve
+                    yorulma teorilerine dayanır. Tekerlek seti ömrünü belirleyen ana parametreler; aks yükü, araç hızı,
+                    hat geometrisi ve fren tipidir. Risk analizi kapsamında EN 50126 RAMS metodolojisi ile birlikte
+                    değerlendirilir.</p>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Yönetim Sistemi:</strong> ISO 9001 kapsamında tekerlek seti bakım yönetim planı; yıllık
+                        gözden geçirme. Bakım organizasyonu ve sorumluluk matrisi dokümante edilmelidir.</li>
+                    <li><strong>Personel Yetkinliği:</strong> Muayene personeli tahribatsız muayene (TDM/NDT) yöntemleri
+                        için EN ISO 9712 uyarı sertifikalı olmalıdır. Aks ve tekerlek muayenecileri için ek yetkinlik
+                        eğitimi gereklidir.</li>
+                    <li><strong>Dokümantasyon:</strong> Her tekerlek seti için bakım geçmişi kaydı (life history
+                        record); tüm muayene ve işlem raporları saklanmalıdır (asgari ömür boyunca + 5 yıl).</li>
+                    <li><strong>Tedarikçi ve Atölye Yönetimi:</strong> Yeniden işleme atölyeleri EN 15313 kapsamında
+                        onaylı olmalı; dış tedarikçiler düzenli denetlenmelidir.</li>
+                    <li><strong>Risk Yönetimi:</strong> Bakım aralıklarının uzatılması veya sınır değer revizyonu EN
+                        50126 uyarı risk değerlendirmesi ile belgelenmelidir.</li>
+                </ul>
+                <h3>Teknik Gereklilikler:</h3>
+                <ul>
+                    <li><strong>Boyutsal Limitler:</strong> Tekerlek çapı aşınma sınırı araç tipine göre belirlenir;
+                        flanş yüksekliği ≥ 27.5 mm (pasenger), flanş kalınlığı ≥ 22 mm (servis limiti).</li>
+                    <li><strong>Muayene Yöntemleri:</strong> Görsel muayene, boyutsal ölçüm (MiniProf veya eşdeğer),
+                        ultrasonik muayene (aks gövdesi ve göbek bölgesi), manyetik parçacık muayenesi (yüzey
+                        çatlakları).</li>
+                    <li><strong>Yeniden İşleme (Reprofile):</strong> CNC torna ile tekerlek profili yenileme; minimum
+                        kalıntı çap (araç tasarımına göre), torna sonrası profil EN 13715'e uygun olmalıdır.</li>
+                    <li><strong>Rulman Muayenesi:</strong> Akustik emisyon veya titreşim analizi ile hizmet içi izleme;
+                        söküm ve tam muayene aralıkları standart tarafından tanımlanır.</li>
+                    <li><strong>Geçme Bağlantıları:</strong> Tekerlek / dişli / fren diski sökme-takma için geçme
+                        kuvvetleri ve yüzey durumu gereklilikleri tanımlanmıştır.</li>
+                    <li><strong>Aks Muayenesi:</strong> Ultrasonik muayene frekansı ve kabul/red kriterleri; aks onarım
+                        kaynağı yasaktır, çatlağı tespit edilen aks hizmet dışı bırakılır.</li>
+                </ul>
+                <p>Hizmet Yeterlilik Belgesi: Tekerlek seti bakım atölyeleri için EN 15313 kapsam onayı (yetkili kuruluş
+                    denetimi, 3-5 yıl süreli). IRIS sertifikasyonu ile entegre değerlendirme mümkündür.</p>
+
+                <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel örneklerle)</h2>
+                <p>TS EN 15313, tüm raylı taşıt kategorileri için uygulanabilir:</p>
+                <ul>
+                    <li><strong>Yüksek Hızlı Trenler (YHT):</strong> TCDD YHT setlerinde tekerlek seti bakım aralıkları;
+                        300 km/h üzeri hızlarda kritik muayene gereklilikleri. Ultrasonik muayene frekansı artırılmış
+                        rejim uygulanır.</li>
+                    <li><strong>Ana Hat Lokomotif ve Vagonları:</strong> TCDD yük vagonlarında aks yükü 22.5 ton/aks;
+                        tekerlek seti ömrü ve bakım planı yaklaşımı. Asgari tekerlek çapı takibi.</li>
+                    <li><strong>Banliyö ve Bölgesel Trenler:</strong> Yüksek dönüş frekansı nedeniyle kısaltılmış
+                        muayene aralıkları; fren kaynaklı termodinamik hasar yönetimi.</li>
+                    <li><strong>Metro ve Hafif Raylı Sistemler:</strong> Flanş aşınma oranı izleme; yüksek frekans
+                        nedeniyle otomasyona elverişli muayene yöntemleri (örneğin İstanbul Metro tekerlek seti
+                        atölyesi).</li>
+                    <li><strong>Test Treni Uygulamaları:</strong> Test treninin tekerlek seti, standart servise göre
+                        daha yoğun ve özel koşullarda kullanıldığından EN 15313 kapsamlı yoğunlaştırılmış bakım programı
+                        uygulanır.</li>
+                </ul>
+
+                <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                <p>TS EN 15313'ü uygulamak için pratik adımlar:</p>
+                <h3>1. Hazırlık Aşaması:</h3>
+                <ul>
+                    <li>Araç tipi ve operasyon profiline göre referans bakım planı oluşturma (hat geometrisi, aks yükü,
+                        hız profili dikkate alınır); süre 1-3 ay.</li>
+                    <li>Muayene ekipmanının seçimi ve kalibrasyonu (MiniProf, ultrasonik cihaz, EDT/torna ekipmanı);
+                        maliyet hesabı.</li>
+                    <li>Bakım atölyesi altyapısının EN 15313 gerekliliklerine göre değerlendirilmesi.</li>
+                </ul>
+                <h3>2. Muayene ve Değerlendirme Aşaması:</h3>
+                <ul>
+                    <li>Belirlenen aralıklarda boyutsal ölçüm (flanş parametreleri, çap); otomatik ölçüm sistemleri
+                        tercih edilir.</li>
+                    <li>NDT muayenesi (ultrasonik, manyetik parçacık); sonuçların yetkin personel tarafından
+                        değerlendirilmesi.</li>
+                    <li>Kabul/red kararı: Sınır değerlere göre hizmet devamı, yeniden işleme veya değiştirme kararı
+                        verilir.</li>
+                </ul>
+                <h3>3. Yeniden İşleme Aşaması:</h3>
+                <ul>
+                    <li>CNC torna ile tekerlek profili yenileme (EN 13715 referans profili); torna sonrası 100% ölçüm
+                        kontrolü.</li>
+                    <li>Gerekiyorsa tekerlek, aks veya rulman değişimi; montaj işlemleri EN 13260 ve EN 15313 birlikte
+                        uygulanır.</li>
+                    <li>Yeniden işleme sonrası kabul muayenesi 1-3 gün içinde tamamlanır.</li>
+                </ul>
+                <h3>4. Kayıt ve İzlenebilirlik Aşaması:</h3>
+                <ul>
+                    <li>Her tekerlek setinin life history record'unun güncellenmesi; bileşen tanımlama (seri numara,
+                        üretici).</li>
+                    <li>Bakım geçmişinin dijital sistemlerde (CMMS) saklanması; veri analizi ile ömür tahmini.</li>
+                </ul>
+                <p>Uygulama maliyeti: Tekerlek seti başına ultrasonik muayene 2.000-8.000 TL; torna işlemi 5.000-20.000
+                    TL; tam tekerlek seti değişimi araç tipine göre 50.000-300.000 TL.</p>
+
+                <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disiplin</th>
+                            <th>Sorumluluklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üst Yönetim</td>
+                            <td>EN 15313 bakım politikasının onaylanması; atölye yeterlilik belgesi yenileme bütçesi;
+                                yıllık performans gözden geçirmesi.</td>
+                        </tr>
+                        <tr>
+                            <td>Mekanik Mühendisliği</td>
+                            <td>Bakım planı tasarımı ve güncellenmesi; limit değerlerin revize edilmesi (risk
+                                değerlendirmesiyle); torna parametrelerinin belirlenmesi.</td>
+                        </tr>
+                        <tr>
+                            <td>Emniyet Mühendisliği</td>
+                            <td>Tekerlek seti arızası risk analizi (FMEA, FTA); bakım aralığı uzatma kararlarında onay;
+                                kaza ve yakın-ıskalama raporlaması.</td>
+                        </tr>
+                        <tr>
+                            <td>Bakım Mühendisliği / Teknisyenleri</td>
+                            <td>Sahada muayene uygulaması (boyutsal, görsel); NDT muayene yürütmesi; yeniden işleme
+                                kararı; kayıt tutma.</td>
+                        </tr>
+                        <tr>
+                            <td>Kalite ve Denetim</td>
+                            <td>İç audit (yılda en az 2 kez); atölye yeterlilik belgesi takibi; tedarikçi denetimi;
+                                uygunsuzluk yönetimi.</td>
+                        </tr>
+                        <tr>
+                            <td>Bilgi Teknolojileri</td>
+                            <td>CMMS (Computerized Maintenance Management System) altyapısı; tekerlek seti life history
+                                dijital kaydı; ömür tahmin yazılımı.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Otomatik tekerlek profil ölçüm sistemleri (AWPMS) ile her geçişte boyutsal veri toplama (büyük
+                        terminallerde).</li>
+                    <li>Rulman durumu izleme sensörleri (akustik emisyon, titreşim); anormal değerlerde erken uyarı.
+                    </li>
+                    <li>Kilometer tabanlı bakım aralıklarının yanı sıra durum bazlı bakım (Condition-Based Maintenance)
+                        yaklaşımının entegrasyonu.</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç denetim: Yılda en az 2 kez; muayene kayıtları, ekipman kalibrasyonları ve personel yetkinlik
+                        belgeleri kontrol edilir.</li>
+                    <li>Dış denetim: Atölye yeterlilik belgesi kapsamında yetkili kuruluş tarafından 3-5 yılda bir; TCDD
+                        tarafından yıllık operasyonel denetim.</li>
+                    <li>Sürpriz/haberli denetimler: İşleten kuruluşun kendi güvenlik yönetim sistemi kapsamında.</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li>Başvuru: Atölye teknik dosyası (ekipman, personel, prosedürler — genellikle 30-80 sayfa).</li>
+                    <li>Belge Kapsamı: Belge, hangi araç tipleri ve tekerlek seti bileşenlerine bakım yapılabileceğini
+                        tanımlar.</li>
+                    <li>Sertifika geçerliliği: 3-5 yıl; yıllık gözetim denetimi zorunlu; büyük kapsam değişikliklerinde
+                        revize audit.</li>
+                </ul>
+                <p>Hizmet Yeterlilik Belgesi: EN 15313 kapsam onayı, işleten kurum ile bakım atölyesi arasındaki
+                    kontratın zorunlu ekidir.</p>
+
+                <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
+                <ul>
+                    <li>Farklı araç filosunun (yaşlı ve yeni araçlar) ortak bakım standardında yönetilmesi; limit değer
+                        çelişkileri.</li>
+                    <li>Manuel muayene yöntemlerindeki insan hatası riski; NDT personeli yetersizliği.</li>
+                    <li>Life history kayıtlarının tutarsız tutulması; kağıt tabanlı sistemlerde veri kaybı.</li>
+                    <li>Bakım aralıklarının aşılması nedeniyle gecikmiş muayene riski; yüksek işletme trafiği nedeniyle
+                        araç dışı alma güçlüğü.</li>
+                    <li>Yüksek maliyetli NDT ekipmanının küçük atölyeler için erişilebilirliği.</li>
+                </ul>
+                <h3>Çözümler:</h3>
+                <ul>
+                    <li>Otomatik tekerlek profil ölçüm sistemleri (Hegenscheidt, Rafil vb.) ile insandan bağımsız veri
+                        toplama.</li>
+                    <li>Dijital CMMS entegrasyonu; her tekerlek setine QR/RFID kimlik; bulut tabanlı life history.</li>
+                    <li>NDT personeli için sertifikasyon ve periyodik yetkinlik doğrulama programı (EN ISO 9712).</li>
+                    <li>Risk tabanlı bakım yaklaşımıyla yüksek riskli araçlara öncelik verip düşük riskli araçlarda
+                        aralık optimizasyonu (EN 50126 metodolojisi).</li>
+                    <li>Bölgesel bakım atölyeleri arasında ekipman paylaşım modelleri; atölye klaster organizasyonu.
+                    </li>
+                </ul>
+                <p>İpuçları: Tekerlek seti veri analitiği ile ömür tahmini yapın; aşınma hızı trendlerini takip edin;
+                    anomali tespitinde makine öğrenmesi modelleri değerlendirin.</p>
+
+                <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                <h3>Tekerlek Seti Bileşen Yapısı</h3>
+                <div class="mermaid">
+                    graph TD
+                    A["Tekerlek Seti (Wheelset)"] --> B["Aks (Axle)"]
+                    A --> C["Tekerlek Tabanı (Wheel Centre)"]
+                    A --> D["Lastik / Monoblock Tekerlek"]
+                    A --> E["Rulman Ünitesi (Bearing)"]
+                    A --> F["Dişli / Fren Diski (Opsiyonel)"]
+                    B --> B1["Gövde (Aks Gövdesi)"]
+                    B --> B2["Göbek Bölgesi (Journal)"]
+                    D --> D1["Flanş"]
+                    D --> D2["Sırt (Tread)"]
+                    D --> D3["Disk Yüzeyi"]
+                </div>
+                <p class="text-center text-sm text-gray-500">Tekerlek seti bileşenlerinin hiyerarşik yapısı.</p>
+
+                <h3>Bakım Karar Akış Diyagramı</h3>
+                <div class="mermaid">
+                    flowchart TD
+                    A[Tekerlek Seti Muayene Zamanı] --> B[Boyutsal Ölçüm]
+                    B --> C{Limit Değerler\nİçinde mi?}
+                    C -->|Evet| D[NDT Muayenesi]
+                    C -->|Hayır| E[Yeniden İşleme\nTorna / Değiştirme]
+                    D --> F{Kusur\nTespit Edildi mi?}
+                    F -->|Hayır| G[Hizmete Devam]
+                    F -->|Evet - Kabul Sınırında| H[Artan Gözetim\nKısa Aralıklı Kontrol]
+                    F -->|Evet - Kritik| I[Hizmet Dışı Bırak\nAcil Onarım]
+                    E --> J[Torna Sonrası\n100% Kontrol]
+                    J --> K{Kabul\nKriterleri?}
+                    K -->|Geçti| G
+                    K -->|Başarısız| I
+                    H --> B
+                    I --> L[Bileşen Değişimi\nve Montaj]
+                    L --> M[Montaj Sonrası\nMuayene]
+                    M --> G
+                </div>
+                <p class="text-center text-sm text-gray-500">EN 15313 kapsamındaki hizmet içi tekerlek seti bakım karar
+                    akışı.</p>
+
+                <h3>Kritik Boyutsal Limitler Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parametre</th>
+                            <th>Yeni (Nominal)</th>
+                            <th>Bakım Limiti</th>
+                            <th>Ömür Sonu Limiti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Flanş Yüksekliği</td>
+                            <td>28-33 mm</td>
+                            <td>≥ 27.5 mm</td>
+                            <td>&lt; 25 mm → Değiştir</td>
+                        </tr>
+                        <tr>
+                            <td>Flanş Kalınlığı</td>
+                            <td>32.5 mm</td>
+                            <td>≥ 25 mm</td>
+                            <td>&lt; 22 mm → Değiştir</td>
+                        </tr>
+                        <tr>
+                            <td>Tekerlek Çapı Farkı (Aynı Set)</td>
+                            <td>0 mm</td>
+                            <td>≤ 1 mm</td>
+                            <td>&gt; 2 mm → Yeniden işle</td>
+                        </tr>
+                        <tr>
+                            <td>qR (Sırt-Flanş Geçiş Yarıçapı)</td>
+                            <td>6.5-7.5 mm</td>
+                            <td>≥ 5 mm</td>
+                            <td>&lt; 4 mm → Torna</td>
+                        </tr>
+                        <tr>
+                            <td>Sırt Düzlüğü (Flat Spot)</td>
+                            <td>0 mm</td>
+                            <td>≤ 40 mm</td>
+                            <td>&gt; 60 mm → Torna</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Muayene Sıklıkları Özet Tablosu</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Muayene Türü</th>
+                            <th>Yöntem</th>
+                            <th>Sıklık</th>
+                            <th>Sorumlu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Görsel Muayene</td>
+                            <td>Gözlem, fener</td>
+                            <td>Her bakım döngüsü</td>
+                            <td>Bakım teknisyeni</td>
+                        </tr>
+                        <tr>
+                            <td>Boyutsal Ölçüm</td>
+                            <td>MiniProf / AWPMS</td>
+                            <td>50.000-150.000 km</td>
+                            <td>Muayene teknisyeni</td>
+                        </tr>
+                        <tr>
+                            <td>Aks Ultrasonik Muayene</td>
+                            <td>UT (A-scan / phased array)</td>
+                            <td>250.000-750.000 km</td>
+                            <td>NDT Seviye 2 personel</td>
+                        </tr>
+                        <tr>
+                            <td>Rulman Muayenesi</td>
+                            <td>Akustik / titreşim analizi</td>
+                            <td>Sürekli izleme + periyodik</td>
+                            <td>Bakım mühendisi</td>
+                        </tr>
+                        <tr>
+                            <td>Göbek Muayenesi</td>
+                            <td>UT / MT</td>
+                            <td>Sökümde (overhaul)</td>
+                            <td>NDT Seviye 2 personel</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <aside>
+                    <strong>⚠️ Önemli Not:</strong> TS EN 15313'te belirtilen bakım aralıkları minimum gerekliliklerdir.
+                    İşleten kuruluşlar, araç tipine ve hat koşullarına göre daha kısa muayene aralıkları belirleyebilir.
+                    Bakım aralıklarının uzatılması ise EN 50126 çerçevesinde yazılı risk değerlendirmesi sonucunda
+                    yetkili makam onayına tabidir.
+                </aside>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn"
+            class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>
