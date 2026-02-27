@@ -1,41 +1,113 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TS 13149 - Toplu Taşıma Araçları - Erişilebilirlik - Araç İçi Bilgi ve İletişim Sistemleri</title>
+    <title>TS 13149 - Toplu Taşıma Araçları - Açık Veri İletişim Arayüzü (ODCI)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']],
-          processEscapes: true
-        }
-      };
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
     </script>
     <script type="module">
-      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-      window.MathJax.typesetPromise().then(() => {
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: true });
-      });
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #374151; line-height: 1.6; }
-        .prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; font-weight: 700; color: #1f2937; }
-        .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; font-weight: 600; color: #1f2937; }
-        .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: #1f2937; }
-        .prose p, .prose ul, .prose ol, .prose table { margin-bottom: 1.25rem; }
-        .prose ul, .prose ol { padding-left: 1.5rem; }
-        .prose li { margin-bottom: 0.5rem; }
-        .prose a { color: #2563eb; text-decoration: none; }
-        .prose a:hover { text-decoration: underline; }
-        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; overflow-x: auto; display: block; }
-        .prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
-        .prose th { background-color: #f3f4f6; font-weight: 600; }
-        .prose img { max-width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .prose h2 {
+            font-size: 1.75rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .prose h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .prose h4 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .prose p,
+        .prose ul,
+        .prose ol,
+        .prose table {
+            margin-bottom: 1.25rem;
+        }
+
+        .prose ul,
+        .prose ol {
+            padding-left: 1.5rem;
+        }
+
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+
+        .prose a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .prose a:hover {
+            text-decoration: underline;
+        }
+
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .prose th,
+        .prose td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .prose th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .prose img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         .diagram {
             background-color: #f0f4f8;
             border: 1px solid #d1d5db;
@@ -47,7 +119,12 @@
             font-family: 'monospace', sans-serif;
             color: #374151;
         }
-        .diagram pre { margin: 0; white-space: pre-wrap; }
+
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
         aside {
             background-color: #fffbeb;
             border-left: 4px solid #f59e0b;
@@ -57,6 +134,7 @@
             border-radius: 0.375rem;
             color: #78350f;
         }
+
         #toc-sidebar {
             position: sticky;
             top: 20px;
@@ -66,17 +144,23 @@
             padding: 1.5rem;
             background-color: #ffffff;
             border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             max-height: calc(100vh - 40px);
             overflow-y: auto;
         }
+
         #toc-sidebar h3 {
             font-size: 1.125rem;
             font-weight: 700;
             margin-bottom: 1rem;
             color: #1f2937;
         }
-        #toc-sidebar ul { list-style: none; padding: 0; }
+
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
         #toc-sidebar li a {
             display: block;
             padding: 0.5rem 0.75rem;
@@ -85,15 +169,18 @@
             border-radius: 0.25rem;
             transition: background-color 0.2s, color 0.2s;
         }
+
         #toc-sidebar li a:hover {
             background-color: #e0f2fe;
             color: #1e40af;
         }
+
         #toc-sidebar li a.active {
             background-color: #bfdbfe;
             color: #1e40af;
             font-weight: 600;
         }
+
         #back-to-top-btn {
             position: fixed;
             bottom: 20px;
@@ -102,20 +189,23 @@
             color: white;
             padding: 1rem;
             border-radius: 9999px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: opacity 0.3s, transform 0.3s;
             opacity: 0;
             transform: translateY(20px);
             z-index: 999;
         }
+
         #back-to-top-btn.show {
             opacity: 1;
             transform: translateY(0);
         }
+
         #back-to-top-btn:hover {
             background-color: #1e40af;
         }
+
         @media (min-width: 1024px) {
             .main-content-grid {
                 display: grid;
@@ -123,24 +213,35 @@
                 gap: 2rem;
             }
         }
+
         @media (max-width: 1023px) {
-            #toc-sidebar { display: none; }
+            #toc-sidebar {
+                display: none;
+            }
         }
     </style>
 </head>
+
 <body class="p-4 md:p-8">
     <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
         <nav class="mb-6">
-            <a href="../../index.html#home" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+            <a href="../../index.html#home"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z"
+                        clip-rule="evenodd" />
                 </svg>
                 Ana Sayfaya Dön
             </a>
         </nav>
 
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS 13149 - Toplu Taşıma Araçları - Erişilebilirlik - Araç İçi Bilgi ve İletişim Sistemleri</h1>
-        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS 13149, toplu taşıma araçlarında kullanılan bilgi ve iletişim sistemlerinin teknik özelliklerini, entegrasyonunu ve veri alışverişini düzenler.</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS 13149 - Toplu
+            Taşıma Araçları - Açık Veri İletişim Arayüzü (ODCI)</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS 13149, otobüs ve benzeri toplu taşıma
+            araçlarındaki alt sistemler arasında standart bir açık veri iletişim arayüzü tanımlayan çok bölümlü bir
+            Türk standardıdır. Araç içi sistemlerin (yolcu bilgilendirme, ücret toplama, telematik, sürücü destek)
+            birlikte çalışabilirliğini ve entegrasyonunu güvence altına alır.</p>
 
         <div class="main-content-grid">
             <nav id="toc-sidebar">
@@ -149,312 +250,487 @@
             </nav>
 
             <div class="prose max-w-none text-gray-700">
-                <h2 id="kapsam-ve-amac">1. Kapsam ve Amaç</h2>
-                <p><strong>TS 13149</strong>, toplu taşıma araçlarında kullanılan bilgi ve iletişim sistemlerinin teknik özelliklerini, entegrasyonunu ve veri alışverişini düzenleyen bir standarttır. Bu standart:</p>
-                <ul>
-                    <li>Bilgi sistemleri arasında veri alışverişini sağlamak için açık mimari protokoller tanımlar.</li>
-                    <li>Araç içi ve dış bilgi sistemlerinin entegrasyonunu sağlar.</li>
-                    <li>Yolcu bilgilendirme, sürücü destek sistemleri ve filo yönetimi gibi uygulamaları kapsar.</li>
-                    <li>Çeşitli toplu taşıma sistemleri arasında birlikte çalışabilirliği artırmayı amaçlar.</li>
-                </ul>
-                <p>Amaç, toplu taşıma sistemlerinin teknolojik altyapısını standartlaştırarak verimliliği artırmak, kullanıcı deneyimini iyileştirmek ve sistemler arası uyumluluğu sağlamaktır.</p>
 
-                <h2 id="tanim-ve-teorik-arka-plan">2. Tanım ve Teorik Arka Plan</h2>
-                <p>TS 13149, EN 13149 serisinin Türkiye'deki uyarlamasıdır. Temel kavramlar:</p>
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>TS 13149 - <em>"Toplu Taşıma Araçları - Açık Veri İletişim Arayüzü"</em> (Open Data
+                    Communication Interface - ODCI)</p>
+                <p>Bu standart, Avrupa standardı <strong>EN 13149</strong>'un Türkiye uyarlamasıdır; TSE (Türk
+                    Standartları Enstitüsü) tarafından benimsenerek yayımlanmıştır. EN 13149, Avrupa Standardizasyon
+                    Komitesi (CEN) bünyesindeki <strong>CEN/TC 278</strong> (Akıllı Ulaşım Sistemleri - ITS) teknik
+                    komitesi tarafından geliştirilmiştir.</p>
+                <p>Standart birden fazla bölümden oluşmaktadır:</p>
                 <ul>
-                    <li><strong>IP-Tabanlı Ağ Mimarisi:</strong> Modern araçlarda Ethernet/IP tabanlı ağ mimarisi.</li>
-                    <li><strong>Veri Modellemesi:</strong> Standartize edilmiş veri yapıları.</li>
-                    <li><strong>Protokol Katmanları:</strong> Fiziksel, veri bağlantı, ağ ve uygulama katmanları.</li>
-                    <li><strong>Servis Odaklı Mimari (SOA):</strong> Sistemlerin servisler aracılığıyla haberleşmesi.</li>
+                    <li><strong>Bölüm 1:</strong> Genel Prensipler ve Sistem Mimarisi (EN 13149-1)</li>
+                    <li><strong>Bölüm 2:</strong> Uygulama Katmanı ve Servis Tanımları (EN 13149-2)</li>
+                    <li><strong>Bölüm 3:</strong> Profil ve Uygunluk Gereklilikleri (EN 13149-3)</li>
+                    <li><strong>Bölüm 4:</strong> Fiziksel ve Veri Bağlantı Katmanı Özellikleri (EN 13149-4)</li>
                 </ul>
-                <p>Teorik temeller:</p>
-                <ul>
-                    <li>Bilgi sistemlerinin modüler tasarımı ve esnekliği.</li>
-                    <li>Açık standartlar ve protokollerin kullanımı.</li>
-                    <li>Farklı üreticilerin sistemleri arasında birlikte çalışabilirlik.</li>
-                    <li>Gerçek zamanlı veri alışverişi ve sistem durumu izleme.</li>
-                    <li>Güvenli ve güvenilir iletişim altyapısı.</li>
-                </ul>
+                <p>Standart; otobüs, tramvay, metro ve diğer toplu taşıma araçlarındaki elektronik alt sistemlerin
+                    açık, üretici bağımsız bir veri yolu üzerinden haberleşmesini sağlar. TCDD ve Belediye toplu
+                    taşıma projeleri ile akıllı şehir uygulamalarında referans belgedir.</p>
 
-                <h2 id="kurumsal-ve-teknik-gereklilikler">3. Kurumsal ve Teknik Gereklilikler</h2>
-                <h3>Kurumsal Gereklilikler</h3>
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>TS 13149, toplu taşıma araçlarında birden fazla tedarikçinin sağladığı elektronik alt sistemlerin
+                    tek bir açık veri iletişim omurgasına (ODCI - Open Data Communication Interface) bağlanarak
+                    birlikte çalışmasını tanımlar.</p>
+                <p>Kapsam dahilindeki sistemler:</p>
                 <ul>
-                    <li><strong>Belgelendirme:</strong> TSE veya yetkilendirilmiş kuruluşlardan uygunluk belgesi alınması.</li>
-                    <li><strong>Yönetim Sistemi:</strong> Bilgi teknolojileri yönetim sisteminin dokümantasyonu.</li>
-                    <li><strong>Personel Yetkinliği:</strong> Teknik personelin eğitim ve belgelendirilmesi.</li>
-                    <li><strong>Tedarikçi Yönetimi:</strong> TS 13149 uyumlu bileşenler için süreçler.</li>
+                    <li>Araç bilgisayarı (On-Board Computer - OBC) ve veri toplama üniteleri.</li>
+                    <li>Yolcu Bilgilendirme Sistemi (Passenger Information System - PIS): iç ekranlar, anons
+                        sistemi.</li>
+                    <li>Otomatik Araç Konumu (Automatic Vehicle Location - AVL) ve GPS/GNSS telematik modülleri.</li>
+                    <li>Elektronik Ücret Toplama (Electronic Fare Collection - EFC) terminalleri.</li>
+                    <li>Elektronik Bilet Makineleri (EBM) ve kapı doğrulayıcılar.</li>
+                    <li>CCTV / güvenlik kamera sistemleri (video meta verisi iletimi).</li>
+                    <li>Sürücü Destek Sistemi (Driver Advisory System - DAS).</li>
+                    <li>Trafik Sinyal Öncelik sistemi (Traffic Signal Priority - TSP) arayüzü.</li>
+                    <li>Araç içi Wi-Fi erişim noktaları (yönetim ve durum verisi).</li>
+                    <li>Filo Yönetim Sistemi (Fleet Management System - FMS) arayüzleri.</li>
                 </ul>
-                <h3>Teknik Gereklilikler</h3>
+                <p>Kapsam dışı alanlar: Araçların mekanik yapısı ve fiziksel güvenliği, yolcu güvenlik sistemlerinin
+                    fonksiyonel emniyet şartları (EN 50126 kapsamında ayrıca ele alınır), altyapı cihazları (durak
+                    ekipmanları) ile dış ağ iletişim protokolleri (GSM/4G/5G).</p>
+                <p>Temel amaçlar:</p>
                 <ul>
-                    <li><strong>Ağ Altyapısı:</strong> 100BASE-T veya 1000BASE-T Ethernet, CAT5e kablolama.</li>
-                    <li><strong>IP Adreslemesi:</strong> IPv4 veya IPv6, statik IP veya DHCP.</li>
-                    <li><strong>Veri Aktarım Protokolleri:</strong> HTTP, MQTT, WebSocket.</li>
-                    <li><strong>Veri Formatları:</strong> XML veya JSON.</li>
-                    <li><strong>Güvenlik:</strong> TLS/SSL şifreleme, kimlik doğrulama.</li>
-                    <li><strong>Donanım:</strong> -40°C ila +85°C sıcaklık aralığı, titreşim dayanıklılığı.</li>
-                    <li><strong>Enerji Verimliliği:</strong> Düşük güç tüketimi, bekleme modları.</li>
-                    <li><strong>Yedeklilik:</strong> Kritik sistemler için yedekli tasarım ve otomatik geçiş.</li>
-                </ul>
-
-                <h2 id="kullanim-alanlari">4. Kullanım Alanları (Sektörel Örneklerle)</h2>
-                <ul>
-                    <li><strong>Şehir İçi Toplu Taşıma:</strong>
-                        <ul>
-                            <li><strong>Otobüsler:</strong> Ankara EGO ve İstanbul İETT otobüslerinde gerçek zamanlı konum takibi, dijital ekranlar ve anons sistemleri.</li>
-                            <li><strong>Tramvaylar:</strong> İzmir ESHOT tramvaylarında yolcu bilgilendirme, kamera ve güvenlik sistemleri.</li>
-                            <li><strong>Metrobüs:</strong> İstanbul metrobüsünde araç içi bilgilendirme, akıllı durak göstergeleri ve trafik sinyalizasyon entegrasyonu.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Şehirlerarası Taşımacılık:</strong>
-                        <ul>
-                            <li><strong>Yüksek Hızlı Trenler:</strong> TCDD trenlerinde yolcu bilgilendirme, eğlence üniteleri ve internet erişimi.</li>
-                            <li><strong>Otobüs İşletmeleri:</strong> Filolarda araç takip, yakıt tüketimi optimizasyonu ve bakım planlama.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Özel Uygulamalar:</strong>
-                        <ul>
-                            <li><strong>Havaalanı Servis Araçları:</strong> İstanbul Havalimanı’nda bagaj takip ve terminal bilgi entegrasyonu.</li>
-                            <li><strong>Turizm Taşımacılığı:</strong> Turistik bölgelerde çok dilli bilgilendirme ve rota ekranları.</li>
-                            <li><strong>Akıllı Şehir Uygulamaları:</strong> Belediyelerde toplu taşıma araçlarının trafik entegrasyonu.</li>
-                        </ul>
-                    </li>
+                    <li>Yerli ve yabancı farklı üreticilerin cihazlarının aynı araç içi ağda sorunsuz çalışmasını
+                        sağlamak (vendor lock-in'i önlemek).</li>
+                    <li>Yeni sistemlerin mevcut filoya kolayca entegre edilmesine olanak tanımak.</li>
+                    <li>Araç içi veri iletişimini standartlaştırarak veri kalitesini ve güvenilirliğini artırmak.</li>
+                    <li>İşletme maliyetlerini düşürmek; bakım ve sistem güncellemelerini kolaylaştırmak.</li>
+                    <li>Akıllı ulaşım sistemleri (ITS) ekosistemi ile uyumlu açık mimari oluşturmak.</li>
                 </ul>
 
-                <h2 id="uygulama-esaslari">5. Uygulama Esasları</h2>
-                <h3>Proje Hazırlık Aşaması</h3>
+                <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                <p>TS 13149, açık sistem mimarisi ve servis odaklı yaklaşım (SOA) üzerine kurulmuştur. Temel kavramlar
+                    ve teorik çerçeve:</p>
                 <ul>
-                    <li>İhtiyaç analizi: Mevcut sistemlerin envanteri ve ihtiyaç belirleme.</li>
-                    <li>Sistem mimarisi tasarımı: Tüm bileşenlerin ve arabirimlerin tanımlanması.</li>
-                    <li>Bütçe ve zaman planlaması: Detaylı bütçe ve uygulama takvimi.</li>
+                    <li><strong>ODCI (Açık Veri İletişim Arayüzü):</strong> Araç içindeki tüm elektronik alt sistemlerin
+                        bağlandığı merkezi veri omurgası. Fiziksel katmandan uygulama katmanına kadar tüm seviyeleri
+                        tanımlar.</li>
+                    <li><strong>Servis Kayıt Defteri (Service Registry):</strong> ODCI üzerindeki her alt sistem
+                        sunduğu ve tükettiği servisleri kayıt defterine bildirir; bu sayede dinamik keşif (service
+                        discovery) mümkün olur.</li>
+                    <li><strong>Publish/Subscribe (Yayınla/Abone Ol) Modeli:</strong> Gerçek zamanlı veri dağıtımı için
+                        kullanılan asenkron iletişim modeli. GPS konumu, kapı durumu gibi durumlar yayınlanır; ilgili
+                        sistemler abone olarak anlık veriyi alır.</li>
+                    <li><strong>Request/Response Modeli:</strong> Kayıt ve komut iletişimi için senkron model. Örneğin,
+                        bilet doğrulama isteği ve yanıtı bu modelle yürütülür.</li>
+                    <li><strong>Veri Modeli Standartlaştırması:</strong> Tüm veri nesneleri (konum, durak, sefer,
+                        yolcu sayısı vb.) standart XML şeması (XSD) veya JSON şemasıyla tanımlanmıştır.</li>
+                    <li><strong>Katmanlı Mimari:</strong> OSI modeline paralel şekilde fiziksel, veri bağlantı, ağ,
+                        ulaşım ve uygulama katmanları tanımlanmıştır.</li>
+                    <li><strong>Zaman Senkronizasyonu (NTP/PTP):</strong> Tüm alt sistemlerin ortak zaman referansı
+                        kullanması; log ve olay kayıtlarının tutarlılığı için kritiktir.</li>
                 </ul>
-                <h3>Uygulama Aşaması</h3>
+                <p>Teorik temeller: Standart, IEC/ISO OSI yedi katmanlı ağ modelini, IETF TCP/IP protokol ailesini ve
+                    OASIS'in Web Servisleri standartlarını temel alır. Veri modelleme için W3C XML standartları ve SIRI
+                    (Service Interface for Real-time Information — CEN/TS 15531) referans alınmıştır. Araç içi ağ
+                    tasarımında determinizm ve güvenilirlik için IEEE 802.1 TSN (Time-Sensitive Networking) uyumluluğu
+                    teşvik edilmektedir.</p>
+
+                <h2 id="standart-yapisi-bolumler">Standart Yapısı ve Bölümleri</h2>
+                <p>TS 13149, birbirini tamamlayan dört ana bölümden oluşur:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bölüm</th>
+                            <th>Başlık</th>
+                            <th>İçerik Özeti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bölüm 1</td>
+                            <td>Genel Prensipler ve Sistem Mimarisi</td>
+                            <td>ODCI kavramı, sistem topolojisi, katmanlı mimari, servis modeli, genel gereklilikler
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bölüm 2</td>
+                            <td>Uygulama Katmanı Servisleri</td>
+                            <td>Zorunlu ve isteğe bağlı servis tanımları, veri nesneleri, publish/subscribe ve
+                                request/response şemaları</td>
+                        </tr>
+                        <tr>
+                            <td>Bölüm 3</td>
+                            <td>Profil ve Uygunluk Gereklilikleri</td>
+                            <td>Uygunluk seviyeleri (profiller), uygunluk test gereklilikleri, sertifikasyon kriterleri
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bölüm 4</td>
+                            <td>Fiziksel ve Veri Bağlantı Katmanı</td>
+                            <td>Ethernet (IEEE 802.3) fiziksel ortam, kablolama gereklilikleri, VLAN yapılandırması,
+                                QoS parametreleri</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                <h3>Kurumsal Gereklilikler:</h3>
                 <ul>
-                    <li>Ağ altyapısının kurulumu: Ethernet anahtarları, yönlendiriciler ve kablolama.</li>
-                    <li>Donanım entegrasyonu: Araç bilgisayarları, ekranlar, sensörler montajı.</li>
-                    <li>Yazılım kurulumu: İşletim sistemleri, middleware ve uygulama yazılımları.</li>
-                    <li>Veri modeli uygulaması: Veri yapıları ve protokollerin uygulanması.</li>
-                    <li>Sistem entegrasyonu: Araç içi sistemlerin entegrasyonu.</li>
+                    <li><strong>Yönetim Sistemi:</strong> ISO 9001 kapsamında tedarikçi yönetim planı; ODCI uyumlu
+                        bileşenlerin tedariki ve kabul testleri için prosedürler oluşturulmalıdır.</li>
+                    <li><strong>Sistem Entegrasyon Sorumluluğu:</strong> Araç üreticisi veya sistem entegratörü,
+                        ODCI uyumluluğunun bütünsel sorumluluğunu üstlenir; tüm alt sistem tedarikçileri uygunluk
+                        belgesi (Declaration of Conformity) verir.</li>
+                    <li><strong>Personel Yetkinliği:</strong> Ağ yapılandırması, ODCI servis entegrasyonu ve hata
+                        teşhisi için yetkin mühendis ve teknisyenlerin görevlendirilmesi ve kayıt altına alınması.</li>
+                    <li><strong>Dokümantasyon:</strong> Araç başına ODCI ağ topolojisi, IP adresleme planı, servis
+                        kataloğu, konfigürasyon parametreleri ve yazılım sürüm kayıtları tutulmalıdır.</li>
+                    <li><strong>Bakım ve Güncelleme Yönetimi:</strong> Yazılım güncellemelerinin etkisinin analiz
+                        edilmesi, gerekli regresyon testlerinin yapılması; geri alma (rollback) prosedürlerinin
+                        tanımlanması.</li>
+                    <li><strong>Siber Güvenlik Yönetimi:</strong> IEC 62443 veya eşdeğer çerçevede araç içi ağ
+                        güvenlik politikası; yetkisiz erişim kontrolü ve güvenlik yamalarının yönetimi.</li>
                 </ul>
-                <h3>Test ve Doğrulama</h3>
+                <h3>Teknik Gereklilikler:</h3>
                 <ul>
-                    <li>Birim testleri: Her bileşenin tek başına testi.</li>
-                    <li>Entegrasyon testleri: Bileşenlerin uyumlu çalışması.</li>
-                    <li>Performans testleri: Yük altında ve farklı koşullarda performans.</li>
-                    <li>Güvenlik testleri: Sistem güvenliğinin doğrulanması.</li>
+                    <li><strong>Fiziksel Ağ Altyapısı:</strong> IEEE 802.3 uyumlu Ethernet; minimum 100BASE-TX
+                        (Fast Ethernet), önerilen 1000BASE-T (Gigabit Ethernet); araç ortamına uygun kablolama
+                        (EN 50155 çevresel şartlara dayanıklı).</li>
+                    <li><strong>Ağ Topolojisi:</strong> Yıldız veya halka topoloji; yönetimli anahtarlar (managed
+                        switch) kullanımı zorunlu; RSTP/MSTP ile yedeklilik desteği.</li>
+                    <li><strong>IP Adresleme:</strong> IPv4 (zorunlu) ve IPv6 (önerilen); statik veya DHCP tabanlı
+                        adresleme; VLAN ile alt sistem izolasyonu (güvenlik ve QoS için).</li>
+                    <li><strong>Servis Keşfi ve Kayıt:</strong> DNS-SD (DNS Service Discovery) veya eşdeğer
+                        mekanizma ile servis keşfi; servis kataloğu yapılandırılabilir olmalıdır.</li>
+                    <li><strong>Mesajlaşma Protokolü:</strong> MQTT 3.1.1 veya MQTT 5.0 (IoT ve araç içi düşük band
+                        iletişim için); REST/HTTP 1.1 veya HTTP/2 (komut ve yapılandırma arayüzleri için).</li>
+                    <li><strong>Veri Formatları:</strong> JSON (tercih edilen) veya XML; şema doğrulaması
+                        (JSON Schema / XSD) zorunludur.</li>
+                    <li><strong>Zaman Senkronizasyonu:</strong> NTP (Network Time Protocol) minimum; PTP (IEEE
+                        1588-2019, Precision Time Protocol) tercih edilen; tüm düğümler ±1 saniye içinde
+                        senkronize olmalıdır.</li>
+                    <li><strong>Güvenlik:</strong> TLS 1.2 veya üzeri şifreleme (zorunlu); X.509 sertifika tabanlı
+                        kimlik doğrulama; güvenli önyükleme (Secure Boot).</li>
+                    <li><strong>Çevresel Dayanıklılık:</strong> EN 50155 sınıf OT4 (-40°C / +70°C); vibrasyon EN
+                        61373 Kategori 1 B sınıfı; EN 60529 IP54 minimum toz ve su koruması.</li>
+                    <li><strong>QoS (Hizmet Kalitesi):</strong> Güvenlik kamerası ve GPS verisi gibi yüksek öncelikli
+                        trafik için DSCP işaretlemesi ve bant genişliği rezervasyonu.</li>
+                    <li><strong>Yedeklilik:</strong> Kritik servisler (AVL, kapı kontrolü) için yedekli ağ yolu;
+                        geçiş süresi ≤ 50 ms (RSTP ile).</li>
                 </ul>
-                <h3>İşletme ve Bakım</h3>
+                <p>Uygunluk Profilleri: Standart, üç uygunluk seviyesi tanımlar: <strong>Profil A</strong> (temel
+                    servisler — zorunlu), <strong>Profil B</strong> (genişletilmiş servisler — tavsiye edilen),
+                    <strong>Profil C</strong> (gelişmiş servisler — opsiyonel). Kamu ihaleleri genellikle minimum
+                    Profil B uyumluluğunu şart koşmaktadır.
+                </p>
+
+                <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel Örneklerle)</h2>
+                <p>TS 13149, tüm karayolu ve hafif raylı toplu taşıma araçlarına uygulanabilir:</p>
                 <ul>
-                    <li>Periyodik bakım: Sistem bileşenlerinin düzenli bakımı.</li>
-                    <li>Performans izleme: Gerçek zamanlı izleme ve raporlama.</li>
-                    <li>Güncellemeler: Yazılım ve firmware güncellemeleri.</li>
-                    <li>Dokümantasyon güncellemesi: Sistem değişikliklerinin dokümantasyonu.</li>
+                    <li><strong>Belediye Otobüsleri:</strong> İstanbul İETT ve Ankara EGO filolarında ODCI tabanlı
+                        entegrasyon; araç bilgisayarı üzerinden yolcu bilgilendirme ekranları, bilet validatörler
+                        ve GPS telematik sistemlerinin tek ağda yönetimi. Güzergah sapmalarının anlık olarak merkeze
+                        iletilmesi ve yolcu ekranlarının otomatik güncellenmesi.</li>
+                    <li><strong>Metrobüs ve BRT Sistemleri:</strong> İstanbul Metrobüs hattında trafik sinyal
+                        öncelik (TSP) sistemi entegrasyonu; araç konumu ile kavşak sinyalizasyonu arasında ODCI
+                        destekli gerçek zamanlı veri paylaşımı.</li>
+                    <li><strong>Tramvay ve Hafif Raylı Sistemler:</strong> İzmir, Konya ve Eskişehir tramvay
+                        filosunda çok tedarikçili sistemlerin (Alstom, Siemens, CAF vb.) aynı ODCI ağına
+                        entegrasyonu; platform bildirim sistemleriyle senkronizasyon.</li>
+                    <li><strong>Şehirlerarası Otobüs İşletmecileri:</strong> Uzun süre şehir dışında çalışan
+                        araçlarda GSM/4G üzerinden filo yönetim merkezi ile veri köprüsü; yakıt tüketimi,
+                        sürücü davranışı ve bakım alarm verilerinin ODCI üzerinden anlık iletimi.</li>
+                    <li><strong>Turizm ve Havaalanı Servisleri:</strong> İstanbul Havalimanı servis araçlarında
+                        çok dilli yolcu bilgilendirme sistemi ile bagaj yükleme durum bilgisinin ODCI aracılığıyla
+                        araç içi ekranlara yansıtılması.</li>
+                    <li><strong>TCDD Karma Projeler:</strong> Demiryolu/otobüs entegre güzergahlarda araç takip
+                        ve yolcu aktarma bilgisi paylaşımı; TCDD telematik sistemi ile belediye otobüs ODCI
+                        sistemleri arasında veri köprüsü.</li>
+                    <li><strong>Elektrikli Araç Filosu:</strong> Elektrikli otobüslerde araç bilgisayarı üzerinden
+                        batarya yönetim sistemi (BMS) verilerinin ODCI aracılığıyla filo yönetim merkezine
+                        aktarılması; şarj planlaması optimizasyonu.</li>
                 </ul>
 
-                <h2 id="disiplin-bazli-sorumluluklar">6. Disiplin Bazlı Sorumluluklar</h2>
+                <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                <p>TS 13149'u uygulamak için pratik adımlar:</p>
+                <h3>1. Gereksinim Analizi ve Mimari Tasarım Aşaması:</h3>
                 <ul>
-                    <li><strong>Yazılım Mühendisleri:</strong>
-                        <ul>
-                            <li>Veri modeli ve protokollerin geliştirilmesi.</li>
-                            <li>Yazılım bileşenlerinin tasarımı ve kodlaması.</li>
-                            <li>Sistem entegrasyon yazılımlarının geliştirilmesi.</li>
-                            <li>Güvenlik yazılımlarının uygulanması.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Donanım Mühendisleri:</strong>
-                        <ul>
-                            <li>Ağ ve iletişim donanımlarının seçimi.</li>
-                            <li>Araç içi cihazların tasarımı ve entegrasyonu.</li>
-                            <li>Güç ve çevre koşullarına dayanıklılık testleri.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Ağ Uzmanları:</strong>
-                        <ul>
-                            <li>Ağ mimarisinin tasarımı.</li>
-                            <li>Kablosuz ve kablolu iletişim altyapısının kurulumu.</li>
-                            <li>Performans optimizasyonu ve güvenlik konfigürasyonları.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Proje Yöneticileri:</strong>
-                        <ul>
-                            <li>Proje planlaması ve koordinasyonu.</li>
-                            <li>Bütçe ve zaman yönetimi.</li>
-                            <li>Paydaş yönetimi ve raporlama.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Kalite Güvence Uzmanları:</strong>
-                        <ul>
-                            <li>Test stratejilerinin oluşturulması.</li>
-                            <li>Standart uygunluk denetimleri.</li>
-                            <li>Sürekli iyileştirme süreçleri.</li>
-                        </ul>
-                    </li>
+                    <li>Mevcut araç filosu envanteri ve araç içi sistemlerin tespiti; hangi sistemlerin ODCI'ye
+                        entegre edileceğinin belirlenmesi (3-6 ay).</li>
+                    <li>Uygunluk profili seçimi (A, B veya C); teknik şartname hazırlığı ve tedarikçi
+                        standart uygunluk belgelerinin talep edilmesi.</li>
+                    <li>IP adresleme planı, VLAN mimarisi ve QoS politikasının tasarlanması; ağ topolojisi
+                        çizimi ve onaylanması.</li>
+                    <li>Servis kataloğu hazırlanması: Hangi sistem hangi servisi yayınlar (publish), hangi
+                        sistemi dinler (subscribe) soruları yanıtlanır.</li>
+                </ul>
+                <h3>2. Donanım Tedariki ve Kurulum Aşaması:</h3>
+                <ul>
+                    <li>ODCI uyumlu araç bilgisayarı (OBC), yönetimli switch ve kablolama malzemelerinin
+                        tedariki; EN 50155 uygunluk belgelerinin kontrolü.</li>
+                    <li>Alt sistem (PIS, EFC, AVL, CCTV) cihazlarının araç içi montajı; kablolama EN 60204
+                        uyarı araç kablo montaj gerekliliklerine göre yapılır.</li>
+                    <li>Switch yapılandırması: VLAN, RSTP, IGMP snooping, DHCP sunucu / relay yapılandırması.</li>
+                </ul>
+                <h3>3. Yazılım Entegrasyonu ve Test Aşaması:</h3>
+                <ul>
+                    <li>Her alt sistem tedarikçisinin ODCI servis adaptörlerinin kurulumu ve yapılandırması;
+                        servis kayıt testleri (servis keşfi doğrulama).</li>
+                    <li>Fonksiyonel kabul testleri (Factory Acceptance Test - FAT): Laboratuvar ortamında
+                        publish/ subscribe akışlarının doğrulanması; veri gecikmesi (latency) ölçümü.</li>
+                    <li>Araçta entegrasyon testleri (Site Acceptance Test - SAT): Saha koşullarında tüm
+                        sistemlerin entegre çalışması; titreşim ve sıcaklık stres testleri altında doğrulama.</li>
+                    <li>Siber güvenlik penetrasyon testleri; TLS sertifika doğrulama; geniş bant saldırı
+                        simülasyonu.</li>
+                </ul>
+                <h3>4. Pilot Uygulama ve Yaygınlaştırma Aşaması:</h3>
+                <ul>
+                    <li>Seçilen 3-5 araçta pilot uygulama; en az 3 aylık saha izleme; hata loglarının
+                        analizi ve iyileştirmeler.</li>
+                    <li>Pilot sonuçlarına göre konfigürasyon optimize edilir; ardından filonun tamamına
+                        yaygınlaştırma planlanır.</li>
+                    <li>Bakım ekibine ODCI ağ tanımlama ve hata teşhis eğitimi; bakım kılavuzlarının
+                        hazırlanması.</li>
+                </ul>
+                <p>Uygulama maliyeti kılavuzu: Araç başına ODCI yönetimli switch ve kablolama 15.000-40.000 TL;
+                    araç bilgisayarı (OBC) entegrasyonu 30.000-80.000 TL; yazılım lisansları ve entegrasyon
+                    hizmetleri araç başına 20.000-60.000 TL (filo büyüklüğüne göre değişir). Ölçek ekonomisi
+                    nedeniyle 100+ araçlık filolarda araç başına maliyet önemli ölçüde düşer.</p>
+
+                <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disiplin</th>
+                            <th>Sorumluluklar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Üst Yönetim</td>
+                            <td>TS 13149 uyum politikasının onaylanması; bütçe ve kaynak tahsisi; filo dönüşüm
+                                yol haritasının onayı; tedarikçi uyum şartının sözleşmelere dahil edilmesi.</td>
+                        </tr>
+                        <tr>
+                            <td>Sistem Entegrasyon Mühendisliği</td>
+                            <td>ODCI mimarisinin tasarımı; servis kataloğunun hazırlanması; kabul test planı
+                                ve protokollerinin yazılması; araç başına teknik dosyanın oluşturulması.</td>
+                        </tr>
+                        <tr>
+                            <td>Yazılım / BT Mühendisliği</td>
+                            <td>Tedarikçilerin ODCI adaptörlerinin değerlendirilmesi; filo yönetim platformu ile
+                                ODCI veri köprüsü geliştirilmesi; siber güvenlik yamaları ve yazılım sürüm yönetimi.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ağ / Haberleşme Mühendisliği</td>
+                            <td>Araç içi Ethernet ağı tasarımı ve yapılandırması; VLAN, QoS ve yedeklilik politikaları;
+                                GSM/4G modülü ile dış bağlantı arayüzü yönetimi.</td>
+                        </tr>
+                        <tr>
+                            <td>Mekanik / Elektrik Mühendisliği</td>
+                            <td>Kablo güzergahlarının tasarımı; montaj toleransları; güç besleme ekipmanlarının (güç
+                                filtresi, UPS) seçimi ve montajı; EN 50155 uyumu.</td>
+                        </tr>
+                        <tr>
+                            <td>Bakım Mühendisliği / Teknisyenler</td>
+                            <td>Araç içi ağ arızalarının teşhisi ve onarımı; yazılım güncellemelerinin araç başına
+                                yüklenmesi; log analizi ve hata yönetimi.</td>
+                        </tr>
+                        <tr>
+                            <td>Kalite ve Uyum</td>
+                            <td>Tedarikçi uygunluk belgelerinin incelenmesi; FAT ve SAT testlerini denetlemesi;
+                                uygunsuzluk yönetimi; TSE uygunluk belgelendirme sürecinin koordinasyonu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                <h3>İzleme Süreci:</h3>
+                <ul>
+                    <li>Araç başına ODCI ağ yönetim ajanı (SNMP veya benzeri) ile cihaz durumu, bağlantı
+                        kalitesi ve trafik istatistiklerinin merkezi izleme sistemine aktarılması.</li>
+                    <li>Servis kullanılabilirliği (uptime) ve mesaj gecikmesinin (latency) gerçek zamanlı
+                        izlenmesi; SLA eşiklerinin (örn. %99.5 uptime) aşılması durumunda uyarı.</li>
+                    <li>Belirli KPI'ların düzenli raporlanması: Ortalama servis yanıt süresi, veri paketi kayıp
+                        oranı, siber güvenlik olay sayısı.</li>
+                    <li>Araç içi log kaydı: Tüm ODCI mesajları zaman damgalı olarak kaydedilmeli; en az 30
+                        günlük veri araçta saklanmalı, 12 aylık veri merkezi sistemde tutulmalıdır.</li>
+                </ul>
+                <h3>Denetim Süreci:</h3>
+                <ul>
+                    <li>İç denetim: 6 ayda bir; ODCI konfigürasyon kayıtlarının, yazılım sürüm listelerinin
+                        ve siber güvenlik yamalarının kontrolü; bakım prosedürlerine uyum denetimi.</li>
+                    <li>Dış teknik denetim: Araç alımı veya büyük sistem güncellemesi durumunda; bağımsız
+                        test laboratuvarı veya TSE tarafından yürütülen uygunluk testi.</li>
+                    <li>İşletici denetimi: Belediye veya TCDD tarafından yıllık operasyonel denetim; kayıt
+                        ve raporlara erişim sağlanması zorunludur.</li>
+                </ul>
+                <h3>Belgelendirme Süreci:</h3>
+                <ul>
+                    <li><strong>Alt Sistem Düzeyi:</strong> Her ODCI bileşeni (araç bilgisayarı, switch, PIS
+                        cihazı vb.) tedarikçiden Deklarasyon of Conformity (DoC) alınmalıdır; bağımsız
+                        laboratuvar test raporu tercih edilir.</li>
+                    <li><strong>Araç/Sistem Düzeyi:</strong> Sistem entegratörü araç başına ODCI uygunluk
+                        testi yürütür ve teknik dosyayı tamamlar; TSE veya yetkilendirilmiş kuruluş
+                        onayıyla uygunluk belgesi düzenlenir.</li>
+                    <li><strong>Filo Düzeyinde Uygunluk:</strong> İşleten kuruluş, filo genelinde TS 13149
+                        uygulanmasını belgeleyen işletme kılavuzu ve uygunluk beyanını hazırlar; kamu
+                        ihalelerinde zorunlu ekdir.</li>
+                    <li>Yeniden belgelendirme: Araç başına büyük sistem değişikliklerinde veya araç
+                        konfigürasyon güncellemelerinde güncellenmiş uygunluk belgesi düzenlenir.</li>
                 </ul>
 
-                <h2 id="izleme-denetim-belgelendirme">7. İzleme, Denetim ve Belgelendirme Süreci</h2>
-                <h3>İzleme Süreci</h3>
+                <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                <h3>Zorluklar:</h3>
                 <ul>
-                    <li>Gerçek zamanlı sistem izleme (uptime, performans metrikleri).</li>
-                    <li>Log kaydı ve analiz (hata logları, erişim logları).</li>
-                    <li>Performans raporlaması (haftalık/aylık raporlar).</li>
-                    <li>Kullanıcı geri bildirim toplama.</li>
+                    <li>Mevcut araç filosundaki eski sistemlerin (legacy cihazlar) ODCI omurgasına entegrasyonu;
+                        bazı sistemlerin özel protokol kullandığı için doğrudan bağlanamadığı durum.</li>
+                    <li>Farklı tedarikçilerin aynı standarda verdiği birbirinden farklı yorumları; uygulamada
+                        küçük uyumsuzlukların ortaya çıkması.</li>
+                    <li>Araç ortamının ağır titreşim, sıcaklık ve nem koşullarında ağ bileşenlerinin erken
+                        arızalanması; kablo konektör sorunları.</li>
+                    <li>Siber güvenlik tehditlerine (araç içi ağa yetkisiz erişim girişimleri) karşı bilinç
+                        eksikliği; güvenlik güncellemelerinin araç başına zamanında uygulanamaması.</li>
+                    <li>GSM/4G bağlantısının kopuk olduğu tünel ve kapalı alanlarda filo yönetim sistemiyle
+                        iletişim kesilmesi; veri tamponu yönetimi.</li>
+                    <li>Yazılım güncellemelerinin operasyonları etkilemesi; aktif sefer süresince güncelleme
+                        yapılamaması.</li>
                 </ul>
-                <h3>Denetim Süreci</h3>
-                <h4>İç Denetim</h4>
+                <h3>Çözümler:</h3>
                 <ul>
-                    <li>Periyodik denetimler (6 ayda bir).</li>
-                    <li>Performans izleme ve raporlama.</li>
-                    <li>Olay kayıtları (arızalar, güvenlik olayları).</li>
-                    <li>Düzeltici faaliyetler.</li>
+                    <li>Protocol Gateway (protokol dönüştürücü) modülleri ile eski sistemlerin ODCI'ye
+                        adaptasyonu; RS-232/485 — Ethernet köprüleri; maliyet etkin yenileme alternatifi.</li>
+                    <li>Tedarikçi uygunluk testleri için bağımsız test platformu kurulumu (test harness);
+                        ihale sürecinde uygunluk test sonuçlarının zorunlu kılınması.</li>
+                    <li>EN 50155 sınıfına uygun endüstriyel ağ bileşenleri ile birlikte vibrasyon izoleli
+                        montaj aparatları ve korumalı (IP67+) konnektörler kullanımı.</li>
+                    <li>Araç içi ağı dış ağdan uygun güvenlik duvarı ve DMZ yapısıyla izole etmek; OTA
+                        (Over-the-Air) güvenlik yaması yönetim platformu kurulumu; güvenli önyükleme
+                        (Secure Boot) zorunluluğu.</li>
+                    <li>Store-and-Forward mimarisi: GSM bağlantısı kesilince veriler araç bilgisayarında
+                        kuyruklanır; bağlantı yeniden sağlandığında otomatik iletim yapılır.</li>
+                    <li>Araç dışı depoda bakım modunda OTA güncelleme; güncelleme sonrası otomatik regresyon
+                        testi; başarısız güncelleme için otomatik geri alma (rollback) mekanizması.</li>
                 </ul>
-                <h4>Dış Denetim ve Belgelendirme</h4>
-                <ul>
-                    <li>Belgelendirme başvurusu (TSE veya yetkilendirilmiş kuruluş).</li>
-                    <li>Ön değerlendirme.</li>
-                    <li>Saha denetimi.</li>
-                    <li>Uygunsuzlukların giderilmesi.</li>
-                    <li>Belgelendirme (3 yıl geçerli).</li>
-                    <li>Gözetim denetimleri (yıllık).</li>
-                    <li>Yeniden belgelendirme (3 yılda bir).</li>
-                </ul>
-                <h3>Belgelendirme Kriterleri</h3>
-                <ul>
-                    <li><strong>Dokümantasyon Uygunluğu:</strong> Mimari, veri modeli, protokoller dokümante edilmiş olmalı.</li>
-                    <li><strong>Teknik Gereklilikler:</strong> Ağ, donanım ve yazılım standartlara uygun olmalı.</li>
-                    <li><strong>Fonksiyonel Testler:</strong> Tüm fonksiyonlar belirtilen şekilde çalışmalı.</li>
-                    <li><strong>Güvenlik Gereklilikleri:</strong> Veri ve siber güvenlik önlemleri uygulanmış olmalı.</li>
-                    <li><strong>Yönetim Sistemi:</strong> Yönetim, bakım ve iyileştirme süreçleri oluşturulmuş olmalı.</li>
-                </ul>
+                <p>İpuçları: Küçük pilotla başlayın — ilk 5 araçta tüm olası sorunları keşfedin ve giderin; sonra
+                    filoya yaygınlaştırın. Tedarikçi sözleşmelerine ODCI uygunluk testi yükümlülüğü ve uyumsuzluk
+                    halinde düzeltme garantisi ekleyin. ODCI sistem log verilerini büyük veri analizi için kullanın;
+                    arıza örüntülerini tespit edin ve önleyici bakım süreçlerini iyileştirin.</p>
 
-                <h2 id="uygulamada-zorluklar">8. Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
-                <ul>
-                    <li><strong>Teknik Zorluklar:</strong>
-                        <ul>
-                            <li><strong>Zorluk:</strong> Farklı üreticilerin uyumluluk sorunları.</li>
-                            <li><strong>Çözüm:</strong> Açık standartlara bağlı kalma, test edilmiş kombinasyonlar.</li>
-                            <li><strong>Zorluk:</strong> Zorlu araç koşulları (titreşim, sıcaklık).</li>
-                            <li><strong>Çözüm:</strong> Sertifikalı endüstriyel donanımlar, titreşim sönümleme, termal yönetim.</li>
-                            <li><strong>Zorluk:</strong> Güç kesintileri.</li>
-                            <li><strong>Çözüm:</strong> UPS, güç filtreleri, koruma devreleri.</li>
-                            <li><strong>Zorluk:</strong> Kablosuz iletişim kesintileri.</li>
-                            <li><strong>Çözüm:</strong> Yedekli kanallar, veri önbellekleme, otomatik yeniden bağlanma.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Operasyonel Zorluklar:</strong>
-                        <ul>
-                            <li><strong>Zorluk:</strong> Sistem karmaşıklığı nedeniyle işletme zorluğu.</li>
-                            <li><strong>Çözüm:</strong> Kullanıcı dostu arayüzler, dokümantasyon, eğitim programları.</li>
-                            <li><strong>Zorluk:</strong> Güncellemelerin operasyonları etkilemesi.</li>
-                            <li><strong>Çözüm:</strong> Saat dışı güncelleme, kademeli strateji, geri dönüş planları.</li>
-                            <li><strong>Zorluk:</strong> Yetişmiş personel eksikliği.</li>
-                            <li><strong>Çözüm:</strong> Eğitim programları, sertifikasyon teşvikleri, bilgi transferi.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Maliyet Zorlukları:</strong>
-                        <ul>
-                            <li><strong>Zorluk:</strong> Yüksek başlangıç maliyetleri.</li>
-                            <li><strong>Çözüm:</strong> Aşamalı uygulama, öncelikli sistemler, maliyet-fayda analizi.</li>
-                            <li><strong>Zorluk:</strong> Bakım ve güncelleme maliyetleri.</li>
-                            <li><strong>Çözüm:</strong> Servis anlaşmaları, önleyici bakım, kaynak optimizasyonu.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Uyumluluk Zorlukları:</strong>
-                        <ul>
-                            <li><strong>Zorluk:</strong> Eski sistemlerle entegrasyon.</li>
-                            <li><strong>Çözüm:</strong> Geçiş adaptörleri, protokol dönüştürücüler, köprü yazılımları.</li>
-                            <li><strong>Zorluk:</strong> Standart yorumlamasında farklılıklar.</li>
-                            <li><strong>Çözüm:</strong> TSE veya danışman görüşleri, sektör işbirliği platformları.</li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <h2 id="gorseller-semalar">9. Görseller, Şemalar ve Akış Diyagramları</h2>
-                <h3>TS 13149 Sistem Mimarisi</h3>
+                <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                <h3>TS 13149 ODCI Sistem Mimarisi</h3>
                 <div class="mermaid">
-graph TD;
-    A["Araç İçi IP Ağı"] --> B["Araç Bilgisayarı"];
-    A --> C["Yolcu Bilgilendirme Sistemi"];
-    A --> D["Ücret Toplama Sistemi"];
-    A --> E["Kamera ve Güvenlik Sistemleri"];
-    A --> F["Araç Sensörleri"];
-    
-    B --> G["Merkezi Yönetim Sistemi"];
-    
-    subgraph "Araç Dışı Sistemler"
-    G --> H["Durak Göstergeleri"];
-    G --> I["Mobil Uygulamalar"];
-    G --> J["Trafik Yönetim Merkezi"];
-    end
-                </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 sistem mimarisini gösteren şema.</p>
+                    graph TD
+                    A["Araç İçi ODCI Omurgası\n(Ethernet ağı)"] --> B["Araç Bilgisayarı (OBC)"]
+                    A --> C["Yolcu Bilgilendirme Sistemi (PIS)"]
+                    A --> D["Ücret Toplama Sistemi (EFC)"]
+                    A --> E["AVL / GPS Telematik Modülü"]
+                    A --> F["CCTV Kamera Sistemi"]
+                    A --> G["Sürücü Destek Sistemi (DAS)"]
+                    A --> H["Wi-Fi Erişim Noktası"]
 
-                <h3>TS 13149 Uygulama Akış Şeması</h3>
-                <div class="mermaid">
-flowchart TD;
-    A["İhtiyaç Analizi"] --> B["Sistem Tasarımı"];
-    B --> C["Donanım ve Yazılım Tedariki"];
-    C --> D["Kurulum ve Entegrasyon"];
-    D --> E["Test ve Doğrulama"];
-    E --> F{"Testler Başarılı mı?"};
-    F -- Hayır --> D;
-    F -- Evet --> G["Pilot Uygulama"];
-    G --> H["Personel Eğitimi"];
-    H --> I["Tam Kapsamlı Geçiş"];
-    I --> J["İşletme ve Bakım"];
-    J --> K["Periyodik Denetim"];
-    K --> L{"Uygunluk Devam Ediyor mu?"};
-    L -- Hayır --> M["Düzeltici Faaliyetler"];
-    M --> K;
-    L -- Evet --> J;
-                </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 uygulama akış şemasını gösteren diyagram.</p>
+                    B --> I["GSM/4G Yönlendirici"]
+                    I --> J["Filo Yönetim Merkezi (FMS)"]
 
-                <h3>TS 13149 Veri Akış Şeması</h3>
-                <div class="mermaid">
-flowchart LR;
-    A["Araç Sensörleri"] --> B["Veri Toplama Modülü"];
-    B --> C["Araç Bilgisayarı"];
-    C --> D["Yerel Veri İşleme"];
-    C --> E["Kablosuz İletişim Modülü"];
-    E --> F["Merkezi Sunucu"];
-    F --> G["Veri Ambarı"];
-    G --> H["Analitik İşlemler"];
-    G --> I["Raporlama"];
-    F --> J["Durak Göstergeleri"];
-    F --> K["Mobil Uygulamalar"];
-    C --> L["Yolcu Bilgilendirme Ekranları"];
-    C --> M["Anons Sistemi"];
+                    J --> K["Trafik Yönetim Merkezi"]
+                    J --> L["Durak Bilgilendirme Ekranları"]
+                    J --> M["Yolcu Mobil Uygulaması"]
+                    J --> N["Raporlama ve Analitik"]
                 </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 veri akış şemasını gösteren diyagram.</p>
+                <p class="text-center text-sm text-gray-500">TS 13149 ODCI omurgasına bağlı araç içi sistemler ve
+                    filo yönetim merkezi ile bağlantı yapısı.</p>
 
-                <h3>TS 13149 Belgelendirme Süreci</h3>
+                <h3>Katmanlı Mimari</h3>
                 <div class="mermaid">
-flowchart TD;
-    A["Belgelendirme Başvurusu"] --> B["Dokümantasyon İncelemesi"];
-    B --> C{"Dokümantasyon Yeterli mi?"};
-    C -- Hayır --> D["Dokümantasyon Revizyonu"];
-    D --> B;
-    C -- Evet --> E["Saha Denetimi Planlanması"];
-    E --> F["Saha Denetimi"];
-    F --> G{"Uygunsuzluk Var mı?"};
-    G -- Evet --> H["Düzeltici Faaliyetler"];
-    H --> I["Düzeltici Faaliyetlerin Doğrulanması"];
-    I --> G;
-    G -- Hayır --> J["Belgelendirme Kararı"];
-    J --> K["TS 13149 Uygunluk Belgesi"];
-    K --> L["Yıllık Gözetim Denetimleri"];
-    L --> M{"Gözetim Denetimi Başarılı mı?"};
-    M -- Hayır --> N["Düzeltici Faaliyetler"];
-    N --> O["Takip Denetimi"];
-    O --> M;
-    M -- Evet --> P["Belge Geçerliliğinin Devamı"];
-    P --> Q["3 Yıl Sonra Yeniden Belgelendirme"];
+                    graph TB
+                    L4["Uygulama Katmanı\n(Servisler: PIS, AVL, EFC, CCTV...)"]
+                    L3["Ulaşım Katmanı\n(TCP / UDP)"]
+                    L2["Ağ Katmanı\n(IPv4 / IPv6, VLAN, QoS)"]
+                    L1["Veri Bağlantı Katmanı\n(IEEE 802.3 Ethernet, RSTP, IGMP)"]
+                    L0["Fiziksel Katman\n(Kablolama, Konnektörler, Switch Donanımı)"]
+
+                    L4 --> L3
+                    L3 --> L2
+                    L2 --> L1
+                    L1 --> L0
                 </div>
-                <p class="text-center text-sm text-gray-500">TS 13149 belgelendirme sürecinin akış şeması.</p>
+                <p class="text-center text-sm text-gray-500">TS 13149 OSI modeli tabanlı katmanlı mimarisi.</p>
+
+                <h3>Uygulama Akış Diyagramı</h3>
+                <div class="mermaid">
+                    flowchart TD
+                    A[Proje Başlangıcı] --> B[Gereksinim ve Envanter Analizi]
+                    B --> C[ODCI Mimari Tasarım\nIP Planı / VLAN / QoS]
+                    C --> D[Teknik Şartname ve\nTedarikçi Seçimi]
+                    D --> E[Donanım Tedariki\nve Araç Montajı]
+                    E --> F[Yazılım Yapılandırması\nve Servis Entegrasyonu]
+                    F --> G[FAT - Fabrika\nKabul Testi]
+                    G --> H{Testler\nBaşarılı mı?}
+                    H -->|Hayır| I[Hata Düzeltme\nve Revizyon]
+                    I --> G
+                    H -->|Evet| J[SAT - Saha\nKabul Testi]
+                    J --> K{Saha Testi\nOK mi?}
+                    K -->|Hayır| L[Saha Uyarlamaları]
+                    L --> J
+                    K -->|Evet| M[Pilot Araçlarda\n3 Aylık İzleme]
+                    M --> N[Filo Geneli\nYaygınlaştırma]
+                    N --> O[Sürekli İzleme\nve Bakım]
+                    O --> P[Periyodik Denetim\n6 Aylık]
+                    P --> O
+                </div>
+                <p class="text-center text-sm text-gray-500">TS 13149 uygulama yaşam döngüsü akış diyagramı.</p>
+
+                <h3>Verimlilik Karşılaştırma Tablosu: ODCI Uyumlu ve Özel Sistem</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kriter</th>
+                            <th>Özel (Tescilli) Sistem</th>
+                            <th>TS 13149 ODCI Uyumlu Sistem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tedarikçi Bağımlılığı</td>
+                            <td>Yüksek — tek tedarikçi kilitlenmesi</td>
+                            <td>Düşük — çoklu tedarikçi rekabeti</td>
+                        </tr>
+                        <tr>
+                            <td>Yeni Sistem Ekleme Maliyeti</td>
+                            <td>Yüksek — özel entegrasyon geliştirme</td>
+                            <td>Düşük — standart arayüz adaptörü</td>
+                        </tr>
+                        <tr>
+                            <td>Arıza Teşhis Süresi</td>
+                            <td>Uzun — tedarikçi destek gerektirir</td>
+                            <td>Kısa — standart ağ araçlarıyla teşhis</td>
+                        </tr>
+                        <tr>
+                            <td>Yazılım Güncelleme Esnekliği</td>
+                            <td>Kısıtlı — tedarikçiye bağımlı</td>
+                            <td>Yüksek — OTA güncelleme desteği</td>
+                        </tr>
+                        <tr>
+                            <td>Uzun Vadeli TCO (Toplam Sahip Olma Maliyeti)</td>
+                            <td>Yüksek</td>
+                            <td>%20-35 daha düşük (tipik)</td>
+                        </tr>
+                        <tr>
+                            <td>İhale Uyumluluğu (Kamu)</td>
+                            <td>Riskli — özel şartname</td>
+                            <td>Kolay — ulusal standart referansı</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <aside>
+                    <strong>⚠️ Önemli Not:</strong> TS 13149 uygunluğu, tüm alt sistemlerin standart ile tam uyum
+                    içinde olmasını gerektirir; yalnızca araç bilgisayarının uyumlu olması yeterli değildir.
+                    Tedarikçilerden uygunluk belgesi (Declaration of Conformity) alınması ve bağımsız uygunluk
+                    testi yapılması tavsiye edilir. Doğrusal aktarma hatası (daisy-chain interoperability)
+                    varsayımından kaçınılmalı; sistemlerin birlikte test edilmesi zorunludur.
+                </aside>
             </div>
         </div>
 
-        <button id="back-to-top-btn" class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <button id="back-to-top-btn"
+            class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
             </svg>
         </button>
@@ -475,7 +751,7 @@ flowchart TD;
                 link.href = `#${id}`;
                 link.textContent = heading.textContent;
                 link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
-                
+
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
@@ -517,4 +793,5 @@ flowchart TD;
         });
     </script>
 </body>
+
 </html>
