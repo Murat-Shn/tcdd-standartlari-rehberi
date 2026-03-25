@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TS EN ISO 1461 - Demir ve Çelik Ürünler Üzerindeki Sıcak Daldırma Galvaniz Kaplamalar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .prose h2 {
+            font-size: 1.75rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .prose h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .prose h4 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .prose p,
+        .prose ul,
+        .prose ol,
+        .prose table {
+            margin-bottom: 1.25rem;
+        }
+
+        .prose ul,
+        .prose ol {
+            padding-left: 1.5rem;
+        }
+
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+
+        .prose a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .prose a:hover {
+            text-decoration: underline;
+        }
+
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .prose th,
+        .prose td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .prose th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .prose img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagram {
+            background-color: #f0f4f8;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'monospace', sans-serif;
+            color: #374151;
+        }
+
+        .diagram pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        aside {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            color: #78350f;
+        }
+
+        #toc-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            width: 250px;
+            margin-right: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        #toc-sidebar h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        #toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #toc-sidebar li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        #toc-sidebar li a:hover {
+            background-color: #e0f2fe;
+            color: #1e40af;
+        }
+
+        #toc-sidebar li a.active {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+
+        #back-to-top-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #back-to-top-btn:hover {
+            background-color: #1e40af;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content-grid {
+                display: grid;
+                grid-template-columns: 250px 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            #toc-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+    <div class="container mx-auto bg-white p-6 md:p-10 rounded-xl shadow-md">
+        <nav class="mb-6">
+            <a href="../../index.html#home"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M9.707 14.707a1 1 0 01-1.414 0L3.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L6.414 9H16a1 1 0 110 2H6.414l3.293 3.293a1 1 0 010 1.414z"
+                        clip-rule="evenodd" />
+                </svg>
+                Ana Sayfaya Dön
+            </a>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" id="standard-detail-title">TS EN ISO 1461 -
+            Demir ve Çelik Ürünler Üzerindeki Sıcak Daldırma Galvaniz Kaplamalar</h1>
+        <p class="text-lg text-gray-700 mb-6" id="standard-detail-summary">TS EN ISO 1461, demir ve çelik parçalar
+            üzerine sıcak daldırma yöntemiyle uygulanan galvaniz kaplamaların özelliklerini, test yöntemlerini ve
+            kabul kriterlerini belirleyen uluslararası standarttır. Demiryolu altyapısı ve araç bileşenlerinde
+            uzun ömürlü korozyon koruması sağlamak için temel başvuru belgesidir.</p>
+
+        <div class="main-content-grid">
+            <nav id="toc-sidebar">
+                <h3>İçindekiler</h3>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <div class="prose max-w-none text-gray-700">
+                <h2 id="standart-kodu-ve-adi">Standart Kodu ve Adı</h2>
+                <p>EN ISO 1461 - <em>"Hot dip galvanized coatings on fabricated iron and steel articles —
+                        Specifications and test methods"</em> (İmal Edilmiş Demir ve Çelik Ürünler Üzerindeki Sıcak
+                    Daldırma Galvaniz Kaplamalar — Özellikler ve Deney Yöntemleri)</p>
+                <p>Bu standart, Uluslararası Standardizasyon Örgütü (ISO) ve Avrupa Standardizasyon Komitesi (CEN)
+                    tarafından ortaklaşa yayınlanmıştır. Standardın mevcut versiyonu <strong>EN ISO
+                        1461:2022</strong>'dir
+                    (önceki versiyon: EN ISO 1461:2009). Türkiye'de <strong>TS EN ISO 1461</strong> olarak Türk
+                    Standartları Enstitüsü (TSE) tarafından benimsenerek uyarlanmıştır; TS EN 1461:2011'in yerini
+                    almıştır. Standart, tek bütünleşik bir belgedir ve alt bölümlere ayrılmamıştır. Teknik
+                    içeriği tamamlayan ilgili belgeler arasında EN ISO 14713-1 (çinko kaplamalara rehberlik —
+                    genel prensipler), EN ISO 14713-2 (tasarıma yönelik rehberlik) ve ISO 1460 (kütle kaybı
+                    yöntemi ile kaplama kalınlığı ölçümü) yer almaktadır.</p>
+
+                <h2 id="kapsam-ve-amac">Kapsam ve Amaç</h2>
+                <p>TS EN ISO 1461, erimiş çinko banyosuna (<%2 diğer metal içeren) daldırılarak galvanizlenen imal
+                        edilmiş demir ve çelik ürünlerin kaplama özelliklerini ve deney yöntemlerini tanımlar.</p>
+                        <p>Kapsam dahilindeki ürünler ve alanlar:</p>
+                        <ul>
+                            <li>Çelik yapısal elemanlar (profiller, levhalar, borular).</li>
+                            <li>Kaynaklı ve bükülmüş çelik parçalar.</li>
+                            <li>Dökme demir ve dövme demir bileşenler.</li>
+                            <li>Demiryolu altyapısı için köprü ve üst yapı elemanları.</li>
+                            <li>Sinyal direkleri, enerji nakil hatları direkleri ve ray bağlantı donanımları.</li>
+                            <li>Araç alt yapı ve şasi bileşenleri (çelik konstrüksiyon parçaları).</li>
+                        </ul>
+                        <p>Kapsam dışı alanlar:</p>
+                        <ul>
+                            <li>Sürekli sıcak daldırma galvanizlenen sac, tel, hasır veya borular (ayrı standartlar
+                                geçerlidir).</li>
+                            <li>Otomatik tesislerde sıcak daldırma galvanizlenen boruların iç yüzeyleri.</li>
+                            <li>Bağlantı elemanları (cıvata, somun, pim) — EN ISO 10684 veya ilgili ürün standardı
+                                geçerlidir.</li>
+                            <li>Çinko alaşım kaplama banyoları (>%2 katkı maddeli).</li>
+                        </ul>
+                        <p>Temel amaçlar:</p>
+                        <ul>
+                            <li>Demir ve çelik bileşenleri korozyona karşı uzun vadeli (50+ yıl) koruma altına almak.
+                            </li>
+                            <li>Kaplama kalınlığı, yapışma direnci ve görünüm için minimum standart değerleri
+                                belirlemek.</li>
+                            <li>Galvaniz kalite denetimini ve kabul/red kriterlerini netleştirmek.</li>
+                            <li>Farklı ülkelerdeki tedarikçiler arasında karşılaştırılabilir bir kaplama kalitesi
+                                sağlamak.</li>
+                            <li>Demiryolu altyapısında bakım maliyetlerini ve servis kesintilerini azaltmak.</li>
+                        </ul>
+
+                        <h2 id="tanim-ve-teorik-arka-plan">Tanım ve Teorik Arka Plan</h2>
+                        <p>Sıcak daldırma galvanizleme, çelik yüzeyin erimiş çinko banyosuna (~450°C) daldırılmasıyla
+                            gerçekleştirilen bir metalürjik kaplama işlemidir. Oluşan kaplama, birden fazla çinko-demir
+                            alaşım katmanından ve dış saf çinko katmanından meydana gelir.</p>
+                        <p>Temel kavramlar:</p>
+                        <ul>
+                            <li><strong>Katodik Koruma (Anodik Davranış):</strong> Çinko, demire göre daha aktif
+                                (anodik) bir metaldir. Çinko kaplamada hasar oluştuğunda çinko kurban olarak korozyona
+                                uğrar; demir çeliği korur.</li>
+                            <li><strong>Bariyer Koruma:</strong> Galvaniz kaplama, oksijenin ve nemin çeliğe ulaşmasını
+                                fiziksel olarak engelleyen yoğun bir bariyer oluşturur.</li>
+                            <li><strong>Çinko Patinası (Zinc Patina):</strong> Açık havaya maruz kalan galvaniz kaplama
+                                yüzeyi, ZnO ve Zn(OH)₂ karışımından oluşan kararlı, yapışkan bir patina tabakası
+                                geliştirir; bu tabaka koruma ömrünü uzatır.</li>
+                            <li><strong>Diffüzyon Katmanları (Eta, Zeta, Delta, Gamma):</strong> Çinko-demir ara
+                                yüzeyinde sırasıyla γ (Gamma), δ₁ (Delta), ζ (Zeta) ve η (Eta — saf Zn) katmanları
+                                oluşur. Bu çok katmanlı yapı, kaplamanın çeliğe metalürjik bağ ile tutunmasını
+                                sağlar.</li>
+                            <li><strong>Kaplama Kalınlığı (µm veya g/m²):</strong> Korozyon ömrünün en kritik
+                                göstergesidir. Açık ortam korozyon hızı ~ 1–2 µm/yıl olup, 85 µm kaplama ~40–50 yıl
+                                ömür sağlar.</li>
+                            <li><strong>Reaktif Çelik (Reactive Steel):</strong> Yüksek silisyum (0,14–0,25%) veya
+                                fosfor içeriği, galvaniz reaksiyonunu hızlandırır, daha kalın ve mat görünümlü (ζ-Zeta
+                                ağırlıklı) kaplama oluşturur.</li>
+                        </ul>
+                        <p>Teorik arka plan: Galvanizin korozyon mekanizması Wagner-Traud karma potansiyel teorisi ve
+                            elektrokimyasal korozyon prensipleriyle açıklanır. Aşınma ömrü tahmini ISO 9223 atmosferik
+                            korozyon kategorileri (C1–C5) ile gerçekleştirilir; kaplama kalınlığı–ömür ilişkisi
+                            Linearly Proportional Model ile hesaplanır.</p>
+
+                        <h2 id="kurumsal-ve-teknik-gereklilikler">Kurumsal ve Teknik Gereklilikler</h2>
+                        <h3>Kurumsal Gereklilikler:</h3>
+                        <ul>
+                            <li><strong>Kalite Yönetim Sistemi:</strong> Galvanizleme tesisi ISO 9001 kapsamında
+                                kalite yönetim planına sahip olmalı; yıllık iç denetim ve müşteri şikâyet yönetimi
+                                belgeli şekilde yürütülmelidir.</li>
+                            <li><strong>Personel Yetkinliği:</strong> Kalite kontrol personeli kaplama kalınlığı ölçüm
+                                cihazlarının kullanımında eğitimli olmalı; galvanizleme operatörleri banyo kimyası ve
+                                ısıl parametreler konusunda yetkin olmalıdır.</li>
+                            <li><strong>Galvanizleme Tesisi Onayı:</strong> Tedarikçi galvanizleme firması EN ISO 1461
+                                kapsamında denetlenebilir olmalı; kritik projelerde müşteri veya bağımsız denetçi tesis
+                                ziyareti yapılabilir. Türkiye'de TÜV, TÜRCERT veya benzeri akredite kuruluşların
+                                sertifikasyonu tercih edilir.</li>
+                            <li><strong>Dokümantasyon:</strong> Her galvanizleme partisi için kaplama test raporu
+                                hazırlanmalı; banyo kimyası kayıtları (çinko saflığı ≥99,5%, Al, Fe, Pb içerikleri),
+                                sıcaklık kayıtları ve kalınlık ölçüm sonuçları saklanmalıdır (en az 5 yıl).</li>
+                            <li><strong>Tedarikçi Yönetimi:</strong> Galvanizleme tedarikçisi yıllık denetim
+                                programına dahil edilmeli; uygunsuz sevkiyatlara ait geri bildirim mekanizması
+                                tanımlanmış olmalıdır.</li>
+                        </ul>
+                        <h3>Teknik Gereklilikler:</h3>
+                        <ul>
+                            <li><strong>Kaplama Kalınlığı (Minimum):</strong> Çelik kalınlığına ve malzeme tipine
+                                göre diferansiyel minimum yerel kalınlık (µm) ve ortalama kalınlık (g/m²) değerleri
+                                standartta tablolaştırılmıştır (bkz. Teknik Tablo).</li>
+                            <li><strong>Çinko Banyosu Saflığı:</strong> Banyo, ağırlıkça en az %98 çinko
+                                içermelidir (EN ISO 752'ye uygun); diğer metaller toplamı ≤%2.</li>
+                            <li><strong>Görünüm:</strong> Kaplama düzgün, sürekli ve çeliğe sağlam yapışık
+                                olmalıdır. Küçük pürüzler, beyaz pas (yaş depolama) veya flux kalıntıları kabul
+                                edilebilir; kaplamayı delerek metalik çeliğe ulaşan keskin çıkıntılar, flux
+                                çıkıntıları, kaba damlalar ve soyulma kesinlikle reddedilir.</li>
+                            <li><strong>Yapışma (Adhezyon):</strong> Bıçak testi veya çekiç darbe testi ile kaplama
+                                soyulmamalıdır (küçük çatlaklar kabul edilebilir).</li>
+                            <li><strong>Yüzey Hazırlığı (Çelik yüzeyi):</strong> Galvanizlemeden önce yüzey yağdan
+                                arındırma, asit ile dağlama (HCl veya H₂SO₄) ve flukslama işlemlerine tabi tutulur.
+                                Yüzey temizliği EN ISO 8501-1 standardına göre Sa 2½ düzeyinde olmalıdır.</li>
+                            <li><strong>Onarım Prosedürleri:</strong> Küçük hasarlı bölgeler (toplam alanın ≤%0,5'i
+                                ve tek bir hasarlı alan ≤10 cm²) çinko zengini boya veya termal zımpara ile
+                                onarılabilir; onarım kalınlığı en az orijinal kalınlık kadar olmalıdır.</li>
+                        </ul>
+                        <p>Hizmet Yeterlilik Belgesi: Galvanizleme atölyelerinin EN ISO 1461 uyumluluğu için
+                            GALVANO-CERTIF veya benzeri sertifikasyon programları mevcut olup, büyük mühendislik
+                            projelerinde tedarikçi onayı kapsamında değerlendirilir.</p>
+
+                        <h2 id="kullanim-alanlari">Kullanım Alanları (Sektörel Örneklerle)</h2>
+                        <p>TS EN ISO 1461, demiryolu sektöründe oldukça geniş uygulama alanı bulmaktadır:</p>
+                        <ul>
+                            <li><strong>Demiryolu Altyapısı — Köprü ve Üst Yapılar:</strong> Çelik köprü kirişleri,
+                                mesnetler, korkuluk ve bariyerler. TCDD projelerinde köprü bileşenlerinin galvanizleme
+                                şartnamelerinde EN ISO 1461 referans alınır.</li>
+                            <li><strong>Sinyal ve Enerji Direkleri:</strong> Sinyalizasyon direkleri, katener askı
+                                elemanları ve OHE (Overhead Line Equipment) direkleri; açık hava korozyon ortamında
+                                uzun ömür kritiktir.</li>
+                            <li><strong>Ray Bağlantı Donanımları:</strong> Ray klipsleri, traversler (çelik
+                                traversler), vida ve ankraj elemanları; balastlı ortamda sürekli nem ve tuzlu su
+                                teması nedeniyle galvaniz zorunludur.</li>
+                            <li><strong>Araç Alt Yapı Bileşenleri:</strong> Boji çerçeveleri, askı elemanları ve şasi
+                                bağlantı parçaları (lokal yapısal çelik bileşenler için); yüksek korozyon
+                                dayanımı ile bakım maliyeti azaltılır.</li>
+                            <li><strong>Demiryolu İstasyon Yapıları:</strong> Peron çatı taşıyıcıları, merdiven
+                                basamakları, korkuluklar ve zemin ızgaraları; atmosferik korozyon ortamında
+                                galvanizleme tercih edilen yöntemdir.</li>
+                            <li><strong>Metro ve Hafif Raylı Sistem Altyapısı:</strong> Metro tünel içi çelik
+                                elemanları (askı braketleri, kablo kanalı destekleri) ve hafif raylı sistem yüksek
+                                geçit elemanları.</li>
+                        </ul>
+
+                        <h2 id="uygulama-esaslari">Uygulama Esasları</h2>
+                        <p>TS EN ISO 1461'i uygulamak için pratik adımlar:</p>
+                        <h3>1. Tasarım ve Malzeme Hazırlığı Aşaması:</h3>
+                        <ul>
+                            <li>Galvanizlenecek çeliğin silisyum (Si) ve fosfor (P) içeriği kontrol edilmeli; reaktif
+                                çelikler (Si: 0,14–0,25%) için tasarım ömrü hesaplarında revizyon gerekebilir.
+                                Sandelin etkisi nedeniyle reaktif çeliklerde kaplama kalınlığı artar (>150 µm).</li>
+                            <li>Kapalı kesitlere (tüp, kutu profil) hava tahliye delikleri eklenmeli; galvaniz
+                                banyosu sırasında patlama riskinden kaçınılmalıdır. EN ISO 14713-2 tasarım rehberi
+                                kullanılmalıdır.</li>
+                            <li>Kaynak bölgelerindeki cüruf ve sıçrama kalıntıları temizlenmeli; kaynak kalitesi
+                                galvanizleme öncesi kontrol edilmelidir.</li>
+                            <li>Galvanizleme öncesi boyutsal kontrol yapılmalı; ısıl deformasyon riskine karşı ince
+                                kesitli parçalar için ön değerlendirme yapılmalıdır.</li>
+                        </ul>
+                        <h3>2. Galvanizleme Süreci:</h3>
+                        <ul>
+                            <li>Yüzey hazırlığı: Yağ alma (alkalin banyosu) → asit dağlama (HCl veya H₂SO₄) →
+                                su durulama → flukslama (ZnCl₂·NH₄Cl çözeltisi) → kurutma → daldırma.</li>
+                            <li>Banyo koşulları: Çinko banyo sıcaklığı tipik olarak 445–460°C; daldırma süresi
+                                çelik kalınlığına göre ayarlanır (genellikle 2–10 dakika).</li>
+                            <li>Çıkarma ve soğutma: Parçanın çinko banyosundaki çekilme hızı kaplama kalınlığı
+                                ve yüzey pürüzlülüğünü etkiler; çıkarma sonrası pasifasyon (kromat veya su bazlı
+                                pasivant) uygulanabilir.</li>
+                        </ul>
+                        <h3>3. Kalite Kontrol (Muayene) Aşaması:</h3>
+                        <ul>
+                            <li>Kaplama kalınlığı ölçümü: Manyetik indüktif veya eddy-current yöntemi (EN ISO 2178
+                                veya EN ISO 2360); her parçadan çok noktalı ölçüm yapılır.</li>
+                            <li>Görsel muayene: Tüm yüzey incelenir; flux kalıntısı, ham nokta (uncoated area),
+                                soyulma ve keskin çıkıntılar reddedilir.</li>
+                            <li>Yapışma testi: Gerektiğinde bıçak testi veya çekiç darbesi uygulanır.</li>
+                            <li>Kaplama kütlesi ölçümü: Gerektiğinde ISO 1460 gravimetrik yöntemi ile doğrulama
+                                yapılır.</li>
+                        </ul>
+                        <h3>4. Nakliye ve Depolama:</h3>
+                        <ul>
+                            <li>Galvaniz yüzeyler, beyaz pas (wet storage stain — bazik çinko karbonat / ZnCO₃)
+                                oluşumundan kaçınmak için kuru, havalandırmalı ortamda depolanmalıdır.</li>
+                            <li>Parçalar birbirine doğrudan temas ettirilerek istif yapılmamalı; ahşap veya plastik
+                                ayırıcılar kullanılmalıdır.</li>
+                        </ul>
+                        <p>Uygulama maliyeti: Galvaniz kaplama maliyeti çelik kalınlığına ve parça geometrisine göre
+                            değişmekle birlikte, tipik olarak 80–200 TL/m² aralığındadır. Boya sistemine kıyasla
+                            başlangıç maliyeti yakın, ancak bakım maliyeti çok daha düşüktür (50 yıllık yaşam
+                            döngüsünde genellikle %30–50 daha ekonomik).</p>
+
+                        <h2 id="disiplin-bazli-sorumluluklar">Disiplin Bazlı Sorumluluklar</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Disiplin</th>
+                                    <th>Sorumluluklar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Üst Yönetim</td>
+                                    <td>Galvanizleme politikasının belirlenmesi; tedarikçi onay programının onaylanması;
+                                        EN ISO 1461 uyumluluğunun sözleşme şartlarına dahil edilmesi.</td>
+                                </tr>
+                                <tr>
+                                    <td>Mekanik / İnşaat Mühendisliği</td>
+                                    <td>Tasarım aşamasında galvanizlemeye uygun geometri seçimi (EN ISO 14713-2
+                                        rehberi);
+                                        malzeme seçiminde çelik kimyası kontrolü; kaplama kalınlığı hesapları ve ömür
+                                        değerlendirmesi.</td>
+                                </tr>
+                                <tr>
+                                    <td>Kalite ve Tedarik</td>
+                                    <td>Galvanizleme tedarikçisi denetimi ve onayı; kaplama test raporu talep ve onayı;
+                                        uygunsuz malzeme reddiyesi; uygunsuzluk yönetimi.</td>
+                                </tr>
+                                <tr>
+                                    <td>Bakım Mühendisliği</td>
+                                    <td>Sahada servis ömrü izleme; kaplama hasarı tespiti ve onarımın yönetilmesi;
+                                        galvanizlenmiş bileşenlerin saha muayene periyodlarının belirlenmesi.</td>
+                                </tr>
+                                <tr>
+                                    <td>Proje Yönetimi</td>
+                                    <td>Sözleşme ve şartnamelere EN ISO 1461 referansının eklenmesi; galvanizleme
+                                        tesisi ziyaret ve denetimlerinin planlanması; teslim öncesi kaplama kalite
+                                        belgelerinin toplanması.</td>
+                                </tr>
+                                <tr>
+                                    <td>Korozyon / Malzeme Mühendisliği</td>
+                                    <td>Korozyon kategorisi (ISO 9223) bazında kaplama kalınlığı şartnamesi; reaktif
+                                        çelik risklerinin değerlendirilmesi; galvaniz+boya (duplex) sistem
+                                        optimizasyonu.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2 id="izleme-denetim-belgelendirme">İzleme / Denetim / Belgelendirme Süreci</h2>
+                        <h3>İzleme Süreci:</h3>
+                        <ul>
+                            <li>Sahada hizmet ömrü izleme: Kritik çelik yapı bileşenleri için yıllık görsel
+                                muayene; korozyon derecesi Ri (Rust Index) skalaması ile derecelendirilir.</li>
+                            <li>Kaplama kalınlığı ölçümü ile izleme: Şüpheli bölgelerde taşınabilir manyetik
+                                indüktif ölçüm cihazıyla kaplama kalıntı kalınlığı kontrolü.</li>
+                            <li>Beyaz pas (wet storage stain) izleme: Teslimatta veya depo çıkışında yapılır;
+                                hafif beyaz renk değişimi kabul edilebilir, ancak yoğun kabarma reddedilir.</li>
+                        </ul>
+                        <h3>Denetim Süreci:</h3>
+                        <ul>
+                            <li>Galvanizleme tesisi denetimi: Satın alma aşamasında tedarikçi onayı için tesis
+                                denetimi yapılır (banyo kimyası kayıtları, kalibrasyon belgeleri, personel
+                                yetkinliği kontrol edilir).</li>
+                            <li>Partilere göre üretim denetimi: Her galvanizleme seferinden (lot/parti) alınan
+                                numunelerde kaplama kalınlığı ve görünüm denetimi; kayıtlar saklanır.</li>
+                            <li>Saha denetimi: TCDD veya müşteri representatif tarafından teslim aşamasında;
+                                portföy bazlı örnekleme.</li>
+                        </ul>
+                        <h3>Belgelendirme Süreci:</h3>
+                        <ul>
+                            <li>Galvanizleme Test Raporu (Inspection Certificate): Her partiye ait kaplama kalınlığı
+                                ölçüm değerleri, görsel muayene sonuçları ve kullanılan banyo kimyasına ilişkin
+                                bilgileri içerir; EN ISO 1461 uyumluluğunu beyan eder.</li>
+                            <li>Malzeme Sertifikası (Mill Certificate): Temel çeliğin kimyasal bileşim değerlerini
+                                içerir; Si ve P içerikleri galvanizleme reaktivitesi için kontrol edilir.</li>
+                            <li>Tedarikçi Yeterlilik Belgesi: Galvanizleme firmasının EN ISO 1461 uyumlu üretim
+                                yapabildiğini gösteren bağımsız sertifika veya denetim raporu.</li>
+                        </ul>
+
+                        <h2 id="uygulamada-zorluklar">Uygulamada Karşılaşılan Zorluklar ve Çözümler</h2>
+                        <h3>Zorluklar:</h3>
+                        <ul>
+                            <li>Reaktif çelik kontrolü: Farklı çelik kaynaklarındaki Si ve P oranı tutarsızlıkları;
+                                kaplama kalınlığının şartnamenin üstüne çıkması ve estetik sorunlar (mat, pürüzlü
+                                görünüm).</li>
+                            <li>Hasar ve onarım: Taşıma, montaj veya kaynak sonrası galvaniz yüzeyde lokal hasar;
+                                onarım kalitesinin (çinko boya, termal zımpara) asıl galvanizin kalite
+                                düzeyini karşılaması güçtür.</li>
+                            <li>Boyutsal deformasyon: İnce kesitli veya asimetrik parçalarda ısıl distorsiyon;
+                                düzeltme işlemi galvaniz yüzeye zarar verebilir.</li>
+                            <li>Beyaz pas (depolama lekesi): Yetersiz havalandırmalı depo koşullarında
+                                ZnO·Zn(OH)₂ büyümesi; görünüm ve müşteri şikâyeti riski.</li>
+                            <li>Çevre ve tehlikeli madde yönetimi: HCl asit dağlama buharları, çinko tozu ve HF
+                                içerikli flux kalıntıları; çevresel düzenleme uyumluluğu (ATEX, REACH).</li>
+                        </ul>
+                        <h3>Çözümler:</h3>
+                        <ul>
+                            <li>Çelik satın alma şartnamesine Si ≤0,04% veya Si ≥0,25% (S355JR gibi reaktif
+                                çeliklerin bilinçli seçimi) koşulu eklenmesi; sertifika ile doğrulama.</li>
+                            <li>Küçük hasarlar için çinko tozlu boya (EN ISO 1461 Madde 6.3 uyumlu, Zn ≥%85
+                                metalik çinko içerikli); büyük hasarlarda yeniden galvanizleme.</li>
+                            <li>Galvanizleme öncesi distorsiyon simülasyonu; tasarım aşamasında güçlendirici köşe
+                                levhalar; termal ön gerilme uygulaması (stress relieving) değerlendirilebilir.</li>
+                            <li>Depoda ızgara veya strech film yerine havalandırmalı örtü; parçalar arasına ayıracı
+                                koyarak istifleme; teslimatta beyaz pas farkındalık eğitimi.</li>
+                            <li>Galvanizleme tesisi için çevre yönetim sistemi (ISO 14001); asit yeniden kullanım
+                                döngüleri; banyo filtrasyon ve çinko geri kazanım sistemleri.</li>
+                        </ul>
+                        <p>İpuçları: Tasarım aşamasında EN ISO 14713-2 rehberini mutlaka inceleyin; galvanizlenecek
+                            parçalar için "galvanize hazır tasarım" kontrol listesi oluşturun; kritik yapısal
+                            bileşenler için "duplex sistem" (galvaniz + toz boya) değerlendirin, bu yöntemle
+                            kaplama ömrü 1,5–2,5 kat artabilir.</p>
+
+                        <h2 id="gorseller-semalar">Görseller / Şemalar / Akış Diyagramları</h2>
+                        <h3>Sıcak Daldırma Galvanizleme Süreci</h3>
+                        <div class="mermaid">
+                            flowchart LR
+                            A["Ham Çelik\nParça"] --> B["Yağ Alma\n(Alkalin Banyo)"]
+                            B --> C["Asit Dağlama\n(HCl veya H₂SO₄)"]
+                            C --> D["Su\nDurulama"]
+                            D --> E["Flukslama\n(ZnCl₂·NH₄Cl)"]
+                            E --> F["Kurutma\n(yaklaşık 120°C)"]
+                            F --> G["Sıcak Daldırma\nGalvanizleme\n(yaklaşık 450°C Çinko)"]
+                            G --> H["Soğutma ve\nSu/Hava"]
+                            H --> I["Pasifasyon\n(opsiyonel)"]
+                            I --> J["Kalite\nKontrol"]
+                            J --> K{Kabul\nKriterleri?}
+                            K -->|Geçti| L["Onaylı\nGalvanizli Parça"]
+                            K -->|"Başarısız\n(Onarılabilir)"| M["Onarım\n(Zn Boya / Tekrar Gal.)"]
+                            K -->|"Başarısız\n(Onarılamaz)"| N["Red ve\nRaporlama"]
+                            M --> J
+                        </div>
+                        <p class="text-center text-sm text-gray-500">TS EN ISO 1461 kapsamındaki sıcak daldırma
+                            galvanizleme süreç akışı.</p>
+
+                        <h3>Galvaniz Kaplama Katman Yapısı</h3>
+                        <div class="mermaid">
+                            graph TB
+                            A["Eta Katmanı (η) — Saf Çinko\nYüzey Katmanı, Açık Gümüş Gri"]
+                            B["Zeta Katmanı (ζ) — FeZn₁₃\nSert, Kırılgan"]
+                            C["Delta Katmanı (δ₁) — FeZn₇\nNispeten Sünek"]
+                            D["Gama Katmanı (γ) — Fe₃Zn₁₀\nİnce Geçiş Katmanı"]
+                            E["Çelik Substrat\n(Ana Malzeme)"]
+                            A --> B --> C --> D --> E
+                        </div>
+                        <p class="text-center text-sm text-gray-500">Sıcak daldırma galvanizlemede oluşan çok katmanlı
+                            metalürjik yapı (dıştan içe).</p>
+
+                        <h3>Kaplama Kalınlığı Gereklilikleri Tablosu</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Malzeme Türü ve Kalınlığı</th>
+                                    <th>Min. Ortalama Kalınlık (µm)</th>
+                                    <th>Min. Yerel Kalınlık (µm)</th>
+                                    <th>Min. Ortalama Kütle (g/m²)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Çelik ≥ 6 mm</td>
+                                    <td>85</td>
+                                    <td>70</td>
+                                    <td>610</td>
+                                </tr>
+                                <tr>
+                                    <td>Çelik 3 mm – 6 mm</td>
+                                    <td>70</td>
+                                    <td>55</td>
+                                    <td>505</td>
+                                </tr>
+                                <tr>
+                                    <td>Çelik 1,5 mm – 3 mm</td>
+                                    <td>55</td>
+                                    <td>45</td>
+                                    <td>395</td>
+                                </tr>
+                                <tr>
+                                    <td>Çelik &lt; 1,5 mm</td>
+                                    <td>45</td>
+                                    <td>35</td>
+                                    <td>325</td>
+                                </tr>
+                                <tr>
+                                    <td>Dökme Demir &lt; 6 mm</td>
+                                    <td>70</td>
+                                    <td>55</td>
+                                    <td>505</td>
+                                </tr>
+                                <tr>
+                                    <td>Dökme Demir ≥ 6 mm</td>
+                                    <td>80</td>
+                                    <td>65</td>
+                                    <td>575</td>
+                                </tr>
+                                <tr>
+                                    <td>Dövme Demir (tüm kalınlıklar)</td>
+                                    <td>45</td>
+                                    <td>35</td>
+                                    <td>325</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Korozyon Kategorisine Göre Tahmini Galvaniz Ömrü</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Korozyon Kategorisi (ISO 9223)</th>
+                                    <th>Ortam Tanımı</th>
+                                    <th>Çinko Aşınma Hızı (µm/yıl)</th>
+                                    <th>85 µm Kaplama Ömrü (yıl)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>C1 — Çok Düşük</td>
+                                    <td>Kuru iç ortam (depo)</td>
+                                    <td>&lt; 0,1</td>
+                                    <td>&gt; 500</td>
+                                </tr>
+                                <tr>
+                                    <td>C2 — Düşük</td>
+                                    <td>Kırsal / kentsel iç ortam</td>
+                                    <td>0,1 – 0,7</td>
+                                    <td>120 – 500</td>
+                                </tr>
+                                <tr>
+                                    <td>C3 — Orta</td>
+                                    <td>Kent / endüstriyel atmosfer</td>
+                                    <td>0,7 – 2,1</td>
+                                    <td>40 – 120</td>
+                                </tr>
+                                <tr>
+                                    <td>C4 — Yüksek</td>
+                                    <td>Endüstriyel / kıyı bölgesi</td>
+                                    <td>2,1 – 4,2</td>
+                                    <td>20 – 40</td>
+                                </tr>
+                                <tr>
+                                    <td>C5 — Çok Yüksek</td>
+                                    <td>Ağır denizsel / kimyasal sanayi</td>
+                                    <td>4,2 – 8,4</td>
+                                    <td>10 – 20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Muayene Örnekleme Planı (EN ISO 1461)</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parti Büyüklüğü (adet)</th>
+                                    <th>Min. Muayene Numune Sayısı</th>
+                                    <th>Ölçüm Noktası (parça başına)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 – 3</td>
+                                    <td>Her parça</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>4 – 500</td>
+                                    <td>Karekökte yuvarlanan (√N, min. 3)</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>&gt; 500</td>
+                                    <td>Karekökte yuvarlanan (max. 20)</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>Küçük Parçalar (&lt;2 dm²)</td>
+                                    <td>Gruplandırılarak bir numune</td>
+                                    <td>5 (ölçülebilir yüzeyden)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <aside>
+                            <strong>⚠️ Önemli Not:</strong> TS EN ISO 1461, kaplama kalınlığı için minimum değerler
+                            belirler. Yüksek korozyon kategorisi (C4–C5) ortamlarda (kıyı hattı, endüstriyel bölge)
+                            veya uzun hizmet ömrü öngörülen kritik demiryolu altyapısında (köprüler, katener
+                            direkleri), şartnamede standart minimum değerlerinin üzerinde kaplama kalınlığı talep
+                            edilebilir. Ayrıca galvaniz yüzeyine ek toz boya uygulanan "duplex sistem"lerde (EN ISO
+                            14713-1) ömür beklentisi önemli ölçüde uzar.
+                        </aside>
+            </div>
+        </div>
+
+        <button id="back-to-top-btn"
+            class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list');
+            const contentHeadings = document.querySelectorAll('.prose h2');
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+
+            contentHeadings.forEach((heading, index) => {
+                const id = heading.id || `section-${index}`;
+                heading.id = id;
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = heading.textContent;
+                link.classList.add('block', 'p-2', 'rounded-md', 'text-gray-600', 'hover:bg-blue-50', 'hover:text-blue-800', 'transition-colors', 'duration-200');
+
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    history.pushState(null, '', `#${id}`);
+                });
+
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`#toc-list a[href="#${id}"]`);
+                    if (tocLink) {
+                        if (entry.isIntersecting) {
+                            tocLink.classList.add('active');
+                        } else {
+                            tocLink.classList.remove('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            contentHeadings.forEach(heading => observer.observe(heading));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>
