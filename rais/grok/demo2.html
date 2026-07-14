@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAİS • Altyapı İzleme Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+        .dashboard-card { transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); }
+        .dashboard-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .sensor-card { border-left: 4px solid #64748b; }
+        .sensor-card.critical { border-left-color: #ef4444; }
+        .sensor-card.warning { border-left-color: #f59e0b; }
+        .sensor-card.normal { border-left-color: #22c55e; }
+        .leaflet-popup-content-wrapper { background: #0f172a; color: #e2e8f0; border-radius: 12px; }
+        .rule-row { transition: all 0.2s; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+    <!-- Top Bar -->
+    <div class="border-b border-slate-800 bg-slate-900">
+        <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-train text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display text-3xl font-semibold tracking-tighter">RAİS</span>
+                        <span class="text-emerald-400 text-sm font-medium ml-1">Argus RailGuard</span>
+                    </div>
+                </div>
+                <div class="px-3 py-1 bg-emerald-900/30 text-emerald-400 text-xs rounded-2xl flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-circle fa-beat fa-sm"></i>
+                    <span class="font-medium">Sistem Aktif • 47 Lokasyon</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-x-4">
+                <!-- Filtreler -->
+                <div class="flex items-center gap-x-2">
+                    <select id="region-filter" onchange="filterSensors()" class="bg-slate-900 border border-slate-700 text-sm rounded-2xl px-4 py-2 outline-none">
+                        <option value="">Tüm Bölgeler</option>
+                        <option value="Kocaeli">Kocaeli</option>
+                        <option value="İstanbul">İstanbul</option>
+                        <option value="Ankara">Ankara</option>
+                    </select>
+                    <select id="status-filter" onchange="filterSensors()" class="bg-slate-900 border border-slate-700 text-sm rounded-2xl px-4 py-2 outline-none">
+                        <option value="">Tüm Durumlar</option>
+                        <option value="normal">Normal</option>
+                        <option value="warning">Uyarı</option>
+                        <option value="critical">Kritik</option>
+                    </select>
+                </div>
+
+                <div class="relative w-80">
+                    <input type="text" id="search-input" placeholder="Sensör ID veya lokasyon ara..." 
+                           onkeyup="filterSensors()" class="w-full bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-3xl py-2.5 pl-10 pr-4 text-sm outline-none">
+                    <i class="fa-solid fa-search absolute left-4 top-3 text-slate-500"></i>
+                </div>
+
+                <button onclick="simulateLiveData()" class="flex items-center gap-x-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 transition-colors rounded-3xl text-sm font-medium">
+                    <i class="fa-solid fa-sync"></i>
+                    <span>Canlı Simülasyon</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-screen-2xl mx-auto px-6 pt-6 pb-10">
+        <!-- KPI -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="text-xs text-slate-400">TOPLAM LOKASYON / SENSÖR</div>
+                <div class="text-4xl font-semibold mt-1">47 <span class="text-xl text-slate-400">/ 312</span></div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="text-xs text-slate-400">AKTİF UYARI</div>
+                <div class="text-4xl font-semibold mt-1 text-amber-400">7</div>
+                <div class="text-xs text-amber-400">3 kritik</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="text-xs text-slate-400">SON 24 SAAT OLAY</div>
+                <div class="text-4xl font-semibold mt-1">14</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div class="text-xs text-slate-400">SİSTEM SAĞLIĞI</div>
+                <div class="flex items-center gap-x-2 mt-1">
+                    <div class="text-4xl font-semibold text-emerald-400">98.7%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HARİTA -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-x-3">
+                    <span class="font-semibold text-xl">Harita Görünümü</span>
+                    <span class="text-xs px-3 py-1 bg-slate-800 rounded-2xl text-slate-400">Gebze - Kocaeli Hattı + Çevresi</span>
+                </div>
+                <button onclick="toggleMap()" class="text-sm flex items-center gap-x-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-2xl">
+                    <i class="fa-solid fa-compress" id="map-toggle-icon"></i>
+                    <span id="map-toggle-text">Haritayı Gizle</span>
+                </button>
+            </div>
+            
+            <div id="map-container" class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" style="height: 420px;">
+                <div id="map" class="w-full h-full"></div>
+            </div>
+        </div>
+
+        <!-- Sensörler / Lokasyonlar -->
+        <div class="flex items-center justify-between mb-3">
+            <span class="font-semibold text-xl">Sensörler & Lokasyonlar</span>
+            <div class="text-xs text-slate-400">Tıklayarak detayları aç • Renk = Durum</div>
+        </div>
+
+        <div id="sensor-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- JS ile doldurulacak -->
+        </div>
+
+        <!-- Otomasyon / Kurallar -->
+        <div class="mt-10">
+            <div class="flex items-center justify-between mb-4">
+                <span class="font-semibold text-xl">Otomasyon & Kurallar</span>
+                <button onclick="showNewRuleModal()" class="flex items-center gap-x-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-3xl text-sm font-medium">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Yeni Kural Oluştur</span>
+                </button>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                <div id="rules-list" class="space-y-3">
+                    <!-- JS ile kurallar listelenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sensor Detail Modal -->
+    <div id="sensor-modal" onclick="if (event.target.id === 'sensor-modal') closeModal()" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+        <div onclick="event.stopImmediatePropagation()" class="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-auto">
+            <div class="px-6 py-5 border-b border-slate-700 flex justify-between items-center sticky top-0 bg-slate-900 z-10">
+                <div id="modal-sensor-title" class="font-semibold text-2xl"></div>
+                <button onclick="closeModal()" class="text-3xl leading-none text-slate-400 hover:text-white">×</button>
+            </div>
+            <div class="p-6" id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- New Rule Modal -->
+    <div id="rule-modal" onclick="if (event.target.id === 'rule-modal') closeRuleModal()" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+        <div onclick="event.stopImmediatePropagation()" class="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-xl mx-4">
+            <div class="px-6 py-5 border-b border-slate-700 flex justify-between">
+                <div class="font-semibold text-xl">Yeni Otomasyon Kuralı</div>
+                <button onclick="closeRuleModal()" class="text-2xl">×</button>
+            </div>
+            <div class="p-6 space-y-5">
+                <div>
+                    <label class="text-xs text-slate-400">Kural Adı</label>
+                    <input id="rule-name" type="text" value="Menfez Taşkın + Tilt Kombinasyonu" class="w-full bg-slate-800 border border-slate-700 rounded-2xl px-4 py-2.5 mt-1 text-sm">
+                </div>
+
+                <div>
+                    <label class="text-xs text-slate-400 mb-2 block">KOŞULLAR (AND mantığı ile bağlanır)</label>
+                    <div id="conditions-list" class="space-y-2"></div>
+                    <button onclick="addConditionRow()" class="mt-2 text-xs flex items-center gap-x-1 text-indigo-400 hover:text-indigo-300">
+                        <i class="fa-solid fa-plus"></i> <span>Koşul Ekle</span>
+                    </button>
+                </div>
+
+                <div>
+                    <label class="text-xs text-slate-400 mb-2 block">AKSİYONLAR</label>
+                    <div class="grid grid-cols-2 gap-2" id="actions-list">
+                        <!-- JS ile doldurulacak -->
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-950 border-t border-slate-700 flex justify-end gap-3">
+                <button onclick="closeRuleModal()" class="px-5 py-2.5 text-sm rounded-2xl border border-slate-600">İptal</button>
+                <button onclick="saveNewRule()" class="px-6 py-2.5 text-sm bg-indigo-600 hover:bg-indigo-500 rounded-2xl font-medium">Kuralı Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind + Leaflet init
+        function initTailwind() {
+            // already included
+        }
+
+        let map;
+        let markers = [];
+        let sensors = [
+            { id: "MNF-001", location: "Gebze Menfez-1", region: "Kocaeli", type: "menfez", status: "normal", value: "42 cm", detail: "Ultrasonik mesafe + Kamera", lastUpdate: "14:28" },
+            { id: "TILT-045", location: "Gebze Ray-12", region: "Kocaeli", type: "tilt", status: "warning", value: "2.8°", detail: "Ray altı boşalma riski", lastUpdate: "14:25" },
+            { id: "TEMP-089", location: "Gebze İstasyon", region: "Kocaeli", type: "temp", status: "normal", value: "18.4°C", detail: "Sıcaklık sensörü", lastUpdate: "14:30" },
+            { id: "YAG-012", location: "Kocaeli Köprüsü", region: "Kocaeli", type: "rain", status: "normal", value: "0.2 mm/h", detail: "Yağış tespit", lastUpdate: "14:22" },
+            { id: "RZG-033", location: "Gebze Tünel Girişi", region: "Kocaeli", type: "wind", status: "critical", value: "68 km/h", detail: "Rüzgar ölçüm", lastUpdate: "14:19" },
+            { id: "MNF-002", location: "Pendik Menfez", region: "İstanbul", type: "menfez", status: "warning", value: "78 cm", detail: "Ultrasonik + Kamera", lastUpdate: "14:15" }
+        ];
+
+        let rules = [];
+
+        function initMap() {
+            map = L.map('map').setView([40.80, 29.43], 11);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Fake pins (Gebze + çevresi)
+            const locations = [
+                { lat: 40.797, lng: 29.437, sensor: sensors[0], popup: "Gebze Menfez-1<br>MNF-001 • Normal" },
+                { lat: 40.812, lng: 29.451, sensor: sensors[1], popup: "Gebze Ray-12<br>TILT-045 • Uyarı" },
+                { lat: 40.785, lng: 29.412, sensor: sensors[2], popup: "Gebze İstasyon<br>TEMP-089 • Normal" },
+                { lat: 40.835, lng: 29.378, sensor: sensors[3], popup: "Kocaeli Köprüsü<br>YAG-012 • Normal" },
+                { lat: 40.768, lng: 29.489, sensor: sensors[4], popup: "Gebze Tünel<br>RZG-033 • KRİTİK" },
+                { lat: 40.89, lng: 29.22, sensor: sensors[5], popup: "Pendik Menfez<br>MNF-002 • Uyarı" }
+            ];
+
+            locations.forEach(loc => {
+                const color = loc.sensor.status === 'critical' ? 'red' : loc.sensor.status === 'warning' ? 'orange' : 'green';
+                const marker = L.circleMarker([loc.lat, loc.lng], {
+                    radius: 10,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    fillOpacity: 0.9
+                }).addTo(map);
+                
+                marker.bindPopup(loc.popup);
+                marker.on('click', () => openSensorModal(loc.sensor.id));
+                markers.push(marker);
+            });
+        }
+
+        function toggleMap() {
+            const container = document.getElementById('map-container');
+            const icon = document.getElementById('map-toggle-icon');
+            const text = document.getElementById('map-toggle-text');
+            
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                icon.classList.remove('fa-expand');
+                icon.classList.add('fa-compress');
+                text.textContent = 'Haritayı Gizle';
+            } else {
+                container.style.display = 'none';
+                icon.classList.remove('fa-compress');
+                icon.classList.add('fa-expand');
+                text.textContent = 'Haritayı Göster';
+            }
+        }
+
+        function renderSensorGrid(filteredSensors = sensors) {
+            const grid = document.getElementById('sensor-grid');
+            grid.innerHTML = '';
+
+            filteredSensors.forEach(s => {
+                const statusClass = s.status === 'critical' ? 'critical' : s.status === 'warning' ? 'warning' : 'normal';
+                const statusColor = s.status === 'critical' ? 'text-red-400' : s.status === 'warning' ? 'text-amber-400' : 'text-emerald-400';
+                const statusIcon = s.status === 'critical' ? 'fa-exclamation-triangle' : s.status === 'warning' ? 'fa-exclamation-circle' : 'fa-check-circle';
+
+                let icon = 'fa-microchip';
+                if (s.type === 'menfez') icon = 'fa-water';
+                else if (s.type === 'tilt') icon = 'fa-arrows-alt-h';
+                else if (s.type === 'temp') icon = 'fa-thermometer-half';
+                else if (s.type === 'rain') icon = 'fa-cloud-rain';
+                else if (s.type === 'wind') icon = 'fa-wind';
+
+                const card = document.createElement('div');
+                card.className = `sensor-card ${statusClass} bg-slate-900 border border-slate-700 rounded-3xl p-5 cursor-pointer dashboard-card`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-semibold">${s.id}</div>
+                            <div class="text-sm text-slate-400">${s.location}</div>
+                        </div>
+                        <i class="fa-solid ${icon} text-2xl text-slate-600"></i>
+                    </div>
+                    
+                    <div class="mt-4 flex items-end justify-between">
+                        <div>
+                            <div class="text-3xl font-semibold">${s.value}</div>
+                            <div class="text-xs ${statusColor} flex items-center gap-x-1 mt-0.5">
+                                <i class="fa-solid ${statusIcon}"></i>
+                                <span class="capitalize">${s.status}</span>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs text-slate-400">
+                            ${s.detail}<br>
+                            <span class="font-mono">${s.lastUpdate}</span>
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => openSensorModal(s.id);
+                grid.appendChild(card);
+            });
+        }
+
+        function filterSensors() {
+            const region = document.getElementById('region-filter').value;
+            const status = document.getElementById('status-filter').value;
+            const search = document.getElementById('search-input').value.toLowerCase();
+
+            let filtered = sensors;
+
+            if (region) filtered = filtered.filter(s => s.region === region);
+            if (status) filtered = filtered.filter(s => s.status === status);
+            if (search) filtered = filtered.filter(s => 
+                s.id.toLowerCase().includes(search) || 
+                s.location.toLowerCase().includes(search) ||
+                s.detail.toLowerCase().includes(search)
+            );
+
+            renderSensorGrid(filtered);
+        }
+
+        function openSensorModal(sensorId) {
+            const sensor = sensors.find(s => s.id === sensorId);
+            if (!sensor) return;
+
+            const modal = document.getElementById('sensor-modal');
+            const title = document.getElementById('modal-sensor-title');
+            const content = document.getElementById('modal-content');
+
+            title.innerHTML = `${sensor.id} — ${sensor.location}`;
+
+            let extraHTML = '';
+            if (sensor.type === 'menfez') {
+                extraHTML = `
+                    <div class="bg-slate-800 rounded-2xl p-4 mb-4">
+                        <div class="flex justify-between mb-3">
+                            <div><span class="font-medium">Ultrasonik Mesafe</span> <span class="text-2xl font-semibold ml-2">${sensor.value}</span></div>
+                            <div class="text-emerald-400 text-sm">Normal aralıkta</div>
+                        </div>
+                        <div class="text-xs text-slate-400 mb-2">Kamera Durumu</div>
+                        <div class="flex items-center gap-x-3">
+                            <div class="flex-1 bg-slate-700 h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-2 w-[92%]"></div></div>
+                            <span class="text-xs">Canlı • 92%</span>
+                        </div>
+                        <button onclick="simulateCameraEvent()" class="mt-3 w-full py-2 text-xs bg-slate-700 hover:bg-slate-600 rounded-2xl">Son Olay Klibini Oynat (Demo)</button>
+                    </div>
+                `;
+            } else if (sensor.type === 'tilt') {
+                extraHTML = `<div class="text-sm">Mevcut Eğim: <span class="font-semibold text-xl">${sensor.value}</span><br><span class="text-amber-400">Ray altı boşalma riski artıyor</span></div>`;
+            }
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="text-xs text-slate-400 mb-1">BAĞLANTI TİPİ</div>
+                        <div class="font-medium">${sensor.type === 'menfez' ? 'LoRaWAN + Ethernet (Kamera)' : 'LoRaWAN'}</div>
+                        
+                        <div class="mt-4 text-xs text-slate-400 mb-1">SON GÜNCELLEME</div>
+                        <div>${sensor.lastUpdate} • Bugün</div>
+
+                        ${extraHTML}
+                    </div>
+                    
+                    <div class="bg-slate-800 rounded-2xl p-4">
+                        <div class="text-xs text-slate-400 mb-2">HIZLI DURUM</div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>Durum</span> <span class="font-medium capitalize ${sensor.status === 'critical' ? 'text-red-400' : ''}">${sensor.status}</span></div>
+                            <div class="flex justify-between"><span>Değer</span> <span class="font-semibold">${sensor.value}</span></div>
+                            <div class="flex justify-between"><span>Detay</span> <span>${sensor.detail}</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-5 border-t border-slate-700 text-xs text-slate-400">
+                    Bu sensör RAİS ana cihazına bağlı. Gerçek sistemde MQTT / LoRa gateway üzerinden veri akışı sağlanır.
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('sensor-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function simulateCameraEvent() {
+            alert("Demo: Kamera kaydı oynatılıyor... (Gerçekte edge recording veya NVR entegrasyonu olacak)");
+        }
+
+        // Otomasyon Kuralları
+        function renderRules() {
+            const container = document.getElementById('rules-list');
+            container.innerHTML = '';
+
+            if (rules.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-sm text-slate-400">Henüz kural tanımlanmadı. Yukarıdaki butonla yeni kural ekleyin.</div>`;
+                return;
+            }
+
+            rules.forEach((rule, index) => {
+                const div = document.createElement('div');
+                div.className = `rule-row bg-slate-800 border border-slate-700 rounded-2xl p-4 flex justify-between items-center`;
+                div.innerHTML = `
+                    <div>
+                        <div class="font-medium">${rule.name}</div>
+                        <div class="text-xs text-slate-400 mt-0.5">${rule.conditions.length} koşul • ${rule.actions.length} aksiyon</div>
+                    </div>
+                    <div class="flex items-center gap-x-2">
+                        <span class="px-3 py-1 text-xs bg-emerald-900/40 text-emerald-400 rounded-2xl">Aktif</span>
+                        <button onclick="deleteRule(${index})" class="text-red-400 hover:text-red-300 px-2"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showNewRuleModal() {
+            const modal = document.getElementById('rule-modal');
+            document.getElementById('conditions-list').innerHTML = '';
+            document.getElementById('actions-list').innerHTML = `
+                <label class="flex items-center gap-x-2 text-sm"><input type="checkbox" checked class="accent-indigo-500"> Alarm Tetikle</label>
+                <label class="flex items-center gap-x-2 text-sm"><input type="checkbox" class="accent-indigo-500"> Telegram Bot Bildirimi</label>
+                <label class="flex items-center gap-x-2 text-sm"><input type="checkbox" class="accent-indigo-500"> E-posta Gönder</label>
+                <label class="flex items-center gap-x-2 text-sm"><input type="checkbox" class="accent-indigo-500"> Harici Output (Relay)</label>
+            `;
+            addConditionRow(); // ilk koşul satırı
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function addConditionRow() {
+            const container = document.getElementById('conditions-list');
+            const row = document.createElement('div');
+            row.className = 'flex gap-2 items-center bg-slate-800 p-2 rounded-2xl';
+            row.innerHTML = `
+                <select class="bg-slate-700 border border-slate-600 rounded-xl px-3 py-1.5 text-sm flex-1">
+                    <option>Menfez Taşkın (MNF-001)</option>
+                    <option>Tilt Sensör (TILT-045)</option>
+                    <option>Sıcaklık (TEMP-089)</option>
+                    <option>Yağış (YAG-012)</option>
+                    <option>Rüzgar (RZG-033)</option>
+                </select>
+                <select class="bg-slate-700 border border-slate-600 rounded-xl px-3 py-1.5 text-sm">
+                    <option>></option><option><</option><option>=</option>
+                </select>
+                <input type="text" value="50" class="bg-slate-700 border border-slate-600 rounded-xl px-3 py-1.5 text-sm w-20">
+                <button onclick="this.parentElement.remove()" class="text-red-400 px-2"><i class="fa-solid fa-times"></i></button>
+            `;
+            container.appendChild(row);
+        }
+
+        function saveNewRule() {
+            const name = document.getElementById('rule-name').value || 'Yeni Kural';
+            const conditions = Array.from(document.getElementById('conditions-list').children).map(row => {
+                const selects = row.querySelectorAll('select');
+                const input = row.querySelector('input');
+                return `${selects[0].value} ${selects[1].value} ${input.value}`;
+            });
+            const actions = Array.from(document.getElementById('actions-list').querySelectorAll('input:checked')).map(cb => cb.parentElement.textContent.trim());
+
+            rules.push({ name, conditions, actions });
+            renderRules();
+            closeRuleModal();
+            
+            // Başarı bildirimi
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 right-6 bg-emerald-600 px-5 py-3 rounded-2xl text-sm flex items-center gap-x-2`;
+            toast.innerHTML = `<i class="fa-solid fa-check"></i> <span>Kural başarıyla kaydedildi (demo)</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2200);
+        }
+
+        function closeRuleModal() {
+            document.getElementById('rule-modal').classList.remove('flex');
+            document.getElementById('rule-modal').classList.add('hidden');
+        }
+
+        function deleteRule(index) {
+            if (confirm('Bu kuralı silmek istediğine emin misin?')) {
+                rules.splice(index, 1);
+                renderRules();
+            }
+        }
+
+        function simulateLiveData() {
+            // Basit simülasyon: değerleri değiştir + render
+            sensors.forEach(s => {
+                if (s.type === 'menfez' && Math.random() > 0.7) s.value = (parseInt(s.value) + Math.floor(Math.random()*8)-3) + ' cm';
+                if (s.type === 'tilt' && Math.random() > 0.6) s.value = (parseFloat(s.value) + (Math.random()*0.4-0.2)).toFixed(1) + '°';
+                if (s.type === 'wind' && Math.random() > 0.5) s.value = Math.floor(Math.random()*15 + 55) + ' km/h';
+                
+                if (Math.random() > 0.85) {
+                    s.status = s.status === 'normal' ? 'warning' : (Math.random() > 0.5 ? 'critical' : 'normal');
+                }
+            });
+            
+            renderSensorGrid();
+            
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-700 px-4 py-2 rounded-3xl text-xs flex items-center gap-x-2`;
+            toast.innerHTML = `<i class="fa-solid fa-sync fa-spin"></i> <span>Gerçek zamanlı veriler güncellendi</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1400);
+        }
+
+        function filterSensorsOnLoad() {
+            // initial filter
+        }
+
+        function initDashboard() {
+            initTailwind();
+            initMap();
+            renderSensorGrid();
+            renderRules();
+            
+            // Demo için bir örnek kural ekle
+            if (rules.length === 0) {
+                rules.push({
+                    name: "Menfez Taşkın + Yağış Kombinasyonu",
+                    conditions: ["Menfez mesafe > 70 cm", "Yağış > 5 mm/h"],
+                    actions: ["Alarm Tetikle", "Telegram Bot Bildirimi"]
+                });
+                renderRules();
+            }
+
+            // İlk filtre
+            setTimeout(() => {
+                document.getElementById('search-input').addEventListener('input', filterSensors);
+            }, 300);
+            
+            console.log('%c[RAİS Dashboard] Demo hazır. Harita + Sensörler + Otomasyon kuralı aktif.', 'color:#64748b');
+        }
+
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
