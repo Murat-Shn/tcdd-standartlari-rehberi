@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Ev Dashboard • Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #6366f1;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+        }
+
+        .dashboard-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                       box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .device-toggle {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+        
+        .device-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: .3s;
+            border-radius: 9999px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 9999px;
+        }
+        
+        input:checked + .slider {
+            background-color: #6366f1;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .room-card {
+            cursor: pointer;
+        }
+
+        .metric-value {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .section-title {
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .modern-shadow {
+            box-shadow: 0 10px 15px -3px rgb(15 23 42 / 0.1),
+                       0 4px 6px -4px rgb(15 23 42 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+    <!-- Top Bar -->
+    <div class="border-b border-slate-800 bg-slate-900">
+        <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-home text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-display text-2xl font-semibold tracking-tight">Akıllı Ev</span>
+                    <span class="text-indigo-400 text-sm font-medium ml-1">Demo</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-6">
+                <!-- Search -->
+                <div class="relative w-72">
+                    <input type="text" placeholder="Cihaz veya oda ara..." 
+                           class="w-full bg-slate-900 border border-slate-700 focus:border-indigo-500 rounded-3xl py-2.5 pl-11 pr-4 text-sm outline-none">
+                    <i class="fa-solid fa-search absolute left-4 top-3 text-slate-500"></i>
+                </div>
+                
+                <div class="flex items-center gap-x-2 text-sm">
+                    <div class="px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-3xl flex items-center gap-x-2">
+                        <i class="fa-solid fa-wifi text-emerald-400"></i>
+                        <span class="text-emerald-400 text-xs font-medium">Tüm cihazlar bağlı</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-x-3">
+                    <div class="text-right">
+                        <div class="text-sm font-medium">Murat Şahin</div>
+                        <div class="text-[10px] text-slate-500">Proje Yöneticisi</div>
+                    </div>
+                    <div class="w-9 h-9 bg-slate-700 rounded-2xl overflow-hidden ring-2 ring-slate-800">
+                        <img src="https://i.pravatar.cc/36?img=68" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-screen-2xl mx-auto px-6 pt-6 pb-12 flex gap-6">
+        
+        <!-- Sidebar -->
+        <div class="w-64 shrink-0">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-2 sticky top-6">
+                <nav class="space-y-1 text-sm">
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-3 rounded-2xl bg-slate-800 text-white">
+                        <i class="fa-solid fa-chart-line w-5"></i>
+                        <span class="font-medium">Genel Bakış</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-3 rounded-2xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-door-open w-5"></i>
+                        <span>Odalar</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-3 rounded-2xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-plug w-5"></i>
+                        <span>Cihazlar</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-3 rounded-2xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-bolt w-5"></i>
+                        <span>Enerji</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-3 rounded-2xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-shield-halved w-5"></i>
+                        <span>Güvenlik</span>
+                    </a>
+                </nav>
+                
+                <div class="my-3 border-t border-slate-800"></div>
+                
+                <div class="px-4 py-2">
+                    <div class="text-xs section-title mb-2">HIZLI SAHNELER</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="activateScene('film')" 
+                                class="text-xs flex items-center justify-center gap-x-2 bg-slate-800 hover:bg-slate-700 transition-colors py-2 rounded-2xl">
+                            <i class="fa-solid fa-film"></i>
+                            <span>Film Modu</span>
+                        </button>
+                        <button onclick="activateScene('gece')" 
+                                class="text-xs flex items-center justify-center gap-x-2 bg-slate-800 hover:bg-slate-700 transition-colors py-2 rounded-2xl">
+                            <i class="fa-solid fa-moon"></i>
+                            <span>Gece Modu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 min-w-0">
+            
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-xs section-title">TOPLAM CİHAZ</div>
+                            <div class="text-4xl font-semibold mt-1 metric-value">47</div>
+                            <div class="text-emerald-400 text-xs mt-1 flex items-center gap-x-1">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                <span>12 aktif</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-plug text-3xl text-slate-600"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-xs section-title">ENERJİ (BUGÜN)</div>
+                            <div class="text-4xl font-semibold mt-1 metric-value">18.4 <span class="text-xl font-normal">kWh</span></div>
+                            <div class="text-amber-400 text-xs mt-1">−14% dün</div>
+                        </div>
+                        <i class="fa-solid fa-bolt text-3xl text-amber-500"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-xs section-title">ORTALAMA SICAKLIK</div>
+                            <div class="text-4xl font-semibold mt-1 metric-value">21.8 <span class="text-xl font-normal">°C</span></div>
+                            <div class="text-sky-400 text-xs mt-1">Tüm odalar</div>
+                        </div>
+                        <i class="fa-solid fa-temperature-half text-3xl text-sky-400"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-xs section-title">GÜVENLİK</div>
+                            <div class="flex items-baseline gap-x-2 mt-1">
+                                <div class="text-4xl font-semibold metric-value">Güvenli</div>
+                            </div>
+                            <div class="text-emerald-400 text-xs">Tüm sensörler normal</div>
+                        </div>
+                        <i class="fa-solid fa-shield-halved text-3xl text-emerald-500"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Odalar -->
+            <div class="mb-3 flex items-center justify-between">
+                <div>
+                    <span class="font-semibold text-xl">Odalar</span>
+                    <span class="text-slate-500 text-sm ml-2">(Tıklayarak detayları aç)</span>
+                </div>
+                <button onclick="simulateLiveData()" 
+                        class="flex items-center gap-x-2 text-xs px-4 py-2 bg-slate-800 hover:bg-slate-700 transition-colors rounded-3xl">
+                    <i class="fa-solid fa-sync fa-sm"></i>
+                    <span>Canlı Simülasyon</span>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- Salon -->
+                <div onclick="openRoomModal('salon')" class="room-card bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-3xl p-5 dashboard-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="font-semibold text-lg">Salon</div>
+                            <div class="text-xs text-slate-400">4 cihaz • 22.4°C</div>
+                        </div>
+                        <i class="fa-solid fa-couch text-2xl text-slate-600"></i>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Işık</div>
+                            <div class="font-semibold">3/4 <span class="text-xs">açık</span></div>
+                        </div>
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Sıcaklık</div>
+                            <div class="font-semibold">22.4°C</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mutfak -->
+                <div onclick="openRoomModal('mutfak')" class="room-card bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-3xl p-5 dashboard-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="font-semibold text-lg">Mutfak</div>
+                            <div class="text-xs text-slate-400">5 cihaz • 23.1°C</div>
+                        </div>
+                        <i class="fa-solid fa-utensils text-2xl text-slate-600"></i>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Işık</div>
+                            <div class="font-semibold">2/3 <span class="text-xs">açık</span></div>
+                        </div>
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Sıcaklık</div>
+                            <div class="font-semibold">23.1°C</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Yatak Odası -->
+                <div onclick="openRoomModal('yatak')" class="room-card bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-3xl p-5 dashboard-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="font-semibold text-lg">Yatak Odası</div>
+                            <div class="text-xs text-slate-400">3 cihaz • 20.8°C</div>
+                        </div>
+                        <i class="fa-solid fa-bed text-2xl text-slate-600"></i>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Işık</div>
+                            <div class="font-semibold">1/2 <span class="text-xs">açık</span></div>
+                        </div>
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Sıcaklık</div>
+                            <div class="font-semibold">20.8°C</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Çalışma Odası -->
+                <div onclick="openRoomModal('calisma')" class="room-card bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-3xl p-5 dashboard-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <div class="font-semibold text-lg">Çalışma Odası</div>
+                            <div class="text-xs text-slate-400">4 cihaz • 21.5°C</div>
+                        </div>
+                        <i class="fa-solid fa-laptop text-2xl text-slate-600"></i>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Işık</div>
+                            <div class="font-semibold">2/3 <span class="text-xs">açık</span></div>
+                        </div>
+                        <div class="flex-1 bg-slate-800 rounded-2xl p-3 text-center">
+                            <div class="text-xs text-slate-400">Sıcaklık</div>
+                            <div class="font-semibold">21.5°C</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enerji Bölümü -->
+            <div class="mt-8">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-semibold text-xl">Enerji Tüketimi (Son 7 Gün)</span>
+                </div>
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+                    <div class="flex items-end justify-between gap-3 h-48" id="energy-chart">
+                        <!-- JS ile doldurulacak -->
+                    </div>
+                    <div class="flex justify-between text-[10px] text-slate-500 mt-3 px-1">
+                        <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Room Detail Modal -->
+    <div id="room-modal" onclick="if (event.target.id === 'room-modal') closeModal()" 
+         class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-2xl mx-4 overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-5 border-b border-slate-700 flex items-center justify-between">
+                <div id="modal-room-name" class="font-semibold text-2xl"></div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl leading-none">×</button>
+            </div>
+            
+            <div class="p-6 space-y-6" id="modal-content">
+                <!-- JS ile dinamik doldurulacak -->
+            </div>
+            
+            <div class="px-6 py-4 bg-slate-950 border-t border-slate-700 flex justify-end gap-3">
+                <button onclick="closeModal()" 
+                        class="px-5 py-2.5 text-sm rounded-2xl border border-slate-600 hover:bg-slate-800 transition-colors">Kapat</button>
+                <button onclick="applyRoomChanges()" 
+                        class="px-6 py-2.5 text-sm bg-indigo-600 hover:bg-indigo-500 transition-colors rounded-2xl font-medium">Değişiklikleri Uygula</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind config
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#6366f1');
+        }
+        
+        // Basit enerji bar chart (CSS + JS)
+        function createEnergyChart() {
+            const container = document.getElementById('energy-chart');
+            container.innerHTML = '';
+            
+            const data = [12, 15, 9, 18, 22, 14, 11]; // kWh
+            const max = Math.max(...data);
+            
+            data.forEach((value, index) => {
+                const barContainer = document.createElement('div');
+                barContainer.className = 'flex-1 flex flex-col items-center justify-end';
+                
+                const bar = document.createElement('div');
+                const heightPercent = Math.round((value / max) * 100);
+                bar.className = `w-full rounded-t-2xl transition-all ${index === 6 ? 'bg-indigo-500' : 'bg-slate-700'}`;
+                bar.style.height = heightPercent + '%';
+                bar.style.minHeight = '20px';
+                
+                const label = document.createElement('div');
+                label.className = 'text-xs font-medium mt-2 text-slate-400';
+                label.textContent = value + 'kWh';
+                
+                barContainer.appendChild(bar);
+                barContainer.appendChild(label);
+                container.appendChild(barContainer);
+            });
+        }
+        
+        // Oda modalı aç
+        let currentRoom = null;
+        
+        function openRoomModal(room) {
+            currentRoom = room;
+            const modal = document.getElementById('room-modal');
+            const nameEl = document.getElementById('modal-room-name');
+            const content = document.getElementById('modal-content');
+            
+            let roomName = '';
+            let devicesHTML = '';
+            
+            if (room === 'salon') {
+                roomName = 'Salon';
+                devicesHTML = `
+                    <div class="space-y-5">
+                        <!-- Aydınlatma -->
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-x-3">
+                                    <i class="fa-solid fa-lightbulb text-2xl text-yellow-400"></i>
+                                    <div>
+                                        <div class="font-medium">Ana Aydınlatma</div>
+                                        <div class="text-xs text-slate-400">3 lamba • 65% parlaklık</div>
+                                    </div>
+                                </div>
+                                <label class="device-toggle">
+                                    <input type="checkbox" checked onchange="toggleDevice(this, 'salon-light')">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5 px-0.5">
+                                    <span>Parlaklık</span>
+                                    <span id="salon-brightness-value">65%</span>
+                                </div>
+                                <input type="range" min="0" max="100" value="65" step="5"
+                                       class="w-full accent-indigo-500" 
+                                       oninput="updateSliderValue(this, 'salon-brightness-value')">
+                            </div>
+                        </div>
+                        
+                        <!-- Termostat -->
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-x-3">
+                                    <i class="fa-solid fa-temperature-half text-2xl text-sky-400"></i>
+                                    <div>
+                                        <div class="font-medium">Termostat</div>
+                                        <div class="text-xs text-slate-400">Otomatik mod</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-3xl font-semibold metric-value" id="salon-temp">22.4</div>
+                                    <div class="text-xs -mt-1">°C</div>
+                                </div>
+                            </div>
+                            <input type="range" min="16" max="28" step="0.5" value="22.4"
+                                   class="w-full accent-sky-400" 
+                                   oninput="updateTemp(this, 'salon-temp')">
+                            <div class="flex justify-between text-[10px] text-slate-500 px-1 mt-1">
+                                <div>16°C</div><div>28°C</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (room === 'mutfak') {
+                roomName = 'Mutfak';
+                devicesHTML = `
+                    <div class="space-y-5">
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-x-3">
+                                    <i class="fa-solid fa-lightbulb text-2xl text-yellow-400"></i>
+                                    <div><div class="font-medium">Mutfak Aydınlatması</div></div>
+                                </div>
+                                <label class="device-toggle">
+                                    <input type="checkbox" checked onchange="toggleDevice(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5"><span>Parlaklık</span><span id="mutfak-brightness-value">80%</span></div>
+                                <input type="range" min="0" max="100" value="80" class="w-full accent-indigo-500" 
+                                       oninput="updateSliderValue(this, 'mutfak-brightness-value')">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-x-3">
+                                    <i class="fa-solid fa-temperature-half text-2xl text-sky-400"></i>
+                                    <div class="font-medium">Akıllı Fırın</div>
+                                </div>
+                                <div class="text-emerald-400 text-sm font-medium">Kapalı</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (room === 'yatak') {
+                roomName = 'Yatak Odası';
+                devicesHTML = `
+                    <div class="space-y-5">
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-x-3">
+                                    <i class="fa-solid fa-lightbulb text-2xl text-yellow-400"></i>
+                                    <div><div class="font-medium">Yatak Başı Lambası</div></div>
+                                </div>
+                                <label class="device-toggle">
+                                    <input type="checkbox" onchange="toggleDevice(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="font-medium">Oda Sıcaklığı</div>
+                                <div class="text-3xl font-semibold metric-value" id="yatak-temp">20.8</div>
+                            </div>
+                            <input type="range" min="16" max="26" step="0.5" value="20.8" class="w-full accent-sky-400"
+                                   oninput="updateTemp(this, 'yatak-temp')">
+                        </div>
+                    </div>
+                `;
+            } else if (room === 'calisma') {
+                roomName = 'Çalışma Odası';
+                devicesHTML = `
+                    <div class="space-y-5">
+                        <div class="bg-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-x-3">
+                                    <i class="fa-solid fa-desktop text-2xl text-indigo-400"></i>
+                                    <div><div class="font-medium">Masaüstü Aydınlatması</div></div>
+                                </div>
+                                <label class="device-toggle">
+                                    <input type="checkbox" checked onchange="toggleDevice(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1.5"><span>Parlaklık</span><span id="calisma-brightness-value">45%</span></div>
+                                <input type="range" min="0" max="100" value="45" class="w-full accent-indigo-500" 
+                                       oninput="updateSliderValue(this, 'calisma-brightness-value')">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            nameEl.textContent = roomName;
+            content.innerHTML = devicesHTML;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('room-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+        
+        function updateSliderValue(slider, valueId) {
+            const valueEl = document.getElementById(valueId);
+            if (valueEl) valueEl.textContent = slider.value + '%';
+        }
+        
+        function updateTemp(slider, valueId) {
+            const valueEl = document.getElementById(valueId);
+            if (valueEl) valueEl.textContent = parseFloat(slider.value).toFixed(1);
+        }
+        
+        function toggleDevice(checkbox, deviceId = null) {
+            // Basit toggle feedback
+            if (checkbox.checked) {
+                console.log('%c[Cihaz] Açıldı', 'color:#6366f1');
+            } else {
+                console.log('%c[Cihaz] Kapatıldı', 'color:#64748b');
+            }
+        }
+        
+        function applyRoomChanges() {
+            const modal = document.getElementById('room-modal');
+            // Burada gerçek backend'e istek atılabilir. Şimdilik sadece bildirim
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-x-3 text-sm`;
+            toast.innerHTML = `<i class="fa-solid fa-check"></i> <span>Değişiklikler kaydedildi (demo)</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+            
+            closeModal();
+        }
+        
+        function activateScene(scene) {
+            let message = '';
+            if (scene === 'film') message = 'Film Modu aktif! Işıklar kısıldı, perdeler kapandı.';
+            if (scene === 'gece') message = 'Gece Modu aktif! Tüm ışıklar kapandı, güvenlik devrede.';
+            
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 right-6 bg-indigo-600 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-x-3 text-sm max-w-xs`;
+            toast.innerHTML = `<i class="fa-solid fa-magic"></i> <span>${message}</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2800);
+        }
+        
+        // Canlı simülasyon (demo için)
+        function simulateLiveData() {
+            const kpiValues = document.querySelectorAll('.metric-value');
+            
+            kpiValues.forEach(el => {
+                if (el.textContent.includes('kWh')) {
+                    const current = parseFloat(el.textContent);
+                    const newVal = (current + (Math.random() * 1.2 - 0.4)).toFixed(1);
+                    el.innerHTML = `${newVal} <span class="text-xl font-normal">kWh</span>`;
+                } else if (!isNaN(parseFloat(el.textContent)) && el.textContent.includes('°')) {
+                    const current = parseFloat(el.textContent);
+                    const newVal = (current + (Math.random() * 0.6 - 0.3)).toFixed(1);
+                    el.textContent = newVal + ' °C';
+                }
+            });
+            
+            // Enerji chart'ını da hafifçe güncelle
+            createEnergyChart();
+            
+            // Küçük toast
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-700 px-4 py-2 rounded-3xl text-xs flex items-center gap-x-2`;
+            toast.innerHTML = `<i class="fa-solid fa-sync fa-spin"></i> <span>Gerçek zamanlı veriler güncellendi</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 1600);
+        }
+        
+        // Başlangıç
+        function initDashboard() {
+            initializeTailwind();
+            createEnergyChart();
+            
+            // Opsiyonel: İlk açılışta hafif bir simülasyon
+            setTimeout(() => {
+                // console.log('%c[Dashboard] Demo hazır', 'color:#64748b');
+            }, 800);
+            
+            // Klavye kısayolu ipucu (opsiyonel)
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '?' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    const modal = document.getElementById('room-modal');
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal();
+                    } else {
+                        simulateLiveData();
+                    }
+                }
+            });
+            
+            console.log('%c[Akıllı Ev Dashboard] Tamamen custom demo hazır. Tailwind CDN + Vanilla JS', 'color:#64748b');
+        }
+        
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
