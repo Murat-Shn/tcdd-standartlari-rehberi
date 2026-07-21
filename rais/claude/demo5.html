@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAİS · Saha Sensör İzleme Merkezi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
+<style>
+:root{
+  --bg:#0a0f1c;
+  --panel:#111a2c;
+  --panel-2:#0d1524;
+  --border:#1e2b45;
+  --border-soft:#182338;
+  --text:#e7ecf7;
+  --muted:#8593ac;
+  --muted-2:#5c6b87;
+  --amber:#f2a83c;
+  --amber-dim:#664a1d;
+  --green:#34d399;
+  --green-dim:#123326;
+  --red:#f0555a;
+  --red-dim:#3a1a1c;
+  --cyan:#4fc3e8;
+  --cyan-dim:#0f2c38;
+  --purple:#a487f0;
+  --radius:10px;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at top left, #0e1930 0%, transparent 55%),
+    radial-gradient(ellipse at bottom right, #0c1526 0%, transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+::selection{background:var(--amber);color:#1a1305;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:#26324d;border-radius:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+/* ---------- layout ---------- */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh;}
+.sidebar{
+  background:var(--panel-2);
+  border-right:1px solid var(--border-soft);
+  padding:20px 14px;
+  display:flex;flex-direction:column;gap:4px;
+  position:sticky;top:0;height:100vh;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 8px 22px 8px;
+}
+.brand-mark{
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(155deg,var(--amber),#c97f16);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:600;color:#1a1305;font-size:13px;
+  flex-shrink:0;
+}
+.brand-text{line-height:1.15;}
+.brand-text b{font-family:var(--font-display);font-size:16px;letter-spacing:.3px;}
+.brand-text span{display:block;font-size:10.5px;color:var(--muted-2);letter-spacing:.6px;text-transform:uppercase;margin-top:2px;}
+
+.nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--muted-2);padding:14px 10px 6px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:8px;cursor:pointer;
+  color:var(--muted);font-size:13.5px;font-weight:500;
+  transition:background .15s,color .15s;
+  user-select:none;
+}
+.nav-item:hover{background:#16213a;color:var(--text);}
+.nav-item.active{background:#16213a;color:var(--text);}
+.nav-item.active .nav-dot{background:var(--amber);}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.9;}
+.nav-region{padding-left:26px;font-size:12.5px;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--muted-2);flex-shrink:0;}
+.sidebar-foot{margin-top:auto;padding:12px 10px;border-top:1px solid var(--border-soft);font-size:11px;color:var(--muted-2);line-height:1.6;}
+
+.main{padding:20px 28px 60px;max-width:1400px;}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:16px;flex-wrap:wrap;}
+.topbar h1{font-family:var(--font-display);font-size:21px;margin:0;letter-spacing:.2px;}
+.topbar .sub{color:var(--muted);font-size:12.5px;margin-top:3px;}
+.role-switch{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:5px;}
+.role-btn{
+  padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;color:var(--muted);
+  cursor:pointer;transition:.15s;
+}
+.role-btn.active{background:var(--amber);color:#1a1305;}
+.badge-live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green);font-family:var(--font-mono);}
+.badge-live .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55);}70%{box-shadow:0 0 0 7px rgba(52,211,153,0);}100%{box-shadow:0 0 0 0 rgba(52,211,153,0);}}
+
+/* view management */
+.view{display:none;}
+.view.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+/* KPI cards */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+.kpi .num{font-family:var(--font-display);font-size:28px;font-weight:600;}
+.kpi .lbl{color:var(--muted);font-size:12px;margin-top:4px;}
+.kpi.warn .num{color:var(--amber);}
+.kpi.crit .num{color:var(--red);}
+.kpi.ok .num{color:var(--green);}
+
+/* section headers */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:26px 0 12px;}
+.section-head h2{font-family:var(--font-display);font-size:15px;margin:0;color:var(--text);}
+.section-head .cnt{color:var(--muted-2);font-size:12px;font-family:var(--font-mono);}
+
+/* region overview cards */
+.region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.region-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 18px;cursor:pointer;transition:.15s;position:relative;overflow:hidden;
+}
+.region-card:hover{border-color:#33456b;transform:translateY(-1px);}
+.region-card:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--status-color,var(--green));}
+.region-card h3{font-family:var(--font-display);font-size:15px;margin:0 0 3px;}
+.region-card .meta{color:var(--muted);font-size:11.5px;}
+.region-stats{display:flex;gap:16px;margin-top:14px;}
+.region-stats div{font-family:var(--font-mono);}
+.region-stats b{display:block;font-size:17px;}
+.region-stats span{font-size:10px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.5px;}
+
+/* alerts feed */
+.alert-feed{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.alert-item{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border-soft);font-size:12.5px;}
+.alert-item:last-child{border-bottom:none;}
+.alert-item .lvl{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.alert-item .txt{flex:1;color:var(--text);}
+.alert-item .txt b{color:var(--text);font-weight:600;}
+.alert-item .time{color:var(--muted-2);font-family:var(--font-mono);font-size:11px;}
+
+/* filter bar */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.chip{
+  padding:6px 13px;border-radius:999px;border:1px solid var(--border);
+  font-size:12px;color:var(--muted);cursor:pointer;transition:.15s;user-select:none;
+  display:flex;align-items:center;gap:6px;background:var(--panel);
+}
+.chip:hover{border-color:#33456b;color:var(--text);}
+.chip.active{background:var(--text);color:#0a0f1c;border-color:var(--text);font-weight:600;}
+
+/* sensor grid */
+.sensor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px;}
+.sensor-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 15px;cursor:pointer;transition:.15s;
+}
+.sensor-card:hover{border-color:#33456b;transform:translateY(-1px);}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;}
+.sc-icon{
+  width:34px;height:34px;border-radius:8px;background:var(--panel-2);
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--border-soft);
+}
+.sc-icon svg{width:18px;height:18px;}
+.led{width:8px;height:8px;border-radius:50%;margin-top:2px;flex-shrink:0;}
+.led.ok{background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.6);}
+.led.warn{background:var(--amber);box-shadow:0 0 8px rgba(242,168,60,.6);}
+.led.crit{background:var(--red);box-shadow:0 0 8px rgba(240,85,90,.7);animation:pulse 1.2s infinite;}
+.led.off{background:#3a4661;}
+.sc-name{font-weight:600;font-size:13.5px;margin-top:10px;}
+.sc-km{font-family:var(--font-mono);font-size:11px;color:var(--muted-2);margin-top:2px;}
+.sc-reading{margin-top:10px;display:flex;align-items:baseline;gap:5px;}
+.sc-reading b{font-family:var(--font-mono);font-size:19px;}
+.sc-reading span{font-size:11px;color:var(--muted);}
+.sc-status{margin-top:8px;font-size:10.5px;padding:3px 8px;border-radius:5px;display:inline-block;font-weight:600;letter-spacing:.2px;}
+.sc-status.ok{background:var(--green-dim);color:var(--green);}
+.sc-status.warn{background:var(--amber-dim);color:var(--amber);}
+.sc-status.crit{background:var(--red-dim);color:var(--red);}
+
+/* sensor detail */
+.detail-wrap{display:none;}
+.detail-wrap.active{display:block;}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;cursor:pointer;margin-bottom:14px;}
+.back-link:hover{color:var(--text);}
+.detail-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px;}
+.detail-head .id-tag{font-family:var(--font-mono);font-size:11px;color:var(--muted-2);letter-spacing:.5px;}
+.detail-head h1{font-family:var(--font-display);font-size:22px;margin:4px 0 0;}
+.detail-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+@media(max-width:900px){.detail-grid{grid-template-columns:1fr;}}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;}
+.panel h4{font-family:var(--font-display);font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 14px;}
+.readout-big{display:flex;align-items:baseline;gap:8px;}
+.readout-big b{font-family:var(--font-mono);font-size:44px;font-weight:600;}
+.readout-big span{color:var(--muted);font-size:14px;}
+.mini-stats{display:flex;gap:22px;margin-top:16px;}
+.mini-stats div b{display:block;font-family:var(--font-mono);font-size:16px;}
+.mini-stats div span{font-size:10.5px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.4px;}
+.cam-box{
+  aspect-ratio:16/9;border-radius:8px;overflow:hidden;position:relative;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0px,transparent 1px,transparent 3px),
+    linear-gradient(160deg,#0d1524,#0a0f1c 70%);
+  border:1px solid var(--border-soft);
+}
+.cam-box .scan{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(79,195,232,.06) 50%,transparent 100%);animation:scan 3s linear infinite;}
+@keyframes scan{0%{transform:translateY(-100%);}100%{transform:translateY(100%);}}
+.cam-box .rec{position:absolute;top:10px;left:12px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;color:var(--red);}
+.cam-box .rec .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite;}
+.cam-box .ts{position:absolute;bottom:10px;right:12px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.5);}
+.cam-box .crosshair{position:absolute;top:50%;left:50%;width:60px;height:60px;transform:translate(-50%,-50%);border:1px solid rgba(79,195,232,.35);border-radius:50%;}
+.cam-box .crosshair:after{content:'';position:absolute;inset:14px;border:1px solid rgba(79,195,232,.25);border-radius:50%;}
+
+/* compass */
+.compass{width:130px;height:130px;border-radius:50%;border:1px solid var(--border-soft);position:relative;margin:8px auto;background:var(--panel-2);}
+.compass .n{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted-2);font-family:var(--font-mono);}
+.compass .needle{position:absolute;top:50%;left:50%;width:2px;height:48px;background:linear-gradient(var(--cyan),transparent);transform-origin:bottom center;}
+
+/* timeline (event camera) */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border-soft);}
+.tl-item:last-child{border-bottom:none;}
+.tl-thumb{width:56px;height:38px;border-radius:6px;background:linear-gradient(160deg,#16213a,#0d1524);border:1px solid var(--border-soft);flex-shrink:0;}
+.tl-body{flex:1;}
+.tl-body b{font-size:12.5px;}
+.tl-body .tl-time{font-family:var(--font-mono);font-size:10.5px;color:var(--muted-2);margin-top:2px;}
+.tl-btn{font-size:11px;color:var(--cyan);cursor:pointer;align-self:center;white-space:nowrap;}
+
+/* sparkline svg */
+svg.spark{width:100%;height:100%;display:block;}
+
+/* automation builder */
+.automation-layout{display:grid;grid-template-columns:190px 1fr 250px;gap:14px;}
+@media(max-width:1100px){.automation-layout{grid-template-columns:1fr;}}
+.palette{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;height:fit-content;}
+.palette h4{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted-2);margin:14px 0 8px;}
+.palette h4:first-child{margin-top:0;}
+.pal-item{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;
+  background:var(--panel-2);border:1px solid var(--border-soft);margin-bottom:6px;
+  font-size:12px;cursor:grab;user-select:none;
+}
+.pal-item:active{cursor:grabbing;}
+.pal-item .sq{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.canvas-wrap{background:
+    radial-gradient(circle,#182338 1px,transparent 1px) 0 0/22px 22px,
+    var(--panel-2);
+  border:1px solid var(--border);border-radius:var(--radius);
+  position:relative;min-height:520px;overflow:hidden;
+}
+.canvas-hint{position:absolute;top:12px;left:14px;font-size:11px;color:var(--muted-2);font-family:var(--font-mono);}
+.node{
+  position:absolute;width:172px;background:var(--panel);border:1px solid var(--border);border-radius:9px;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:grab;user-select:none;
+}
+.node:active{cursor:grabbing;}
+.node-head{display:flex;align-items:center;gap:7px;padding:9px 10px;border-bottom:1px solid var(--border-soft);font-size:11.5px;font-weight:600;}
+.node-head .sq{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.node-body{padding:9px 10px;font-size:11px;color:var(--muted);line-height:1.5;}
+.port{
+  position:absolute;width:11px;height:11px;border-radius:50%;background:var(--panel-2);
+  border:2px solid var(--muted-2);top:50%;transform:translateY(-50%);cursor:crosshair;transition:.15s;
+}
+.port:hover, .port.active-port{border-color:var(--amber);background:var(--amber);}
+.port.in{left:-6px;}
+.port.out{right:-6px;}
+.node.trigger{border-left:3px solid var(--cyan);}
+.node.logic{border-left:3px solid var(--purple);}
+.node.action{border-left:3px solid var(--amber);}
+.conn-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.rules-panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;height:fit-content;}
+.rules-panel h4{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted-2);margin:0 0 10px;}
+.rule-chip{background:var(--panel-2);border:1px solid var(--border-soft);border-radius:8px;padding:10px 11px;margin-bottom:8px;font-size:11.5px;line-height:1.55;}
+.rule-chip b{color:var(--amber);}
+.btn{
+  background:var(--amber);color:#1a1305;border:none;border-radius:8px;padding:9px 16px;
+  font-weight:600;font-size:12.5px;cursor:pointer;transition:.15s;font-family:var(--font-body);
+}
+.btn:hover{filter:brightness(1.08);}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn.ghost:hover{color:var(--text);border-color:#33456b;}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
+
+.footnote{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-soft);color:var(--muted-2);font-size:11px;text-align:center;}
+
+/* map panel */
+.map-panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;}
+.map-panel-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;user-select:none;}
+.map-panel-head:hover{background:#131f36;}
+.map-panel-title{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;}
+.map-panel-title svg{width:16px;height:16px;color:var(--amber);flex-shrink:0;}
+.map-chevron{color:var(--muted-2);transition:transform .2s;font-size:11px;}
+.map-panel.collapsed .map-chevron{transform:rotate(-90deg);}
+.map-panel-body{max-height:600px;overflow:hidden;transition:max-height .25s ease;border-top:1px solid var(--border-soft);padding:14px 16px 16px;}
+.map-panel.collapsed .map-panel-body{max-height:0;padding:0 16px;border-top:none;}
+.map-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.map-legend{display:flex;align-items:center;gap:14px;font-size:11.5px;color:var(--muted);flex-wrap:wrap;}
+.map-legend i{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;}
+.map-legend-note{color:var(--muted-2);font-style:italic;}
+.map-el{width:100%;height:420px;border-radius:8px;overflow:hidden;border:1px solid var(--border-soft);}
+.chip[data-map-region-toggle]:not(.active){opacity:.4;}
+
+/* leaflet overrides */
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(10,15,28,.9);box-shadow:0 0 0 2px rgba(255,255,255,.1);}
+.mc-square{width:14px;height:14px;transform:rotate(45deg);border:2px solid rgba(10,15,28,.9);box-shadow:0 0 0 2px rgba(255,255,255,.15);}
+.pin-dot.crit{animation:pulse 1.2s infinite;}
+.cluster-badge{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#0a0f1c;font-family:var(--font-mono);font-weight:700;font-size:12.5px;
+  border:2px solid rgba(255,255,255,.25);box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+.leaflet-popup-content-wrapper{background:var(--panel);color:var(--text);border-radius:8px;border:1px solid var(--border);}
+.leaflet-popup-content{margin:11px 13px;}
+.leaflet-popup-tip{background:var(--panel);}
+.map-popup .mp-id{font-family:var(--font-mono);font-weight:600;font-size:12.5px;}
+.map-popup .mp-type{font-size:11px;color:var(--muted);margin-top:2px;}
+.map-popup .mp-status{display:inline-block;margin-top:6px;font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;}
+.map-popup .mp-status.ok{background:var(--green-dim);color:var(--green);}
+.map-popup .mp-status.warn{background:var(--amber-dim);color:var(--amber);}
+.map-popup .mp-status.crit{background:var(--red-dim);color:var(--red);}
+.map-popup .mp-btn{margin-top:8px;color:var(--cyan);font-size:11.5px;cursor:pointer;font-weight:600;}
+.leaflet-container{background:#0a0f1c !important;font-family:var(--font-body);}
+.leaflet-control-zoom a{background:var(--panel) !important;color:var(--text) !important;border-color:var(--border-soft) !important;}
+.leaflet-control-attribution{background:rgba(10,15,28,.7) !important;color:var(--muted-2) !important;}
+.leaflet-control-attribution a{color:var(--muted) !important;}
+
+/* health / predictive maintenance */
+.health-row{margin-top:9px;}
+.health-lbl{font-size:9.5px;color:var(--muted-2);font-family:var(--font-mono);display:block;margin-bottom:3px;}
+.health-bar{height:4px;background:var(--border-soft);border-radius:3px;overflow:hidden;}
+.health-fill{height:100%;border-radius:3px;transition:width .3s;}
+.pm-grid{display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+.pm-info{flex:1;min-width:220px;}
+.pm-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px;color:var(--muted);gap:12px;}
+.pm-row:last-child{border-bottom:none;}
+.pm-row b{color:var(--text);text-align:right;font-weight:600;}
+.incident-callout{
+  margin-top:16px;padding:12px 14px;border-radius:8px;background:var(--panel-2);border:1px solid var(--border-soft);
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;flex-wrap:wrap;transition:.15s;
+}
+.incident-callout:hover{border-color:#33456b;}
+.ic-left{font-size:12.5px;display:flex;align-items:center;gap:10px;}
+.ic-link{font-size:11.5px;color:var(--cyan);font-weight:600;white-space:nowrap;}
+
+/* predictive maintenance list */
+.pred-row{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--border-soft);cursor:pointer;transition:.15s;flex-wrap:wrap;}
+.pred-row:last-child{border-bottom:none;}
+.pred-row:hover{background:#131f36;}
+.pred-main{flex:1;display:flex;flex-direction:column;gap:2px;min-width:160px;}
+.pred-main b{font-family:var(--font-mono);font-size:13px;}
+.pred-sub{font-size:11px;color:var(--muted-2);}
+.pred-days{font-size:11.5px;font-family:var(--font-mono);color:var(--muted);min-width:210px;}
+.pred-days.crit{color:var(--red);font-weight:600;}
+.pred-days.warn{color:var(--amber);}
+
+/* device health */
+.device-row{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;font-size:9.5px;color:var(--muted-2);font-family:var(--font-mono);}
+.device-stat.weak{color:var(--amber);}
+.device-stat.offline{color:var(--red);font-weight:600;}
+
+/* threshold editing */
+.threshold-grid{display:flex;gap:16px;flex-wrap:wrap;}
+.threshold-field{flex:1;min-width:140px;}
+.threshold-field label{display:block;font-size:11px;color:var(--muted-2);margin-bottom:6px;}
+.threshold-field input{width:100%;background:var(--panel-2);border:1px solid var(--border-soft);border-radius:7px;padding:9px 10px;color:var(--text);font-family:var(--font-mono);font-size:13px;}
+.threshold-field input:focus{outline:none;border-color:var(--amber);}
+.threshold-note{margin-top:12px;font-size:12px;color:var(--muted);}
+
+/* toast */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:9px;padding:12px 16px;font-size:12.5px;color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:999;max-width:320px;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* notification channels */
+.channel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.channel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.channel-title{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px;}
+.channel-icon{font-size:15px;}
+.channel-toggle{width:38px;height:20px;border-radius:999px;background:var(--border-soft);position:relative;cursor:pointer;transition:.2s;flex-shrink:0;}
+.channel-toggle.on{background:var(--amber);}
+.channel-knob{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:.2s;}
+.channel-toggle.on .channel-knob{left:20px;}
+.channel-input{width:100%;background:var(--panel-2);border:1px solid var(--border-soft);border-radius:7px;padding:8px 10px;color:var(--text);font-size:11.5px;font-family:var(--font-mono);}
+.channel-input:disabled{opacity:.4;}
+
+/* escalation */
+.escalation-steps{display:flex;flex-direction:column;gap:0;}
+.esc-step{display:flex;align-items:flex-start;gap:12px;padding:9px 0;position:relative;}
+.esc-step:not(:last-child):after{content:'';position:absolute;left:5px;top:24px;bottom:-3px;width:2px;background:var(--border-soft);}
+.esc-dot{width:12px;height:12px;border-radius:50%;background:var(--border-soft);border:2px solid var(--border);flex-shrink:0;margin-top:2px;z-index:1;}
+.esc-step.reached .esc-dot{background:var(--amber);border-color:var(--amber);}
+.esc-info b{font-size:12.5px;display:block;}
+.esc-info span{font-size:11px;color:var(--muted-2);}
+.esc-config-head{display:grid;grid-template-columns:70px 1.3fr 90px 1.3fr;gap:10px;font-size:10px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.5px;padding:0 2px 8px;border-bottom:1px solid var(--border-soft);margin-bottom:8px;}
+.esc-config-row{display:grid;grid-template-columns:70px 1.3fr 90px 1.3fr;gap:10px;align-items:center;padding:7px 2px;}
+.esc-config-row input{background:var(--panel-2);border:1px solid var(--border-soft);border-radius:6px;padding:7px 9px;color:var(--text);font-size:12px;font-family:var(--font-mono);width:100%;}
+.esc-config-lvl{font-size:12px;color:var(--muted);font-weight:600;}
+
+/* modüler cihaz (MC) */
+.mc-link-badge{display:inline-block;font-size:9.5px;font-family:var(--font-mono);padding:2px 7px;border-radius:5px;background:var(--panel-2);border:1px solid var(--border-soft);color:var(--muted);white-space:nowrap;}
+.mc-sensor-row{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--border-soft);cursor:pointer;flex-wrap:wrap;}
+.mc-sensor-row:last-child{border-bottom:none;}
+.mc-sensor-row:hover{background:#131f36;}
+.mc-callout{margin-top:16px;padding:12px 14px;border-radius:8px;background:var(--panel-2);border:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;flex-wrap:wrap;transition:.15s;}
+.mc-callout:hover{border-color:#33456b;}
+.legend-mc{width:9px;height:9px;background:var(--cyan);display:inline-block;transform:rotate(45deg);margin-right:6px;vertical-align:middle;}
+
+/* ekip / atama */
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(155deg,var(--amber),#c97f16);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;color:#1a1305;font-size:12px;flex-shrink:0;}
+.assign-current{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.assign-current div>b{display:block;font-size:13px;}
+.assign-current div>span{font-size:11px;color:var(--muted-2);}
+.assign-controls{display:flex;gap:10px;flex-wrap:wrap;}
+.assign-controls select{flex:1;min-width:180px;background:var(--panel-2);border:1px solid var(--border-soft);border-radius:7px;padding:9px 10px;color:var(--text);font-size:12.5px;font-family:var(--font-body);}
+.tl-item[data-goto-incident]{cursor:pointer;transition:.15s;}
+.tl-item[data-goto-incident]:hover{background:#131f36;border-radius:6px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">RA</div>
+      <div class="brand-text"><b>RAİS</b><span>Saha Sensör Ağı</span></div>
+    </div>
+
+    <div class="nav-label">Genel</div>
+    <div class="nav-item active" data-nav="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Genel Bakış
+    </div>
+    <div class="nav-item" data-nav="mc">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="8" cy="9" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="15" r="1" fill="currentColor"/><path d="M12 9h4M12 12h4M12 15h4"/></svg>
+      Modüler Cihazlar
+    </div>
+
+    <div class="nav-label">Operasyon</div>
+    <div class="nav-item" data-nav="automation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.2 6h7.6M8.2 6l8 11.2"/></svg>
+      Otomasyonlar
+    </div>
+    <div class="nav-item" data-nav="predictive">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h5v5"/></svg>
+      Öngörücü Bakım
+    </div>
+    <div class="nav-item" data-nav="incidents">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 16H3L12 3Z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+      Olaylar
+    </div>
+    <div class="nav-item" data-nav="team">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="8" r="2.4"/><path d="M15.5 14c2.6.3 4.5 2.5 4.5 6"/></svg>
+      Ekip
+    </div>
+    <div class="nav-item" data-nav="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2.8"/><path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a1.9 1.9 0 1 1-3.8 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a1.9 1.9 0 1 1 0-3.8h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a1.9 1.9 0 1 1 3.8 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a1.9 1.9 0 1 1 0 3.8h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg>
+      Ayarlar
+    </div>
+
+    <div class="nav-label">Bölgeler</div>
+    <div id="regionNav"></div>
+
+    <div class="sidebar-foot">
+      RAİS Demo Ortamı<br>Veriler örnek amaçlıdır.
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle">Genel Bakış</h1>
+        <div class="sub" id="pageSub">Tüm hatlardaki sensör ağının anlık durumu</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="badge-live"><span class="pulse"></span>CANLI VERİ</div>
+        <div class="role-switch">
+          <div class="role-btn active" data-role="admin">Yönetici</div>
+          <div class="role-btn" data-role="bakimci">Bölge Bakımcısı</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW VIEW -->
+    <div class="view active" id="view-overview">
+      <div class="kpi-row" id="kpiRow"></div>
+
+      <div class="section-head">
+        <h2>Hat Bölgeleri</h2>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="cnt" id="regionCount"></span>
+          <div class="filter-bar" style="margin:0;">
+            <div class="chip active" data-overview-mode="regions">Bölge Kartları</div>
+            <div class="chip" data-overview-mode="all">Tüm Sensörler</div>
+          </div>
+        </div>
+      </div>
+      <div class="region-grid" id="regionGrid"></div>
+      <div id="overviewAllSensorsWrap" style="display:none;">
+        <div class="filter-bar" id="overviewRegionChips"></div>
+        <div class="sensor-grid" id="overviewAllSensorGrid"></div>
+      </div>
+
+      <div class="section-head"><h2>Son Uyarılar</h2></div>
+      <div class="alert-feed" id="alertFeed"></div>
+
+      <div class="section-head"><h2>Harita Görünümü</h2></div>
+      <div class="map-panel collapsed" id="overviewMapPanel">
+        <div class="map-panel-head" data-map-toggle="overviewMapPanel">
+          <div class="map-panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+            Tüm Bölgeler — Sensör Konumları
+          </div>
+          <div class="map-chevron">▾</div>
+        </div>
+        <div class="map-panel-body">
+          <div class="map-controls">
+            <div class="filter-bar" id="overviewMapChips" style="margin-bottom:0;"></div>
+            <div class="map-legend">
+              <span><i style="background:#34d399"></i>Normal</span>
+              <span><i style="background:#f2a83c"></i>Uyarı</span>
+              <span><i style="background:#f0555a"></i>Kritik</span>
+              <span><span class="legend-mc"></span>Modüler Cihaz (MC)</span>
+              <span class="map-legend-note">Yakın sensörler otomatik kümelenir</span>
+            </div>
+          </div>
+          <div class="map-el" id="overviewMapEl"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGION VIEW -->
+    <div class="view" id="view-region">
+      <div class="back-link" data-back="overview">← Genel Bakışa dön</div>
+      <div class="topbar" style="margin-bottom:14px;">
+        <div>
+          <h1 id="regionTitle">-</h1>
+          <div class="sub" id="regionSub">-</div>
+        </div>
+      </div>
+      <div class="filter-bar" id="typeFilter"></div>
+      <div class="sensor-grid" id="sensorGrid"></div>
+
+      <div class="section-head"><h2>Harita Görünümü</h2></div>
+      <div class="map-panel collapsed" id="regionMapPanel">
+        <div class="map-panel-head" data-map-toggle="regionMapPanel">
+          <div class="map-panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+            Bölge Sensör Konumları
+          </div>
+          <div class="map-chevron">▾</div>
+        </div>
+        <div class="map-panel-body">
+          <div class="map-legend" style="margin-bottom:10px;">
+            <span><i style="background:#34d399"></i>Normal</span>
+            <span><i style="background:#f2a83c"></i>Uyarı</span>
+            <span><i style="background:#f0555a"></i>Kritik</span>
+            <span><span class="legend-mc"></span>Modüler Cihaz (MC)</span>
+          </div>
+          <div class="map-el" id="regionMapEl"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SENSOR DETAIL VIEW -->
+    <div class="view" id="view-detail">
+      <div class="back-link" id="detailBack">← Bölgeye dön</div>
+      <div class="detail-head">
+        <div>
+          <div class="id-tag" id="detailIdTag">SNR-000</div>
+          <h1 id="detailTitle">Sensör</h1>
+        </div>
+        <div id="detailStatusBadge"></div>
+      </div>
+      <div class="detail-grid" id="detailGrid"></div>
+      <div class="panel" id="detailDevicePanel" style="margin-top:14px;"></div>
+      <div class="panel" id="detailThresholdPanel" style="margin-top:14px;"></div>
+      <div class="panel" id="detailPredictivePanel" style="margin-top:14px;"></div>
+      <div class="panel" id="detailMaintenancePanel" style="margin-top:14px;"></div>
+    </div>
+
+    <!-- AUTOMATION VIEW -->
+    <div class="view" id="view-automation">
+      <div class="toolbar">
+        <div class="sub" style="font-size:12.5px;color:var(--muted);max-width:520px;">
+          Sensör koşullarını mantık bloklarıyla birleştirip alarm, e-posta, SMS ya da Telegram bildirimlerine bağlayın. Bir bloğun sağındaki noktadan sürükleyip hedef bloğun solundaki noktaya bırakarak bağlantı kurun.
+        </div>
+        <div style="display:flex;gap:8px;">
+          <div class="btn ghost" id="clearCanvas">Temizle</div>
+          <div class="btn" id="saveRule">Kuralı Kaydet</div>
+        </div>
+      </div>
+      <div class="automation-layout">
+        <div class="palette" id="palette"></div>
+        <div class="canvas-wrap" id="canvasWrap">
+          <div class="canvas-hint">Blokları buraya sürükleyin</div>
+          <svg class="conn-svg" id="connSvg"></svg>
+        </div>
+        <div class="rules-panel">
+          <h4>Aktif Otomasyonlar</h4>
+          <div id="rulesList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREDICTIVE MAINTENANCE VIEW -->
+    <div class="view" id="view-predictive">
+      <div class="kpi-row" id="predictiveKpi"></div>
+      <div class="filter-bar" id="predictiveRegionFilter"></div>
+      <div class="section-head"><h2>Risk Öngörülen Sensörler</h2><span class="cnt">Sağlık skoruna ve eğilime göre sıralı</span></div>
+      <div class="panel" style="padding:0;overflow:hidden;">
+        <div id="predictiveList"></div>
+      </div>
+    </div>
+
+    <!-- INCIDENTS VIEW -->
+    <div class="view" id="view-incidents">
+      <div id="incidentPersonFilterChip"></div>
+      <div class="filter-bar" id="incidentStatusFilter"></div>
+      <div class="sensor-grid" id="incidentGrid"></div>
+    </div>
+
+    <!-- INCIDENT DETAIL VIEW -->
+    <div class="view" id="view-incident-detail">
+      <div class="back-link" data-back="incidents">← Olaylara dön</div>
+      <div class="detail-head">
+        <div>
+          <div class="id-tag" id="incidentIdTag">INC-0000</div>
+          <h1 id="incidentTitle">Olay</h1>
+        </div>
+        <div id="incidentStatusBadge"></div>
+      </div>
+      <div class="detail-grid">
+        <div class="panel">
+          <h4>Zaman Çizelgesi</h4>
+          <div class="timeline" id="incidentTimeline"></div>
+        </div>
+        <div class="panel">
+          <h4>Olay Bilgileri</h4>
+          <div id="incidentMeta"></div>
+          <div class="btn" id="downloadPdfBtn" style="margin-top:16px;width:100%;text-align:center;">PDF Raporu İndir</div>
+        </div>
+      </div>
+      <div class="panel" id="incidentEscalationPanel" style="margin-top:14px;"></div>
+      <div class="panel" id="incidentAssignPanel" style="margin-top:14px;"></div>
+    </div>
+
+    <!-- SETTINGS VIEW -->
+    <div class="view" id="view-settings">
+      <div class="filter-bar" style="margin-bottom:18px;">
+        <div class="chip active" data-settings-tab="channels">Bildirim Kanalları</div>
+        <div class="chip" data-settings-tab="escalation">Eskalasyon Kuralları</div>
+      </div>
+
+      <div id="settingsTabChannels">
+        <div class="section-head"><h2>Bildirim Kanalları</h2><span class="cnt">Otomasyon eylemlerinin gönderileceği kanallar</span></div>
+        <div class="channel-grid" id="channelGrid"></div>
+      </div>
+
+      <div id="settingsTabEscalation" style="display:none;">
+        <div class="section-head"><h2>Eskalasyon Kuralları</h2><span class="cnt">Onaylanmayan alarmların otomatik yükseltilme süreleri</span></div>
+        <div class="panel">
+          <div class="esc-config-head">
+            <span>Seviye</span><span>Sorumlu Rol</span><span>Süre (dk)</span><span>Bildirim Kanalı</span>
+          </div>
+          <div id="escalationConfigList"></div>
+          <div class="btn" id="saveEscalationBtn" style="margin-top:16px;">Kuralları Kaydet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODÜLER CİHAZLAR (MC) LIST VIEW -->
+    <div class="view" id="view-mc">
+      <div class="kpi-row" id="mcKpi"></div>
+      <div class="filter-bar" id="mcRegionFilter"></div>
+      <div class="sensor-grid" id="mcGrid"></div>
+    </div>
+
+    <!-- MC DETAIL VIEW -->
+    <div class="view" id="view-mc-detail">
+      <div class="back-link" data-back="mc">← Modüler Cihazlara dön</div>
+      <div class="detail-head">
+        <div>
+          <div class="id-tag" id="mcIdTag">MC-0000</div>
+          <h1 id="mcTitle">Modüler Cihaz</h1>
+        </div>
+        <div id="mcStatusBadge"></div>
+      </div>
+      <div class="detail-grid">
+        <div class="panel">
+          <h4>Güç Durumu</h4>
+          <div id="mcPowerInfo"></div>
+        </div>
+        <div class="panel">
+          <h4>Ana Sunucu Bağlantısı</h4>
+          <div id="mcUplinkInfo"></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px;">
+        <h4>Bağlı Sensörler</h4>
+        <div id="mcSensorList"></div>
+      </div>
+    </div>
+
+    <!-- TEAM VIEW -->
+    <div class="view" id="view-team">
+      <div class="section-head"><h2>Kişiler & Ekip</h2><span class="cnt">Sorumluluklar ve aktif olay yükü</span></div>
+      <div class="sensor-grid" id="teamGrid"></div>
+    </div>
+
+    <div class="footnote">RAİS · Yatırımcı Demo Sürümü — Tüm sensör okumaları temsili veridir · v0.1</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* =========================================================
+   MOCK DATA
+   ========================================================= */
+const SENSOR_TYPES = {
+  flood:  { label:'Menfez Taşkın Tespit', unit:'cm', color:'var(--cyan)',   dim:'var(--cyan-dim)',
+            icon:'<path d="M3 16c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0" stroke="currentColor" fill="none" stroke-width="1.8"/><path d="M3 20c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0" stroke="currentColor" fill="none" stroke-width="1.8"/><path d="M12 3v9M8 8l4-5 4 5" stroke="currentColor" fill="none" stroke-width="1.8"/>' },
+  temp:   { label:'Sıcaklık Tespiti', unit:'°C', color:'var(--amber)', dim:'var(--amber-dim)',
+            icon:'<path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0Z" stroke="currentColor" fill="none" stroke-width="1.6"/><circle cx="12" cy="17" r="1.6" fill="currentColor"/>' },
+  tilt:   { label:'Tilt / Ray Altı Boşalma', unit:'°', color:'var(--red)', dim:'var(--red-dim)',
+            icon:'<rect x="4" y="10.5" width="16" height="3" rx="1" stroke="currentColor" fill="none" stroke-width="1.6" transform="rotate(-8 12 12)"/><circle cx="7" cy="17" r="1.3" fill="currentColor"/><circle cx="17" cy="9" r="1.3" fill="currentColor"/>' },
+  rain:   { label:'Yağış Tespit', unit:'mm/sa', color:'var(--cyan)', dim:'var(--cyan-dim)',
+            icon:'<path d="M7 13a4 4 0 0 1 .5-7.97A5 5 0 0 1 17 7a3.5 3.5 0 0 1-.6 6.9H7Z" stroke="currentColor" fill="none" stroke-width="1.6"/><path d="M8 17l-1 3M12 17l-1 3M16 17l-1 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' },
+  wind:   { label:'Rüzgar Ölçüm', unit:'km/sa', color:'var(--purple)', dim:'#241c3a',
+            icon:'<path d="M3 8h11a2.5 2.5 0 1 0-2.5-2.5" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/><path d="M3 13h15a2.5 2.5 0 1 1-2.5 2.5" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/><path d="M3 18h9a2 2 0 1 1-2 2" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>' },
+  event:  { label:'Olay Takip Kamerası', unit:'', color:'var(--green)', dim:'var(--green-dim)',
+            icon:'<rect x="3" y="7" width="13" height="10" rx="2" stroke="currentColor" fill="none" stroke-width="1.6"/><path d="M16 10.5l5-2.5v8l-5-2.5" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linejoin="round"/>' },
+};
+
+const REGIONS = [
+  { id:'ankara-sivas', name:'Ankara–Sivas Hattı', bakimci:'Emre Kılıç', yonetici:'Selin Aydemir', kmStart:0, kmEnd:404,
+    startCoord:[39.9334,32.8597], endCoord:[39.7477,37.0179] },
+  { id:'izmit-eskisehir', name:'İzmit–Eskişehir Hattı', bakimci:'Barış Toprak', yonetici:'Selin Aydemir', kmStart:0, kmEnd:212,
+    startCoord:[40.7654,29.9408], endCoord:[39.7767,30.5206] },
+  { id:'bandirma-bursa', name:'Bandırma–Bursa Hattı', bakimci:'Nazlı Er', yonetici:'Selin Aydemir', kmStart:0, kmEnd:118,
+    startCoord:[40.3524,27.9686], endCoord:[40.1826,29.0665] },
+];
+
+function seeded(seed){ let s = seed; return () => { s = (s*9301+49297)%233280; return s/233280; }; }
+
+function genHistory(rand, base, spread, n=24){
+  const arr=[]; let v=base;
+  for(let i=0;i<n;i++){ v += (rand()-0.5)*spread; arr.push(Math.round(v*10)/10); }
+  return arr;
+}
+
+function minutesToText(min){
+  if(min<60) return `${min} dk önce`;
+  const h = Math.floor(min/60), m = Math.round(min%60);
+  return `${h} sa ${m} dk önce`;
+}
+
+function buildSensors(region, rand){
+  const typeOrder = ['flood','temp','tilt','rain','wind','event'];
+  const sensors = [];
+  const counts = {flood:3,temp:4,tilt:3,rain:2,wind:2,event:2};
+  let idCounter = 1;
+  typeOrder.forEach(type=>{
+    for(let i=0;i<counts[type];i++){
+      const km = Math.round((region.kmStart + rand()*(region.kmEnd-region.kmStart)) * 10)/10;
+      const frac = (km-region.kmStart)/((region.kmEnd-region.kmStart)||1);
+      const lat = region.startCoord[0] + (region.endCoord[0]-region.startCoord[0])*frac + (rand()-0.5)*0.045;
+      const lng = region.startCoord[1] + (region.endCoord[1]-region.startCoord[1])*frac + (rand()-0.5)*0.045;
+      let statusRoll = rand();
+      let status = 'ok';
+      if(statusRoll>0.90) status='crit'; else if(statusRoll>0.74) status='warn';
+      const id = `${type.slice(0,2).toUpperCase()}-${region.id.slice(0,2).toUpperCase()}${String(idCounter++).padStart(2,'0')}`;
+      const health = Math.max(4, Math.min(99, status==='crit' ? Math.round(12+rand()*18) : status==='warn' ? Math.round(42+rand()*24) : Math.round(76+rand()*22)));
+      const trend = status==='ok' ? (rand()>0.75?'down':'stable') : 'down';
+      let predictedDays = null;
+      if(status==='warn') predictedDays = Math.round(3+rand()*21);
+      else if(status==='crit') predictedDays = 0;
+      const battery = Math.round(15+rand()*85);
+      const signal = Math.round(20+rand()*80);
+      let connectivity = 'online';
+      if(rand()>0.94) connectivity = 'offline';
+      else if(signal<40 || battery<20) connectivity = 'weak';
+      const lastSeenMin = connectivity==='offline' ? Math.round(90+rand()*400) : Math.round(rand()*12);
+      let reading = {};
+      if(type==='flood'){
+        const base = status==='crit'?86:status==='warn'?58:22;
+        reading = { level: Math.round(base+rand()*8), history: genHistory(rand, base, 6), riskNote: status==='crit'?'Kritik su seviyesi – taşkın riski yüksek':status==='warn'?'Su seviyesi izleniyor':'Normal aralıkta', thresholds:{warn:50,crit:80} };
+      } else if(type==='temp'){
+        const base = 18 + rand()*14;
+        reading = { current: Math.round(base*10)/10, min: Math.round((base-6)*10)/10, max: Math.round((base+9)*10)/10, history: genHistory(rand, base, 2), thresholds:{warn:32,crit:38} };
+      } else if(type==='tilt'){
+        const base = status==='crit'?4.8:status==='warn'?2.4:0.6;
+        reading = { angle: Math.round((base+rand())*10)/10, vibration: Math.round((rand()*0.4+ (status!=='ok'?0.5:0.1))*100)/100, history: genHistory(rand, base, 0.5), thresholds:{warn:2.5,crit:3.0} };
+      } else if(type==='rain'){
+        const base = status==='crit'?24:status==='warn'?11:2;
+        reading = { rate: Math.round((base+rand()*3)*10)/10, today: Math.round((base*3+rand()*10)*10)/10, history: genHistory(rand, base, 3), thresholds:{warn:10,crit:20} };
+      } else if(type==='wind'){
+        const base = status==='crit'?78:status==='warn'?52:24;
+        reading = { speed: Math.round(base+rand()*6), gust: Math.round(base+15+rand()*10), dir: Math.round(rand()*360), history: genHistory(rand, base, 8), thresholds:{warn:50,crit:70} };
+      } else if(type==='event'){
+        reading = { events: [
+          {t:'14:32', label:'Ray hattı yakınında hareket algılandı'},
+          {t:'11:05', label:'Bakım ekibi sahaya giriş yaptı'},
+          {t:'Dün 22:47', label:'Yüksek rüzgar sonrası görüntü kaydı'},
+        ] };
+      }
+      sensors.push({ id, type, name:`${SENSOR_TYPES[type].label}`, km, lat, lng, status, health, trend, predictedDays, battery, signal, connectivity, lastSeenMin, region:region.id, ...reading });
+    }
+  });
+  return sensors;
+}
+
+/* =========================================================
+   MODÜLER CİHAZ (MC) — sensörlerin bağlı olduğu saha toplama üniteleri
+   ========================================================= */
+const UPLINK_TYPES = ['LoRa','GSM','Fiber'];
+const POWER_SOURCES = ['Şebeke Elektriği','Güneş Paneli + Akü','Akü (Yedek)'];
+const LOCAL_LINK_BY_TYPE = { flood:'RS485', temp:'UART', tilt:'CANbus', rain:'LoRa', wind:'LoRa', event:'Fiber' };
+
+function buildMCs(region, sensors, rand){
+  const mcCount = 4;
+  const segmentSize = (region.kmEnd-region.kmStart)/mcCount || 1;
+  const mcs = [];
+  for(let i=0;i<mcCount;i++){
+    const kmStart = region.kmStart + i*segmentSize;
+    const kmEnd = kmStart + segmentSize;
+    const kmMid = (kmStart+kmEnd)/2;
+    const frac = (kmMid-region.kmStart)/((region.kmEnd-region.kmStart)||1);
+    const lat = region.startCoord[0] + (region.endCoord[0]-region.startCoord[0])*frac;
+    const lng = region.startCoord[1] + (region.endCoord[1]-region.startCoord[1])*frac;
+    const uplinkType = UPLINK_TYPES[Math.floor(rand()*UPLINK_TYPES.length)];
+    const powerSource = POWER_SOURCES[Math.floor(rand()*POWER_SOURCES.length)];
+    const powerLevel = Math.round(35+rand()*65);
+    const uplinkSignal = Math.round(25+rand()*75);
+    let connectivity = 'online';
+    if(rand()>0.9) connectivity='offline'; else if(uplinkSignal<40 || powerLevel<20) connectivity='weak';
+    mcs.push({
+      id:`MC-${region.id.slice(0,2).toUpperCase()}${String(i+1).padStart(2,'0')}`,
+      name:`Modüler Cihaz ${i+1}`, region:region.id,
+      kmStart:Math.round(kmStart), kmEnd:Math.round(kmEnd), km:Math.round(kmMid), lat, lng,
+      uplinkType, powerSource, powerLevel, uplinkSignal, connectivity, sensorIds:[],
+    });
+  }
+  sensors.forEach(s=>{
+    let idx = Math.floor((s.km-region.kmStart)/segmentSize);
+    idx = Math.max(0, Math.min(mcCount-1, idx));
+    const mc = mcs[idx];
+    mc.sensorIds.push(s.id);
+    s.mcId = mc.id;
+    s.mcLinkType = LOCAL_LINK_BY_TYPE[s.type] || 'RS485';
+  });
+  return mcs;
+}
+
+REGIONS.forEach((r,i)=>{ r.rand = seeded(1000+i*77); r.sensors = buildSensors(r, r.rand); r.mcs = buildMCs(r, r.sensors, r.rand); });
+
+function allSensors(){ return REGIONS.flatMap(r=>r.sensors); }
+function allMCs(){ return REGIONS.flatMap(r=>r.mcs); }
+function statusWeight(s){ return s==='crit'?2:s==='warn'?1:0; }
+function regionStatus(region){
+  const w = Math.max(...region.sensors.map(s=>statusWeight(s.status)));
+  return w===2?'crit':w===1?'warn':'ok';
+}
+const statusColorVar = { ok:'var(--green)', warn:'var(--amber)', crit:'var(--red)' };
+const statusLabel = { ok:'Normal', warn:'Uyarı', crit:'Kritik' };
+function healthColor(h){ return h>=75 ? 'var(--green)' : h>=40 ? 'var(--amber)' : 'var(--red)'; }
+
+/* =========================================================
+   KİŞİLER / EKİP
+   ========================================================= */
+const TEAM_MEMBERS = [
+  { id:'p1', name:'Emre Kılıç', role:'Bölge Bakımcısı', region:'ankara-sivas' },
+  { id:'p2', name:'Barış Toprak', role:'Bölge Bakımcısı', region:'izmit-eskisehir' },
+  { id:'p3', name:'Nazlı Er', role:'Bölge Bakımcısı', region:'bandirma-bursa' },
+  { id:'p4', name:'Selin Aydemir', role:'Bölge Yöneticisi', region:'all' },
+  { id:'p5', name:'Caner Bulut', role:'Saha Teknisyeni', region:'ankara-sivas' },
+  { id:'p6', name:'Elif Karaca', role:'Saha Teknisyeni', region:'izmit-eskisehir' },
+  { id:'p7', name:'Murat Şen', role:'Saha Teknisyeni', region:'bandirma-bursa' },
+  { id:'p8', name:'NOC Operasyon Ekibi', role:'Merkez Operasyon', region:'all' },
+];
+function personById(id){ return TEAM_MEMBERS.find(p=>p.id===id) || TEAM_MEMBERS[0]; }
+function personIdForRegionRole(regionId, role){
+  const p = TEAM_MEMBERS.find(m=>m.region===regionId && m.role===role);
+  return p ? p.id : TEAM_MEMBERS[0].id;
+}
+function initials(name){
+  return name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+}
+
+/* =========================================================
+   INCIDENTS (Olay Kayıtları) — uyarı/kritik sensörlerden otomatik türetilir
+   ========================================================= */
+function buildIncidents(){
+  const rand = seeded(9001);
+  const statusPool = { crit:['Açık','İnceleniyor'], warn:['Açık','İnceleniyor','Kapatıldı'] };
+  let seq = 1;
+  const list = [];
+  allSensors().forEach(s=>{
+    const region = REGIONS.find(r=>r.id===s.region);
+    const bakimciId = personIdForRegionRole(region.id, 'Bölge Bakımcısı');
+
+    if(s.status!=='ok'){
+      const pool = statusPool[s.status];
+      const incStatus = pool[Math.floor(rand()*pool.length)];
+      const openedHoursAgo = s.status==='crit' ? Math.floor(rand()*5)+1 : Math.floor(rand()*36)+3;
+      const id = `INC-${String(seq).padStart(4,'0')}`;
+      const timeline = [
+        { time:`${openedHoursAgo} sa önce`, actor:'Sistem', note:`${s.id} sensöründe eşik aşıldı, olay otomatik oluşturuldu.` },
+      ];
+      if(incStatus==='İnceleniyor' || incStatus==='Kapatıldı'){
+        timeline.push({ time:`${Math.max(0,openedHoursAgo-1)} sa önce`, actor:region.bakimci, note:'Olay incelemeye alındı, saha kontrolü planlandı.' });
+      }
+      if(incStatus==='Kapatıldı'){
+        timeline.push({ time:`${Math.max(0,openedHoursAgo-2)} sa önce`, actor:region.bakimci, note:'Saha kontrolü tamamlandı, ölçüm normal aralığa döndü, olay kapatıldı.' });
+      }
+      list.push({ id, sensorId:s.id, type:s.type, region:region.id, regionName:region.name,
+        km:s.km, severity:s.status, status:incStatus, openedHoursAgo, assignedPersonId:bakimciId, timeline,
+        ackStatus: incStatus==='Kapatıldı' ? 'Onaylandı' : 'Bekliyor' });
+      seq++;
+    } else if(rand()>0.72){
+      // Sağlıklı sensörler için geçmişte kapanmış olay kaydı (bakım geçmişini zenginleştirir)
+      const openedHoursAgo = Math.round(200+rand()*500);
+      const id = `INC-${String(seq).padStart(4,'0')}`;
+      const pastSeverity = rand()>0.5 ? 'warn' : 'crit';
+      const timeline = [
+        { time:`${openedHoursAgo} sa önce`, actor:'Sistem', note:`${s.id} sensöründe eşik aşıldı, olay otomatik oluşturuldu.` },
+        { time:`${Math.max(0,openedHoursAgo-4)} sa önce`, actor:region.bakimci, note:'Olay incelemeye alındı, saha kontrolü planlandı.' },
+        { time:`${Math.max(0,openedHoursAgo-10)} sa önce`, actor:region.bakimci, note:'Saha kontrolü tamamlandı, ölçüm normal aralığa döndü, olay kapatıldı.' },
+      ];
+      list.push({ id, sensorId:s.id, type:s.type, region:region.id, regionName:region.name,
+        km:s.km, severity:pastSeverity, status:'Kapatıldı', openedHoursAgo, assignedPersonId:bakimciId, timeline,
+        ackStatus:'Onaylandı' });
+      seq++;
+    }
+  });
+  return list;
+}
+const INCIDENTS = buildIncidents();
+function incidentForSensor(sensorId){
+  return INCIDENTS.find(i=>i.sensorId===sensorId && i.status!=='Kapatıldı') || null;
+}
+function sensorMaintenanceLog(sensorId){
+  return INCIDENTS.filter(i=>i.sensorId===sensorId).sort((a,b)=>a.openedHoursAgo-b.openedHoursAgo);
+}
+
+/* =========================================================
+   ESKALASYON KURALLARI & BİLDİRİM KANALLARI
+   ========================================================= */
+let ESCALATION_LEVELS = [
+  { level:1, role:'Bölge Bakımcısı', timeoutMin:15, channel:'SMS + Telegram' },
+  { level:2, role:'Bölge Yöneticisi', timeoutMin:30, channel:'Telefon + E-posta' },
+  { level:3, role:'Merkez Operasyon (NOC)', timeoutMin:60, channel:'Telefon + Acil Durum Ekibi' },
+];
+function escalationLevelFor(inc){
+  if(inc.status==='Kapatıldı') return null;
+  const minsOpen = inc.openedHoursAgo*60;
+  let lvl = ESCALATION_LEVELS[0];
+  ESCALATION_LEVELS.forEach(l=>{ if(minsOpen>=l.timeoutMin) lvl=l; });
+  return lvl;
+}
+
+let CHANNELS = [
+  { id:'email', label:'E-posta', icon:'✉', enabled:true, detail:'operasyon@rais-demo.com, bakim-ekibi@rais-demo.com' },
+  { id:'sms', label:'SMS', icon:'💬', enabled:true, detail:'+90 5xx xxx xx xx (Bölge Bakımcıları)' },
+  { id:'telegram', label:'Telegram Bot', icon:'✈', enabled:true, detail:'@rais_alarm_bot · Grup: Saha Operasyon' },
+  { id:'webhook', label:'Webhook / API', icon:'🔗', enabled:false, detail:'https://ops.example.com/hooks/rais' },
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let state = { role:'admin', currentRegion:null, currentSensor:null, typeFilter:'all', predictiveRegion:'all', incidentFilter:'all', currentIncident:null, mcRegionFilter:'all', currentMC:null, incidentPersonFilter:null, overviewMode:'regions', overviewRegionFilter:new Set(REGIONS.map(r=>r.id)) };
+
+/* =========================================================
+   RENDER: SIDEBAR REGION NAV
+   ========================================================= */
+function renderRegionNav(){
+  const el = document.getElementById('regionNav');
+  el.innerHTML = REGIONS.map(r=>`
+    <div class="nav-item nav-region" data-nav="region" data-region="${r.id}">
+      <span class="nav-dot" style="background:${statusColorVar[regionStatus(r)]}"></span>
+      ${r.name}
+    </div>`).join('');
+}
+
+/* =========================================================
+   RENDER: OVERVIEW
+   ========================================================= */
+function renderOverview(){
+  const sensors = allSensors();
+  const crit = sensors.filter(s=>s.status==='crit').length;
+  const warn = sensors.filter(s=>s.status==='warn').length;
+  const ok = sensors.length-crit-warn;
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi"><div class="num">${sensors.length}</div><div class="lbl">Toplam Sensör</div></div>
+    <div class="kpi ok"><div class="num">${ok}</div><div class="lbl">Normal Durumda</div></div>
+    <div class="kpi warn"><div class="num">${warn}</div><div class="lbl">Uyarı Seviyesinde</div></div>
+    <div class="kpi crit"><div class="num">${crit}</div><div class="lbl">Kritik Alarm</div></div>
+  `;
+  document.getElementById('regionCount').textContent = `${REGIONS.length} bölge`;
+  document.getElementById('regionGrid').innerHTML = REGIONS.map(r=>{
+    const st = regionStatus(r);
+    const critC = r.sensors.filter(s=>s.status==='crit').length;
+    const warnC = r.sensors.filter(s=>s.status==='warn').length;
+    return `
+    <div class="region-card" style="--status-color:${statusColorVar[st]}" data-goto-region="${r.id}">
+      <h3>${r.name}</h3>
+      <div class="meta">Bakımcı: ${r.bakimci} · ${r.kmStart}–${r.kmEnd} km</div>
+      <div class="region-stats">
+        <div><b>${r.sensors.length}</b><span>Sensör</span></div>
+        <div><b style="color:var(--amber)">${warnC}</b><span>Uyarı</span></div>
+        <div><b style="color:var(--red)">${critC}</b><span>Kritik</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const alerts = sensors.filter(s=>s.status!=='ok').sort((a,b)=>statusWeight(b.status)-statusWeight(a.status)).slice(0,7);
+  const timeAgo = ['2 dk önce','9 dk önce','14 dk önce','27 dk önce','41 dk önce','1 sa önce','2 sa önce'];
+  document.getElementById('alertFeed').innerHTML = alerts.length ? alerts.map((s,i)=>{
+    const inc = incidentForSensor(s.id);
+    return `
+    <div class="alert-item" ${inc?`data-goto-incident="${inc.id}"`:''} style="${inc?'cursor:pointer;':''}">
+      <span class="lvl" style="background:${statusColorVar[s.status]}"></span>
+      <span class="txt"><b>${s.id}</b> — ${SENSOR_TYPES[s.type].label} · ${statusLabel[s.status]} seviyesinde (${REGIONS.find(r=>r.id===s.region).name})${inc?` · <span style="color:var(--cyan)">${inc.id}</span>`:''}</span>
+      <span class="time">${timeAgo[i%timeAgo.length]}</span>
+    </div>`;
+  }).join('') : `<div class="alert-item"><span class="txt">Aktif uyarı bulunmuyor.</span></div>`;
+
+  renderOverviewRegionChips();
+  renderOverviewAllSensors();
+}
+
+function renderOverviewRegionChips(){
+  const el = document.getElementById('overviewRegionChips');
+  el.innerHTML = REGIONS.map(r=>`
+    <div class="chip ${state.overviewRegionFilter.has(r.id)?'active':''}" data-overview-region-toggle="${r.id}">${r.name}</div>
+  `).join('');
+}
+
+function renderOverviewAllSensors(){
+  const sensors = allSensors().filter(s=>state.overviewRegionFilter.has(s.region));
+  document.getElementById('overviewAllSensorGrid').innerHTML = sensors.length
+    ? sensors.map(sensorCardTemplate).join('')
+    : `<div class="alert-item"><span class="txt">Seçili bölgede sensör bulunmuyor.</span></div>`;
+}
+
+/* =========================================================
+   RENDER: REGION SENSOR GRID
+   ========================================================= */
+function renderRegion(regionId){
+  const region = REGIONS.find(r=>r.id===regionId);
+  state.currentRegion = regionId;
+  document.getElementById('regionTitle').textContent = region.name;
+  document.getElementById('regionSub').textContent = `Bakımcı: ${region.bakimci} · ${region.sensors.length} sensör · ${region.kmStart}–${region.kmEnd} km`;
+
+  const types = ['all', ...Object.keys(SENSOR_TYPES)];
+  document.getElementById('typeFilter').innerHTML = types.map(t=>{
+    const label = t==='all' ? 'Tümü' : SENSOR_TYPES[t].label;
+    const count = t==='all' ? region.sensors.length : region.sensors.filter(s=>s.type===t).length;
+    return `<div class="chip ${state.typeFilter===t?'active':''}" data-filter="${t}">${label} <span style="color:var(--muted-2)">(${count})</span></div>`;
+  }).join('');
+
+  renderSensorGrid(region);
+}
+
+function sensorCardTemplate(s){
+  const t = SENSOR_TYPES[s.type];
+  let readingHtml = '';
+  if(s.type==='flood') readingHtml = `<b style="color:${t.color}">${s.level}</b><span>${t.unit} su seviyesi</span>`;
+  else if(s.type==='temp') readingHtml = `<b style="color:${t.color}">${s.current}</b><span>${t.unit}</span>`;
+  else if(s.type==='tilt') readingHtml = `<b style="color:${t.color}">${s.angle}</b><span>${t.unit} eğim</span>`;
+  else if(s.type==='rain') readingHtml = `<b style="color:${t.color}">${s.rate}</b><span>${t.unit}</span>`;
+  else if(s.type==='wind') readingHtml = `<b style="color:${t.color}">${s.speed}</b><span>${t.unit}</span>`;
+  else if(s.type==='event') readingHtml = `<b style="color:${t.color};font-size:14px;">${s.events.length} olay</b><span>son 24 sa</span>`;
+  return `
+    <div class="sensor-card" data-sensor="${s.id}">
+      <div class="sc-top">
+        <div class="sc-icon" style="color:${t.color}"><svg viewBox="0 0 24 24">${t.icon}</svg></div>
+        <div class="led ${s.status}"></div>
+      </div>
+      <div class="sc-name">${s.id}</div>
+      <div class="sc-km">KM ${s.km} · ${t.label}</div>
+      <div class="sc-reading">${readingHtml}</div>
+      <div class="health-row"><span class="health-lbl">SAĞLIK ${s.health}</span><div class="health-bar"><div class="health-fill" style="width:${s.health}%;background:${healthColor(s.health)}"></div></div></div>
+      <div class="device-row">
+        <span class="device-stat ${s.connectivity}">${s.connectivity==='offline'?'⚠ Çevrimdışı':s.connectivity==='weak'?'▲ Zayıf Sinyal':'● Çevrimiçi'}</span>
+        <span class="device-stat">🔋${s.battery}%</span>
+        <span class="device-stat">${minutesToText(s.lastSeenMin)}</span>
+      </div>
+      <div class="sc-status ${s.status}">${statusLabel[s.status]}</div>
+    </div>`;
+}
+
+function renderSensorGrid(region){
+  const list = state.typeFilter==='all' ? region.sensors : region.sensors.filter(s=>s.type===state.typeFilter);
+  document.getElementById('sensorGrid').innerHTML = list.map(sensorCardTemplate).join('');
+}
+
+/* =========================================================
+   SPARKLINE
+   ========================================================= */
+function sparklineSVG(data, color, w=280, h=60){
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = (max-min)||1;
+  const pts = data.map((v,i)=>{
+    const x = (i/(data.length-1))*w;
+    const y = h - ((v-min)/range)*h*0.8 - h*0.1;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const areaPts = `0,${h} ${pts} ${w},${h}`;
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <polyline points="${areaPts}" fill="${color}" opacity="0.12" stroke="none"/>
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function gaugeSVG(value, min, max, color, label){
+  const pct = Math.max(0,Math.min(1,(value-min)/(max-min)));
+  const r = 54, cx=64, cy=64;
+  const circumference = Math.PI*r;
+  const dash = circumference*pct;
+  return `<svg viewBox="0 0 128 76" style="width:100%;max-width:220px;display:block;margin:0 auto;">
+    <path d="M 10 64 A ${r} ${r} 0 0 1 118 64" fill="none" stroke="var(--border-soft)" stroke-width="10" stroke-linecap="round"/>
+    <path d="M 10 64 A ${r} ${r} 0 0 1 118 64" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round"
+      stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}"/>
+    <text x="64" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="20" fill="var(--text)">${value}</text>
+    <text x="64" y="72" text-anchor="middle" font-family="Inter" font-size="9" fill="var(--muted-2)">${label}</text>
+  </svg>`;
+}
+
+/* =========================================================
+   RENDER: SENSOR DETAIL
+   ========================================================= */
+function renderDetail(sensorId){
+  const s = allSensors().find(x=>x.id===sensorId);
+  const t = SENSOR_TYPES[s.type];
+  state.currentSensor = sensorId;
+  document.getElementById('detailIdTag').textContent = `${s.id} · KM ${s.km} · ${REGIONS.find(r=>r.id===s.region).name}`;
+  document.getElementById('detailTitle').textContent = t.label;
+  document.getElementById('detailStatusBadge').innerHTML = `<div class="sc-status ${s.status}" style="font-size:12px;padding:6px 14px;">${statusLabel[s.status]}</div>`;
+
+  let left = '', right = '';
+
+  if(s.type==='flood'){
+    left = `
+      <div class="panel">
+        <h4>Canlı Görüntü</h4>
+        <div class="cam-box"><div class="scan"></div><div class="crosshair"></div><div class="rec"><span class="dot"></span>CANLI</div><div class="ts">${s.id} · KM ${s.km}</div></div>
+      </div>
+      <div class="panel" style="margin-top:14px;">
+        <h4>Su Seviyesi Geçmişi</h4>
+        ${sparklineSVG(s.history, t.color)}
+      </div>`;
+    right = `
+      <div class="panel">
+        <h4>Ultrasonik Ölçüm</h4>
+        <div class="readout-big"><b style="color:${t.color}">${s.level}</b><span>cm</span></div>
+        <div class="mini-stats">
+          <div><b>80 cm</b><span>Kritik Eşik</span></div>
+          <div><b>50 cm</b><span>Uyarı Eşiği</span></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:16px;">${s.riskNote}</p>
+      </div>`;
+  } else if(s.type==='temp'){
+    left = `
+      <div class="panel">
+        <h4>Sıcaklık Trendi (24 saat)</h4>
+        ${sparklineSVG(s.history, t.color, 560, 160)}
+      </div>`;
+    right = `
+      <div class="panel">
+        <h4>Anlık Sıcaklık</h4>
+        ${gaugeSVG(s.current, -10, 45, t.color, '°C')}
+        <div class="mini-stats" style="justify-content:center;margin-top:20px;">
+          <div><b>${s.min}°</b><span>Gün Min</span></div>
+          <div><b>${s.max}°</b><span>Gün Maks</span></div>
+        </div>
+      </div>`;
+  } else if(s.type==='tilt'){
+    left = `
+      <div class="panel">
+        <h4>Eğim Açısı Geçmişi (IMU)</h4>
+        ${sparklineSVG(s.history, t.color, 560, 160)}
+      </div>`;
+    right = `
+      <div class="panel">
+        <h4>Ray Altı Boşalma Riski</h4>
+        ${gaugeSVG(s.angle, 0, 6, t.color, '° eğim')}
+        <div class="mini-stats" style="justify-content:center;margin-top:20px;">
+          <div><b>${s.vibration} g</b><span>Titreşim (RMS)</span></div>
+          <div><b>3.0°</b><span>Kritik Eşik</span></div>
+        </div>
+      </div>`;
+  } else if(s.type==='rain'){
+    left = `
+      <div class="panel">
+        <h4>Yağış Şiddeti Geçmişi</h4>
+        ${sparklineSVG(s.history, t.color, 560, 160)}
+      </div>`;
+    right = `
+      <div class="panel">
+        <h4>Anlık Yağış</h4>
+        ${gaugeSVG(s.rate, 0, 30, t.color, 'mm/sa')}
+        <div class="mini-stats" style="justify-content:center;margin-top:20px;">
+          <div><b>${s.today} mm</b><span>Bugün Toplam</span></div>
+        </div>
+      </div>`;
+  } else if(s.type==='wind'){
+    left = `
+      <div class="panel">
+        <h4>Rüzgar Hızı Geçmişi</h4>
+        ${sparklineSVG(s.history, t.color, 560, 160)}
+      </div>`;
+    right = `
+      <div class="panel">
+        <h4>Rüzgar Yönü</h4>
+        <div class="compass"><div class="n">K</div><div class="needle" style="transform:translate(-50%,-100%) rotate(${s.dir}deg)"></div></div>
+        <div class="mini-stats" style="justify-content:center;margin-top:6px;">
+          <div><b>${s.speed} km/sa</b><span>Ortalama</span></div>
+          <div><b>${s.gust} km/sa</b><span>Ani Rüzgar</span></div>
+        </div>
+      </div>`;
+  } else if(s.type==='event'){
+    left = `
+      <div class="panel">
+        <h4>Canlı Görüntü</h4>
+        <div class="cam-box"><div class="scan"></div><div class="rec"><span class="dot"></span>CANLI</div><div class="ts">${s.id} · KM ${s.km}</div></div>
+      </div>`;
+    right = `
+      <div class="panel">
+        <h4>Olay Geçmişi</h4>
+        <div class="timeline">
+          ${s.events.map(e=>`
+            <div class="tl-item">
+              <div class="tl-thumb"></div>
+              <div class="tl-body"><b>${e.label}</b><div class="tl-time">${e.t}</div></div>
+              <div class="tl-btn">İncele →</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('detailGrid').innerHTML = `<div>${left}</div><div>${right}</div>`;
+
+  // Cihaz sağlığı paneli
+  const connLabel = s.connectivity==='offline'?'Çevrimdışı':s.connectivity==='weak'?'Zayıf Sinyal':'Çevrimiçi';
+  const connColor = s.connectivity==='offline'?'var(--red)':s.connectivity==='weak'?'var(--amber)':'var(--green)';
+  const deviceNote = s.connectivity==='offline' ? 'Cihaz uzun süredir veri göndermiyor — sahaya kontrol ekibi yönlendirin, mevcut okuma güncel olmayabilir.'
+    : s.connectivity==='weak' ? 'Sinyal kapsaması zayıf — anten/röle konumu kontrol edilmeli.'
+    : s.battery<25 ? 'Batarya seviyesi düşük — yakın zamanda değişim planlanmalı.'
+    : 'Cihaz sağlıklı çalışıyor, veri akışı düzenli.';
+  document.getElementById('detailDevicePanel').innerHTML = `
+    <h4>Cihaz Sağlığı</h4>
+    <div class="pm-grid">
+      <div class="mini-stats" style="gap:28px;">
+        <div><b style="font-family:var(--font-mono);font-size:20px;">${s.battery}%</b><span>Batarya</span></div>
+        <div><b style="font-family:var(--font-mono);font-size:20px;">${s.signal}%</b><span>Sinyal Gücü</span></div>
+        <div><b style="font-family:var(--font-mono);font-size:16px;">${minutesToText(s.lastSeenMin)}</b><span>Son Görülme</span></div>
+      </div>
+      <div class="pm-info">
+        <div class="pm-row"><span>Bağlantı Durumu</span><b style="color:${connColor}">${connLabel}</b></div>
+        <div class="pm-row"><span>Öneri</span><b>${deviceNote}</b></div>
+      </div>
+    </div>
+    ${s.mcId ? `
+    <div class="mc-callout" data-goto-mc="${s.mcId}">
+      <div class="ic-left"><span class="mc-link-badge">${s.mcLinkType}</span> Bağlı olduğu modüler cihaz: <b>${s.mcId}</b></div>
+      <div class="ic-link">Cihazı Gör →</div>
+    </div>` : ''}
+  `;
+
+  // Eşik ayarları paneli (event tipi hariç)
+  const thPanel = document.getElementById('detailThresholdPanel');
+  if(s.thresholds){
+    const currentVal = s.type==='flood'?s.level:s.type==='temp'?s.current:s.type==='tilt'?s.angle:s.type==='rain'?s.rate:s.speed;
+    thPanel.style.display = 'block';
+    thPanel.innerHTML = `
+      <h4>Eşik Ayarları</h4>
+      <div class="threshold-grid">
+        <div class="threshold-field"><label>Uyarı Eşiği (${t.unit})</label><input type="number" step="0.1" id="thWarnInput" value="${s.thresholds.warn}"></div>
+        <div class="threshold-field"><label>Kritik Eşik (${t.unit})</label><input type="number" step="0.1" id="thCritInput" value="${s.thresholds.crit}"></div>
+      </div>
+      <div class="btn" id="saveThresholdBtn" style="margin-top:14px;">Kaydet ve Yeniden Hesapla</div>
+      <div class="threshold-note">Mevcut ölçüm: <b>${currentVal} ${t.unit}</b> — mevcut durum: <b>${statusLabel[s.status]}</b></div>
+    `;
+  } else {
+    thPanel.style.display = 'none';
+    thPanel.innerHTML = '';
+  }
+
+  const inc = incidentForSensor(s.id);
+  const predictNote = s.status==='crit' ? 'Şu an kritik seviyede' : s.status==='warn' ? `Yaklaşık ${s.predictedDays} gün içinde kritik eşiği aşabilir` : 'Yakın vadede risk öngörülmüyor';
+  const recommendation = s.status==='crit' ? 'Acil saha müdahalesi gerekli' : s.status==='warn' ? 'Planlı bakım önerilir' : 'Rutin izlemeye devam edin';
+  document.getElementById('detailPredictivePanel').innerHTML = `
+    <h4>Öngörücü Bakım</h4>
+    <div class="pm-grid">
+      <div>${gaugeSVG(s.health, 0, 100, healthColor(s.health), 'sağlık skoru')}</div>
+      <div class="pm-info">
+        <div class="pm-row"><span>Eğilim</span><b>${s.trend==='down'?'↓ Düşüşte':'→ Stabil'}</b></div>
+        <div class="pm-row"><span>Öngörü</span><b>${predictNote}</b></div>
+        <div class="pm-row"><span>Öneri</span><b>${recommendation}</b></div>
+      </div>
+    </div>
+    ${inc ? `
+    <div class="incident-callout" data-goto-incident="${inc.id}">
+      <div class="ic-left"><span class="sc-status ${inc.severity}" style="font-size:10px;">${inc.status}</span><b>${inc.id}</b> — bu sensörle ilişkili olay kaydı</div>
+      <div class="ic-link">Olayı Görüntüle →</div>
+    </div>` : ''}
+  `;
+
+  const maintPanel = document.getElementById('detailMaintenancePanel');
+  const logIncidents = sensorMaintenanceLog(s.id);
+  if(logIncidents.length){
+    maintPanel.style.display = 'block';
+    maintPanel.innerHTML = `
+      <h4>Bakım Geçmişi</h4>
+      <div class="timeline">
+        ${logIncidents.map(li=>li.timeline.map(t=>`
+          <div class="tl-item" data-goto-incident="${li.id}">
+            <div class="tl-thumb"></div>
+            <div class="tl-body"><b>${t.note}</b><div class="tl-time">${t.time} · ${t.actor} · <span style="color:var(--cyan)">${li.id}</span></div></div>
+          </div>`).join('')).join('')}
+      </div>
+    `;
+  } else {
+    maintPanel.style.display = 'none';
+    maintPanel.innerHTML = '';
+  }
+}
+
+function evaluateStatusFromThresholds(s){
+  const value = s.type==='flood'?s.level:s.type==='temp'?s.current:s.type==='tilt'?s.angle:s.type==='rain'?s.rate:s.type==='wind'?s.speed:null;
+  if(value===null || !s.thresholds) return s.status;
+  if(value>=s.thresholds.crit) return 'crit';
+  if(value>=s.thresholds.warn) return 'warn';
+  return 'ok';
+}
+
+function saveThreshold(sensorId){
+  const s = allSensors().find(x=>x.id===sensorId);
+  const warnInput = document.getElementById('thWarnInput');
+  const critInput = document.getElementById('thCritInput');
+  if(!s || !warnInput || !s.thresholds) return;
+  s.thresholds.warn = parseFloat(warnInput.value);
+  s.thresholds.crit = parseFloat(critInput.value);
+  s.status = evaluateStatusFromThresholds(s);
+  renderDetail(sensorId);
+  showToast(`Eşik güncellendi. Yeni durum: ${statusLabel[s.status]}`);
+}
+
+function showToast(msg){
+  let toast = document.getElementById('toastEl');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'toastEl';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> toast.classList.remove('show'), 3200);
+}
+
+/* =========================================================
+   MAP PANEL (Leaflet + kümeleme)
+   ========================================================= */
+const STATUS_HEX = { ok:'#34d399', warn:'#f2a83c', crit:'#f0555a' };
+const DARK_TILE_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const DARK_TILE_ATTR = '&copy; OpenStreetMap &copy; CARTO';
+
+let overviewMap = null, overviewMapInited = false;
+const overviewClusters = {}; // regionId -> markerClusterGroup
+let regionMapState = { map:null, regionId:null };
+
+function statusRank(s){ return s==='crit'?2:s==='warn'?1:0; }
+
+function makeSensorMarker(s){
+  const color = STATUS_HEX[s.status];
+  const icon = L.divIcon({
+    className:'sensor-pin',
+    html:`<div class="pin-dot ${s.status}" style="background:${color}"></div>`,
+    iconSize:[14,14], iconAnchor:[7,7],
+  });
+  const marker = L.marker([s.lat,s.lng], { icon, sensorStatus:s.status });
+  marker.bindPopup(`
+    <div class="map-popup">
+      <div class="mp-id">${s.id}</div>
+      <div class="mp-type">${SENSOR_TYPES[s.type].label} · KM ${s.km}</div>
+      <div class="mp-status ${s.status}">${statusLabel[s.status]}</div>
+      <div class="mp-btn" onclick="window.__gotoSensorFromMap('${s.id}')">Detayı Gör →</div>
+    </div>`);
+  return marker;
+}
+
+function makeMCMarker(mc){
+  const mcRank = mc.connectivity==='offline'?'crit':mc.connectivity==='weak'?'warn':'ok';
+  const color = mc.connectivity==='offline'?STATUS_HEX.crit:mc.connectivity==='weak'?STATUS_HEX.warn:'#4fc3e8';
+  const icon = L.divIcon({
+    className:'mc-pin',
+    html:`<div class="mc-square" style="background:${color}"></div>`,
+    iconSize:[14,14], iconAnchor:[7,7],
+  });
+  const marker = L.marker([mc.lat,mc.lng], { icon, sensorStatus:mcRank });
+  marker.bindPopup(`
+    <div class="map-popup">
+      <div class="mp-id">${mc.id}</div>
+      <div class="mp-type">Modüler Cihaz · KM ${mc.km} · ${mc.sensorIds.length} sensör</div>
+      <div class="mp-status ${mcRank}">${mc.connectivity==='offline'?'Çevrimdışı':mc.connectivity==='weak'?'Zayıf Sinyal':'Çevrimiçi'}</div>
+      <div class="mp-btn" onclick="window.__gotoMCFromMap('${mc.id}')">Cihazı Gör →</div>
+    </div>`);
+  return marker;
+}
+
+function clusterIconFn(cluster){
+  const markers = cluster.getAllChildMarkers();
+  const worst = markers.reduce((acc,m)=>Math.max(acc, statusRank(m.options.sensorStatus)), 0);
+  const color = worst===2?STATUS_HEX.crit:worst===1?STATUS_HEX.warn:STATUS_HEX.ok;
+  return L.divIcon({ html:`<div class="cluster-badge" style="background:${color}">${cluster.getChildCount()}</div>`, className:'', iconSize:[34,34] });
+}
+
+window.__gotoSensorFromMap = function(id){ goto('detail',{sensor:id}); };
+window.__gotoMCFromMap = function(id){ goto('mc-detail',{mc:id}); };
+
+function buildClusterGroup(region){
+  const cluster = L.markerClusterGroup({ iconCreateFunction: clusterIconFn, maxClusterRadius:55, spiderfyOnMaxZoom:true, showCoverageOnHover:false });
+  region.sensors.forEach(s=> cluster.addLayer(makeSensorMarker(s)));
+  region.mcs.forEach(mc=> cluster.addLayer(makeMCMarker(mc)));
+  return cluster;
+}
+
+function initOverviewMap(){
+  if(overviewMapInited){ setTimeout(()=>overviewMap.invalidateSize(), 60); return; }
+  overviewMapInited = true;
+  overviewMap = L.map('overviewMapEl', { scrollWheelZoom:true }).setView([39.9,31.5], 6);
+  L.tileLayer(DARK_TILE_URL, { attribution:DARK_TILE_ATTR, maxZoom:18, subdomains:'abcd' }).addTo(overviewMap);
+  REGIONS.forEach(r=>{
+    const cluster = buildClusterGroup(r);
+    overviewClusters[r.id] = cluster;
+    cluster.addTo(overviewMap);
+  });
+  setTimeout(()=>overviewMap.invalidateSize(), 60);
+}
+
+function renderOverviewMapChips(){
+  const el = document.getElementById('overviewMapChips');
+  if(el.dataset.built) return;
+  el.dataset.built = '1';
+  el.innerHTML = REGIONS.map(r=>`
+    <div class="chip active" data-map-region-toggle="${r.id}">
+      <span style="width:7px;height:7px;border-radius:50%;background:${statusColorVar[regionStatus(r)]};display:inline-block;"></span>
+      ${r.name}
+    </div>`).join('');
+}
+
+function initRegionMap(regionId){
+  if(regionMapState.map && regionMapState.regionId===regionId){
+    setTimeout(()=>regionMapState.map.invalidateSize(), 60);
+    return;
+  }
+  if(regionMapState.map){ regionMapState.map.remove(); regionMapState.map = null; }
+  const region = REGIONS.find(r=>r.id===regionId);
+  const map = L.map('regionMapEl', { scrollWheelZoom:true }).setView(region.startCoord, 8);
+  L.tileLayer(DARK_TILE_URL, { attribution:DARK_TILE_ATTR, maxZoom:18, subdomains:'abcd' }).addTo(map);
+  const cluster = buildClusterGroup(region);
+  cluster.addTo(map);
+  try{ map.fitBounds(cluster.getBounds().pad(0.2)); }catch(e){}
+  regionMapState = { map, regionId };
+  setTimeout(()=>map.invalidateSize(), 60);
+}
+
+/* =========================================================
+   RENDER: ÖNGÖRÜCÜ BAKIM
+   ========================================================= */
+function renderPredictiveFilters(){
+  const el = document.getElementById('predictiveRegionFilter');
+  if(state.role==='bakimci'){ el.innerHTML=''; return; }
+  const regions = ['all', ...REGIONS.map(r=>r.id)];
+  el.innerHTML = regions.map(rid=>{
+    const label = rid==='all' ? 'Tüm Bölgeler' : REGIONS.find(r=>r.id===rid).name;
+    return `<div class="chip ${state.predictiveRegion===rid?'active':''}" data-pred-region="${rid}">${label}</div>`;
+  }).join('');
+}
+
+function renderPredictive(){
+  let sensors = allSensors();
+  if(state.role==='bakimci') sensors = sensors.filter(s=>s.region==='ankara-sivas');
+  else if(state.predictiveRegion!=='all') sensors = sensors.filter(s=>s.region===state.predictiveRegion);
+
+  const critCount = sensors.filter(s=>s.status==='crit').length;
+  const watchCount = sensors.filter(s=>s.status==='warn').length;
+  const avgHealth = sensors.length ? Math.round(sensors.reduce((a,s)=>a+s.health,0)/sensors.length) : 0;
+  document.getElementById('predictiveKpi').innerHTML = `
+    <div class="kpi"><div class="num">${avgHealth}</div><div class="lbl">Ortalama Sağlık Skoru</div></div>
+    <div class="kpi crit"><div class="num">${critCount}</div><div class="lbl">Acil Müdahale Gerekli</div></div>
+    <div class="kpi warn"><div class="num">${watchCount}</div><div class="lbl">Risk Öngörülen Sensör</div></div>
+    <div class="kpi ok"><div class="num">${sensors.length-critCount-watchCount}</div><div class="lbl">Sağlıklı Sensör</div></div>
+  `;
+
+  const atRisk = sensors.filter(s=>s.status!=='ok').sort((a,b)=>{
+    const da = a.status==='crit' ? -1 : a.predictedDays;
+    const db = b.status==='crit' ? -1 : b.predictedDays;
+    return da-db;
+  });
+  document.getElementById('predictiveList').innerHTML = atRisk.length ? atRisk.map(s=>{
+    const t = SENSOR_TYPES[s.type];
+    const region = REGIONS.find(r=>r.id===s.region);
+    const daysText = s.status==='crit' ? 'Şu an kritik' : `${s.predictedDays} gün içinde kritik eşik`;
+    return `
+    <div class="pred-row" data-sensor="${s.id}">
+      <div class="sc-icon" style="color:${t.color};width:32px;height:32px;flex-shrink:0;"><svg viewBox="0 0 24 24">${t.icon}</svg></div>
+      <div class="pred-main"><b>${s.id}</b><span class="pred-sub">${t.label} · ${region.name} · KM ${s.km}</span></div>
+      <div class="health-bar" style="width:90px;flex-shrink:0;"><div class="health-fill" style="width:${s.health}%;background:${healthColor(s.health)}"></div></div>
+      <div class="pred-days ${s.status}">${daysText}</div>
+      <div class="sc-status ${s.status}">${statusLabel[s.status]}</div>
+    </div>`;
+  }).join('') : `<div class="alert-item"><span class="txt">Risk öngörülen sensör bulunmuyor.</span></div>`;
+}
+
+/* =========================================================
+   RENDER: OLAYLAR (INCIDENTS)
+   ========================================================= */
+function renderIncidents(){
+  const scoped = state.role==='bakimci' ? INCIDENTS.filter(i=>i.region==='ankara-sivas') : INCIDENTS;
+  let list = state.incidentFilter==='all' ? scoped : scoped.filter(i=>i.status===state.incidentFilter);
+  if(state.incidentPersonFilter) list = list.filter(i=>i.assignedPersonId===state.incidentPersonFilter);
+  list = [...list].sort((a,b)=>a.openedHoursAgo-b.openedHoursAgo);
+
+  const personChipEl = document.getElementById('incidentPersonFilterChip');
+  personChipEl.innerHTML = state.incidentPersonFilter
+    ? `<div class="chip active" data-clear-person-filter="1" style="margin-bottom:12px;display:inline-flex;">Filtre: ${personById(state.incidentPersonFilter).name} ✕</div>`
+    : '';
+
+  const statuses = ['all','Açık','İnceleniyor','Kapatıldı'];
+  document.getElementById('incidentStatusFilter').innerHTML = statuses.map(st=>{
+    const label = st==='all' ? 'Tümü' : st;
+    const count = st==='all' ? scoped.length : scoped.filter(i=>i.status===st).length;
+    return `<div class="chip ${state.incidentFilter===st?'active':''}" data-incident-filter="${st}">${label} <span style="color:var(--muted-2)">(${count})</span></div>`;
+  }).join('');
+
+  document.getElementById('incidentGrid').innerHTML = list.length ? list.map(i=>{
+    const t = SENSOR_TYPES[i.type];
+    const lvl = i.status==='Kapatıldı' ? null : escalationLevelFor(i);
+    const escalated = lvl && lvl.level>1 && i.ackStatus==='Bekliyor';
+    return `
+    <div class="sensor-card" data-goto-incident="${i.id}">
+      <div class="sc-top">
+        <div class="sc-icon" style="color:${t.color}"><svg viewBox="0 0 24 24">${t.icon}</svg></div>
+        <span class="sc-status ${i.severity}" style="font-size:9.5px;">${statusLabel[i.severity]}</span>
+      </div>
+      <div class="sc-name">${i.id}</div>
+      <div class="sc-km">${i.sensorId} · ${i.regionName}</div>
+      <div class="sc-reading"><b style="font-size:13px;">${i.status}</b></div>
+      <div class="sc-km" style="margin-top:8px;">Sorumlu: ${personById(i.assignedPersonId).name} · ${i.openedHoursAgo} sa önce açıldı</div>
+      ${escalated ? `<div class="sc-status crit" style="margin-top:8px;font-size:9.5px;">⚠ Seviye ${lvl.level}'e yükseldi</div>` : ''}
+    </div>`;
+  }).join('') : `<div class="alert-item"><span class="txt">Kayıtlı olay bulunmuyor.</span></div>`;
+}
+
+function renderIncidentDetail(id){
+  const inc = INCIDENTS.find(i=>i.id===id);
+  state.currentIncident = id;
+  document.getElementById('incidentIdTag').textContent = `${inc.id} · ${inc.sensorId} · ${inc.regionName}`;
+  document.getElementById('incidentTitle').textContent = `${SENSOR_TYPES[inc.type].label} Olayı`;
+  document.getElementById('incidentStatusBadge').innerHTML = `<div class="sc-status ${inc.severity}" style="font-size:12px;padding:6px 14px;">${inc.status}</div>`;
+  document.getElementById('incidentTimeline').innerHTML = inc.timeline.map(t=>`
+    <div class="tl-item">
+      <div class="tl-thumb"></div>
+      <div class="tl-body"><b>${t.note}</b><div class="tl-time">${t.time} · ${t.actor}</div></div>
+    </div>`).join('');
+  document.getElementById('incidentMeta').innerHTML = `
+    <div class="pm-row"><span>Sensör</span><b>${inc.sensorId}</b></div>
+    <div class="pm-row"><span>KM</span><b>${inc.km}</b></div>
+    <div class="pm-row"><span>Bölge</span><b>${inc.regionName}</b></div>
+    <div class="pm-row"><span>Önem</span><b>${statusLabel[inc.severity]}</b></div>
+    <div class="pm-row"><span>Durum</span><b>${inc.status}</b></div>
+    <div class="pm-row"><span>Sorumlu</span><b>${personById(inc.assignedPersonId).name}</b></div>
+    <div class="pm-row"><span>Açılış</span><b>${inc.openedHoursAgo} sa önce</b></div>
+  `;
+
+  const escPanel = document.getElementById('incidentEscalationPanel');
+  if(inc.status==='Kapatıldı'){
+    escPanel.innerHTML = `<h4>Eskalasyon Durumu</h4><div class="sc-status ok" style="font-size:12px;display:inline-block;">Olay kapatıldı, eskalasyon sona erdi.</div>`;
+  } else {
+    const lvl = escalationLevelFor(inc);
+    escPanel.innerHTML = `
+      <h4>Eskalasyon Durumu</h4>
+      <div class="escalation-steps">
+        ${ESCALATION_LEVELS.map(l=>`
+          <div class="esc-step ${lvl.level>=l.level?'reached':''}">
+            <div class="esc-dot"></div>
+            <div class="esc-info"><b>Seviye ${l.level} — ${l.role}</b><span>${l.timeoutMin} dk sonra devreye girer · ${l.channel}</span></div>
+          </div>`).join('')}
+      </div>
+      ${inc.ackStatus==='Bekliyor'
+        ? `<div class="btn" id="ackIncidentBtn" style="margin-top:14px;">Onayla (Acknowledge)</div>`
+        : `<div class="sc-status ok" style="margin-top:14px;font-size:12px;display:inline-block;">Onaylandı — eskalasyon durduruldu</div>`}
+    `;
+  }
+
+  const person = personById(inc.assignedPersonId);
+  const eligible = TEAM_MEMBERS.filter(p=>p.region===inc.region || p.region==='all');
+  document.getElementById('incidentAssignPanel').innerHTML = `
+    <h4>Sahiplenme & Atama</h4>
+    <div class="assign-current">
+      <div class="avatar">${initials(person.name)}</div>
+      <div><b>${person.name}</b><span>${person.role}</span></div>
+    </div>
+    <div class="assign-controls">
+      <select id="assignSelect" ${inc.status==='Kapatıldı'?'disabled':''}>
+        ${eligible.map(p=>`<option value="${p.id}" ${p.id===inc.assignedPersonId?'selected':''}>${p.name} — ${p.role}</option>`).join('')}
+      </select>
+      <div class="btn ghost" id="assignBtn" ${inc.status==='Kapatıldı'?'style="opacity:.4;pointer-events:none;"':''}>Devret / Ata</div>
+    </div>
+  `;
+}
+
+function assignIncident(id){
+  const inc = INCIDENTS.find(i=>i.id===id);
+  const sel = document.getElementById('assignSelect');
+  if(!inc || !sel) return;
+  const newId = sel.value;
+  if(newId===inc.assignedPersonId){ showToast('Bu olay zaten bu kişiye atanmış.'); return; }
+  const oldPerson = personById(inc.assignedPersonId);
+  const newPerson = personById(newId);
+  inc.timeline.push({ time:'Az önce', actor:oldPerson.name, note:`Olay ${newPerson.name}'e devredildi.` });
+  inc.assignedPersonId = newId;
+  renderIncidentDetail(id);
+  showToast(`Olay ${newPerson.name}'e atandı.`);
+}
+
+function ackIncident(id){
+  const inc = INCIDENTS.find(i=>i.id===id);
+  if(!inc) return;
+  inc.ackStatus = 'Onaylandı';
+  renderIncidentDetail(id);
+  showToast('Olay onaylandı, eskalasyon durduruldu.');
+}
+
+function downloadIncidentPDF(id){
+  const inc = INCIDENTS.find(i=>i.id===id);
+  if(!inc || !window.jspdf) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = 20;
+  doc.setFontSize(18); doc.setTextColor(20,20,20); doc.text('RAİS Olay Raporu', 14, y); y+=8;
+  doc.setFontSize(9); doc.setTextColor(130); doc.text(`Rapor tarihi: ${new Date().toLocaleString('tr-TR')}`, 14, y); y+=8;
+  doc.setDrawColor(210); doc.line(14,y,196,y); y+=10;
+
+  doc.setFontSize(12); doc.setTextColor(20);
+  const rows = [
+    ['Olay No', inc.id], ['Sensör', `${inc.sensorId} (${SENSOR_TYPES[inc.type].label})`],
+    ['Bölge', `${inc.regionName} · KM ${inc.km}`], ['Önem Derecesi', statusLabel[inc.severity]],
+    ['Durum', inc.status], ['Sorumlu', personById(inc.assignedPersonId).name], ['Açılış', `${inc.openedHoursAgo} saat önce`],
+  ];
+  rows.forEach(([k,v])=>{ doc.setTextColor(120); doc.text(k+':', 14, y); doc.setTextColor(20); doc.text(String(v), 55, y); y+=7; });
+
+  y+=5; doc.setFontSize(13); doc.setTextColor(20); doc.text('Zaman Çizelgesi', 14, y); y+=8;
+  doc.setFontSize(9.5);
+  inc.timeline.forEach(t=>{
+    doc.setTextColor(140); doc.text(`${t.time} — ${t.actor}`, 14, y); y+=5.5;
+    doc.setTextColor(30);
+    const lines = doc.splitTextToSize(t.note, 175);
+    doc.text(lines, 14, y); y += 5.5*lines.length + 3;
+  });
+
+  y+=6; doc.setDrawColor(210); doc.line(14,y,196,y); y+=8;
+  doc.setFontSize(8); doc.setTextColor(150);
+  doc.text('Bu rapor RAİS demo ortamından otomatik oluşturulmuştur. Sensör verileri temsilidir.', 14, y);
+
+  doc.save(`${inc.id}_rapor.pdf`);
+}
+
+/* =========================================================
+   RENDER: AYARLAR (Bildirim Kanalları & Eskalasyon)
+   ========================================================= */
+function renderChannels(){
+  document.getElementById('channelGrid').innerHTML = CHANNELS.map(c=>`
+    <div class="panel channel-card">
+      <div class="channel-head">
+        <div class="channel-title"><span class="channel-icon">${c.icon}</span>${c.label}</div>
+        <div class="channel-toggle ${c.enabled?'on':''}" data-channel-toggle="${c.id}"><div class="channel-knob"></div></div>
+      </div>
+      <input class="channel-input" type="text" value="${c.detail}" data-channel-detail="${c.id}" ${c.enabled?'':'disabled'}>
+      <div class="btn ghost" data-channel-test="${c.id}" style="margin-top:10px;">Test Gönder</div>
+    </div>`).join('');
+}
+
+function renderEscalationConfig(){
+  document.getElementById('escalationConfigList').innerHTML = ESCALATION_LEVELS.map((l,i)=>`
+    <div class="esc-config-row">
+      <div class="esc-config-lvl">Seviye ${l.level}</div>
+      <input type="text" value="${l.role}" data-esc-role="${i}">
+      <input type="number" value="${l.timeoutMin}" data-esc-timeout="${i}">
+      <input type="text" value="${l.channel}" data-esc-channel="${i}">
+    </div>`).join('');
+}
+
+/* =========================================================
+   RENDER: MODÜLER CİHAZLAR (MC)
+   ========================================================= */
+function renderMCRegionFilter(){
+  const el = document.getElementById('mcRegionFilter');
+  if(state.role==='bakimci'){ el.innerHTML=''; return; }
+  const regions = ['all', ...REGIONS.map(r=>r.id)];
+  el.innerHTML = regions.map(rid=>{
+    const label = rid==='all' ? 'Tüm Bölgeler' : REGIONS.find(r=>r.id===rid).name;
+    return `<div class="chip ${state.mcRegionFilter===rid?'active':''}" data-mc-region="${rid}">${label}</div>`;
+  }).join('');
+}
+
+function renderMCList(){
+  let mcs = allMCs();
+  if(state.role==='bakimci') mcs = mcs.filter(m=>m.region==='ankara-sivas');
+  else if(state.mcRegionFilter!=='all') mcs = mcs.filter(m=>m.region===state.mcRegionFilter);
+
+  const offline = mcs.filter(m=>m.connectivity==='offline').length;
+  const weak = mcs.filter(m=>m.connectivity==='weak').length;
+  document.getElementById('mcKpi').innerHTML = `
+    <div class="kpi"><div class="num">${mcs.length}</div><div class="lbl">Toplam Modüler Cihaz</div></div>
+    <div class="kpi ok"><div class="num">${mcs.length-offline-weak}</div><div class="lbl">Çevrimiçi</div></div>
+    <div class="kpi warn"><div class="num">${weak}</div><div class="lbl">Zayıf Sinyal</div></div>
+    <div class="kpi crit"><div class="num">${offline}</div><div class="lbl">Çevrimdışı</div></div>
+  `;
+
+  document.getElementById('mcGrid').innerHTML = mcs.length ? mcs.map(mc=>{
+    const region = REGIONS.find(r=>r.id===mc.region);
+    const connLabel = mc.connectivity==='offline'?'Çevrimdışı':mc.connectivity==='weak'?'Zayıf Sinyal':'Çevrimiçi';
+    const connClass = mc.connectivity==='offline'?'crit':mc.connectivity==='weak'?'warn':'ok';
+    return `
+    <div class="sensor-card" data-goto-mc="${mc.id}">
+      <div class="sc-top">
+        <div class="sc-icon" style="color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="8" cy="9" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="15" r="1" fill="currentColor"/><path d="M12 9h4M12 12h4M12 15h4"/></svg></div>
+        <div class="led ${connClass}"></div>
+      </div>
+      <div class="sc-name">${mc.id}</div>
+      <div class="sc-km">KM ${mc.km} · ${region.name}</div>
+      <div class="sc-reading"><b style="font-size:14px;">${mc.sensorIds.length}</b><span>bağlı sensör</span></div>
+      <div class="device-row">
+        <span class="device-stat">${mc.uplinkType}</span>
+        <span class="device-stat">📶${mc.uplinkSignal}%</span>
+        <span class="device-stat">🔋${mc.powerLevel}%</span>
+      </div>
+      <div class="sc-status ${connClass}">${connLabel}</div>
+    </div>`;
+  }).join('') : `<div class="alert-item"><span class="txt">Kayıtlı modüler cihaz bulunmuyor.</span></div>`;
+}
+
+function renderMCDetail(id){
+  const mc = allMCs().find(m=>m.id===id);
+  state.currentMC = id;
+  const region = REGIONS.find(r=>r.id===mc.region);
+  const connLabel = mc.connectivity==='offline'?'Çevrimdışı':mc.connectivity==='weak'?'Zayıf Sinyal':'Çevrimiçi';
+  const connClass = mc.connectivity==='offline'?'crit':mc.connectivity==='weak'?'warn':'ok';
+  document.getElementById('mcIdTag').textContent = `${mc.id} · KM ${mc.km} · ${region.name}`;
+  document.getElementById('mcTitle').textContent = mc.name;
+  document.getElementById('mcStatusBadge').innerHTML = `<div class="sc-status ${connClass}" style="font-size:12px;padding:6px 14px;">${connLabel}</div>`;
+
+  document.getElementById('mcPowerInfo').innerHTML = `
+    ${gaugeSVG(mc.powerLevel, 0, 100, healthColor(mc.powerLevel), 'güç seviyesi')}
+    <div class="mini-stats" style="justify-content:center;margin-top:16px;">
+      <div><b style="font-size:13.5px;">${mc.powerSource}</b><span>Güç Kaynağı</span></div>
+    </div>
+    <div class="pm-row" style="margin-top:14px;"><span>GPS Konumu</span><b><a href="https://www.google.com/maps?q=${mc.lat.toFixed(5)},${mc.lng.toFixed(5)}" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;">${mc.lat.toFixed(5)}, ${mc.lng.toFixed(5)} ↗</a></b></div>
+  `;
+
+  document.getElementById('mcUplinkInfo').innerHTML = `
+    ${gaugeSVG(mc.uplinkSignal, 0, 100, healthColor(mc.uplinkSignal), 'sinyal gücü')}
+    <div class="mini-stats" style="justify-content:center;margin-top:16px;">
+      <div><b style="font-size:13.5px;">${mc.uplinkType}</b><span>Ana Sunucu Bağlantı Türü</span></div>
+    </div>
+  `;
+
+  const sensors = mc.sensorIds.map(sid=>allSensors().find(s=>s.id===sid)).filter(Boolean);
+  document.getElementById('mcSensorList').innerHTML = sensors.length ? sensors.map(s=>{
+    const t = SENSOR_TYPES[s.type];
+    return `
+    <div class="mc-sensor-row" data-sensor="${s.id}">
+      <div class="sc-icon" style="color:${t.color};width:32px;height:32px;flex-shrink:0;"><svg viewBox="0 0 24 24">${t.icon}</svg></div>
+      <div class="pred-main"><b>${s.id}</b><span class="pred-sub">${t.label} · KM ${s.km}</span></div>
+      <span class="mc-link-badge">${s.mcLinkType}</span>
+      <div class="sc-status ${s.status}">${statusLabel[s.status]}</div>
+    </div>`;
+  }).join('') : `<div class="alert-item"><span class="txt">Bu cihaza bağlı sensör bulunmuyor.</span></div>`;
+}
+
+/* =========================================================
+   RENDER: EKİP / KİŞİLER
+   ========================================================= */
+function renderTeam(){
+  document.getElementById('teamGrid').innerHTML = TEAM_MEMBERS.map(p=>{
+    const activeIncidents = INCIDENTS.filter(i=>i.assignedPersonId===p.id && i.status!=='Kapatıldı');
+    const regionLabel = p.region==='all' ? 'Tüm Bölgeler' : REGIONS.find(r=>r.id===p.region).name;
+    const sensorCount = p.region==='all' ? allSensors().length : REGIONS.find(r=>r.id===p.region).sensors.length;
+    return `
+    <div class="sensor-card" data-goto-person="${p.id}">
+      <div class="sc-top">
+        <div class="avatar">${initials(p.name)}</div>
+        <span class="sc-status ${activeIncidents.length>0?'warn':'ok'}" style="font-size:9.5px;">${activeIncidents.length} aktif olay</span>
+      </div>
+      <div class="sc-name">${p.name}</div>
+      <div class="sc-km">${p.role}</div>
+      <div class="sc-reading"><b style="font-size:13px;">${regionLabel}</b></div>
+      <div class="sc-km" style="margin-top:8px;">${sensorCount} sensörden sorumlu</div>
+    </div>`;
+  }).join('');
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+}
+
+function goto(view, opts={}){
+  if(view==='overview'){
+    showView('overview');
+    document.getElementById('pageTitle').textContent = 'Genel Bakış';
+    document.getElementById('pageSub').textContent = 'Tüm hatlardaki sensör ağının anlık durumu';
+    setActiveNav('overview');
+    renderOverview();
+    renderOverviewMapChips();
+  } else if(view==='region'){
+    showView('region');
+    const region = REGIONS.find(r=>r.id===opts.region);
+    document.getElementById('pageTitle').textContent = region.name;
+    document.getElementById('pageSub').textContent = `Bölge sensör paneli — ${region.bakimci}`;
+    setActiveNav('region', opts.region);
+    state.typeFilter = 'all';
+    renderRegion(opts.region);
+    const regionMapPanel = document.getElementById('regionMapPanel');
+    if(regionMapPanel && !regionMapPanel.classList.contains('collapsed')) initRegionMap(opts.region);
+  } else if(view==='detail'){
+    showView('detail');
+    document.getElementById('pageTitle').textContent = 'Sensör Detayı';
+    document.getElementById('pageSub').textContent = opts.sensor;
+    renderDetail(opts.sensor);
+    document.getElementById('detailBack').onclick = ()=>goto('region',{region:state.currentRegion});
+  } else if(view==='automation'){
+    showView('automation');
+    document.getElementById('pageTitle').textContent = 'Otomasyonlar';
+    document.getElementById('pageSub').textContent = 'Sensör koşullarından alarm ve bildirim kuralları oluşturun';
+    setActiveNav('automation');
+  } else if(view==='predictive'){
+    showView('predictive');
+    document.getElementById('pageTitle').textContent = 'Öngörücü Bakım';
+    document.getElementById('pageSub').textContent = 'Sensör sağlık skorları ve risk öngörüleri';
+    setActiveNav('predictive');
+    renderPredictiveFilters();
+    renderPredictive();
+  } else if(view==='incidents'){
+    showView('incidents');
+    document.getElementById('pageTitle').textContent = 'Olaylar';
+    document.getElementById('pageSub').textContent = 'Otomatik oluşturulan olay kayıtları ve raporlama';
+    setActiveNav('incidents');
+    renderIncidents();
+  } else if(view==='incident-detail'){
+    showView('incident-detail');
+    document.getElementById('pageTitle').textContent = 'Olay Detayı';
+    document.getElementById('pageSub').textContent = opts.incident;
+    renderIncidentDetail(opts.incident);
+  } else if(view==='settings'){
+    showView('settings');
+    document.getElementById('pageTitle').textContent = 'Ayarlar';
+    document.getElementById('pageSub').textContent = 'Bildirim kanalları ve eskalasyon kuralları';
+    setActiveNav('settings');
+    renderChannels();
+    renderEscalationConfig();
+  } else if(view==='mc'){
+    showView('mc');
+    document.getElementById('pageTitle').textContent = 'Modüler Cihazlar';
+    document.getElementById('pageSub').textContent = 'Sahadaki ana toplama cihazları (MC) ve bağlı sensörler';
+    setActiveNav('mc');
+    renderMCRegionFilter();
+    renderMCList();
+  } else if(view==='mc-detail'){
+    showView('mc-detail');
+    document.getElementById('pageTitle').textContent = 'Modüler Cihaz Detayı';
+    document.getElementById('pageSub').textContent = opts.mc;
+    renderMCDetail(opts.mc);
+  } else if(view==='team'){
+    showView('team');
+    document.getElementById('pageTitle').textContent = 'Ekip';
+    document.getElementById('pageSub').textContent = 'Kişiler, sorumluluk alanları ve aktif olay yükü';
+    setActiveNav('team');
+    renderTeam();
+  }
+}
+
+function setActiveNav(kind, regionId){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(kind==='overview') document.querySelector('[data-nav="overview"]').classList.add('active');
+  if(kind==='automation') document.querySelector('[data-nav="automation"]').classList.add('active');
+  if(kind==='predictive') document.querySelector('[data-nav="predictive"]').classList.add('active');
+  if(kind==='incidents') document.querySelector('[data-nav="incidents"]').classList.add('active');
+  if(kind==='settings') document.querySelector('[data-nav="settings"]').classList.add('active');
+  if(kind==='mc') document.querySelector('[data-nav="mc"]').classList.add('active');
+  if(kind==='team') document.querySelector('[data-nav="team"]').classList.add('active');
+  if(kind==='region') document.querySelector(`[data-nav="region"][data-region="${regionId}"]`)?.classList.add('active');
+}
+
+document.addEventListener('click', (e)=>{
+  const nav = e.target.closest('[data-nav]');
+  if(nav){
+    const type = nav.dataset.nav;
+    if(type==='overview') goto('overview');
+    else if(type==='automation') goto('automation');
+    else if(type==='predictive') goto('predictive');
+    else if(type==='incidents') goto('incidents');
+    else if(type==='settings') goto('settings');
+    else if(type==='mc') goto('mc');
+    else if(type==='team') goto('team');
+    else if(type==='region') goto('region',{region:nav.dataset.region});
+    return;
+  }
+  const back = e.target.closest('[data-back]');
+  if(back){ goto(back.dataset.back); return; }
+
+  const regionGoto = e.target.closest('[data-goto-region]');
+  if(regionGoto){ goto('region',{region:regionGoto.dataset.gotoRegion}); return; }
+
+  const filter = e.target.closest('[data-filter]');
+  if(filter){
+    state.typeFilter = filter.dataset.filter;
+    renderRegion(state.currentRegion);
+    return;
+  }
+
+  const sensorCard = e.target.closest('[data-sensor]');
+  if(sensorCard){ goto('detail',{sensor:sensorCard.dataset.sensor}); return; }
+
+  const incidentGoto = e.target.closest('[data-goto-incident]');
+  if(incidentGoto){ goto('incident-detail',{incident:incidentGoto.dataset.gotoIncident}); return; }
+
+  const mcGoto = e.target.closest('[data-goto-mc]');
+  if(mcGoto){ goto('mc-detail',{mc:mcGoto.dataset.gotoMc}); return; }
+
+  const mcRegion = e.target.closest('[data-mc-region]');
+  if(mcRegion){
+    state.mcRegionFilter = mcRegion.dataset.mcRegion;
+    renderMCRegionFilter();
+    renderMCList();
+    return;
+  }
+
+  const overviewMode = e.target.closest('[data-overview-mode]');
+  if(overviewMode){
+    state.overviewMode = overviewMode.dataset.overviewMode;
+    document.querySelectorAll('[data-overview-mode]').forEach(c=>c.classList.remove('active'));
+    overviewMode.classList.add('active');
+    document.getElementById('regionGrid').style.display = state.overviewMode==='regions' ? 'grid' : 'none';
+    document.getElementById('overviewAllSensorsWrap').style.display = state.overviewMode==='all' ? 'block' : 'none';
+    if(state.overviewMode==='all') renderOverviewAllSensors();
+    return;
+  }
+
+  const overviewRegionToggle = e.target.closest('[data-overview-region-toggle]');
+  if(overviewRegionToggle){
+    const rid = overviewRegionToggle.dataset.overviewRegionToggle;
+    if(state.overviewRegionFilter.has(rid)) state.overviewRegionFilter.delete(rid);
+    else state.overviewRegionFilter.add(rid);
+    renderOverviewRegionChips();
+    renderOverviewAllSensors();
+    return;
+  }
+
+  const personGoto = e.target.closest('[data-goto-person]');
+  if(personGoto){
+    state.incidentPersonFilter = personGoto.dataset.gotoPerson;
+    state.incidentFilter = 'all';
+    goto('incidents');
+    return;
+  }
+
+  const clearPersonFilter = e.target.closest('[data-clear-person-filter]');
+  if(clearPersonFilter){
+    state.incidentPersonFilter = null;
+    renderIncidents();
+    return;
+  }
+
+  if(e.target.id==='assignBtn'){ assignIncident(state.currentIncident); return; }
+
+  const predRegion = e.target.closest('[data-pred-region]');
+  if(predRegion){
+    state.predictiveRegion = predRegion.dataset.predRegion;
+    renderPredictiveFilters();
+    renderPredictive();
+    return;
+  }
+
+  const incFilter = e.target.closest('[data-incident-filter]');
+  if(incFilter){
+    state.incidentFilter = incFilter.dataset.incidentFilter;
+    renderIncidents();
+    return;
+  }
+
+  if(e.target.id==='downloadPdfBtn'){ downloadIncidentPDF(state.currentIncident); return; }
+
+  if(e.target.id==='saveThresholdBtn'){ saveThreshold(state.currentSensor); return; }
+
+  if(e.target.id==='ackIncidentBtn'){ ackIncident(state.currentIncident); return; }
+
+  const settingsTab = e.target.closest('[data-settings-tab]');
+  if(settingsTab){
+    document.querySelectorAll('[data-settings-tab]').forEach(c=>c.classList.remove('active'));
+    settingsTab.classList.add('active');
+    const tab = settingsTab.dataset.settingsTab;
+    document.getElementById('settingsTabChannels').style.display = tab==='channels' ? 'block' : 'none';
+    document.getElementById('settingsTabEscalation').style.display = tab==='escalation' ? 'block' : 'none';
+    return;
+  }
+
+  const channelToggle = e.target.closest('[data-channel-toggle]');
+  if(channelToggle){
+    const id = channelToggle.dataset.channelToggle;
+    const c = CHANNELS.find(x=>x.id===id);
+    const input = document.querySelector(`[data-channel-detail="${id}"]`);
+    if(input) c.detail = input.value;
+    c.enabled = !c.enabled;
+    renderChannels();
+    return;
+  }
+
+  const channelTest = e.target.closest('[data-channel-test]');
+  if(channelTest){
+    const c = CHANNELS.find(x=>x.id===channelTest.dataset.channelTest);
+    showToast(`${c.label} üzerinden test bildirimi gönderildi (simülasyon).`);
+    return;
+  }
+
+  if(e.target.id==='saveEscalationBtn'){
+    ESCALATION_LEVELS.forEach((l,i)=>{
+      const role = document.querySelector(`[data-esc-role="${i}"]`);
+      const timeout = document.querySelector(`[data-esc-timeout="${i}"]`);
+      const channel = document.querySelector(`[data-esc-channel="${i}"]`);
+      if(role) l.role = role.value;
+      if(timeout) l.timeoutMin = parseInt(timeout.value) || l.timeoutMin;
+      if(channel) l.channel = channel.value;
+    });
+    showToast('Eskalasyon kuralları güncellendi.');
+    return;
+  }
+
+  const mapToggle = e.target.closest('[data-map-toggle]');
+  if(mapToggle){
+    const panel = document.getElementById(mapToggle.dataset.mapToggle);
+    const wasCollapsed = panel.classList.contains('collapsed');
+    panel.classList.toggle('collapsed');
+    if(wasCollapsed){
+      if(panel.id==='overviewMapPanel') initOverviewMap();
+      if(panel.id==='regionMapPanel') initRegionMap(state.currentRegion);
+    }
+    return;
+  }
+
+  const mapRegionToggle = e.target.closest('[data-map-region-toggle]');
+  if(mapRegionToggle){
+    mapRegionToggle.classList.toggle('active');
+    const visible = mapRegionToggle.classList.contains('active');
+    const cluster = overviewClusters[mapRegionToggle.dataset.mapRegionToggle];
+    if(cluster && overviewMap){
+      if(visible) overviewMap.addLayer(cluster); else overviewMap.removeLayer(cluster);
+    }
+    return;
+  }
+
+  const roleBtn = e.target.closest('[data-role]');
+  if(roleBtn){
+    document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+    roleBtn.classList.add('active');
+    state.role = roleBtn.dataset.role;
+    applyRole();
+    return;
+  }
+});
+
+function applyRole(){
+  if(state.role==='bakimci'){
+    // bölge bakımcısı sadece kendi bölgesini görür — demo için ilk bölgeye kilitlenir
+    document.querySelectorAll('.nav-item[data-nav="region"]').forEach(el=>{
+      el.style.display = el.dataset.region==='ankara-sivas' ? 'flex' : 'none';
+    });
+    document.querySelector('[data-nav="overview"]').style.display = 'none';
+    goto('region',{region:'ankara-sivas'});
+  } else {
+    document.querySelectorAll('.nav-item[data-nav="region"]').forEach(el=> el.style.display = 'flex');
+    document.querySelector('[data-nav="overview"]').style.display = 'flex';
+    goto('overview');
+  }
+}
+
+/* =========================================================
+   AUTOMATION BUILDER
+   ========================================================= */
+const PALETTE = {
+  'Tetikleyiciler': [
+    {kind:'trigger', label:'Su Seviyesi > Eşik', color:'var(--cyan)'},
+    {kind:'trigger', label:'Eğim Açısı > Eşik', color:'var(--cyan)'},
+    {kind:'trigger', label:'Yağış Şiddeti > Eşik', color:'var(--cyan)'},
+    {kind:'trigger', label:'Rüzgar Hızı > Eşik', color:'var(--cyan)'},
+    {kind:'trigger', label:'Sıcaklık Eşiği', color:'var(--cyan)'},
+    {kind:'trigger', label:'Hareket Algılandı', color:'var(--cyan)'},
+  ],
+  'Mantık': [
+    {kind:'logic', label:'VE (AND)', color:'var(--purple)'},
+    {kind:'logic', label:'VEYA (OR)', color:'var(--purple)'},
+  ],
+  'Eylemler': [
+    {kind:'action', label:'Alarm Tetikle', color:'var(--amber)'},
+    {kind:'action', label:'E-posta Gönder', color:'var(--amber)'},
+    {kind:'action', label:'SMS Gönder', color:'var(--amber)'},
+    {kind:'action', label:'Telegram Bot Bildirimi', color:'var(--amber)'},
+    {kind:'action', label:'Webhook / API Tetikle', color:'var(--amber)'},
+  ],
+};
+
+document.getElementById('palette').innerHTML = Object.entries(PALETTE).map(([group,items])=>`
+  <h4>${group}</h4>
+  ${items.map(it=>`<div class="pal-item" draggable="true" data-kind="${it.kind}" data-label="${it.label}" data-color="${it.color}">
+    <span class="sq" style="background:${it.color}"></span>${it.label}
+  </div>`).join('')}
+`).join('');
+
+let nodeSeq = 0;
+let nodes = []; // {id, kind, label, color, x, y}
+let connections = []; // {from, to}
+let dragConn = null;
+
+function addNode(kind,label,color,x,y){
+  const id = 'n'+(nodeSeq++);
+  nodes.push({id,kind,label,color,x,y});
+  renderCanvas();
+}
+
+function renderCanvas(){
+  const wrap = document.getElementById('canvasWrap');
+  wrap.querySelectorAll('.node').forEach(n=>n.remove());
+  nodes.forEach(n=>{
+    const div = document.createElement('div');
+    div.className = 'node '+n.kind;
+    div.style.left = n.x+'px';
+    div.style.top = n.y+'px';
+    div.dataset.id = n.id;
+    div.innerHTML = `
+      <div class="node-head"><span class="sq" style="background:${n.color}"></span>${n.label}</div>
+      <div class="node-body">${n.kind==='trigger'?'Koşul bloğu':n.kind==='logic'?'Mantık bloğu':'Eylem bloğu'}</div>
+      ${n.kind!=='action' ? '<div class="port out"></div>':''}
+      ${n.kind!=='trigger' ? '<div class="port in"></div>':''}
+    `;
+    wrap.appendChild(div);
+    makeDraggable(div, n);
+  });
+  drawConnections();
+}
+
+function makeDraggable(div, n){
+  const head = div.querySelector('.node-head');
+  let ox,oy,dragging=false;
+  head.addEventListener('mousedown', (e)=>{
+    dragging=true; ox=e.clientX-n.x; oy=e.clientY-n.y;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',(e)=>{
+    if(!dragging) return;
+    n.x = e.clientX-ox; n.y = e.clientY-oy;
+    div.style.left=n.x+'px'; div.style.top=n.y+'px';
+    drawConnections();
+  });
+  document.addEventListener('mouseup',()=>dragging=false);
+
+  const outPort = div.querySelector('.port.out');
+  const inPort = div.querySelector('.port.in');
+  if(outPort){
+    outPort.addEventListener('mousedown',(e)=>{
+      e.stopPropagation();
+      dragConn = { from:n.id };
+      outPort.classList.add('active-port');
+    });
+  }
+  if(inPort){
+    inPort.addEventListener('mouseup',(e)=>{
+      e.stopPropagation();
+      if(dragConn && dragConn.from!==n.id){
+        connections.push({from:dragConn.from, to:n.id});
+        drawConnections();
+      }
+      dragConn=null;
+      document.querySelectorAll('.port').forEach(p=>p.classList.remove('active-port'));
+    });
+  }
+}
+
+document.getElementById('canvasWrap').addEventListener('mouseup', ()=>{
+  dragConn=null;
+  document.querySelectorAll('.port').forEach(p=>p.classList.remove('active-port'));
+});
+
+function portPos(nodeId, type){
+  const n = nodes.find(x=>x.id===nodeId);
+  if(!n) return {x:0,y:0};
+  const y = n.y + 20;
+  const x = type==='out' ? n.x+172 : n.x;
+  return {x,y};
+}
+
+function drawConnections(){
+  const svg = document.getElementById('connSvg');
+  const wrapRect = document.getElementById('canvasWrap').getBoundingClientRect();
+  svg.setAttribute('width', wrapRect.width);
+  svg.setAttribute('height', Math.max(wrapRect.height, 520));
+  svg.innerHTML = connections.map(c=>{
+    const p1 = portPos(c.from,'out');
+    const p2 = portPos(c.to,'in');
+    const midX = (p1.x+p2.x)/2;
+    return `<path d="M ${p1.x} ${p1.y} C ${midX} ${p1.y}, ${midX} ${p2.y}, ${p2.x} ${p2.y}" fill="none" stroke="#f2a83c" stroke-width="2" opacity="0.75" pointer-events="stroke"/>`;
+  }).join('');
+}
+
+// palette drag & drop
+let dragPayload = null;
+document.querySelectorAll('.pal-item').forEach(item=>{
+  item.addEventListener('dragstart',(e)=>{
+    dragPayload = {kind:item.dataset.kind,label:item.dataset.label,color:item.dataset.color};
+  });
+});
+const canvasWrap = document.getElementById('canvasWrap');
+canvasWrap.addEventListener('dragover', e=>e.preventDefault());
+canvasWrap.addEventListener('drop', e=>{
+  e.preventDefault();
+  if(!dragPayload) return;
+  const rect = canvasWrap.getBoundingClientRect();
+  addNode(dragPayload.kind, dragPayload.label, dragPayload.color, e.clientX-rect.left-86, e.clientY-rect.top-20);
+  dragPayload=null;
+});
+
+document.getElementById('clearCanvas').addEventListener('click', ()=>{
+  nodes=[]; connections=[]; renderCanvas();
+});
+
+let ruleSeq = 1;
+const rulesListEl = document.getElementById('rulesList');
+function addRuleChip(text){
+  const div = document.createElement('div');
+  div.className = 'rule-chip';
+  div.innerHTML = `<b>Kural #${ruleSeq++}</b><br>${text}`;
+  rulesListEl.prepend(div);
+}
+document.getElementById('saveRule').addEventListener('click', ()=>{
+  if(nodes.length<2 || connections.length<1){
+    addRuleChip('Yetersiz blok — en az bir tetikleyici ve bir eylem bağlayın.');
+    return;
+  }
+  const triggers = nodes.filter(n=>n.kind==='trigger').map(n=>n.label);
+  const actions = nodes.filter(n=>n.kind==='action').map(n=>n.label);
+  addRuleChip(`${triggers.join(' + ')||'Koşul'} → <b>${actions.join(' + ')||'Eylem'}</b>`);
+});
+
+// preload two example automations for an instant "wow" on load
+function preloadExamples(){
+  addNode('trigger','Su Seviyesi > Eşik','var(--cyan)', 20, 60);
+  addNode('logic','VE (AND)','var(--purple)', 250, 90);
+  addNode('trigger','Yağış Şiddeti > Eşik','var(--cyan)', 20, 160);
+  addNode('action','Telegram Bot Bildirimi','var(--amber)', 500, 60);
+  addNode('action','Alarm Tetikle','var(--amber)', 500, 160);
+  connections.push({from:nodes[0].id, to:nodes[1].id});
+  connections.push({from:nodes[2].id, to:nodes[1].id});
+  connections.push({from:nodes[1].id, to:nodes[3].id});
+  connections.push({from:nodes[1].id, to:nodes[4].id});
+  renderCanvas();
+  addRuleChip('Su Seviyesi > 80cm VE Yağış > 15mm/sa → <b>Telegram Bot + Alarm</b>');
+  addRuleChip('Eğim Açısı > 3° → <b>E-posta + Webhook (Bakım Sistemi)</b>');
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+renderRegionNav();
+goto('overview');
+window.addEventListener('resize', drawConnections);
+setTimeout(preloadExamples, 50);
+</script>
+</body>
+</html>
