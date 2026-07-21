@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAİS — Modüler Mimari Referans</title>
+<style>
+  :root {
+    --navy: #0d1b4a;
+    --navy-light: #1a3060;
+    --navy-mid: #132244;
+    --accent: #3b82f6;
+    --accent-dim: #2563eb;
+    --sun-color: #f59e0b;
+    --vd-color: #10b981;
+    --mc-color: #6366f1;
+    --srv-color: #ef4444;
+    --zigbee: #f59e0b;
+    --lora: #10b981;
+    --gsm: #ef4444;
+    --fiber: #8b5cf6;
+    --rs485: #f97316;
+    --bg: #0a1628;
+    --surface: #111d32;
+    --surface2: #162440;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --border: #1e3a5f;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, #0f2554 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 0 28px;
+  }
+  header h1 { font-size: 28px; font-weight: 800; letter-spacing: 0.08em; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-dim); font-size: 14px; margin-top: 6px; }
+
+  /* Navigation */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,22,40,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+  nav .container { display: flex; gap: 0; overflow-x: auto; }
+  .nav-btn {
+    padding: 12px 18px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-dim); background: none; border: none;
+    border-bottom: 2px solid transparent; cursor: pointer;
+    white-space: nowrap; transition: all 0.2s;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Sections */
+  section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+  .section-hidden { display: none; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+  h2 .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    vertical-align: middle; margin-left: 8px;
+  }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+  p, li { font-size: 14px; color: var(--text-dim); }
+  p { margin-bottom: 12px; }
+
+  /* Module Cards */
+  .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px; }
+  .module-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; cursor: pointer;
+    transition: all 0.2s; position: relative; overflow: hidden;
+  }
+  .module-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .module-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+  .module-card.expanded { grid-column: 1 / -1; }
+  .mc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .mc-code { font-size: 18px; font-weight: 800; font-family: 'Consolas', monospace; }
+  .mc-name { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+  .mc-tag {
+    padding: 2px 8px; border-radius: 3px; font-size: 10px;
+    font-weight: 700; letter-spacing: 0.05em;
+  }
+  .mc-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.5; }
+
+  /* Spec table inside card */
+  .spec-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+  .spec-table td { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .spec-table td:first-child { color: var(--text-dim); width: 40%; font-weight: 500; }
+  .spec-table td:last-child { color: var(--text); font-weight: 600; font-family: 'Consolas', monospace; font-size: 11px; }
+
+  /* Detail panel */
+  .detail-panel {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+  .module-card.expanded .detail-panel { display: block; }
+  .detail-panel h4 { font-size: 12px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 12px 0 6px; text-transform: uppercase; }
+  .component-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .comp-chip {
+    padding: 3px 10px; border-radius: 4px; font-size: 11px;
+    background: var(--surface2); border: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  /* Tier colors */
+  .tier-sun .mc-code, .tier-sun .mc-tag { color: var(--sun-color); }
+  .tier-sun::before { background: var(--sun-color); }
+  .tier-sun .mc-tag { background: rgba(245,158,11,0.12); }
+
+  .tier-vd .mc-code, .tier-vd .mc-tag { color: var(--vd-color); }
+  .tier-vd::before { background: var(--vd-color); }
+  .tier-vd .mc-tag { background: rgba(16,185,129,0.12); }
+
+  .tier-mc .mc-code, .tier-mc .mc-tag { color: var(--mc-color); }
+  .tier-mc::before { background: var(--mc-color); }
+  .tier-mc .mc-tag { background: rgba(99,102,241,0.12); }
+
+  .tier-srv .mc-code, .tier-srv .mc-tag { color: var(--srv-color); }
+  .tier-srv::before { background: var(--srv-color); }
+  .tier-srv .mc-tag { background: rgba(239,68,68,0.12); }
+
+  /* Topology diagram */
+  .topo-svg { width: 100%; max-width: 900px; margin: 20px auto; display: block; }
+
+  /* Scenario tabs */
+  .scenario-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-tab {
+    padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    background: var(--surface); border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.15s; color: var(--text-dim);
+  }
+  .scenario-tab:hover { border-color: var(--accent); color: var(--text); }
+  .scenario-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .scenario-content { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
+  .scenario-hidden { display: none; }
+
+  /* Protocol badges */
+  .proto-badge {
+    display: inline-block; padding: 1px 7px; border-radius: 3px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.03em; margin-right: 4px;
+  }
+  .proto-zigbee { background: rgba(245,158,11,0.15); color: var(--zigbee); }
+  .proto-lora { background: rgba(16,185,129,0.15); color: var(--lora); }
+  .proto-gsm { background: rgba(239,68,68,0.15); color: var(--gsm); }
+  .proto-fiber { background: rgba(139,92,246,0.15); color: var(--fiber); }
+  .proto-rs485 { background: rgba(249,115,22,0.15); color: var(--rs485); }
+
+  /* Comparison table */
+  .cmp-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+  .cmp-table th {
+    padding: 10px 12px; text-align: left; font-weight: 700;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--navy-mid); color: var(--text-dim);
+    border-bottom: 2px solid var(--border);
+  }
+  .cmp-table td {
+    padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+  .cmp-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .cmp-table .dim { color: var(--text-dim); }
+
+  /* Flow arrow */
+  .flow-row {
+    display: flex; align-items: center; gap: 8px; margin: 12px 0;
+    flex-wrap: wrap; font-size: 13px;
+  }
+  .flow-box {
+    padding: 8px 14px; border-radius: 6px; font-weight: 600;
+    font-size: 12px; white-space: nowrap;
+  }
+  .flow-arrow { color: var(--text-dim); font-size: 16px; }
+  .flow-proto { font-size: 10px; color: var(--text-dim); font-weight: 600; }
+
+  @media (max-width: 768px) {
+    .module-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 20px; }
+    .nav-btn { padding: 10px 12px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>RAİS <span>Modüler Mimari</span> Referans</h1>
+    <p>Katmanlı cihaz topolojisi · Sensör uç noktalarından merkez sunucuya</p>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <button class="nav-btn active" data-section="overview">Genel Bakış</button>
+    <button class="nav-btn" data-section="tier1">Katman 1 · SUN</button>
+    <button class="nav-btn" data-section="tier2">Katman 2 · VD</button>
+    <button class="nav-btn" data-section="tier3">Katman 3 · MC</button>
+    <button class="nav-btn" data-section="protocols">Protokoller</button>
+    <button class="nav-btn" data-section="scenarios">Senaryolar</button>
+    <button class="nav-btn" data-section="comparison">Karşılaştırma</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ OVERVIEW ═══════════════ -->
+<section id="sec-overview" class="container">
+  <h2>Mimari Genel Bakış</h2>
+  <p>RAİS sistemi dört katmanlı modüler bir mimariye sahiptir. Amaç: enerji verimliliği, maliyet optimizasyonu ve sahada esneklik. Her katman bağımsız ölçeklenebilir.</p>
+
+  <div class="flow-row" style="margin: 24px 0;">
+    <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">SUN · Sensör</div>
+    <span class="flow-proto">Zigbee</span><span class="flow-arrow">→</span>
+    <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">VD · Veri Düğümü</div>
+    <span class="flow-proto">LoRa Mesh</span><span class="flow-arrow">→</span>
+    <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">MC · Gateway</div>
+    <span class="flow-proto">GSM/Fiber/ETH</span><span class="flow-arrow">→</span>
+    <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+  </div>
+
+  <h3>Tasarım Prensipleri</h3>
+  <p><strong>1. Enerji hiyerarşisi:</strong> Raya en yakın cihazlar en düşük güç tüketir (pil, yıllarca çalışır). Enerji kaynağı büyüklüğü merkezden uzaklıkla ters orantılı.</p>
+  <p><strong>2. Haberleşme katmanlama:</strong> Kısa mesafe (Zigbee 2.4GHz, ~100m) → Orta mesafe (LoRa Mesh 868MHz, ~2-5km) → Uzun mesafe (GSM/Fiber). Ray manyetik alanı kısa mesafe katmanında kalır.</p>
+  <p><strong>3. Modülerlik:</strong> MC tek tip değil — backhaul-only, sensör-girişli ve tam donanımlı versiyonlar. İhtiyaca göre seçim.</p>
+  <p><strong>4. Mesh dayanıklılık:</strong> LoRa mesh ağında bir düğüm çökerse veri alternatif rota bulur. Tek nokta bağımlılığı yok.</p>
+
+  <svg class="topo-svg" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="900" height="420" fill="none"/>
+    <!-- Rail line -->
+    <line x1="60" y1="380" x2="840" y2="380" stroke="#4a5568" stroke-width="4" stroke-dasharray="12,6"/>
+    <text x="450" y="410" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">RAY HATTI</text>
+
+    <!-- Tier labels -->
+    <text x="20" y="365" fill="#f59e0b" font-size="10" font-weight="700" transform="rotate(-90,20,365)">K1 · SUN</text>
+    <text x="20" y="275" fill="#10b981" font-size="10" font-weight="700" transform="rotate(-90,20,275)">K2 · VD</text>
+    <text x="20" y="155" fill="#6366f1" font-size="10" font-weight="700" transform="rotate(-90,20,155)">K3 · MC</text>
+    <text x="20" y="55" fill="#ef4444" font-size="10" font-weight="700" transform="rotate(-90,20,55)">K4 · SRV</text>
+
+    <!-- Tier lines -->
+    <line x1="40" y1="340" x2="880" y2="340" stroke="#1e3a5f" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="230" x2="880" y2="230" stroke="#1e3a5f" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="110" x2="880" y2="110" stroke="#1e3a5f" stroke-width="1" stroke-dasharray="4,4"/>
+
+    <!-- SUN nodes -->
+    <g>
+      <rect x="90" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="115" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-T</text>
+    </g>
+    <g>
+      <rect x="160" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="185" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-V</text>
+    </g>
+    <g>
+      <rect x="340" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="365" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-T</text>
+    </g>
+    <g>
+      <rect x="410" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="435" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-V</text>
+    </g>
+    <g>
+      <rect x="530" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="555" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-US</text>
+    </g>
+    <g>
+      <rect x="700" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="725" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-T</text>
+    </g>
+    <g>
+      <rect x="770" y="350" width="50" height="28" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="795" y="368" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-IMU</text>
+    </g>
+
+    <!-- VD nodes -->
+    <g>
+      <rect x="115" y="255" width="70" height="32" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/>
+      <text x="150" y="275" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-C</text>
+    </g>
+    <g>
+      <rect x="360" y="255" width="70" height="32" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/>
+      <text x="395" y="275" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-C</text>
+    </g>
+    <g>
+      <rect x="530" y="255" width="70" height="32" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/>
+      <text x="565" y="275" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-C</text>
+    </g>
+    <g>
+      <rect x="690" y="255" width="70" height="32" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/>
+      <text x="725" y="275" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-R</text>
+      <text x="725" y="300" text-anchor="middle" fill="#64748b" font-size="8">relay</text>
+    </g>
+
+    <!-- MC nodes -->
+    <g>
+      <rect x="220" y="130" width="90" height="38" rx="6" fill="rgba(99,102,241,0.12)" stroke="#6366f1" stroke-width="2"/>
+      <text x="265" y="148" text-anchor="middle" fill="#6366f1" font-size="10" font-weight="700">MC-S</text>
+      <text x="265" y="160" text-anchor="middle" fill="#64748b" font-size="8">Standart</text>
+    </g>
+    <g>
+      <rect x="620" y="130" width="90" height="38" rx="6" fill="rgba(99,102,241,0.12)" stroke="#6366f1" stroke-width="2"/>
+      <text x="665" y="148" text-anchor="middle" fill="#6366f1" font-size="10" font-weight="700">MC-L</text>
+      <text x="665" y="160" text-anchor="middle" fill="#64748b" font-size="8">Lite</text>
+    </g>
+
+    <!-- Server -->
+    <g>
+      <rect x="380" y="30" width="140" height="42" rx="6" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="2"/>
+      <text x="450" y="48" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">MERKEZ SUNUCU</text>
+      <text x="450" y="62" text-anchor="middle" fill="#64748b" font-size="9">Dashboard · API · DB</text>
+    </g>
+
+    <!-- Zigbee connections (SUN → VD) -->
+    <line x1="115" y1="350" x2="140" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="185" y1="350" x2="160" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="365" y1="350" x2="385" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="435" y1="350" x2="405" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="555" y1="350" x2="565" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="725" y1="350" x2="725" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="795" y1="350" x2="735" y2="287" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+
+    <!-- LoRa mesh connections (VD → MC) -->
+    <line x1="150" y1="255" x2="245" y2="168" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="395" y1="255" x2="285" y2="168" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="565" y1="255" x2="640" y2="168" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="725" y1="255" x2="680" y2="168" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <!-- VD-VD mesh hop -->
+    <line x1="395" y1="271" x2="530" y2="271" stroke="#10b981" stroke-width="1" stroke-dasharray="3,5" opacity="0.4"/>
+    <text x="462" y="265" text-anchor="middle" fill="#10b981" font-size="8" opacity="0.6">mesh hop</text>
+
+    <!-- Backhaul (MC → Server) -->
+    <line x1="265" y1="130" x2="410" y2="72" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+    <line x1="665" y1="130" x2="490" y2="72" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+    <text x="320" y="96" fill="#ef4444" font-size="8" font-weight="600" opacity="0.7">GSM/Fiber</text>
+    <text x="590" y="96" fill="#ef4444" font-size="8" font-weight="600" opacity="0.7">GSM</text>
+
+    <!-- Protocol legend -->
+    <g transform="translate(60,20)">
+      <line x1="0" y1="0" x2="20" y2="0" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <text x="25" y="4" fill="#64748b" font-size="9">Zigbee</text>
+      <line x1="80" y1="0" x2="100" y2="0" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <text x="105" y="4" fill="#64748b" font-size="9">LoRa Mesh</text>
+      <line x1="180" y1="0" x2="200" y2="0" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="205" y="4" fill="#64748b" font-size="9">Backhaul</text>
+    </g>
+  </svg>
+</section>
+
+<!-- ═══════════════ TIER 1 — SUN ═══════════════ -->
+<section id="sec-tier1" class="container section-hidden">
+  <h2>Katman 1: Sensör Uç Noktası <span class="badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">SUN</span></h2>
+  <p>Raya en yakın, en düşük güçlü katman. Sadece sensör + MCU + Zigbee radyo. Pil ile yıllarca çalışır. Ray manyetik alanı bu mesafede LoRa menzilini düşürdüğü için kısa menzilli Zigbee tercih edilir.</p>
+
+  <div class="module-grid">
+
+    <!-- SUN-T -->
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">SUN-T</div><div class="mc-name">Sıcaklık Sensör Düğümü</div></div>
+        <span class="mc-tag">KATMAN 1</span>
+      </div>
+      <div class="mc-desc">Ray sıcaklığını ray altından ölçer. PT100 veya NTC termistör. Düşük örnekleme (dakika bazlı), ultra-düşük güç.</div>
+      <table class="spec-table">
+        <tr><td>Sensör</td><td>PT100 / NTC 10kΩ</td></tr>
+        <tr><td>MCU</td><td>STM32L0 / nRF52832</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee</span> 2.4 GHz</td></tr>
+        <tr><td>Menzil</td><td>50 – 150 m (ray ortamı)</td></tr>
+        <tr><td>Güç</td><td>CR2477 pil · ~3 yıl ömür</td></tr>
+        <tr><td>Örnekleme</td><td>1/dk (ayarlanabilir)</td></tr>
+        <tr><td>Montaj</td><td>Ray altı / travers</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~40×30×15 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list">
+          <span class="comp-chip">MCU (STM32L071)</span>
+          <span class="comp-chip">PT100 amplifikatör</span>
+          <span class="comp-chip">Zigbee modül (XBee3)</span>
+          <span class="comp-chip">Pil tutucu CR2477</span>
+          <span class="comp-chip">Watchdog IC</span>
+          <span class="comp-chip">ESD koruması</span>
+        </div>
+        <h4>Güç Profili</h4>
+        <p>Sleep: ~2 µA · Ölçüm: ~5 mA × 50ms · TX: ~25 mA × 15ms<br>
+        Günlük ortalama: ~15 µA → CR2477 (1Ah) ile ~3+ yıl</p>
+        <h4>Notlar</h4>
+        <p>Ray manyetik ortamı Zigbee'yi de etkiler ama 2.4 GHz'de etki LoRa 868 MHz'e göre çok daha az. Anten yönü ray eksenine dik monte edilmeli.</p>
+      </div>
+    </div>
+
+    <!-- SUN-V -->
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">SUN-V</div><div class="mc-name">Titreşim / IMU Sensör Düğümü</div></div>
+        <span class="mc-tag">KATMAN 1</span>
+      </div>
+      <div class="mc-desc">Ray/travers titreşimini 3-eksen ivmeölçer ile ölçer. Tren geçişi tetiklemeli yüksek hızlı örnekleme, boşta ultra-düşük güç.</div>
+      <table class="spec-table">
+        <tr><td>Sensör</td><td>ADXL355 / ICM-42688</td></tr>
+        <tr><td>MCU</td><td>nRF52840 (BLE + Zigbee)</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee</span> 2.4 GHz</td></tr>
+        <tr><td>Menzil</td><td>50 – 150 m</td></tr>
+        <tr><td>Güç</td><td>2× AA Lityum / mini solar opsiyonu</td></tr>
+        <tr><td>Örnekleme</td><td>Boşta: 10 Hz · Tetikli: 1 kHz</td></tr>
+        <tr><td>Montaj</td><td>Ray karnı / travers üstü</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~50×35×20 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list">
+          <span class="comp-chip">MCU (nRF52840)</span>
+          <span class="comp-chip">IMU (ADXL355)</span>
+          <span class="comp-chip">Flash (2MB SPI)</span>
+          <span class="comp-chip">Zigbee RF front-end</span>
+          <span class="comp-chip">Pil yuvası 2×AA</span>
+          <span class="comp-chip">Charge controller (solar opt.)</span>
+        </div>
+        <h4>Akıllı Tetikleme</h4>
+        <p>IMU interrupt-driven: sürekli 10 Hz'de eşik izler, tren titreşimi algılanınca 1 kHz'e geçer, 2 MB SPI flash'a buffer'lar, sonra Zigbee ile toplu gönderir. Bu sayede ortalama tüketim düşük kalır.</p>
+      </div>
+    </div>
+
+    <!-- SUN-US -->
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">SUN-US</div><div class="mc-name">Ultrasonik Su Seviye Düğümü</div></div>
+        <span class="mc-tag">KATMAN 1</span>
+      </div>
+      <div class="mc-desc">Menfez su seviyesi ve akış hızı ölçümü. Ultrasonik ToF sensör, periyodik ölçüm + alarm eşiği tetiklemesi.</div>
+      <table class="spec-table">
+        <tr><td>Sensör</td><td>JSN-SR04T / A02YYUW</td></tr>
+        <tr><td>MCU</td><td>STM32L0 / nRF52832</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee</span> 2.4 GHz</td></tr>
+        <tr><td>Menzil</td><td>100 – 300 m (açık alan)</td></tr>
+        <tr><td>Güç</td><td>3.7V LiPo + mini solar (0.5W)</td></tr>
+        <tr><td>Örnekleme</td><td>5/dk normal · 1/sn alarm</td></tr>
+        <tr><td>Montaj</td><td>Menfez girişi üst kenar</td></tr>
+        <tr><td>Kasa</td><td>IP68, ~60×40×25 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list">
+          <span class="comp-chip">MCU (STM32L071)</span>
+          <span class="comp-chip">Ultrasonik modül</span>
+          <span class="comp-chip">Zigbee modül</span>
+          <span class="comp-chip">LiPo 1000mAh</span>
+          <span class="comp-chip">Solar MPPT (BQ25504)</span>
+          <span class="comp-chip">Su geçirmez konnektör</span>
+        </div>
+        <h4>Alarm Mantığı</h4>
+        <p>3 kademe eşik: Uyarı (60%) → Alarm (80%) → Kritik (90%). Eşik aşılınca örnekleme hızı artar ve VD üzerinden acil mesaj gönderilir. Yerel buzzer opsiyonu.</p>
+      </div>
+    </div>
+
+    <!-- SUN-STR -->
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">SUN-STR</div><div class="mc-name">Gerilme / Strain Düğümü</div></div>
+        <span class="mc-tag">KATMAN 1</span>
+      </div>
+      <div class="mc-desc">Ray gerilme (strain) ölçümü. Kaynak noktaları, makas bölgeleri ve köprü raylarında kullanım.</div>
+      <table class="spec-table">
+        <tr><td>Sensör</td><td>Foil strain gauge (350Ω)</td></tr>
+        <tr><td>MCU</td><td>STM32L0 + HX711 ADC</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee</span> 2.4 GHz</td></tr>
+        <tr><td>Güç</td><td>CR2477 × 2 / mini solar</td></tr>
+        <tr><td>Örnekleme</td><td>Statik: 1/dk · Dinamik: 100 Hz</td></tr>
+        <tr><td>Montaj</td><td>Ray karnına yapıştırma</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~45×30×15 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Notlar</h4>
+        <p>Wheatstone köprü konfigürasyonunda çalışır. Sıcaklık kompanzasyonu SUN-T ile birlikte kullanılarak yazılımsal olarak yapılabilir.</p>
+      </div>
+    </div>
+
+    <!-- SUN-AE -->
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">SUN-AE</div><div class="mc-name">Akustik Emisyon Düğümü</div></div>
+        <span class="mc-tag">KATMAN 1</span>
+      </div>
+      <div class="mc-desc">Ray çatlak tespiti için akustik emisyon izleme. Yüksek frekanslı piezo sensör, event-driven çalışma.</div>
+      <table class="spec-table">
+        <tr><td>Sensör</td><td>Piezo AE sensör (150 kHz)</td></tr>
+        <tr><td>MCU</td><td>nRF52840 (yüksek ADC hızı)</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee</span> 2.4 GHz</td></tr>
+        <tr><td>Güç</td><td>3.7V LiPo + solar (1W)</td></tr>
+        <tr><td>Örnekleme</td><td>Event-driven, 500 kHz burst</td></tr>
+        <tr><td>Montaj</td><td>Ray karnı / kaynak noktası</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~55×40×20 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Notlar</h4>
+        <p>En yüksek güçlü SUN tipi — burst örnekleme ve FFT ön işleme gerektirir. Solar ile desteklenmesi şart. Sadece kritik noktalarda (kaynak, makas, köprü) konuşlandırılır.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ TIER 2 — VD ═══════════════ -->
+<section id="sec-tier2" class="container section-hidden">
+  <h2>Katman 2: Veri Düğümü <span class="badge" style="background:rgba(16,185,129,0.15);color:#10b981">VD</span></h2>
+  <p>SUN'lardan Zigbee ile veri toplar, LoRa mesh ağına köprüler. Direk/kazık üstüne monte, mini solar + pil beslemeli. Raydan yeterli mesafede olduğu için LoRa menzili normaldir. Murat'ın "data_node" konsepti.</p>
+
+  <div class="module-grid">
+
+    <!-- VD-C -->
+    <div class="module-card tier-vd" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">VD-C</div><div class="mc-name">Collector — Zigbee→LoRa Köprü</div></div>
+        <span class="mc-tag">KATMAN 2</span>
+      </div>
+      <div class="mc-desc">Temel veri düğümü. Zigbee koordinatör olarak yakındaki SUN'lardan veri toplar, LoRa mesh üzerinden MC'ye iletir. 3-8 SUN bağlayabilir.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>ESP32-C3 / STM32WL</td></tr>
+        <tr><td>Zigbee</td><td><span class="proto-badge proto-zigbee">Coordinator</span> 3-8 end device</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Mesh Node</span> 868 MHz</td></tr>
+        <tr><td>Menzil (Zigbee)</td><td>100 – 300 m</td></tr>
+        <tr><td>Menzil (LoRa)</td><td>2 – 5 km görüş hattı</td></tr>
+        <tr><td>Güç</td><td>Solar 2W + LiFePO4 3.2V 6Ah</td></tr>
+        <tr><td>Montaj</td><td>Direk / kazık (ray kenarı 5-20m)</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~120×80×50 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list">
+          <span class="comp-chip">MCU (ESP32-C3)</span>
+          <span class="comp-chip">Zigbee coordinator IC</span>
+          <span class="comp-chip">LoRa SX1262 modül</span>
+          <span class="comp-chip">Solar MPPT</span>
+          <span class="comp-chip">LiFePO4 pil</span>
+          <span class="comp-chip">MicroSD (log)</span>
+          <span class="comp-chip">RTC (DS3231)</span>
+          <span class="comp-chip">Watchdog + reset</span>
+        </div>
+        <h4>İletişim Protokolü</h4>
+        <p>Zigbee tarafı: Coordinator modda, SUN'lardan periyodik data frame alır.<br>
+        LoRa tarafı: Mesh protokolü (Meshtastic tabanlı veya özel). Store-and-forward destekli — hedef MC'ye ulaşamazsa komşu VD'ye iletir.</p>
+        <h4>Akıllı Yönlendirme</h4>
+        <p>Her VD-C, LoRa mesh'teki komşu tablosunu tutar. MC'ye en kısa (veya en güvenilir RSSI'lı) rota seçilir. Rota düşerse alternatif komşuya geçilir.</p>
+      </div>
+    </div>
+
+    <!-- VD-R -->
+    <div class="module-card tier-vd" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">VD-R</div><div class="mc-name">Relay — LoRa Mesh Tekrarlayıcı</div></div>
+        <span class="mc-tag">KATMAN 2</span>
+      </div>
+      <div class="mc-desc">Sadece LoRa mesh ağını genişletir. Zigbee yok, sensör toplamaz. VD-C'ler arası veya VD-C→MC arası mesafe uzaksa arada relay olarak çalışır.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>STM32WL (LoRa entegre)</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Mesh Relay</span> 868 MHz</td></tr>
+        <tr><td>Menzil</td><td>2 – 5 km (her yöne)</td></tr>
+        <tr><td>Güç</td><td>Solar 1W + LiFePO4 3Ah</td></tr>
+        <tr><td>Montaj</td><td>Direk / kazık / sinyal direği</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~80×60×35 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kullanım Senaryosu</h4>
+        <p>Arazi engelleri (tepe, yarma, tünel girişi) nedeniyle VD-C'den MC'ye doğrudan LoRa ulaşamıyorsa arada VD-R konuşlandırılır. Maliyeti çok düşük, sadece LoRa modül + MCU + solar.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ TIER 3 — MC ═══════════════ -->
+<section id="sec-tier3" class="container section-hidden">
+  <h2>Katman 3: Modüler Cihaz <span class="badge" style="background:rgba(99,102,241,0.15);color:#6366f1">MC</span></h2>
+  <p>Saha gateway. LoRa mesh ağından gelen verileri toplar ve backhaul (GSM/Fiber/Ethernet) ile merkez sunucuya iletir. 3 versiyon: ihtiyaca göre seçim.</p>
+
+  <div class="module-grid">
+
+    <!-- MC-L -->
+    <div class="module-card tier-mc" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">MC-L</div><div class="mc-name">Lite — Sadece Gateway</div></div>
+        <span class="mc-tag">KATMAN 3</span>
+      </div>
+      <div class="mc-desc">En hafif MC. Sadece LoRa mesh'ten veri toplar ve GSM ile sunucuya pushlar. Kablolu sensör girişi yok. Montajı kolay, maliyeti düşük.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>ESP32-S3 / RPi Zero 2W</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Gateway</span> Çoklu kanal (8ch)</td></tr>
+        <tr><td>Zigbee</td><td>—</td></tr>
+        <tr><td>Kablolu Giriş</td><td>—</td></tr>
+        <tr><td>Backhaul</td><td><span class="proto-badge proto-gsm">4G/LTE</span></td></tr>
+        <tr><td>Güç</td><td>Solar 10W + 12V 12Ah pil</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~200×150×100 mm</td></tr>
+        <tr><td>Tahmini Maliyet</td><td>Düşük ($$)</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list">
+          <span class="comp-chip">İşlemci modülü</span>
+          <span class="comp-chip">LoRa gateway modül (SX1303)</span>
+          <span class="comp-chip">4G modem (SIM7600)</span>
+          <span class="comp-chip">Solar MPPT controller</span>
+          <span class="comp-chip">12V pil paketi</span>
+          <span class="comp-chip">GPS modül (zaman senkron)</span>
+          <span class="comp-chip">SD kart (yerel log)</span>
+        </div>
+        <h4>Ne Zaman Kullanılır?</h4>
+        <p>VD-C ve VD-R ağının bitiş noktasında, sadece veriyi alıp sunucuya göndermesi gereken yerlerde. Yakınında doğrudan bağlı sensör yoksa. Uzak noktalarda, arazi boyunca 20-30 km'de bir.</p>
+      </div>
+    </div>
+
+    <!-- MC-S -->
+    <div class="module-card tier-mc" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">MC-S</div><div class="mc-name">Standart — Gateway + Sensör Girişli</div></div>
+        <span class="mc-tag">KATMAN 3</span>
+      </div>
+      <div class="mc-desc">Ana MC tipi. LoRa mesh gateway + Zigbee (yakın SUN'lara doğrudan bağlantı) + RS485/UART kablolu sensör girişleri + GSM backhaul.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>RPi CM4 / STM32H7</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Gateway</span> 8ch</td></tr>
+        <tr><td>Zigbee</td><td><span class="proto-badge proto-zigbee">Coordinator</span> 5-10 SUN</td></tr>
+        <tr><td>Kablolu Giriş</td><td><span class="proto-badge proto-rs485">RS485</span> ×2 · UART ×2</td></tr>
+        <tr><td>Backhaul</td><td><span class="proto-badge proto-gsm">4G/LTE</span></td></tr>
+        <tr><td>Güç</td><td>Solar 20W + 12V 20Ah pil</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~300×200×120 mm</td></tr>
+        <tr><td>Tahmini Maliyet</td><td>Orta ($$$)</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list">
+          <span class="comp-chip">İşlemci modülü (CM4)</span>
+          <span class="comp-chip">LoRa gateway (SX1303)</span>
+          <span class="comp-chip">Zigbee coordinator</span>
+          <span class="comp-chip">RS485 transceiver ×2</span>
+          <span class="comp-chip">UART level shifter</span>
+          <span class="comp-chip">4G modem</span>
+          <span class="comp-chip">GPS</span>
+          <span class="comp-chip">Solar MPPT</span>
+          <span class="comp-chip">Pil BMS</span>
+          <span class="comp-chip">SD + eMMC</span>
+          <span class="comp-chip">Watchdog</span>
+        </div>
+        <h4>Ne Zaman Kullanılır?</h4>
+        <p>Hem kablosuz mesh ağından veri toplamak hem de yakınındaki kablolu sensörlere (mevcut RS485 cihazlar vb.) doğrudan bağlanmak gereken noktalarda. Şuanki RAİS MC konseptinin optimize edilmiş hali.</p>
+      </div>
+    </div>
+
+    <!-- MC-P -->
+    <div class="module-card tier-mc" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header">
+        <div><div class="mc-code">MC-P</div><div class="mc-name">Pro — Tam Donanımlı Edge Gateway</div></div>
+        <span class="mc-tag">KATMAN 3</span>
+      </div>
+      <div class="mc-desc">En kapsamlı MC. Tüm arayüzler + CAN bus + Ethernet/Fiber opsiyon + edge computing. İstasyon yakını veya kritik altyapı noktalarında.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>RPi CM4 + STM32H7 koişlemci</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Gateway</span> 8ch + mesh</td></tr>
+        <tr><td>Zigbee</td><td><span class="proto-badge proto-zigbee">Coordinator</span></td></tr>
+        <tr><td>Kablolu Giriş</td><td><span class="proto-badge proto-rs485">RS485</span>×4 · UART · CAN · I²C · SPI</td></tr>
+        <tr><td>Backhaul</td><td><span class="proto-badge proto-gsm">4G</span> <span class="proto-badge proto-fiber">Ethernet/Fiber</span></td></tr>
+        <tr><td>Edge AI</td><td>Hailo-8L / Coral TPU opsiyonu</td></tr>
+        <tr><td>Güç</td><td>Solar 50W + 12V 40Ah / şebeke</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~400×300×150 mm</td></tr>
+        <tr><td>Tahmini Maliyet</td><td>Yüksek ($$$$)</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Ek Bileşenler (MC-S üzerine)</h4>
+        <div class="component-list">
+          <span class="comp-chip">CAN bus transceiver</span>
+          <span class="comp-chip">Ethernet PHY + RJ45</span>
+          <span class="comp-chip">SFP fiber modül slot</span>
+          <span class="comp-chip">Edge AI akseleratör</span>
+          <span class="comp-chip">UPS modül</span>
+          <span class="comp-chip">Büyük solar + BMS</span>
+        </div>
+        <h4>Ne Zaman Kullanılır?</h4>
+        <p>İstasyon yakını, büyük makas sahaları, köprü/viyadük başları. Fiber veya Ethernet altyapısına erişimi olan noktalar. Edge AI ile yerel anomali tespiti gerektiğinde. Şebeke elektriği varsa enerji sorunu yok.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ PROTOCOLS ═══════════════ -->
+<section id="sec-protocols" class="container section-hidden">
+  <h2>Haberleşme Protokolleri</h2>
+
+  <div class="module-grid">
+    <div class="module-card" style="border-color: var(--zigbee)">
+      <div class="mc-header">
+        <div><div class="mc-code" style="color:var(--zigbee)">Zigbee 3.0</div><div class="mc-name">Kısa Mesafe · SUN → VD / MC</div></div>
+      </div>
+      <table class="spec-table">
+        <tr><td>Frekans</td><td>2.4 GHz ISM</td></tr>
+        <tr><td>Menzil</td><td>50–300 m (ortama göre)</td></tr>
+        <tr><td>Veri Hızı</td><td>250 kbps</td></tr>
+        <tr><td>Topoloji</td><td>Star (coordinator: VD-C veya MC)</td></tr>
+        <tr><td>Güç</td><td>Ultra-düşük (sleepy end device)</td></tr>
+        <tr><td>Neden Zigbee?</td><td>Ray ortamında LoRa'ya göre daha az etkilenir. Sleep current çok düşük. Pille yıllarca çalışır.</td></tr>
+      </table>
+    </div>
+
+    <div class="module-card" style="border-color: var(--lora)">
+      <div class="mc-header">
+        <div><div class="mc-code" style="color:var(--lora)">LoRa Mesh</div><div class="mc-name">Orta Mesafe · VD → MC</div></div>
+      </div>
+      <table class="spec-table">
+        <tr><td>Frekans</td><td>868 MHz (EU)</td></tr>
+        <tr><td>Menzil</td><td>2–5 km (düğüm başı)</td></tr>
+        <tr><td>Veri Hızı</td><td>0.3–50 kbps (SF'ye göre)</td></tr>
+        <tr><td>Topoloji</td><td>Mesh (multi-hop, store&forward)</td></tr>
+        <tr><td>Max Hop</td><td>5–7 hop önerilen (gecikme sınırı)</td></tr>
+        <tr><td>Protokol</td><td>Meshtastic tabanlı veya özel (AODV routing)</td></tr>
+      </table>
+    </div>
+
+    <div class="module-card" style="border-color: var(--gsm)">
+      <div class="mc-header">
+        <div><div class="mc-code" style="color:var(--gsm)">GSM / 4G LTE</div><div class="mc-name">Uzun Mesafe · MC → Sunucu</div></div>
+      </div>
+      <table class="spec-table">
+        <tr><td>Teknoloji</td><td>4G LTE Cat-1 / Cat-M1</td></tr>
+        <tr><td>Menzil</td><td>Baz istasyonu kapsama alanı</td></tr>
+        <tr><td>Protokol</td><td>MQTT over TLS / VPN</td></tr>
+        <tr><td>Yedeklik</td><td>Çift SIM (2 operatör)</td></tr>
+        <tr><td>Kullanım</td><td>MC-L, MC-S, MC-P backhaul</td></tr>
+      </table>
+    </div>
+
+    <div class="module-card" style="border-color: var(--fiber)">
+      <div class="mc-header">
+        <div><div class="mc-code" style="color:var(--fiber)">Fiber / Ethernet</div><div class="mc-name">Yüksek Bant · MC-P → Sunucu</div></div>
+      </div>
+      <table class="spec-table">
+        <tr><td>Teknoloji</td><td>SFP fiber / RJ45 Ethernet</td></tr>
+        <tr><td>Kullanım</td><td>Sadece MC-P (altyapı varsa)</td></tr>
+        <tr><td>Avantaj</td><td>Yüksek bant, düşük gecikme, GSM maliyeti yok</td></tr>
+        <tr><td>Protokol</td><td>MQTT / REST API / gRPC</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCENARIOS ═══════════════ -->
+<section id="sec-scenarios" class="container section-hidden">
+  <h2>Örnek Kurulum Senaryoları</h2>
+
+  <div class="scenario-tabs">
+    <button class="scenario-tab active" data-sc="sc1">Açık Hat (Ova)</button>
+    <button class="scenario-tab" data-sc="sc2">Dağlık / Yarma</button>
+    <button class="scenario-tab" data-sc="sc3">İstasyon Yakını</button>
+    <button class="scenario-tab" data-sc="sc4">Köprü / Viyadük</button>
+  </div>
+
+  <div id="sc1" class="scenario-content">
+    <h3>Senaryo 1: Açık Hat — Ova Bölgesi (30 km)</h3>
+    <p>Düz arazi, engel yok. Her 2 km'de sensör noktası, 10 km'de bir VD-C, 30 km'de bir MC-L.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">15× SUN-T</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">5× SUN-V</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">5× VD-C</div>
+      <span class="flow-proto">LoRa Mesh</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-L</div>
+      <span class="flow-proto">GSM</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Maliyet profili:</strong> Düşük. MC-L yeterli, fiber gerek yok. Solar beslemeli VD-C'ler 2W panel ile çalışır.</p>
+    <p><strong>Enerji:</strong> Tüm cihazlar solar + pil. Şebeke bağlantısı yok.</p>
+  </div>
+
+  <div id="sc2" class="scenario-content scenario-hidden">
+    <h3>Senaryo 2: Dağlık / Yarma Bölgesi (15 km)</h3>
+    <p>Engebeli arazi, görüş hattı sık kesiliyor. VD-R relay'ler mesafe uzatır.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">10× SUN</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">4× VD-C</div>
+      <span class="flow-proto">LoRa</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">3× VD-R</div>
+      <span class="flow-proto">LoRa</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-S</div>
+      <span class="flow-proto">GSM</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>VD-R yerleşimi:</strong> Tepe noktaları, yarma çıkışları ve sinyal direkleri gibi görüş hattı avantajlı konumlar.</p>
+    <p><strong>MC-S çünkü:</strong> Yakınında menfez var, kablolu RS485 taşkın sensörü de bağlanacak.</p>
+  </div>
+
+  <div id="sc3" class="scenario-content scenario-hidden">
+    <h3>Senaryo 3: İstasyon Yakını</h3>
+    <p>Şebeke elektriği mevcut. Makas bölgeleri, peronlar. Yoğun sensör ağı + edge computing.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">20× SUN (çeşitli)</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-P</div>
+      <span class="flow-proto">Ethernet/Fiber</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>VD gerekmez:</strong> MC-P'nin Zigbee coordinator'ü doğrudan SUN'lara ulaşır (~300m). İstasyon alanı küçük.</p>
+    <p><strong>MC-P çünkü:</strong> Şebeke elektriği var, fiber bağlantı mevcut, edge AI ile makas arızası tespiti yerel yapılır.</p>
+  </div>
+
+  <div id="sc4" class="scenario-content scenario-hidden">
+    <h3>Senaryo 4: Köprü / Viyadük</h3>
+    <p>Kritik altyapı. Strain gauge, AE ve IMU sensörleri yoğun. Veri hacmi yüksek.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">8× SUN-STR</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">4× SUN-AE</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">4× SUN-V</div>
+    </div>
+    <div class="flow-row" style="margin-top:4px;">
+      <span class="flow-proto" style="margin-left:20px;">Zigbee</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">2× VD-C</div>
+      <span class="flow-proto">LoRa</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-S / MC-P</div>
+      <span class="flow-proto">GSM/Fiber</span><span class="flow-arrow">→</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>2× VD-C:</strong> Köprünün her iki ucunda bir toplayıcı. SUN-AE yüksek veri üretir, VD-C buffer'lar.</p>
+    <p><strong>Edge AI opsiyonu:</strong> MC-P seçilirse köprü üzerinde gerçek zamanlı yapısal sağlık indeksi hesaplanır.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ COMPARISON ═══════════════ -->
+<section id="sec-comparison" class="container section-hidden">
+  <h2>Karşılaştırma Tablosu</h2>
+
+  <h3>Tüm Modüller</h3>
+  <div style="overflow-x:auto;">
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>Modül</th>
+        <th>Katman</th>
+        <th>Güç Kaynağı</th>
+        <th>Haberleşme</th>
+        <th>Kablolu I/O</th>
+        <th>Maliyet</th>
+        <th>Kasa Boyut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong style="color:var(--sun-color)">SUN-T</strong></td><td class="dim">K1</td><td>Pil (3 yıl)</td><td>Zigbee</td><td>—</td><td>$</td><td>40×30×15</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-V</strong></td><td class="dim">K1</td><td>Pil / mini solar</td><td>Zigbee</td><td>—</td><td>$</td><td>50×35×20</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-US</strong></td><td class="dim">K1</td><td>LiPo + solar 0.5W</td><td>Zigbee</td><td>—</td><td>$</td><td>60×40×25</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-STR</strong></td><td class="dim">K1</td><td>Pil / mini solar</td><td>Zigbee</td><td>—</td><td>$$</td><td>45×30×15</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-AE</strong></td><td class="dim">K1</td><td>LiPo + solar 1W</td><td>Zigbee</td><td>—</td><td>$$</td><td>55×40×20</td></tr>
+      <tr><td><strong style="color:var(--vd-color)">VD-C</strong></td><td class="dim">K2</td><td>Solar 2W + LiFePO4</td><td>Zigbee + LoRa</td><td>—</td><td>$$</td><td>120×80×50</td></tr>
+      <tr><td><strong style="color:var(--vd-color)">VD-R</strong></td><td class="dim">K2</td><td>Solar 1W + LiFePO4</td><td>LoRa</td><td>—</td><td>$</td><td>80×60×35</td></tr>
+      <tr><td><strong style="color:var(--mc-color)">MC-L</strong></td><td class="dim">K3</td><td>Solar 10W + 12Ah</td><td>LoRa GW + GSM</td><td>—</td><td>$$</td><td>200×150×100</td></tr>
+      <tr><td><strong style="color:var(--mc-color)">MC-S</strong></td><td class="dim">K3</td><td>Solar 20W + 20Ah</td><td>LoRa+Zigbee+GSM</td><td>RS485×2, UART×2</td><td>$$$</td><td>300×200×120</td></tr>
+      <tr><td><strong style="color:var(--mc-color)">MC-P</strong></td><td class="dim">K3</td><td>Solar 50W / Şebeke</td><td>Tümü + Fiber</td><td>RS485×4, CAN, ETH</td><td>$$$$</td><td>400×300×150</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:32px;">Haberleşme Katmanları</h3>
+  <div style="overflow-x:auto;">
+  <table class="cmp-table">
+    <thead>
+      <tr><th>Protokol</th><th>Frekans</th><th>Menzil</th><th>Veri Hızı</th><th>Topoloji</th><th>Güç Tüketimi</th><th>Katman</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong style="color:var(--zigbee)">Zigbee</strong></td><td>2.4 GHz</td><td>50–300 m</td><td>250 kbps</td><td>Star</td><td>Ultra-düşük</td><td>SUN→VD/MC</td></tr>
+      <tr><td><strong style="color:var(--lora)">LoRa Mesh</strong></td><td>868 MHz</td><td>2–5 km/hop</td><td>0.3–50 kbps</td><td>Mesh</td><td>Düşük</td><td>VD→MC</td></tr>
+      <tr><td><strong style="color:var(--gsm)">GSM/4G</strong></td><td>Hücresel</td><td>Kapsama</td><td>Mbps</td><td>P2P</td><td>Orta</td><td>MC→Sunucu</td></tr>
+      <tr><td><strong style="color:var(--fiber)">Fiber/ETH</strong></td><td>—</td><td>Kablo</td><td>Gbps</td><td>P2P</td><td>—</td><td>MC-P→Sunucu</td></tr>
+      <tr><td><strong style="color:var(--rs485)">RS485</strong></td><td>—</td><td>1.2 km</td><td>10 Mbps</td><td>Bus</td><td>—</td><td>Sensör→MC-S/P</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<script>
+// Navigation
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sec = btn.dataset.section;
+    document.querySelectorAll('section').forEach(s => {
+      s.classList.toggle('section-hidden', s.id !== 'sec-' + sec);
+    });
+  });
+});
+
+// Scenario tabs
+document.querySelectorAll('.scenario-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.scenario-content').forEach(c => c.classList.add('scenario-hidden'));
+    document.getElementById(tab.dataset.sc).classList.remove('scenario-hidden');
+  });
+});
+</script>
+
+</body>
+</html>
