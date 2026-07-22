@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAİS — Modüler Mimari Referans v2</title>
+<style>
+  :root {
+    --navy: #0d1b4a; --navy-light: #1a3060; --navy-mid: #132244;
+    --accent: #3b82f6; --accent-dim: #2563eb;
+    --sun-color: #f59e0b; --vd-color: #10b981; --mc-color: #6366f1; --srv-color: #ef4444;
+    --zigbee: #f59e0b; --lora: #10b981; --gsm: #ef4444; --fiber: #8b5cf6; --rs485: #f97316;
+    --bg: #0a1628; --surface: #111d32; --surface2: #162440;
+    --text: #e2e8f0; --text-dim: #94a3b8; --border: #1e3a5f;
+    --success: #22c55e; --warn: #eab308; --danger: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  header { background: linear-gradient(135deg, var(--navy) 0%, #0f2554 100%); border-bottom: 1px solid var(--border); padding: 32px 0 28px; }
+  header h1 { font-size: 26px; font-weight: 800; letter-spacing: 0.08em; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-dim); font-size: 14px; margin-top: 4px; }
+  header .ver { color: var(--accent); font-size: 11px; font-weight: 700; background: rgba(59,130,246,0.12); padding: 2px 8px; border-radius: 3px; margin-left: 8px; }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,22,40,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  nav .container { display: flex; gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  nav .container::-webkit-scrollbar { height: 0; }
+  .nav-btn { padding: 11px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-dim); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-btn.new-badge::after { content: 'YENİ'; margin-left: 5px; font-size: 8px; background: var(--success); color: #000; padding: 1px 4px; border-radius: 2px; font-weight: 800; vertical-align: middle; }
+
+  section { padding: 36px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+  .section-hidden { display: none; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 18px; }
+  h2 .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; vertical-align: middle; margin-left: 8px; }
+  h3 { font-size: 15px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+  p, li { font-size: 13px; color: var(--text-dim); }
+  p { margin-bottom: 10px; }
+  strong { color: var(--text); }
+
+  .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; margin-top: 14px; }
+  .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .module-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .module-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-1px); }
+  .module-card.expanded { grid-column: 1 / -1; }
+  .mc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .mc-code { font-size: 17px; font-weight: 800; font-family: 'Consolas', 'Courier New', monospace; }
+  .mc-name { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .mc-tag { padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+  .mc-desc { font-size: 12px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.5; }
+
+  .spec-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+  .spec-table td { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .spec-table td:first-child { color: var(--text-dim); width: 38%; font-weight: 500; }
+  .spec-table td:last-child { color: var(--text); font-weight: 600; font-family: 'Consolas', monospace; font-size: 11px; }
+
+  .detail-panel { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: none; }
+  .module-card.expanded .detail-panel { display: block; }
+  .detail-panel h4 { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 10px 0 6px; text-transform: uppercase; }
+  .component-list { display: flex; flex-wrap: wrap; gap: 5px; }
+  .comp-chip { padding: 3px 9px; border-radius: 4px; font-size: 11px; background: var(--surface2); border: 1px solid var(--border); font-weight: 500; }
+
+  .tier-sun .mc-code, .tier-sun .mc-tag { color: var(--sun-color); }
+  .tier-sun::before { background: var(--sun-color); }
+  .tier-sun .mc-tag { background: rgba(245,158,11,0.12); }
+  .tier-vd .mc-code, .tier-vd .mc-tag { color: var(--vd-color); }
+  .tier-vd::before { background: var(--vd-color); }
+  .tier-vd .mc-tag { background: rgba(16,185,129,0.12); }
+  .tier-mc .mc-code, .tier-mc .mc-tag { color: var(--mc-color); }
+  .tier-mc::before { background: var(--mc-color); }
+  .tier-mc .mc-tag { background: rgba(99,102,241,0.12); }
+  .tier-srv .mc-code, .tier-srv .mc-tag { color: var(--srv-color); }
+  .tier-srv::before { background: var(--srv-color); }
+  .tier-srv .mc-tag { background: rgba(239,68,68,0.12); }
+
+  .proto-badge { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.03em; margin-right: 3px; }
+  .proto-zigbee { background: rgba(245,158,11,0.15); color: var(--zigbee); }
+  .proto-lora { background: rgba(16,185,129,0.15); color: var(--lora); }
+  .proto-gsm { background: rgba(239,68,68,0.15); color: var(--gsm); }
+  .proto-fiber { background: rgba(139,92,246,0.15); color: var(--fiber); }
+  .proto-rs485 { background: rgba(249,115,22,0.15); color: var(--rs485); }
+
+  .flow-row { display: flex; align-items: center; gap: 7px; margin: 10px 0; flex-wrap: wrap; font-size: 12px; }
+  .flow-box { padding: 7px 12px; border-radius: 5px; font-weight: 600; font-size: 11px; white-space: nowrap; }
+  .flow-arrow { color: var(--text-dim); font-size: 14px; }
+  .flow-proto { font-size: 10px; color: var(--text-dim); font-weight: 600; }
+
+  .cmp-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+  .cmp-table th { padding: 9px 10px; text-align: left; font-weight: 700; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; background: var(--navy-mid); color: var(--text-dim); border-bottom: 2px solid var(--border); }
+  .cmp-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); font-size: 11px; }
+  .cmp-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .cmp-table .dim { color: var(--text-dim); }
+
+  .scenario-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .scenario-tab { padding: 7px 14px; border-radius: 5px; font-size: 12px; font-weight: 600; background: var(--surface); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; color: var(--text-dim); }
+  .scenario-tab:hover { border-color: var(--accent); color: var(--text); }
+  .scenario-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .scenario-content { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .scenario-hidden { display: none; }
+
+  /* NEW: Power budget bars */
+  .power-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 12px; }
+  .power-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .power-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+  .power-label { width: 120px; color: var(--text-dim); font-weight: 500; flex-shrink: 0; }
+  .power-bar-bg { flex: 1; height: 18px; background: var(--surface2); border-radius: 3px; overflow: hidden; position: relative; }
+  .power-bar { height: 100%; border-radius: 3px; transition: width 0.5s; display: flex; align-items: center; padding-left: 6px; }
+  .power-bar span { font-size: 9px; font-weight: 700; color: #fff; white-space: nowrap; }
+  .power-val { width: 70px; text-align: right; font-family: 'Consolas', monospace; font-weight: 600; font-size: 11px; flex-shrink: 0; }
+  .power-result { margin-top: 12px; padding: 12px; background: var(--surface2); border-radius: 6px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .power-result-item { text-align: center; }
+  .power-result-item .big { font-size: 22px; font-weight: 800; font-family: 'Consolas', monospace; }
+  .power-result-item .sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+  /* NEW: Cost cards */
+  .cost-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+  .cost-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .cost-card .price { font-size: 24px; font-weight: 800; font-family: 'Consolas', monospace; }
+  .cost-card .unit { font-size: 11px; color: var(--text-dim); }
+  .cost-breakdown { margin-top: 10px; font-size: 11px; }
+  .cost-breakdown div { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .cost-scenario { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-top: 16px; }
+  .cost-total { font-size: 28px; font-weight: 800; font-family: 'Consolas', monospace; }
+  .cost-save { display: inline-block; background: rgba(34,197,94,0.12); color: var(--success); padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; margin-left: 8px; }
+
+  /* NEW: Data flow */
+  .dataflow-chain { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 14px; }
+  .df-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; position: relative; padding-left: 20px; }
+  .df-step::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: -14px; width: 2px; background: var(--border); }
+  .df-step:last-child::before { display: none; }
+  .df-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; position: absolute; left: 0; }
+  .df-content { flex: 1; }
+  .df-title { font-size: 12px; font-weight: 700; }
+  .df-detail { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .df-metric { display: inline-block; background: var(--surface2); padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 600; font-family: 'Consolas', monospace; margin-top: 3px; margin-right: 4px; }
+
+  /* NEW: Roadmap */
+  .roadmap-phase { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 12px; position: relative; overflow: hidden; }
+  .roadmap-phase::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .phase-tag { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .phase-title { font-size: 16px; font-weight: 700; }
+  .phase-time { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+  .deliverables { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .deliv-chip { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; background: var(--surface2); border: 1px solid var(--border); }
+  .phase-1::before { background: var(--sun-color); }
+  .phase-2::before { background: var(--vd-color); }
+  .phase-3::before { background: var(--mc-color); }
+  .phase-4::before { background: var(--accent); }
+
+  .topo-svg { width: 100%; max-width: 900px; margin: 16px auto; display: block; }
+
+  @media (max-width: 768px) {
+    .module-grid, .cost-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 18px; }
+    .nav-btn { padding: 9px 10px; font-size: 10px; }
+    .power-label { width: 80px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>RAİS <span>Modüler Mimari</span> Referans <span class="ver">v2.0</span></h1>
+    <p>Katmanlı cihaz topolojisi · XIAO MG24 tabanlı sensör ağı · Ekip sunum dokümanı</p>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <button class="nav-btn active" data-section="overview">Genel Bakış</button>
+    <button class="nav-btn" data-section="tier1">K1 · SUN</button>
+    <button class="nav-btn" data-section="tier2">K2 · VD</button>
+    <button class="nav-btn" data-section="tier3">K3 · MC</button>
+    <button class="nav-btn new-badge" data-section="power">Güç Tüketim Analizi</button>
+    <button class="nav-btn new-badge" data-section="cost">Maliyet</button>
+    <button class="nav-btn new-badge" data-section="dataflow">Veri Akış</button>
+    <button class="nav-btn new-badge" data-section="roadmap">Yol Haritası</button>
+    <button class="nav-btn" data-section="protocols">Protokoller</button>
+    <button class="nav-btn" data-section="scenarios">Senaryolar</button>
+    <button class="nav-btn" data-section="comparison">Karşılaştırma</button>
+  </div>
+</nav>
+
+<!-- ═══════ OVERVIEW ═══════ -->
+<section id="sec-overview" class="container">
+  <h2>Mimari Genel Bakış</h2>
+  <p>RAİS sistemi dört katmanlı modüler bir mimariye sahiptir. Amaç: enerji verimliliği, maliyet optimizasyonu ve sahada esneklik. Her katman bağımsız ölçeklenebilir.</p>
+
+  <div class="flow-row" style="margin: 20px 0;">
+    <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">SUN · Sensör</div>
+    <span class="flow-proto">Zigbee</span><span class="flow-arrow">→</span>
+    <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">VD · Veri Düğümü</div>
+    <span class="flow-proto">LoRa Mesh</span><span class="flow-arrow">→</span>
+    <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">MC · Gateway</div>
+    <span class="flow-proto">GSM/Fiber/ETH</span><span class="flow-arrow">→</span>
+    <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+  </div>
+
+  <h3>Tasarım Prensipleri</h3>
+  <p><strong>1. Enerji hiyerarşisi:</strong> Raya yakın cihazlar en düşük güç tüketir (pil, yıllarca çalışır). Güç kaynağı büyüklüğü katmanla orantılı artar.</p>
+  <p><strong>2. Haberleşme katmanlama:</strong> Kısa mesafe (Zigbee 2.4 GHz, ~100 m) → Orta mesafe (LoRa Mesh 868 MHz, ~2-5 km) → Uzun mesafe (GSM/Fiber). Ray manyetik alanı etkisi kısa mesafe katmanında kalır.</p>
+  <p><strong>3. Modülerlik:</strong> MC tek tip değil — Lite (sadece gateway), Standart (sensör girişli), Pro (edge computing). İhtiyaca göre seçim.</p>
+  <p><strong>4. Mesh dayanıklılık:</strong> LoRa mesh ağında düğüm çökerse veri alternatif rota bulur. Tek nokta bağımlılığı yok.</p>
+  <p><strong>5. XIAO MG24 platform seçimi:</strong> Tüm SUN modülleri aynı MCU platformunu kullanır → ortak firmware tabanı, ortak PCB footprint, kolay tedarik.</p>
+
+  <svg class="topo-svg" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+    <rect width="900" height="420" fill="none"/>
+    <line x1="60" y1="380" x2="840" y2="380" stroke="#4a5568" stroke-width="4" stroke-dasharray="12,6"/>
+    <text x="450" y="410" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">RAY HATTI</text>
+    <text x="20" y="365" fill="#f59e0b" font-size="10" font-weight="700" transform="rotate(-90,20,365)">K1 · SUN</text>
+    <text x="20" y="275" fill="#10b981" font-size="10" font-weight="700" transform="rotate(-90,20,275)">K2 · VD</text>
+    <text x="20" y="155" fill="#6366f1" font-size="10" font-weight="700" transform="rotate(-90,20,155)">K3 · MC</text>
+    <text x="20" y="55" fill="#ef4444" font-size="10" font-weight="700" transform="rotate(-90,20,55)">K4 · SRV</text>
+    <line x1="40" y1="340" x2="880" y2="340" stroke="#1e3a5f" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="230" x2="880" y2="230" stroke="#1e3a5f" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="110" x2="880" y2="110" stroke="#1e3a5f" stroke-width="1" stroke-dasharray="4,4"/>
+    <!-- SUN nodes -->
+    <g><rect x="90" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="115" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-T</text></g>
+    <g><rect x="160" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="185" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-V</text></g>
+    <g><rect x="340" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="365" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-T</text></g>
+    <g><rect x="410" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="435" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-V</text></g>
+    <g><rect x="530" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="555" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-US</text></g>
+    <g><rect x="700" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="725" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-T</text></g>
+    <g><rect x="770" y="350" width="50" height="26" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><text x="795" y="367" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">SUN-IMU</text></g>
+    <!-- VD -->
+    <g><rect x="115" y="255" width="66" height="30" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/><text x="148" y="274" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-C</text></g>
+    <g><rect x="360" y="255" width="66" height="30" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/><text x="393" y="274" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-C</text></g>
+    <g><rect x="530" y="255" width="66" height="30" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/><text x="563" y="274" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-C</text></g>
+    <g><rect x="700" y="255" width="66" height="30" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/><text x="733" y="274" text-anchor="middle" fill="#10b981" font-size="10" font-weight="700">VD-R</text></g>
+    <!-- MC -->
+    <g><rect x="220" y="130" width="86" height="36" rx="6" fill="rgba(99,102,241,0.12)" stroke="#6366f1" stroke-width="2"/><text x="263" y="147" text-anchor="middle" fill="#6366f1" font-size="10" font-weight="700">MC-S</text><text x="263" y="159" text-anchor="middle" fill="#64748b" font-size="8">Standart</text></g>
+    <g><rect x="620" y="130" width="86" height="36" rx="6" fill="rgba(99,102,241,0.12)" stroke="#6366f1" stroke-width="2"/><text x="663" y="147" text-anchor="middle" fill="#6366f1" font-size="10" font-weight="700">MC-L</text><text x="663" y="159" text-anchor="middle" fill="#64748b" font-size="8">Lite</text></g>
+    <!-- Server -->
+    <g><rect x="380" y="30" width="140" height="40" rx="6" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="2"/><text x="450" y="47" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="700">MERKEZ SUNUCU</text><text x="450" y="61" text-anchor="middle" fill="#64748b" font-size="9">Dashboard · API · DB</text></g>
+    <!-- Zigbee lines -->
+    <line x1="115" y1="350" x2="140" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="185" y1="350" x2="155" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="365" y1="350" x2="385" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="435" y1="350" x2="400" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="555" y1="350" x2="563" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="725" y1="350" x2="725" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <line x1="795" y1="350" x2="740" y2="285" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <!-- LoRa lines -->
+    <line x1="148" y1="255" x2="245" y2="166" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="393" y1="255" x2="280" y2="166" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="563" y1="255" x2="640" y2="166" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="733" y1="255" x2="680" y2="166" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+    <line x1="393" y1="270" x2="530" y2="270" stroke="#10b981" stroke-width="1" stroke-dasharray="3,5" opacity="0.4"/>
+    <text x="462" y="264" text-anchor="middle" fill="#10b981" font-size="8" opacity="0.6">mesh hop</text>
+    <!-- Backhaul -->
+    <line x1="263" y1="130" x2="410" y2="70" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+    <line x1="663" y1="130" x2="490" y2="70" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+    <text x="318" y="95" fill="#ef4444" font-size="8" font-weight="600" opacity="0.7">GSM/Fiber</text>
+    <text x="590" y="95" fill="#ef4444" font-size="8" font-weight="600" opacity="0.7">GSM</text>
+    <g transform="translate(60,18)"><line x1="0" y1="0" x2="18" y2="0" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3"/><text x="22" y="4" fill="#64748b" font-size="9">Zigbee</text><line x1="75" y1="0" x2="93" y2="0" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4"/><text x="97" y="4" fill="#64748b" font-size="9">LoRa Mesh</text><line x1="170" y1="0" x2="188" y2="0" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/><text x="192" y="4" fill="#64748b" font-size="9">Backhaul</text></g>
+  </svg>
+</section>
+
+<!-- ═══════ TIER 1 — SUN ═══════ -->
+<section id="sec-tier1" class="container section-hidden">
+  <h2>Katman 1: Sensör Uç Noktası <span class="badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">SUN</span></h2>
+  <p>Raya en yakın, en düşük güçlü katman. Tüm SUN modülleri <strong>Seeed XIAO MG24</strong> (EFR32MG24 SoC) kullanır — Zigbee 3.0 + Thread + BLE 5.3 desteği, 1.8V–3.8V çalışma, 1.3 µA deep sleep. Ortak platform sayesinde tek firmware tabanı ve ortak PCB footprint.</p>
+
+  <div class="module-grid">
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">SUN-T</div><div class="mc-name">Sıcaklık Sensör Ünitesi</div></div><span class="mc-tag">KATMAN 1</span></div>
+      <div class="mc-desc">Ray sıcaklığını ray altından ölçer. PT100 veya NTC termistör. Dakika bazlı örnekleme, ultra-düşük güç.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>XIAO MG24 (EFR32MG24)</td></tr>
+        <tr><td>Sensör</td><td>PT100 / NTC 10kΩ</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee 3.0</span></td></tr>
+        <tr><td>Menzil</td><td>50 – 150 m (ray ortamı)</td></tr>
+        <tr><td>Güç</td><td>CR2477 pil · ~5+ yıl ömür</td></tr>
+        <tr><td>Örnekleme</td><td>1/dk (ayarlanabilir)</td></tr>
+        <tr><td>Montaj</td><td>Ray altı / travers</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~40×30×15 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list"><span class="comp-chip">XIAO MG24</span><span class="comp-chip">PT100 amplifikatör (MAX31865)</span><span class="comp-chip">Zigbee chip anten</span><span class="comp-chip">CR2477 tutucu</span><span class="comp-chip">Watchdog (TPL5010)</span><span class="comp-chip">ESD koruması</span></div>
+        <h4>Güç Matematik (Detay "Güç Bütçesi" sekmesinde)</h4>
+        <p>Sleep: 1.3 µA · Ölçüm: 5 mA × 20 ms · Zigbee TX: 8 mA × 15 ms → Ort. ~3.5 µA → CR2477 ile 5+ yıl</p>
+      </div>
+    </div>
+
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">SUN-V</div><div class="mc-name">Titreşim / IMU Sensör Ünitesi</div></div><span class="mc-tag">KATMAN 1</span></div>
+      <div class="mc-desc">Ray/travers titreşimini 3-eksen ivmeölçer ile ölçer. Tren geçişi tetiklemeli yüksek hızlı örnekleme.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>XIAO MG24 (EFR32MG24)</td></tr>
+        <tr><td>Sensör</td><td>ADXL355 / ICM-42688-P</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee 3.0</span></td></tr>
+        <tr><td>Menzil</td><td>50 – 150 m</td></tr>
+        <tr><td>Güç</td><td>2× AA Lityum / mini solar opt.</td></tr>
+        <tr><td>Örnekleme</td><td>Boşta: 10 Hz · Tetikli: 1 kHz</td></tr>
+        <tr><td>Montaj</td><td>Ray karnı / travers üstü</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~50×35×20 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list"><span class="comp-chip">XIAO MG24</span><span class="comp-chip">IMU (ADXL355)</span><span class="comp-chip">SPI Flash 2 MB (W25Q16)</span><span class="comp-chip">Zigbee chip anten</span><span class="comp-chip">AA pil yuvası ×2</span><span class="comp-chip">Solar MPPT opt. (BQ25504)</span></div>
+        <h4>Akıllı Tetikleme</h4>
+        <p>IMU interrupt: sürekli 10 Hz'de eşik izler → tren titreşimi algılayınca 1 kHz burst → SPI flash'a buffer → Zigbee ile toplu gönderim. Ortalama tüketim düşük kalır.</p>
+      </div>
+    </div>
+
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">SUN-US</div><div class="mc-name">Ultrasonik Su Seviye Ünitesi</div></div><span class="mc-tag">KATMAN 1</span></div>
+      <div class="mc-desc">Menfez su seviyesi ve akış tahmini. Ultrasonik ToF sensör, periyodik ölçüm + alarm eşiği tetiklemesi.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>XIAO MG24 (EFR32MG24)</td></tr>
+        <tr><td>Sensör</td><td>JSN-SR04T / A02YYUW</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee 3.0</span></td></tr>
+        <tr><td>Menzil</td><td>100 – 300 m (açık alan)</td></tr>
+        <tr><td>Güç</td><td>3.7 V LiPo 1000 mAh + solar 0.5 W</td></tr>
+        <tr><td>Örnekleme</td><td>5/dk normal · 1/sn alarm</td></tr>
+        <tr><td>Montaj</td><td>Menfez girişi üst kenar</td></tr>
+        <tr><td>Kasa</td><td>IP68, ~60×40×25 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list"><span class="comp-chip">XIAO MG24</span><span class="comp-chip">Ultrasonik modül</span><span class="comp-chip">Zigbee chip anten</span><span class="comp-chip">LiPo 1000 mAh</span><span class="comp-chip">Solar MPPT (BQ25504)</span><span class="comp-chip">Su geçirmez konnektör</span></div>
+        <h4>Alarm Mantığı</h4>
+        <p>3 kademe eşik: Uyarı (60%) → Alarm (80%) → Kritik (90%). Eşik aşılınca örnekleme artar, VD üzerinden acil mesaj.</p>
+      </div>
+    </div>
+
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">SUN-STR</div><div class="mc-name">Gerilme / Strain Ünitesi</div></div><span class="mc-tag">KATMAN 1</span></div>
+      <div class="mc-desc">Ray gerilme ölçümü. Kaynak noktaları, makas bölgeleri ve köprü raylarında.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>XIAO MG24 (EFR32MG24)</td></tr>
+        <tr><td>Sensör</td><td>Foil strain gauge (350 Ω) + HX711</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee 3.0</span></td></tr>
+        <tr><td>Güç</td><td>CR2477 ×2 / mini solar opt.</td></tr>
+        <tr><td>Örnekleme</td><td>Statik: 1/dk · Dinamik: 100 Hz</td></tr>
+        <tr><td>Montaj</td><td>Ray karnı yapıştırma</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~45×30×15 mm</td></tr>
+      </table>
+      <div class="detail-panel"><h4>Notlar</h4><p>Wheatstone köprü konfigürasyonu. Sıcaklık kompanzasyonu SUN-T ile birlikte yazılımsal yapılabilir.</p></div>
+    </div>
+
+    <div class="module-card tier-sun" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">SUN-AE</div><div class="mc-name">Akustik Emisyon Ünitesi</div></div><span class="mc-tag">KATMAN 1</span></div>
+      <div class="mc-desc">Ray çatlak tespiti için akustik emisyon izleme. Yüksek frekanslı piezo sensör, event-driven.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>XIAO MG24 (EFR32MG24)</td></tr>
+        <tr><td>Sensör</td><td>Piezo AE sensör (150 kHz)</td></tr>
+        <tr><td>Haberleşme</td><td><span class="proto-badge proto-zigbee">Zigbee 3.0</span></td></tr>
+        <tr><td>Güç</td><td>3.7 V LiPo + solar 1 W</td></tr>
+        <tr><td>Örnekleme</td><td>Event-driven, 500 kHz burst</td></tr>
+        <tr><td>Montaj</td><td>Ray karnı / kaynak noktası</td></tr>
+        <tr><td>Kasa</td><td>IP67, ~55×40×20 mm</td></tr>
+      </table>
+      <div class="detail-panel"><h4>Notlar</h4><p>En yüksek güçlü SUN tipi — burst örnekleme + FFT ön işleme. Solar şart. Sadece kritik noktalarda konuşlandırılır. MG24'ün ARM Cortex-M33 FPU'su FFT için yeterli.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TIER 2 — VD ═══════ -->
+<section id="sec-tier2" class="container section-hidden">
+  <h2>Katman 2: Veri Düğümü <span class="badge" style="background:rgba(16,185,129,0.15);color:#10b981">VD</span></h2>
+  <p>SUN'lardan Zigbee ile veri toplar, LoRa mesh ağına köprüler. Direk/kazık üstüne monte, mini solar + pil. Raydan yeterli mesafede (5-20 m) olduğu için LoRa menzili normaldir.</p>
+  <div class="module-grid">
+    <div class="module-card tier-vd" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">VD-C</div><div class="mc-name">Collector — Zigbee→LoRa Köprü</div></div><span class="mc-tag">KATMAN 2</span></div>
+      <div class="mc-desc">Temel veri düğümü. Zigbee koordinatör olarak yakındaki 3-8 SUN'dan veri toplar, LoRa mesh üzerinden MC'ye iletir.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>ESP32-C6 (WiFi+BLE+Zigbee) veya XIAO MG24 + harici LoRa</td></tr>
+        <tr><td>Zigbee</td><td><span class="proto-badge proto-zigbee">Coordinator</span> 3-8 end device</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Mesh Node</span> SX1262 · 868 MHz</td></tr>
+        <tr><td>Güç</td><td>Solar 2 W + LiFePO4 3.2 V 6 Ah</td></tr>
+        <tr><td>Montaj</td><td>Direk / kazık (ray kenarı 5-20 m)</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~120×80×50 mm</td></tr>
+      </table>
+      <div class="detail-panel">
+        <h4>Kart Bileşenleri</h4>
+        <div class="component-list"><span class="comp-chip">MCU</span><span class="comp-chip">Zigbee coordinator IC</span><span class="comp-chip">LoRa SX1262 modül</span><span class="comp-chip">Solar MPPT (CN3791)</span><span class="comp-chip">LiFePO4 pil</span><span class="comp-chip">MicroSD (log buffer)</span><span class="comp-chip">RTC (DS3231)</span><span class="comp-chip">Watchdog + reset</span></div>
+        <h4>Store-and-Forward</h4>
+        <p>MC'ye ulaşamazsa MicroSD'ye loglar, bağlantı gelince toplu gönderir. Komşu VD'ye alternatif rota dener.</p>
+      </div>
+    </div>
+
+    <div class="module-card tier-vd" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">VD-R</div><div class="mc-name">Relay — LoRa Mesh Tekrarlayıcı</div></div><span class="mc-tag">KATMAN 2</span></div>
+      <div class="mc-desc">Sadece LoRa mesh ağını genişletir. Zigbee yok. Arazi engeli (tepe, yarma, tünel) aşmak için.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>STM32WL (LoRa entegre SoC)</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Mesh Relay</span> 868 MHz</td></tr>
+        <tr><td>Güç</td><td>Solar 1 W + LiFePO4 3 Ah</td></tr>
+        <tr><td>Montaj</td><td>Direk / sinyal direği / tepe noktası</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~80×60×35 mm</td></tr>
+      </table>
+      <div class="detail-panel"><h4>Kullanım</h4><p>Sadece LoRa paketi alır ve iletir. En düşük maliyetli K2 cihazı. Sinyal direkleri gibi mevcut altyapıya monte edilebilir.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TIER 3 — MC ═══════ -->
+<section id="sec-tier3" class="container section-hidden">
+  <h2>Katman 3: Modüler Cihaz <span class="badge" style="background:rgba(99,102,241,0.15);color:#6366f1">MC</span></h2>
+  <p>Saha gateway. LoRa mesh'ten veri toplar, backhaul ile sunucuya iletir. 3 versiyon — ihtiyaca göre seçim.</p>
+  <div class="module-grid">
+    <div class="module-card tier-mc" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">MC-L</div><div class="mc-name">Lite — Sadece Gateway</div></div><span class="mc-tag">KATMAN 3</span></div>
+      <div class="mc-desc">En hafif MC. LoRa mesh'ten veri toplar, GSM ile pushlar. Kablolu sensör girişi yok. Düşük maliyet.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>ESP32-S3 / RPi Zero 2W</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Gateway</span> 8ch (SX1303)</td></tr>
+        <tr><td>Backhaul</td><td><span class="proto-badge proto-gsm">4G LTE</span> (SIM7600)</td></tr>
+        <tr><td>Kablolu Giriş</td><td>—</td></tr>
+        <tr><td>Güç</td><td>Solar 10 W + 12 V 12 Ah</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~200×150×100 mm</td></tr>
+      </table>
+      <div class="detail-panel"><h4>Ne Zaman?</h4><p>Sadece LoRa mesh verisi toplayıp sunucuya aktarması gereken uzak noktalar. Yakınında kablolu sensör yok. 20-30 km'de bir.</p></div>
+    </div>
+
+    <div class="module-card tier-mc" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">MC-S</div><div class="mc-name">Standart — Gateway + Sensör Girişli</div></div><span class="mc-tag">KATMAN 3</span></div>
+      <div class="mc-desc">LoRa GW + Zigbee coordinator + RS485/UART kablolu girişler + GSM. Mevcut RAİS MC konseptinin optimize hali.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>RPi CM4 / STM32H7</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Gateway</span> 8ch</td></tr>
+        <tr><td>Zigbee</td><td><span class="proto-badge proto-zigbee">Coordinator</span></td></tr>
+        <tr><td>Kablolu</td><td><span class="proto-badge proto-rs485">RS485</span>×2 · UART ×2</td></tr>
+        <tr><td>Backhaul</td><td><span class="proto-badge proto-gsm">4G LTE</span></td></tr>
+        <tr><td>Güç</td><td>Solar 20 W + 12 V 20 Ah</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~300×200×120 mm</td></tr>
+      </table>
+      <div class="detail-panel"><h4>Ne Zaman?</h4><p>Hem mesh hem kablolu sensör olan noktalar. Menfez yakını, makas bölgesi. Mevcut RS485 cihazlarla geriye uyumlu.</p></div>
+    </div>
+
+    <div class="module-card tier-mc" onclick="this.classList.toggle('expanded')">
+      <div class="mc-header"><div><div class="mc-code">MC-P</div><div class="mc-name">Pro — Tam Donanımlı Edge Gateway</div></div><span class="mc-tag">KATMAN 3</span></div>
+      <div class="mc-desc">Tüm arayüzler + CAN bus + Ethernet/Fiber + Edge AI. İstasyon yakını veya kritik altyapı noktaları.</div>
+      <table class="spec-table">
+        <tr><td>MCU</td><td>RPi CM4 + STM32H7 koişlemci</td></tr>
+        <tr><td>LoRa</td><td><span class="proto-badge proto-lora">Gateway</span> 8ch + mesh</td></tr>
+        <tr><td>Zigbee</td><td><span class="proto-badge proto-zigbee">Coordinator</span></td></tr>
+        <tr><td>Kablolu</td><td><span class="proto-badge proto-rs485">RS485</span>×4 · CAN · I²C · SPI</td></tr>
+        <tr><td>Backhaul</td><td><span class="proto-badge proto-gsm">4G</span> <span class="proto-badge proto-fiber">ETH/Fiber</span></td></tr>
+        <tr><td>Edge AI</td><td>Hailo-8L / Coral TPU opt.</td></tr>
+        <tr><td>Güç</td><td>Solar 50 W + 40 Ah / şebeke</td></tr>
+        <tr><td>Kasa</td><td>IP65, ~400×300×150 mm</td></tr>
+      </table>
+      <div class="detail-panel"><h4>Ne Zaman?</h4><p>İstasyon yakını (şebeke var), köprü başları, büyük makas sahaları. Fiber altyapı mevcut. Yerel anomali tespiti gerektiğinde.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GUC TUKETIM ANALIZI -->
+<section id="sec-power" class="container section-hidden">
+  <h2>Güç Tüketim Analizi <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e">YENİ</span></h2>
+  <p>İnteraktif güç tüketimi hesaplayıcı. Slider'ları hareket ettirerek örnekleme aralığı, tren sayısı gibi değişkenleri ayarlayın ve pil ömrünü anlık görün. EFR32MG24 (XIAO MG24) datasheet değerleri baz alınmıştır.</p>
+
+  <!-- SUN-T Interactive -->
+  <div class="power-card" id="pc-sunt">
+    <h4 style="color:var(--sun-color)">SUN-T — Sıcaklık Ünitesi</h4>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:6px">Pil: CR2477 (1000 mAh, %75 kullanılabilir = 750 mAh)</p>
+
+    <div style="margin:14px 0">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <label style="font-size:12px;color:var(--text-dim);font-weight:500">Örnekleme Aralığı</label>
+        <span id="sunt-interval-val" style="font-size:13px;font-weight:700;color:var(--sun-color);font-family:Consolas,monospace">1 dk</span>
+      </div>
+      <input type="range" id="sunt-interval" min="1" max="120" value="1" style="width:100%;accent-color:#f59e0b;cursor:pointer">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim)"><span>1 dk</span><span>10 dk</span><span>30 dk</span><span>1 saat</span><span>2 saat</span></div>
+    </div>
+
+    <div class="power-row">
+      <span class="power-label">Deep Sleep (EM2)</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:2%;background:var(--success)"><span></span></div></div>
+      <span class="power-val">1.3 µA</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">Ölçüm (wake)</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:15%;background:var(--sun-color)"><span>5 mA × 20 ms</span></div></div>
+      <span class="power-val">100 µAs/cyc</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">Zigbee TX</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:12%;background:var(--zigbee)"><span>8 mA × 15 ms</span></div></div>
+      <span class="power-val">120 µAs/cyc</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">Zigbee RX (ACK)</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:4%;background:var(--zigbee);opacity:0.6"><span>7 mA × 5 ms</span></div></div>
+      <span class="power-val">35 µAs/cyc</span>
+    </div>
+
+    <div class="power-result" id="sunt-results">
+      <div class="power-result-item"><div class="big" style="color:var(--success)" id="sunt-avg">3.8 µA</div><div class="sub">Ortalama akım</div></div>
+      <div class="power-result-item"><div class="big" style="color:var(--sun-color)" id="sunt-life">5.2 yıl</div><div class="sub">Pil ömrü (CR2477)</div></div>
+      <div class="power-result-item"><div class="big" id="sunt-daily">91 µAh</div><div class="sub">Günlük tüketim</div></div>
+      <div class="power-result-item"><div class="big" id="sunt-cycles">1440</div><div class="sub">Cycle / gün</div></div>
+    </div>
+    <p style="font-size:10px;margin-top:8px;color:var(--text-dim)" id="sunt-formula">Sleep: 1.3 µA × 24h = 31.2 µAh + 1440 cyc × 255 µAs ÷ 3600 = 102 µAh → Toplam: 133 µAh/gün → Ort: 3.8 µA</p>
+  </div>
+
+  <!-- SUN-V Interactive -->
+  <div class="power-card" id="pc-sunv">
+    <h4 style="color:var(--sun-color)">SUN-V — Titreşim / IMU Ünitesi</h4>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:6px">Pil: 2× AA Lityum (3000 mAh × 2, seri = 3000 mAh eff., %75 = 2250 mAh)</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <label style="font-size:12px;color:var(--text-dim);font-weight:500">Tren Geçişi / Gün</label>
+          <span id="sunv-trains-val" style="font-size:13px;font-weight:700;color:var(--sun-color);font-family:Consolas,monospace">20</span>
+        </div>
+        <input type="range" id="sunv-trains" min="2" max="80" value="20" style="width:100%;accent-color:#f59e0b;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim)"><span>2</span><span>20</span><span>40</span><span>60</span><span>80</span></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <label style="font-size:12px;color:var(--text-dim);font-weight:500">Burst Süresi (sn)</label>
+          <span id="sunv-burst-val" style="font-size:13px;font-weight:700;color:var(--sun-color);font-family:Consolas,monospace">5 sn</span>
+        </div>
+        <input type="range" id="sunv-burst" min="1" max="15" value="5" style="width:100%;accent-color:#f59e0b;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim)"><span>1 sn</span><span>5 sn</span><span>10 sn</span><span>15 sn</span></div>
+      </div>
+    </div>
+
+    <div class="power-row">
+      <span class="power-label">Deep Sleep</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:2%;background:var(--success)"><span></span></div></div>
+      <span class="power-val">1.3 µA</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">IMU idle (10 Hz)</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:6%;background:var(--sun-color)"><span>200 µA sürekli</span></div></div>
+      <span class="power-val">200 µA</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">Burst (1 kHz)</span>
+      <div class="power-bar-bg"><div class="power-bar" id="sunv-burst-bar" style="width:35%;background:var(--warn)"><span id="sunv-burst-desc">15 mA × 5 s × 20/gün</span></div></div>
+      <span class="power-val" id="sunv-burst-val2">417 µAh</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">Flash yazma</span>
+      <div class="power-bar-bg"><div class="power-bar" id="sunv-flash-bar" style="width:8%;background:#8b5cf6"><span id="sunv-flash-desc">10 mA × 2 s × 20</span></div></div>
+      <span class="power-val" id="sunv-flash-val">111 µAh</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">Zigbee TX (toplu)</span>
+      <div class="power-bar-bg"><div class="power-bar" id="sunv-tx-bar" style="width:10%;background:var(--zigbee)"><span id="sunv-tx-desc">8 mA × 200 ms × 20</span></div></div>
+      <span class="power-val" id="sunv-tx-val">8.9 µAh</span>
+    </div>
+
+    <div class="power-result">
+      <div class="power-result-item"><div class="big" style="color:var(--success)" id="sunv-avg">240 µA</div><div class="sub">Ortalama akım</div></div>
+      <div class="power-result-item"><div class="big" style="color:var(--sun-color)" id="sunv-life">2.3 yıl</div><div class="sub">Pil ömrü (2×AA)</div></div>
+      <div class="power-result-item"><div class="big" id="sunv-daily">5.3 mAh</div><div class="sub">Günlük tüketim</div></div>
+    </div>
+  </div>
+
+  <!-- SUN-US Interactive -->
+  <div class="power-card" id="pc-sunus">
+    <h4 style="color:var(--sun-color)">SUN-US — Ultrasonik Su Seviye</h4>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:6px">Pil: LiPo 1000 mAh + 0.5 W solar panel (günde ~4 saat verimli şarj = ~110 mA × 4h = 440 mAh/gün)</p>
+
+    <div style="margin:14px 0">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <label style="font-size:12px;color:var(--text-dim);font-weight:500">Ölçüm / Dakika</label>
+        <span id="sunus-rate-val" style="font-size:13px;font-weight:700;color:var(--sun-color);font-family:Consolas,monospace">5 / dk</span>
+      </div>
+      <input type="range" id="sunus-rate" min="1" max="30" value="5" style="width:100%;accent-color:#f59e0b;cursor:pointer">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim)"><span>1/dk</span><span>5/dk</span><span>10/dk</span><span>20/dk</span><span>30/dk</span></div>
+    </div>
+
+    <div class="power-result">
+      <div class="power-result-item"><div class="big" style="color:var(--success)" id="sunus-avg">74 µA</div><div class="sub">Ortalama akım</div></div>
+      <div class="power-result-item"><div class="big" style="color:var(--sun-color)" id="sunus-solar">Süresiz</div><div class="sub">Solar ile</div></div>
+      <div class="power-result-item"><div class="big" id="sunus-backup">14 gün</div><div class="sub">Sadece pille (yedek)</div></div>
+      <div class="power-result-item"><div class="big" id="sunus-daily">1.8 mAh</div><div class="sub">Günlük tüketim</div></div>
+    </div>
+  </div>
+
+  <!-- VD-C Interactive -->
+  <div class="power-card" id="pc-vdc">
+    <h4 style="color:var(--vd-color)">VD-C — Collector</h4>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:6px">Pil: LiFePO4 6 Ah + 2 W solar panel (günde ~5 saat verimli şarj ≈ 280 mA × 5h = 1400 mAh/gün)</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <label style="font-size:12px;color:var(--text-dim);font-weight:500">Bağlı SUN Sayısı</label>
+          <span id="vdc-suns-val" style="font-size:13px;font-weight:700;color:var(--vd-color);font-family:Consolas,monospace">5</span>
+        </div>
+        <input type="range" id="vdc-suns" min="1" max="12" value="5" style="width:100%;accent-color:#10b981;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim)"><span>1</span><span>4</span><span>8</span><span>12</span></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <label style="font-size:12px;color:var(--text-dim);font-weight:500">LoRa Mesh Hop Sayısı</label>
+          <span id="vdc-hops-val" style="font-size:13px;font-weight:700;color:var(--vd-color);font-family:Consolas,monospace">1</span>
+        </div>
+        <input type="range" id="vdc-hops" min="1" max="5" value="1" style="width:100%;accent-color:#10b981;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim)"><span>1 (direkt)</span><span>3</span><span>5 (relay)</span></div>
+      </div>
+    </div>
+
+    <div class="power-row"><span class="power-label">Zigbee RX (coord.)</span><div class="power-bar-bg"><div class="power-bar" id="vdc-zb-bar" style="width:40%;background:var(--zigbee)"><span id="vdc-zb-desc">7 mA sürekli</span></div></div><span class="power-val" id="vdc-zb-val">7 mA</span></div>
+    <div class="power-row"><span class="power-label">LoRa TX/RX</span><div class="power-bar-bg"><div class="power-bar" id="vdc-lora-bar" style="width:15%;background:var(--lora)"><span id="vdc-lora-desc">~40 mA TX, %5 duty</span></div></div><span class="power-val" id="vdc-lora-val">~3 mA ort</span></div>
+    <div class="power-row"><span class="power-label">MCU işleme</span><div class="power-bar-bg"><div class="power-bar" id="vdc-mcu-bar" style="width:10%;background:#8b5cf6"><span id="vdc-mcu-desc">paket işleme + routing</span></div></div><span class="power-val" id="vdc-mcu-val">~5 mA ort</span></div>
+
+    <div class="power-result" id="vdc-results">
+      <div class="power-result-item"><div class="big" style="color:var(--warn)" id="vdc-avg">~15 mA</div><div class="sub">Ortalama akım</div></div>
+      <div class="power-result-item"><div class="big" style="color:var(--vd-color)" id="vdc-solar">Süresiz</div><div class="sub">2 W solar ile</div></div>
+      <div class="power-result-item"><div class="big" id="vdc-backup">17 gün</div><div class="sub">Sadece pille (6 Ah)</div></div>
+      <div class="power-result-item"><div class="big" id="vdc-daily">360 mAh</div><div class="sub">Günlük tüketim</div></div>
+    </div>
+  </div>
+
+
+<script>
+// ── SUN-T Calculator ──
+const suntSlider = document.getElementById('sunt-interval');
+function calcSunT() {
+  const interval = parseInt(suntSlider.value);
+  let label;
+  if (interval < 60) label = interval + ' dk';
+  else label = (interval / 60).toFixed(interval % 60 === 0 ? 0 : 1) + ' saat';
+  document.getElementById('sunt-interval-val').textContent = label;
+  
+  const cyclesPerDay = Math.floor(24 * 60 / interval);
+  const energyPerCycle_uAs = 100 + 120 + 35; // 255 µAs
+  const dailyCycleEnergy_uAh = (cyclesPerDay * energyPerCycle_uAs) / 3600;
+  const dailySleepEnergy_uAh = 1.3 * 24; // 31.2
+  const dailyTotal_uAh = dailyCycleEnergy_uAh + dailySleepEnergy_uAh;
+  const avgCurrent_uA = dailyTotal_uAh / 24;
+  const batteryLife_hours = 750000 / avgCurrent_uA; // 750 mAh usable
+  const batteryLife_years = batteryLife_hours / 8760;
+
+  document.getElementById('sunt-avg').textContent = avgCurrent_uA < 10 ? avgCurrent_uA.toFixed(1) + ' µA' : avgCurrent_uA.toFixed(0) + ' µA';
+  
+  // Self-discharge limit: CR2477 ~1.5%/year, practical max ~8-10 years
+  const practicalMax = 10;
+  const effectiveLife = Math.min(batteryLife_years, practicalMax);
+  const limited = batteryLife_years > practicalMax;
+  
+  if (effectiveLife >= 1) {
+    let txt = effectiveLife.toFixed(1) + ' yıl';
+    if (limited) txt += ' *';
+    document.getElementById('sunt-life').textContent = txt;
+    document.getElementById('sunt-life').style.color = effectiveLife > 3 ? 'var(--success)' : effectiveLife > 1.5 ? 'var(--sun-color)' : 'var(--warn)';
+  } else {
+    document.getElementById('sunt-life').textContent = (effectiveLife * 12).toFixed(0) + ' ay';
+    document.getElementById('sunt-life').style.color = 'var(--danger)';
+  }
+  
+  // Show/hide self-discharge note
+  let noteEl = document.getElementById('sunt-selfdischarge');
+  if (!noteEl) {
+    noteEl = document.createElement('p');
+    noteEl.id = 'sunt-selfdischarge';
+    noteEl.style.cssText = 'font-size:10px;margin-top:6px;padding:6px 10px;border-radius:4px;background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);color:#eab308';
+    document.getElementById('sunt-results').after(noteEl);
+  }
+  if (limited) {
+    noteEl.style.display = 'block';
+    noteEl.innerHTML = '⚡ <strong>Self-discharge limiti:</strong> Elektriksel hesap ' + batteryLife_years.toFixed(1) + ' yıl gösteriyor ancak CR2477 pilin yıllık ~%1.5 self-discharge kaybı nedeniyle pratik üst sınır ~10 yıl. Bu, tasarımın çok verimli olduğunu teyit eder — sınırlayıcı faktör devre değil, pil kimyasıdır.';
+  } else {
+    noteEl.style.display = 'none';
+  }
+  
+  document.getElementById('sunt-daily').textContent = dailyTotal_uAh < 1000 ? dailyTotal_uAh.toFixed(0) + ' µAh' : (dailyTotal_uAh/1000).toFixed(2) + ' mAh';
+  document.getElementById('sunt-cycles').textContent = cyclesPerDay;
+  document.getElementById('sunt-formula').textContent = 
+    'Sleep: 1.3 µA × 24h = 31.2 µAh + ' + cyclesPerDay + ' cyc × 255 µAs ÷ 3600 = ' + 
+    dailyCycleEnergy_uAh.toFixed(1) + ' µAh → Toplam: ' + dailyTotal_uAh.toFixed(0) + 
+    ' µAh/gün → Ort: ' + avgCurrent_uA.toFixed(1) + ' µA';
+}
+suntSlider.addEventListener('input', calcSunT);
+
+// ── SUN-V Calculator ──
+const sunvTrains = document.getElementById('sunv-trains');
+const sunvBurst = document.getElementById('sunv-burst');
+function calcSunV() {
+  const trains = parseInt(sunvTrains.value);
+  const burstSec = parseInt(sunvBurst.value);
+  document.getElementById('sunv-trains-val').textContent = trains;
+  document.getElementById('sunv-burst-val').textContent = burstSec + ' sn';
+
+  // Burst energy: 15 mA × burstSec × trains
+  const burstEnergy_uAh = (15000 * burstSec * trains) / 3600;
+  // Flash write: 10 mA × ~0.4*burstSec × trains
+  const flashEnergy_uAh = (10000 * 0.4 * burstSec * trains) / 3600;
+  // Zigbee TX: 8 mA × 200ms × trains (proportional to burst data)
+  const txTime_ms = 200 * (burstSec / 5); // scale with burst length
+  const txEnergy_uAh = (8000 * txTime_ms / 1000 * trains) / 3600;
+  // IMU idle: 200 µA constant
+  const idleEnergy_uAh = 200 * 24 / 1000; // 4.8 mAh
+  // Sleep baseline
+  const sleepEnergy_uAh = 1.3 * 24;
+
+  const dailyTotal_uAh = burstEnergy_uAh + flashEnergy_uAh + txEnergy_uAh + (idleEnergy_uAh * 1000) + sleepEnergy_uAh;
+  const dailyTotal_mAh = dailyTotal_uAh / 1000;
+  const avgCurrent_uA = dailyTotal_uAh / 24;
+  const batteryLife_hours = 2250000 / avgCurrent_uA; // 2250 mAh usable
+  const batteryLife_years = batteryLife_hours / 8760;
+
+  document.getElementById('sunv-burst-desc').textContent = '15 mA × ' + burstSec + ' s × ' + trains + '/gün';
+  document.getElementById('sunv-burst-val2').textContent = burstEnergy_uAh.toFixed(0) + ' µAh';
+  document.getElementById('sunv-burst-bar').style.width = Math.min(80, burstEnergy_uAh / 30) + '%';
+  document.getElementById('sunv-flash-desc').textContent = '10 mA × ' + (0.4*burstSec).toFixed(1) + ' s × ' + trains;
+  document.getElementById('sunv-flash-val').textContent = flashEnergy_uAh.toFixed(0) + ' µAh';
+  document.getElementById('sunv-flash-bar').style.width = Math.min(40, flashEnergy_uAh / 20) + '%';
+  document.getElementById('sunv-tx-desc').textContent = '8 mA × ' + txTime_ms.toFixed(0) + ' ms × ' + trains;
+  document.getElementById('sunv-tx-val').textContent = txEnergy_uAh.toFixed(1) + ' µAh';
+
+  document.getElementById('sunv-avg').textContent = avgCurrent_uA < 1000 ? avgCurrent_uA.toFixed(0) + ' µA' : (avgCurrent_uA/1000).toFixed(1) + ' mA';
+  document.getElementById('sunv-daily').textContent = dailyTotal_mAh.toFixed(1) + ' mAh';
+  
+  if (batteryLife_years >= 1) {
+    document.getElementById('sunv-life').textContent = batteryLife_years.toFixed(1) + ' yıl';
+    document.getElementById('sunv-life').style.color = batteryLife_years > 2 ? 'var(--success)' : batteryLife_years > 1 ? 'var(--sun-color)' : 'var(--warn)';
+  } else if (batteryLife_years * 12 >= 1) {
+    document.getElementById('sunv-life').textContent = (batteryLife_years * 12).toFixed(0) + ' ay';
+    document.getElementById('sunv-life').style.color = 'var(--warn)';
+  } else {
+    document.getElementById('sunv-life').textContent = (batteryLife_years * 365).toFixed(0) + ' gün';
+    document.getElementById('sunv-life').style.color = 'var(--danger)';
+  }
+}
+sunvTrains.addEventListener('input', calcSunV);
+sunvBurst.addEventListener('input', calcSunV);
+
+// ── SUN-US Calculator ──
+const sunusRate = document.getElementById('sunus-rate');
+function calcSunUS() {
+  const rate = parseInt(sunusRate.value);
+  document.getElementById('sunus-rate-val').textContent = rate + ' / dk';
+
+  // US measurement: 15 mA × 50 ms per reading
+  const usEnergy_uA_avg = (15000 * 0.05 * rate) / 60; // µA average
+  // Zigbee TX: 8 mA × 15 ms per reading
+  const txEnergy_uA_avg = (8000 * 0.015 * rate) / 60;
+  const sleepBase = 1.3;
+  const totalAvg_uA = usEnergy_uA_avg + txEnergy_uA_avg + sleepBase;
+  const dailyTotal_mAh = (totalAvg_uA * 24) / 1000;
+  
+  // Solar provides ~440 mAh/day, battery 750 mAh usable
+  const backupDays = 750 / dailyTotal_mAh;
+  const solarSufficient = dailyTotal_mAh < 440;
+
+  document.getElementById('sunus-avg').textContent = totalAvg_uA < 1000 ? totalAvg_uA.toFixed(0) + ' µA' : (totalAvg_uA/1000).toFixed(2) + ' mA';
+  document.getElementById('sunus-daily').textContent = dailyTotal_mAh.toFixed(1) + ' mAh';
+  document.getElementById('sunus-solar').textContent = solarSufficient ? 'Süresiz' : 'Yetersiz!';
+  document.getElementById('sunus-solar').style.color = solarSufficient ? 'var(--success)' : 'var(--danger)';
+  
+  if (backupDays >= 1) {
+    document.getElementById('sunus-backup').textContent = backupDays.toFixed(0) + ' gün';
+  } else {
+    document.getElementById('sunus-backup').textContent = (backupDays * 24).toFixed(0) + ' saat';
+  }
+}
+sunusRate.addEventListener('input', calcSunUS);
+
+// ── VD-C Calculator ──
+const vdcSuns = document.getElementById('vdc-suns');
+const vdcHops = document.getElementById('vdc-hops');
+function calcVDC() {
+  const suns = parseInt(vdcSuns.value);
+  const hops = parseInt(vdcHops.value);
+  document.getElementById('vdc-suns-val').textContent = suns;
+  document.getElementById('vdc-hops-val').textContent = hops;
+
+  // Zigbee coordinator: always-on RX = 7 mA base
+  const zbCurrent = 7;
+  
+  // LoRa: base duty + per-SUN packet forwarding + relay forwarding for hops
+  // Each SUN sends ~1 pkt/min, each pkt needs ~150ms TX at 40mA
+  // duty = suns * 150ms/60s = suns * 0.25%
+  const loraDuty = (suns * 0.25 + (hops - 1) * suns * 0.15) / 100;
+  const loraTxCurrent = 40; // mA during TX
+  const loraRxCurrent = 12; // mA during RX (listening for mesh)
+  const loraRxDuty = 0.10 + hops * 0.03; // 10% base RX + more for mesh routing
+  const loraAvg = loraTxCurrent * loraDuty + loraRxCurrent * loraRxDuty;
+  
+  // MCU: base processing + per-SUN packet handling
+  const mcuBase = 3;
+  const mcuPerSun = 0.4;
+  const mcuAvg = mcuBase + suns * mcuPerSun;
+
+  const totalAvg = zbCurrent + loraAvg + mcuAvg;
+  const dailyTotal = totalAvg * 24; // mAh
+  
+  // Solar: 2W panel, ~280mA charge, 5h/day = 1400 mAh/day
+  const solarDaily = 1400;
+  const solarOk = dailyTotal < solarDaily;
+  const backupDays = 6000 * 0.8 / dailyTotal; // 6Ah * 80% usable
+
+  document.getElementById('vdc-zb-desc').textContent = zbCurrent + ' mA sürekli (coordinator)';
+  document.getElementById('vdc-zb-val').textContent = zbCurrent + ' mA';
+  
+  document.getElementById('vdc-lora-desc').textContent = '40 mA TX, %' + (loraDuty*100).toFixed(1) + ' duty + RX';
+  document.getElementById('vdc-lora-val').textContent = loraAvg.toFixed(1) + ' mA ort';
+  document.getElementById('vdc-lora-bar').style.width = Math.min(50, loraAvg * 3) + '%';
+  
+  document.getElementById('vdc-mcu-desc').textContent = suns + ' SUN paket işleme + routing';
+  document.getElementById('vdc-mcu-val').textContent = mcuAvg.toFixed(1) + ' mA ort';
+  document.getElementById('vdc-mcu-bar').style.width = Math.min(30, mcuAvg * 2) + '%';
+
+  document.getElementById('vdc-avg').textContent = '~' + totalAvg.toFixed(0) + ' mA';
+  document.getElementById('vdc-avg').style.color = totalAvg < 20 ? 'var(--warn)' : 'var(--danger)';
+  document.getElementById('vdc-daily').textContent = dailyTotal.toFixed(0) + ' mAh';
+  
+  document.getElementById('vdc-solar').textContent = solarOk ? 'Süresiz' : 'Yetersiz!';
+  document.getElementById('vdc-solar').style.color = solarOk ? 'var(--vd-color)' : 'var(--danger)';
+  
+  document.getElementById('vdc-backup').textContent = backupDays >= 1 ? backupDays.toFixed(0) + ' gün' : (backupDays * 24).toFixed(0) + ' saat';
+}
+vdcSuns.addEventListener('input', calcVDC);
+vdcHops.addEventListener('input', calcVDC);
+</script>
+
+<!-- VD-C Power -->
+  <div class="power-card">
+    <h4 style="color:var(--vd-color)">VD-C — Collector</h4>
+    <p style="font-size:11px;color:var(--text-dim);margin-bottom:14px;">Senaryo: 5 SUN bağlı, dakikada ~5 paket alma + LoRa mesh iletim, LiFePO4 6 Ah + 2 W solar</p>
+    <div class="power-row">
+      <span class="power-label">Zigbee RX (always-on)</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:40%;background:var(--zigbee)"><span>7 mA sürekli (coordinator)</span></div></div>
+      <span class="power-val">7 mA</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">LoRa TX/RX</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:15%;background:var(--lora)"><span>~40 mA TX, %5 duty</span></div></div>
+      <span class="power-val">~3 mA ort</span>
+    </div>
+    <div class="power-row">
+      <span class="power-label">MCU aktif</span>
+      <div class="power-bar-bg"><div class="power-bar" style="width:10%;background:#8b5cf6"><span></span></div></div>
+      <span class="power-val">~5 mA ort</span>
+    </div>
+    <div class="power-result">
+      <div class="power-result-item"><div class="big" style="color:var(--warn)">~15 mA</div><div class="sub">Ortalama akım</div></div>
+      <div class="power-result-item"><div class="big" style="color:var(--vd-color)">Süresiz</div><div class="sub">2 W solar ile</div></div>
+      <div class="power-result-item"><div class="big">17 gün</div><div class="sub">Sadece pille (6 Ah)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ MALİYET (YENİ) ═══════ -->
+<section id="sec-cost" class="container section-hidden">
+  <h2>Maliyet Projeksiyonu <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e">YENİ</span></h2>
+  <p>Tahmini BOM (Bill of Materials) maliyetleri. Prototip adetleri (10-50 adet) baz alınmıştır. Seri üretimde (500+) %30-40 düşüş beklenir. Fiyatlar USD, kasa ve montaj dahil.</p>
+
+  <h3>Modül Başı BOM Maliyeti</h3>
+  <div class="cost-grid">
+    <div class="cost-card" style="border-left:3px solid var(--sun-color)">
+      <div class="mc-code" style="color:var(--sun-color);font-size:14px">SUN-T</div>
+      <div class="price" style="color:var(--sun-color)">~$18</div><div class="unit">/ birim (prototip)</div>
+      <div class="cost-breakdown">
+        <div><span>XIAO MG24</span><span>$5.00</span></div>
+        <div><span>PT100 + MAX31865</span><span>$3.50</span></div>
+        <div><span>Anten + pasif</span><span>$1.50</span></div>
+        <div><span>PCB (2 katman)</span><span>$2.00</span></div>
+        <div><span>CR2477 + tutucu</span><span>$1.50</span></div>
+        <div><span>IP67 kasa + montaj</span><span>$4.50</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--sun-color)">
+      <div class="mc-code" style="color:var(--sun-color);font-size:14px">SUN-V</div>
+      <div class="price" style="color:var(--sun-color)">~$24</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>XIAO MG24</span><span>$5.00</span></div>
+        <div><span>ADXL355 IMU</span><span>$5.00</span></div>
+        <div><span>SPI Flash 2 MB</span><span>$0.80</span></div>
+        <div><span>PCB + pasif + anten</span><span>$3.50</span></div>
+        <div><span>2×AA tutucu + pil</span><span>$2.00</span></div>
+        <div><span>IP67 kasa</span><span>$5.00</span></div>
+        <div><span>Solar MPPT opt.</span><span>$2.70</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--sun-color)">
+      <div class="mc-code" style="color:var(--sun-color);font-size:14px">SUN-US</div>
+      <div class="price" style="color:var(--sun-color)">~$28</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>XIAO MG24</span><span>$5.00</span></div>
+        <div><span>Ultrasonik modül</span><span>$4.50</span></div>
+        <div><span>Solar MPPT (BQ25504)</span><span>$3.50</span></div>
+        <div><span>LiPo 1000 mAh</span><span>$3.00</span></div>
+        <div><span>0.5 W solar panel</span><span>$3.00</span></div>
+        <div><span>PCB + anten + pasif</span><span>$3.00</span></div>
+        <div><span>IP68 kasa + konektör</span><span>$6.00</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--vd-color)">
+      <div class="mc-code" style="color:var(--vd-color);font-size:14px">VD-C</div>
+      <div class="price" style="color:var(--vd-color)">~$52</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>MCU (ESP32-C6 / MG24)</span><span>$5.00</span></div>
+        <div><span>LoRa SX1262 modül</span><span>$8.00</span></div>
+        <div><span>Zigbee coordinator IC</span><span>$4.00</span></div>
+        <div><span>2 W solar panel</span><span>$6.00</span></div>
+        <div><span>LiFePO4 6 Ah + BMS</span><span>$12.00</span></div>
+        <div><span>PCB + RTC + SD + pasif</span><span>$7.00</span></div>
+        <div><span>IP65 kasa + direk montaj</span><span>$10.00</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--vd-color)">
+      <div class="mc-code" style="color:var(--vd-color);font-size:14px">VD-R</div>
+      <div class="price" style="color:var(--vd-color)">~$30</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>STM32WL (LoRa entegre)</span><span>$6.00</span></div>
+        <div><span>1 W solar + LiFePO4 3 Ah</span><span>$10.00</span></div>
+        <div><span>PCB + anten + pasif</span><span>$5.00</span></div>
+        <div><span>IP65 kasa + montaj</span><span>$9.00</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--mc-color)">
+      <div class="mc-code" style="color:var(--mc-color);font-size:14px">MC-L</div>
+      <div class="price" style="color:var(--mc-color)">~$155</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>ESP32-S3 / RPi Zero 2W</span><span>$15.00</span></div>
+        <div><span>LoRa GW (SX1303 + SX1250)</span><span>$35.00</span></div>
+        <div><span>4G modem (SIM7600)</span><span>$22.00</span></div>
+        <div><span>GPS + RTC + SD</span><span>$8.00</span></div>
+        <div><span>10 W solar + 12 Ah pil</span><span>$40.00</span></div>
+        <div><span>PCB (4 katman) + pasif</span><span>$10.00</span></div>
+        <div><span>IP65 kasa + montaj</span><span>$25.00</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--mc-color)">
+      <div class="mc-code" style="color:var(--mc-color);font-size:14px">MC-S</div>
+      <div class="price" style="color:var(--mc-color)">~$240</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>RPi CM4 / STM32H7</span><span>$40.00</span></div>
+        <div><span>LoRa GW + Zigbee</span><span>$40.00</span></div>
+        <div><span>RS485 ×2 + UART ×2</span><span>$8.00</span></div>
+        <div><span>4G modem + GPS</span><span>$28.00</span></div>
+        <div><span>20 W solar + 20 Ah</span><span>$65.00</span></div>
+        <div><span>PCB + kasa + montaj</span><span>$42.00</span></div>
+        <div><span>eMMC + SD</span><span>$17.00</span></div>
+      </div>
+    </div>
+    <div class="cost-card" style="border-left:3px solid var(--mc-color)">
+      <div class="mc-code" style="color:var(--mc-color);font-size:14px">MC-P</div>
+      <div class="price" style="color:var(--mc-color)">~$385</div><div class="unit">/ birim</div>
+      <div class="cost-breakdown">
+        <div><span>MC-S bileşenleri</span><span>$240</span></div>
+        <div><span>CAN + ETH PHY + SFP</span><span>$25.00</span></div>
+        <div><span>Edge AI (Hailo-8L)</span><span>$40.00</span></div>
+        <div><span>50 W solar + 40 Ah fark</span><span>$55.00</span></div>
+        <div><span>Büyük kasa + UPS</span><span>$25.00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Senaryo Bazlı Toplam Maliyet</h3>
+  <div class="cost-scenario">
+    <h4>Senaryo 1: Açık Hat 30 km — Katmanlı Mimari</h4>
+    <div style="overflow-x:auto">
+    <table class="cmp-table">
+      <thead><tr><th>Modül</th><th>Adet</th><th>Birim</th><th>Toplam</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--sun-color)">SUN-T</strong></td><td>15</td><td>$18</td><td>$270</td></tr>
+        <tr><td><strong style="color:var(--sun-color)">SUN-V</strong></td><td>5</td><td>$24</td><td>$120</td></tr>
+        <tr><td><strong style="color:var(--vd-color)">VD-C</strong></td><td>5</td><td>$52</td><td>$260</td></tr>
+        <tr><td><strong style="color:var(--mc-color)">MC-L</strong></td><td>1</td><td>$155</td><td>$155</td></tr>
+        <tr><td colspan="3" style="text-align:right;font-weight:700">TOPLAM</td><td><strong>$805</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="cost-total" style="color:var(--success)">$805</span>
+      <span class="cost-save">vs. Mevcut yaklaşım (5× tam MC): ~$1,200+ → %33 tasarruf</span>
+    </div>
+    <p style="margin-top:8px;font-size:11px">Mevcut yaklaşımda her 5-6 km'ye bir tam donanımlı MC gerekiyordu. Katmanlı mimaride 30 km'yi 1 MC-L + 5 VD-C + 20 SUN ile kaplarken hem maliyet hem enerji optimizasyonu sağlanır.</p>
+  </div>
+
+  <div class="cost-scenario">
+    <h4>Senaryo 2: Dağlık 15 km — VD-R destekli</h4>
+    <div style="overflow-x:auto">
+    <table class="cmp-table">
+      <thead><tr><th>Modül</th><th>Adet</th><th>Birim</th><th>Toplam</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--sun-color)">SUN çeşitli</strong></td><td>10</td><td>~$22</td><td>$220</td></tr>
+        <tr><td><strong style="color:var(--vd-color)">VD-C</strong></td><td>4</td><td>$52</td><td>$208</td></tr>
+        <tr><td><strong style="color:var(--vd-color)">VD-R</strong></td><td>3</td><td>$30</td><td>$90</td></tr>
+        <tr><td><strong style="color:var(--mc-color)">MC-S</strong></td><td>1</td><td>$240</td><td>$240</td></tr>
+        <tr><td colspan="3" style="text-align:right;font-weight:700">TOPLAM</td><td><strong>$758</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:12px;"><span class="cost-total" style="color:var(--success)">$758</span></div>
+  </div>
+</section>
+
+<!-- ═══════ VERİ AKIŞ (YENİ) ═══════ -->
+<section id="sec-dataflow" class="container section-hidden">
+  <h2>Veri Akış Mimarisi <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e">YENİ</span></h2>
+  <p>Sensörden sunucuya veri akışının her adımı: paket boyutları, bant genişliği, gecikme süreleri.</p>
+
+  <h3>Paket Yapısı</h3>
+  <div style="overflow-x:auto">
+  <table class="cmp-table">
+    <thead><tr><th>Kaynak</th><th>Payload</th><th>Header</th><th>Toplam Paket</th><th>Frekans</th><th>Bant İhtiyacı</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--sun-color)">SUN-T</strong></td><td>4B sıcaklık + 4B timestamp</td><td>8B</td><td>16 byte</td><td>1/dk</td><td>0.002 kbps</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-V (idle)</strong></td><td>12B (3-axis) + 4B ts</td><td>8B</td><td>24 byte</td><td>10 Hz</td><td>1.9 kbps</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-V (burst)</strong></td><td>6000B (1kHz×3ax×2B×1s)</td><td>8B</td><td>~6 KB/sn</td><td>Tetikli</td><td>48 kbps (burst)</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-US</strong></td><td>4B seviye + 4B akış + 4B ts</td><td>8B</td><td>20 byte</td><td>5/dk</td><td>0.013 kbps</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-STR</strong></td><td>4B strain + 4B ts</td><td>8B</td><td>16 byte</td><td>1/dk</td><td>0.002 kbps</td></tr>
+      <tr><td><strong style="color:var(--vd-color)">VD-C agregat</strong></td><td>5 SUN paketi birleşik</td><td>12B</td><td>~110 byte</td><td>1/dk</td><td>0.015 kbps</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Uçtan Uca Gecikme Zinciri — SUN-T → Sunucu</h3>
+  <div class="dataflow-chain">
+    <div class="df-step">
+      <div class="df-dot" style="background:var(--sun-color)"></div>
+      <div class="df-content">
+        <div class="df-title" style="color:var(--sun-color)">1. SUN-T Ölçüm + İşleme</div>
+        <div class="df-detail">Wake → PT100 oku → ADC dönüşüm → paket oluştur</div>
+        <span class="df-metric">~20 ms</span><span class="df-metric">16 byte paket</span>
+      </div>
+    </div>
+    <div class="df-step">
+      <div class="df-dot" style="background:var(--zigbee)"></div>
+      <div class="df-content">
+        <div class="df-title" style="color:var(--zigbee)">2. Zigbee TX → VD-C</div>
+        <div class="df-detail">SUN → VD-C (star topoloji, tek hop). CSMA/CA + ACK dahil.</div>
+        <span class="df-metric">~15 ms TX</span><span class="df-metric">~5 ms ACK</span><span class="df-metric">250 kbps</span>
+      </div>
+    </div>
+    <div class="df-step">
+      <div class="df-dot" style="background:var(--vd-color)"></div>
+      <div class="df-content">
+        <div class="df-title" style="color:var(--vd-color)">3. VD-C İşleme + Agregasyon</div>
+        <div class="df-detail">Zigbee paketlerini alır, zaman damgası ekler, LoRa paketi oluşturur. Birden fazla SUN'u tek LoRa paketine birleştirir.</div>
+        <span class="df-metric">~50 ms</span><span class="df-metric">~110 byte agregat</span>
+      </div>
+    </div>
+    <div class="df-step">
+      <div class="df-dot" style="background:var(--lora)"></div>
+      <div class="df-content">
+        <div class="df-title" style="color:var(--lora)">4. LoRa Mesh → MC (1-5 hop)</div>
+        <div class="df-detail">SF7/BW125: her hop ~150 ms (TX + processing). Multi-hop AODV routing.</div>
+        <span class="df-metric">~150 ms / hop</span><span class="df-metric">1 hop: 150 ms</span><span class="df-metric">3 hop: 450 ms</span><span class="df-metric">5 hop: 750 ms</span>
+      </div>
+    </div>
+    <div class="df-step">
+      <div class="df-dot" style="background:var(--mc-color)"></div>
+      <div class="df-content">
+        <div class="df-title" style="color:var(--mc-color)">5. MC İşleme + Backhaul</div>
+        <div class="df-detail">LoRa paketi al → çözümle → MQTT mesajı oluştur → GSM/Fiber ile sunucuya gönder</div>
+        <span class="df-metric">~100 ms işleme</span><span class="df-metric">~300-800 ms GSM RTT</span><span class="df-metric">~5-20 ms Fiber RTT</span>
+      </div>
+    </div>
+    <div class="df-step">
+      <div class="df-dot" style="background:var(--srv-color)"></div>
+      <div class="df-content">
+        <div class="df-title" style="color:var(--srv-color)">6. Sunucu — Veri İşleme</div>
+        <div class="df-detail">MQTT broker → parse → DB yazma → dashboard güncelleme → alarm kontrolü</div>
+        <span class="df-metric">~50 ms</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="power-result" style="margin-top:0">
+    <div class="power-result-item"><div class="big" style="color:var(--success)">0.5 – 1.5 sn</div><div class="sub">Tipik uçtan uca (GSM, 1-3 hop)</div></div>
+    <div class="power-result-item"><div class="big" style="color:var(--warn)">~2.5 sn</div><div class="sub">En kötü durum (GSM, 5 hop)</div></div>
+    <div class="power-result-item"><div class="big" style="color:var(--accent)">~0.3 sn</div><div class="sub">En iyi (Fiber, 1 hop)</div></div>
+  </div>
+
+  <h3>Bant Genişliği Kapasitesi</h3>
+  <div style="overflow-x:auto">
+  <table class="cmp-table">
+    <thead><tr><th>Katman</th><th>Protokol</th><th>Kapasite</th><th>Tipik Kullanım</th><th>Headroom</th></tr></thead>
+    <tbody>
+      <tr><td>SUN → VD</td><td>Zigbee</td><td>250 kbps</td><td>~2 kbps (5 SUN)</td><td style="color:var(--success)">%99+ boş</td></tr>
+      <tr><td>VD → MC</td><td>LoRa SF7</td><td>~5.5 kbps</td><td>~0.1 kbps (normal)</td><td style="color:var(--success)">%98+ boş</td></tr>
+      <tr><td>MC → Sunucu</td><td>GSM 4G</td><td>~10 Mbps</td><td>~1 kbps</td><td style="color:var(--success)">%99.99 boş</td></tr>
+      <tr><td>MC → Sunucu</td><td>Fiber</td><td>1 Gbps</td><td>~1 kbps</td><td style="color:var(--success)">Sınırsız</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:10px"><strong>Kritik darboğaz:</strong> LoRa mesh katmanı. SF7'de tek kanal ~5.5 kbps, 8 kanallı gateway ile ~44 kbps. Normal operasyonda yeterli, ancak çok sayıda SUN-V burst aynı anda tetiklenirse VD-C'deki buffer + store-and-forward mekanizması devreye girer.</p>
+
+  <h3>MQTT Topic Yapısı (Öneri)</h3>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;font-family:'Consolas',monospace;font-size:11px;line-height:1.8;overflow-x:auto;">
+    rais/{hat_id}/{km}/{modül_tipi}/{cihaz_id}/data<br>
+    rais/{hat_id}/{km}/{modül_tipi}/{cihaz_id}/status<br>
+    rais/{hat_id}/{km}/{modül_tipi}/{cihaz_id}/alarm<br>
+    <br>
+    <span style="color:var(--text-dim)"># Örnekler:</span><br>
+    rais/ankara-eskisehir/km42/sun-t/SUN-T-0012/data&nbsp;&nbsp;&nbsp;<span style="color:var(--sun-color)">→ {"temp":38.2,"ts":1721500800}</span><br>
+    rais/ankara-eskisehir/km42/vd-c/VDC-003/status&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--vd-color)">→ {"battery":87,"rssi":-62,"suns":5}</span><br>
+    rais/ankara-eskisehir/km55/sun-us/SUN-US-007/alarm&nbsp;<span style="color:var(--danger)">→ {"level":"critical","water_pct":92}</span>
+  </div>
+</section>
+
+<!-- ═══════ YOL HARİTASI (YENİ) ═══════ -->
+<section id="sec-roadmap" class="container section-hidden">
+  <h2>Geliştirme Yol Haritası <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e">YENİ</span></h2>
+  <p>4 fazlı geliştirme planı. MVP'den tam entegrasyona. Her faz sonunda test edilebilir çıktı.</p>
+
+  <div class="roadmap-phase phase-1">
+    <div class="phase-header">
+      <div><span class="phase-tag" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">FAZ 1</span></div>
+      <span class="phase-time">Ay 1 – 3</span>
+    </div>
+    <div class="phase-title">MVP: SUN-T + VD-C Prototipi</div>
+    <p style="margin-top:8px">En temel sensör (sıcaklık) ve veri düğümü. Kavram kanıtlama (PoC). XIAO MG24 firmware geliştirme. Lab ortamında uçtan uca test.</p>
+    <div class="deliverables">
+      <span class="deliv-chip" style="border-color:var(--sun-color)">SUN-T PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--sun-color)">XIAO MG24 Zigbee firmware</span>
+      <span class="deliv-chip" style="border-color:var(--vd-color)">VD-C PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--vd-color)">Zigbee→LoRa köprü firmware</span>
+      <span class="deliv-chip">Lab test raporu</span>
+      <span class="deliv-chip">Güç tüketimi doğrulama</span>
+    </div>
+    <p style="margin-top:10px;font-size:11px"><strong>MVP kriteri:</strong> SUN-T → VD-C → mevcut MC (RS485/UART ile) → sunucu zinciri çalışıyor. Pil ömrü ölçümü tamamlanmış.</p>
+  </div>
+
+  <div class="roadmap-phase phase-2">
+    <div class="phase-header">
+      <div><span class="phase-tag" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">FAZ 2</span></div>
+      <span class="phase-time">Ay 3 – 6</span>
+    </div>
+    <div class="phase-title">SUN Ailesi + Mesh Ağı</div>
+    <p style="margin-top:8px">SUN-V ve SUN-US prototipleri. VD-R relay. LoRa mesh protokolü (Meshtastic tabanlı veya özel AODV). İlk saha testi (kısa hat segmenti).</p>
+    <div class="deliverables">
+      <span class="deliv-chip" style="border-color:var(--sun-color)">SUN-V PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--sun-color)">SUN-US PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--sun-color)">IMU burst + tetikleme firmware</span>
+      <span class="deliv-chip" style="border-color:var(--vd-color)">VD-R PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--lora)">LoRa mesh routing protokolü</span>
+      <span class="deliv-chip">Saha testi (2-3 km segment)</span>
+      <span class="deliv-chip">Menzil + RSSI haritalama</span>
+    </div>
+    <p style="margin-top:10px;font-size:11px"><strong>Çıktı:</strong> 3 tip SUN + VD-C + VD-R mesh ağı sahada çalışıyor. Multi-hop test tamamlanmış. Ray ortamında Zigbee menzili doğrulanmış.</p>
+  </div>
+
+  <div class="roadmap-phase phase-3">
+    <div class="phase-header">
+      <div><span class="phase-tag" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">FAZ 3</span></div>
+      <span class="phase-time">Ay 6 – 9</span>
+    </div>
+    <div class="phase-title">MC Versiyonlama + İlk Senaryo</div>
+    <p style="margin-top:8px">MC-L ve MC-S tasarımı (mevcut MC'den evrim). LoRa gateway entegrasyonu. Senaryo 1 (açık hat) tam testi. Dashboard entegrasyonu.</p>
+    <div class="deliverables">
+      <span class="deliv-chip" style="border-color:var(--mc-color)">MC-L PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--mc-color)">MC-S PCB v1 (mevcut MC revize)</span>
+      <span class="deliv-chip" style="border-color:var(--mc-color)">LoRa 8ch gateway firmware</span>
+      <span class="deliv-chip">MQTT broker + topic yapısı</span>
+      <span class="deliv-chip">Dashboard entegrasyonu</span>
+      <span class="deliv-chip">Senaryo 1 saha testi</span>
+      <span class="deliv-chip">IP65 kasa finalizasyonu</span>
+    </div>
+  </div>
+
+  <div class="roadmap-phase phase-4">
+    <div class="phase-header">
+      <div><span class="phase-tag" style="background:rgba(59,130,246,0.15);color:var(--accent)">FAZ 4</span></div>
+      <span class="phase-time">Ay 9 - 12</span>
+    </div>
+    <div class="phase-title">Tam Entegrasyon + Sertifikasyon</div>
+    <p style="margin-top:8px">MC-P tasarımı. SUN-STR ve SUN-AE geliştirme. Tüm senaryolar test. Firmware finalizasyonu. CE/EMC hazırlık.</p>
+    <div class="deliverables">
+      <span class="deliv-chip" style="border-color:var(--mc-color)">MC-P PCB v1</span>
+      <span class="deliv-chip" style="border-color:var(--sun-color)">SUN-STR + SUN-AE PCB</span>
+      <span class="deliv-chip">Edge AI entegrasyonu (MC-P)</span>
+      <span class="deliv-chip">OTA firmware güncelleme</span>
+      <span class="deliv-chip">Senaryo 2-4 saha testleri</span>
+      <span class="deliv-chip">CE / EMC on test</span>
+      <span class="deliv-chip">Teknik dokümantasyon</span>
+      <span class="deliv-chip">EN 50155 uyumluluk raporu</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROTOCOLS -->
+<section id="sec-protocols" class="container section-hidden">
+  <h2>Haberleşme Protokolleri</h2>
+  <div class="module-grid">
+    <div class="module-card" style="border-color:var(--zigbee)">
+      <div class="mc-header"><div><div class="mc-code" style="color:var(--zigbee)">Zigbee 3.0</div><div class="mc-name">Kısa Mesafe - SUN -> VD / MC</div></div></div>
+      <table class="spec-table">
+        <tr><td>Frekans</td><td>2.4 GHz ISM</td></tr>
+        <tr><td>Menzil</td><td>50-300 m</td></tr>
+        <tr><td>Veri Hızı</td><td>250 kbps</td></tr>
+        <tr><td>Topoloji</td><td>Star (coord: VD-C / MC)</td></tr>
+        <tr><td>Güç</td><td>Ultra-düşük (sleepy end dev.)</td></tr>
+        <tr><td>Neden?</td><td>Ray ortaminda LoRa'dan az etkilenir. XIAO MG24 native destekli.</td></tr>
+      </table>
+    </div>
+    <div class="module-card" style="border-color:var(--lora)">
+      <div class="mc-header"><div><div class="mc-code" style="color:var(--lora)">LoRa Mesh</div><div class="mc-name">Orta Mesafe - VD -> MC</div></div></div>
+      <table class="spec-table">
+        <tr><td>Frekans</td><td>868 MHz (EU)</td></tr>
+        <tr><td>Menzil</td><td>2-5 km / hop</td></tr>
+        <tr><td>Veri Hızı</td><td>0.3-50 kbps (SF'ye göre)</td></tr>
+        <tr><td>Topoloji</td><td>Mesh (multi-hop, store&fwd)</td></tr>
+        <tr><td>Max Hop</td><td>5-7 hop (gecikme sınırı)</td></tr>
+        <tr><td>Protokol</td><td>Meshtastic / özel AODV</td></tr>
+      </table>
+    </div>
+    <div class="module-card" style="border-color:var(--gsm)">
+      <div class="mc-header"><div><div class="mc-code" style="color:var(--gsm)">GSM / 4G LTE</div><div class="mc-name">Uzun Mesafe - MC -> Sunucu</div></div></div>
+      <table class="spec-table">
+        <tr><td>Teknoloji</td><td>4G LTE Cat-1 / Cat-M1</td></tr>
+        <tr><td>Protokol</td><td>MQTT over TLS / VPN</td></tr>
+        <tr><td>Yedeklik</td><td>Çift SIM (2 operatör)</td></tr>
+      </table>
+    </div>
+    <div class="module-card" style="border-color:var(--fiber)">
+      <div class="mc-header"><div><div class="mc-code" style="color:var(--fiber)">Fiber / Ethernet</div><div class="mc-name">Yüksek Bant - MC-P -> Sunucu</div></div></div>
+      <table class="spec-table">
+        <tr><td>Teknoloji</td><td>SFP fiber / RJ45</td></tr>
+        <tr><td>Kullanım</td><td>Sadece MC-P</td></tr>
+        <tr><td>Avantaj</td><td>Yuksek bant, düşük gecikme</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="sec-scenarios" class="container section-hidden">
+  <h2>Örnek Kurulum Senaryoları</h2>
+  <div class="scenario-tabs">
+    <button class="scenario-tab active" data-sc="sc1">Açık Hat (Ova)</button>
+    <button class="scenario-tab" data-sc="sc2">Dağlık / Yarma</button>
+    <button class="scenario-tab" data-sc="sc3">İstasyon Yakını</button>
+    <button class="scenario-tab" data-sc="sc4">Köprü / Viyadük</button>
+    <button class="scenario-tab" data-sc="sc5">Tünel Giriş/Çıkış</button>
+    <button class="scenario-tab" data-sc="sc6">Hemzemin Geçit</button>
+    <button class="scenario-tab" data-sc="sc7">Makas / Kavşak</button>
+    <button class="scenario-tab" data-sc="sc8">Liman / Endüstriyel</button>
+  </div>
+  <div id="sc1" class="scenario-content">
+    <h3>Senaryo 1: Açık Hat - Ova Bölgesi (30 km)</h3>
+    <p>Düz arazi, engel yok. Her 2 km'de sensor noktası, ~6 km'de bir VD-C, 30 km'de bir MC-L.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">15x SUN-T + 5x SUN-V</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">5x VD-C</div>
+      <span class="flow-proto">LoRa Mesh</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1x MC-L</div>
+      <span class="flow-proto">GSM</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Maliyet:</strong> ~$805 | <strong>Enerji:</strong> Tum solar + pil, şebeke yok.</p>
+  </div>
+  <div id="sc2" class="scenario-content scenario-hidden">
+    <h3>Senaryo 2: Dağlık / Yarma Bölgesi (15 km)</h3>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">10x SUN</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">4x VD-C + 3x VD-R</div>
+      <span class="flow-proto">LoRa</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1x MC-S</div>
+      <span class="flow-proto">GSM</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Maliyet:</strong> ~$758 | VD-R'ler tepe/yarma çıkışlarına monte.</p>
+  </div>
+  <div id="sc3" class="scenario-content scenario-hidden">
+    <h3>Senaryo 3: İstasyon Yakını</h3>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">20x SUN</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1x MC-P</div>
+      <span class="flow-proto">Fiber</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p>VD gerekmez - MC-P Zigbee coordinator ile doğrudan SUN'lara ulaşır. Şebeke + fiber mevcut.</p>
+  </div>
+  <div id="sc4" class="scenario-content scenario-hidden">
+    <h3>Senaryo 4: Köprü / Viyadük</h3>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">8x STR + 4x AE + 4x V</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">2x VD-C</div>
+      <span class="flow-proto">LoRa</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1x MC-S/P</div>
+      <span class="flow-proto">GSM/Fiber</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p>Kopru her iki ucunda VD-C. SUN-AE yuksek veri üretir, VD-C buffer'lar.</p>
+  </div>
+
+  <div id="sc5" class="scenario-content scenario-hidden">
+    <h3>Senaryo 5: Tünel Giriş/Çıkış Bölgesi</h3>
+    <p>Tünel içinde RF propagasyonu zor. Giriş ve çıkışta yoğun sensör, tünel içinde kablolu çözüm veya VD-R zinciri.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">6× SUN-V + 4× SUN-T</div>
+      <span class="flow-proto">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">2× VD-C (giriş/çıkış)</div>
+      <span class="flow-proto">RS485 kablo (tünel içi)</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-S</div>
+      <span class="flow-proto">GSM</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Özellik:</strong> Tünel içinde LoRa/Zigbee çalışmaz — giriş ve çıkışa birer VD-C yerleştirilir, tünel boyunca RS485 kablo ile MC-S'e bağlanır. Tünel uzunsa tünel ortasına da kablolu sensör noktaları eklenir.</p>
+    <p><strong>Sensörler:</strong> Titreşim (SUN-V) kaya düşmesi/deformasyon tespiti için kritik. Sıcaklık (SUN-T) yangın erken uyarısı.</p>
+    <p><strong>Enerji:</strong> Tünel içi sensörler pille çalışır (solar yok). VD-C'ler tünel dışında solar beslemeli. MC-S tünel kontrol binasında şebeke elektriği ile.</p>
+    <p><strong>Tahmini maliyet:</strong> ~$650 (kablo maliyeti hariç)</p>
+  </div>
+
+  <div id="sc6" class="scenario-content scenario-hidden">
+    <h3>Senaryo 6: Hemzemin Geçit</h3>
+    <p>Karayolu-demiryolu kesişim noktası. Güvenlik kritik. Bariyer durumu, tren yaklaşımı ve yol yüzeyi izleme.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">4× SUN-V + 2× SUN-T</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">2× SUN-STR (bariyer)</div>
+    </div>
+    <div class="flow-row" style="margin-top:4px">
+      <span class="flow-proto" style="margin-left:20px">Zigbee (doğrudan)</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-S</div>
+      <span class="flow-proto">GSM</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Özellik:</strong> Alan küçük (~200 m), VD gerekmez — MC-S Zigbee coordinator ile tüm SUN'lara doğrudan ulaşır. Bariyer motoruna RS485 ile bağlanır.</p>
+    <p><strong>Sensörler:</strong> SUN-V tren yaklaşım tespiti (titreşim), SUN-STR bariyer kolu strain ölçümü (düzgün kapanıyor mu), SUN-T ray sıcaklığı.</p>
+    <p><strong>Enerji:</strong> MC-S geçit kontrol panosundan şebeke beslemeli. SUN'lar pil/solar.</p>
+    <p><strong>Tahmini maliyet:</strong> ~$420</p>
+  </div>
+
+  <div id="sc7" class="scenario-content scenario-hidden">
+    <h3>Senaryo 7: Makas / Demiryolu Kavşağı</h3>
+    <p>Makas bölgeleri mekanik aşınmanın en yoğun olduğu noktalar. Yoğun sensör ağı + yüksek örnekleme.</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">8× SUN-V (her makas dili)</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">4× SUN-STR + 4× SUN-T</div>
+    </div>
+    <div class="flow-row" style="margin-top:4px">
+      <span class="flow-proto" style="margin-left:20px">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">2× VD-C</div>
+      <span class="flow-proto">LoRa</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">1× MC-P</div>
+      <span class="flow-proto">Fiber/ETH</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Özellik:</strong> Makas dili her hareket ettiğinde SUN-V burst tetiklenir — yüksek veri hacmi. MC-P'nin edge AI'ı ile makas arızası yerel tespit edilir, gecikme kritik.</p>
+    <p><strong>Sensörler:</strong> SUN-V her makas diline (hareket profili), SUN-STR ray gerilmesi (makas bağlantı noktaları), SUN-T sürtünme kaynaklı sıcaklık artışı.</p>
+    <p><strong>Enerji:</strong> MC-P şebeke/büyük solar. İstasyon yakınında genelde elektrik mevcut. SUN'lar pil/solar.</p>
+    <p><strong>Tahmini maliyet:</strong> ~$920 (MC-P dahil)</p>
+  </div>
+
+  <div id="sc8" class="scenario-content scenario-hidden">
+    <h3>Senaryo 8: Liman / Endüstriyel Hat</h3>
+    <p>Ağır yük taşımacılığı, düşük hız ama yüksek aks yükü. Geniş saha, çoklu hat, zorlu çevre koşulları (tuz, nem, toz).</p>
+    <div class="flow-row">
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">20× SUN-T + 10× SUN-V</div>
+      <span class="flow-arrow">+</span>
+      <div class="flow-box" style="background:rgba(245,158,11,0.15);color:var(--sun-color)">6× SUN-STR</div>
+    </div>
+    <div class="flow-row" style="margin-top:4px">
+      <span class="flow-proto" style="margin-left:20px">Zigbee</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);color:var(--vd-color)">6× VD-C + 2× VD-R</div>
+      <span class="flow-proto">LoRa Mesh</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(99,102,241,0.15);color:var(--mc-color)">2× MC-S</div>
+      <span class="flow-proto">Fiber/GSM</span><span class="flow-arrow">&rarr;</span>
+      <div class="flow-box" style="background:rgba(239,68,68,0.15);color:var(--srv-color)">Sunucu</div>
+    </div>
+    <p><strong>Özellik:</strong> Geniş alan (liman sahası ~5 km²), çoklu paralel hat. 2× MC-S farklı bölgeleri kapsar. Ağır aks yükü nedeniyle SUN-STR kritik — ray yorulması erken tespit.</p>
+    <p><strong>Çevre koşulları:</strong> Tuzlu ortam (deniz kenarı) — tüm kasalar IP67+, konnektörler paslanmaz. Toz/kum filtreleri solar panellere. Bakım aralıkları daha sık.</p>
+    <p><strong>Enerji:</strong> Liman altyapısından şebeke genelde mevcut. Solar yedek olarak.</p>
+    <p><strong>Tahmini maliyet:</strong> ~$2,100 (geniş alan, çok sensör)</p>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="sec-comparison" class="container section-hidden">
+  <h2>Karşılaştırma Tablosu</h2>
+  <div style="overflow-x:auto">
+  <table class="cmp-table">
+    <thead><tr><th>Modül</th><th>K</th><th>MCU</th><th>Guc</th><th>Haberleşme</th><th>Kablolu</th><th>BOM</th><th>Kasa</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--sun-color)">SUN-T</strong></td><td class="dim">1</td><td>XIAO MG24</td><td>CR2477 (5+ yıl)</td><td>Zigbee</td><td>-</td><td>$18</td><td>40x30x15</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-V</strong></td><td class="dim">1</td><td>XIAO MG24</td><td>2xAA / solar</td><td>Zigbee</td><td>-</td><td>$24</td><td>50x35x20</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-US</strong></td><td class="dim">1</td><td>XIAO MG24</td><td>LiPo + 0.5W</td><td>Zigbee</td><td>-</td><td>$28</td><td>60x40x25</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-STR</strong></td><td class="dim">1</td><td>XIAO MG24</td><td>CR2477x2</td><td>Zigbee</td><td>-</td><td>$22</td><td>45x30x15</td></tr>
+      <tr><td><strong style="color:var(--sun-color)">SUN-AE</strong></td><td class="dim">1</td><td>XIAO MG24</td><td>LiPo + 1W</td><td>Zigbee</td><td>-</td><td>$35</td><td>55x40x20</td></tr>
+      <tr><td><strong style="color:var(--vd-color)">VD-C</strong></td><td class="dim">2</td><td>ESP32-C6</td><td>2W + 6Ah</td><td>Zigbee+LoRa</td><td>-</td><td>$52</td><td>120x80x50</td></tr>
+      <tr><td><strong style="color:var(--vd-color)">VD-R</strong></td><td class="dim">2</td><td>STM32WL</td><td>1W + 3Ah</td><td>LoRa</td><td>-</td><td>$30</td><td>80x60x35</td></tr>
+      <tr><td><strong style="color:var(--mc-color)">MC-L</strong></td><td class="dim">3</td><td>ESP32-S3</td><td>10W + 12Ah</td><td>LoRa GW+GSM</td><td>-</td><td>$155</td><td>200x150x100</td></tr>
+      <tr><td><strong style="color:var(--mc-color)">MC-S</strong></td><td class="dim">3</td><td>RPi CM4</td><td>20W + 20Ah</td><td>LoRa+ZB+GSM</td><td>RS485x2</td><td>$240</td><td>300x200x120</td></tr>
+      <tr><td><strong style="color:var(--mc-color)">MC-P</strong></td><td class="dim">3</td><td>CM4+H7</td><td>50W / şebeke</td><td>Tümü+Fiber</td><td>RS485x4+CAN</td><td>$385</td><td>400x300x150</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:11px;border-top:1px solid var(--border)">
+  RAIS Modüler Mimari Referans v2.0 &middot; Temmuz 2026
+</div>
+
+<script>
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sec = btn.dataset.section;
+    document.querySelectorAll('section').forEach(s => s.classList.toggle('section-hidden', s.id !== 'sec-' + sec));
+  });
+});
+document.querySelectorAll('.scenario-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.scenario-content').forEach(c => c.classList.add('scenario-hidden'));
+    document.getElementById(tab.dataset.sc).classList.remove('scenario-hidden');
+  });
+});
+</script>
+</body>
+</html>
